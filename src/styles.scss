@@ -23,3 +23,13 @@ header {
     position: fixed;
 }
 
+main {
+    background-color: var(--blanc); 
+    margin-left: 12%;
+    padding: 1rem;
+    width: 88%; 
+    min-height: calc(100vh - 50px); 
+    display: flex;
+    flex-direction: column;
+}
+

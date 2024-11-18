@@ -1,6 +1,12 @@
 <header>
     <app-header></app-header>
 </header>
+    
 <main>
+    <div class="container_btn">
+        <button id="btn_login" (click)="handleAuthAction()">
+            {{ isLoggedIn ? 'Logout' : 'Login' }}
+        </button>
+    </div>
     <router-outlet></router-outlet>
 </main>

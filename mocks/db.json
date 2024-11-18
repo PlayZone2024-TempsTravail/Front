@@ -1,16 +1,17 @@
 ﻿{
-    "Admin":[
+    "admin" : [
         {
-            "id_user": "1",
-            "role_Id": "1",
-            "email": "admin@email.com",
-            "password": "Password123!"
+            "id_user" : 1,
+            "id_role" : 1,
+            "token" : "",
+            "email": "admin@mail.com",
+            "password": "test1234"
         }
     ],
-    "Role":[
+    "role":[
         {
-            "id_role": "1",
-            "name": "Admin"
+            "id_role":"1",
+            "name":"Admin"
         }
-    ]
+    ] 
 }

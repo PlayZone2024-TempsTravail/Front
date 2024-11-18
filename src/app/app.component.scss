@@ -1,0 +1,13 @@
+#btn_login{
+    width: auto;
+    padding: 4px 12px;
+
+    &:hover{
+        cursor: pointer;
+    }
+}
+
+.container_btn{
+    display: flex;
+    justify-content: end;
+}
