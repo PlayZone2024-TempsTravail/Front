@@ -1,0 +1,16 @@
+﻿{
+    "Admin":[
+        {
+            "id_user": "1",
+            "role_Id": "1",
+            "email": "admin@email.com",
+            "password": "Password123!"
+        }
+    ],
+    "Role":[
+        {
+            "id_role": "1",
+            "name": "Admin"
+        }
+    ]
+}
