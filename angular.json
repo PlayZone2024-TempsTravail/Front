@@ -116,7 +116,8 @@
                             }
                         ],
                         "styles": [
-                            "src/styles.scss"
+                            "src/styles.scss",
+                            "node_modules/primeng/resources/themes/saga-green/theme.css"
                         ],
                         "scripts": []
                     }
@@ -125,6 +126,6 @@
         }
     },
     "cli": {
-      "analytics": false
+        "analytics": false
     }
 }
