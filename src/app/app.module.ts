@@ -5,7 +5,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {HeaderComponent} from './layout/header/header.component';
-import { HomeComponent } from './features/home/pages/home/home.component';
+import { HomeComponent } from './features/home/home.component';
 
 import {provideHttpClient} from '@angular/common/http'; 
 // import { provideHttpClient, withInterceptors } from '@angular/common/http';
