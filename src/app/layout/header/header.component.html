@@ -1,0 +1,20 @@
+<nav>
+  <h1>L'Eden <span>des</span> Pattouilles</h1>
+    <ul>
+      @for (link of links; track link.url) {
+        <li>
+          <a (click)="toggleIsVisible(link)" [routerLink]="link.url">{{ link.title }}</a>
+          @if (link.isVisibile) {
+            <ul>
+              @for (childLink of link.children; track childLink.url) {
+                <li>
+                  <a [routerLink]="childLink.url">{{ childLink.title }}</a>
+                </li>
+              }
+            </ul>
+          }
+        </li>
+      }
+    </ul>
+  </nav>
+  
