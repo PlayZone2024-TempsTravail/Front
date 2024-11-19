@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Link } from '../../core/models/link';
 
+
 @Component({
     selector: 'app-header',
     templateUrl: './header.component.html',
@@ -32,9 +33,10 @@ export class HeaderComponent {
 
     toggleIsVisible(link: Link) {
         for (let l of this.links) {
-            if (l !== link) {l.isVisibile = false;
+            if (l !== link) {
+                l.isVisibile = false;
+            }
         }
-    }
         link.isVisibile = !link.isVisibile;
     }
 }

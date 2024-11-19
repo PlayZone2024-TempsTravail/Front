@@ -4,9 +4,7 @@
     
 <main>
     <div class="container_btn">
-        <button id="btn_login" (click)="handleAuthAction()">
-            {{ isLoggedIn ? 'Logout' : 'Login' }}
-        </button>
+        <p-button label="{{ isLoggedIn ? 'Logout' : 'Login' }}" id="btn_login" (click)="handleAuthAction()"></p-button>
     </div>
     <router-outlet></router-outlet>
 </main>

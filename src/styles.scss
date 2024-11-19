@@ -1,5 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
-* {
+@import "primeng/resources/themes/lara-light-green/theme.css";
+@import "primeng/resources/primeng.css";
+
+body, html {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -8,7 +11,6 @@
 :root {
     --primary-color: #84c101
 }
-
 
 app-root {
     display: flex;
@@ -33,3 +35,6 @@ main {
     flex-direction: column;
 }
 
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

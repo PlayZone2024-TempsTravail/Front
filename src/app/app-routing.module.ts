@@ -8,7 +8,7 @@ const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'login', component: LoginComponent, canActivate: [authenticatedGuard] },
     { path: 'pointage', loadChildren: () => import('./features/time-tracking/time-tracking.module').then(m => m.TimeTrackingModule)},
-    //{ path: 'pointage', loadComponent: () => import('./features/time-tracking/components/calendar/calendar.component').then(m => m.CalendarComponent)},
+    
     { path: '**', redirectTo: '' }
 ];
 

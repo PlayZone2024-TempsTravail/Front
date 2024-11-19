@@ -52,7 +52,7 @@ export class AuthService {
     localStorage.removeItem("currentUser");
     this._router.navigate(["/auth/login"]);
   }
-
+  
   get currentUser(): UserTokenDtoModel | undefined {
     return this._currentUser$.value;
   }
