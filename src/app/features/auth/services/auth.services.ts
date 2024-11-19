@@ -26,7 +26,7 @@ export class AuthService {
 
   login(form: LoginFormModel): Observable<UserTokenDtoModel> {
     // Appel l'API JSON Server 
-    return this._http.get<any[]>(`http://localhost:3000/admin`).pipe(
+    return this._http.get<any[]>(`http://localhost:3000/admin`).pipe( 
       map(users => {
         const user = users.find(u => u.email === form.email && u.password === form.password);
         if (!user) {
@@ -41,12 +41,14 @@ export class AuthService {
       tap(user => {
         this._currentUser$.next(user);
         localStorage.setItem("currentUser", JSON.stringify(user));
+        this._router.navigate(['/']); // Redirection après la connexion
       })
     );
   }
 
   logout() {
     this._currentUser$.next(undefined);
+    //Supprime le Token JWT du local storage
     localStorage.removeItem("currentUser");
     this._router.navigate(["/auth/login"]);
   }

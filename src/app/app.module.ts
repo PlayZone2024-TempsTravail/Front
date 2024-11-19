@@ -9,6 +9,8 @@ import { HomeComponent } from './features/home/home.component';
 import { AuthModule } from './features/auth/auth.module';
 
 import {provideHttpClient} from '@angular/common/http'; 
+import { TimeTrackingModule } from './features/time-tracking/time-tracking.module';
+import { TimeTrackingRoutingModule } from './features/time-tracking/time-tracking-routing.module';
 // import { provideHttpClient, withInterceptors } from '@angular/common/http';
 // import { tokenInterceptor } from './interceptors/token.interceptor';
 
@@ -24,7 +26,9 @@ import {provideHttpClient} from '@angular/common/http';
         BrowserAnimationsModule,
         AppRoutingModule,
         ReactiveFormsModule,
-        AuthModule
+        AuthModule,
+        TimeTrackingModule,
+        TimeTrackingRoutingModule
     ],
     providers: [
         provideHttpClient() // Ajout de l'interceptors => provideHttpClient(withInterceptors([tokenInterceptor]))
