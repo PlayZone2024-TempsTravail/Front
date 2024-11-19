@@ -116,8 +116,7 @@
                             }
                         ],
                         "styles": [
-                            "src/styles.scss",
-                            "node_modules/primeng/resources/themes/saga-green/theme.css"
+                            "src/styles.scss"
                         ],
                         "scripts": []
                     }
