@@ -5,7 +5,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {HeaderComponent} from './layout/header/header.component';
-import { HomeComponent } from './features/home/home.component';
+import { HomeComponent } from './features/home/components/home.component';
 
 import {provideHttpClient} from '@angular/common/http';
 import {ChipModule} from 'primeng/chip';
@@ -14,6 +14,8 @@ import {ButtonModule} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
 import {CardModule} from 'primeng/card';
 import {ToastModule} from 'primeng/toast';
+import {PanelMenuModule} from "primeng/panelmenu";
+import { FooterComponent } from './layout/footer/footer.component';
 // import { provideHttpClient, withInterceptors } from '@angular/common/http';
 // import { tokenInterceptor } from './interceptors/token.interceptor';
 
@@ -23,6 +25,7 @@ import {ToastModule} from 'primeng/toast';
         AppComponent,
         HeaderComponent,
         HomeComponent,
+        FooterComponent,
     ],
     imports: [
         AppRoutingModule,
@@ -35,6 +38,7 @@ import {ToastModule} from 'primeng/toast';
         InputTextModule,
         CardModule,
         ToastModule,
+        PanelMenuModule,
     ],
     providers: [
         provideHttpClient() // Ajout de l'interceptors => provideHttpClient(withInterceptors([tokenInterceptor]))
