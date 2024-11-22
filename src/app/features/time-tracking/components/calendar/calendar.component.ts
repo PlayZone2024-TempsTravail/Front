@@ -1,8 +1,7 @@
-import { Component } from '@angular/core';
-
+import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { AppointmentDialogComponent } from '../appointment-dialog/appointment-dialog.component';
+import { AppointmentDialogComponent, WorkTime } from '../appointment-dialog/appointment-dialog.component';
 
 interface Appointment {
   uuid?: string;
@@ -11,13 +10,14 @@ interface Appointment {
   startTime: string;
   endTime: string;
   color?: string;
+  WorkTime: WorkTime;
 }
 
 export enum CalendarView {
   Month = 'month',
   Week = 'week',
   Day = 'day',
-}
+} 
 
 @Component({
   selector: 'app-calendar',
@@ -26,29 +26,29 @@ export enum CalendarView {
 })
 
 export class CalendarComponent {
+  @Input() messageErreurEdit: string | null = null;
   viewDate: Date = new Date();
   selectedDate: Date | null = null;
   selectedStartTime: string | undefined;
   weekDays: string[] = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
   monthDays: Date[] = [];
   appointments: Appointment[] = [
-    // {
-    //   uuid: '00000000-0000-0000-0000-000000000001',
-    //   date: new Date(
-    //     new Date().getFullYear(),
-    //     new Date().getMonth(),
-    //     new Date().getDate()
-    //   ),
-    //   title: 'Meeting with Bob',
-    //   startTime: '09:00',
-    //   endTime: '10:00',
-    // },
+    {
+      uuid: '00000000-0000-0000-0000-000000000001',
+      date: new Date(
+        new Date().getFullYear(),
+        new Date().getMonth(),
+        new Date().getDate()
+      ),
+      title: 'Meeting with Bob',
+      WorkTime: { name: 'JF', color: '#F9C74F' },
+      startTime: '09:00',
+      endTime: '16:00',
+    },
   ];
   currentView: CalendarView = CalendarView.Month;
   timeSlots: string[] = [];
-
   weeks: Date[][] = [];
-
   public CalendarView = CalendarView;
 
   constructor(public dialog: MatDialog) {
@@ -227,7 +227,7 @@ export class CalendarComponent {
   }
 
   generateUUID(): string {
-    let d = new Date().getTime(); //Timestamp
+    let d = new Date().getTime(); 
     let d2 =
       (typeof performance !== 'undefined' &&
         performance.now &&
@@ -236,13 +236,11 @@ export class CalendarComponent {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
       /[xy]/g,
       function (c) {
-        let r = Math.random() * 16; //random number between 0 and 16
+        let r = Math.random() * 16; 
         if (d > 0) {
-          //Use timestamp until depleted
           r = (d + r) % 16 | 0;
           d = Math.floor(d / 16);
         } else {
-          //Use microseconds since page-load if supported
           r = (d2 + r) % 16 | 0;
           d2 = Math.floor(d2 / 16);
         }
@@ -254,18 +252,27 @@ export class CalendarComponent {
   addAppointment(
     date: Date,
     title: string,
+    WorkTime: WorkTime,
     startTime: string,
-    endTime: string
-  ) {
+    endTime: string,
+  ): { timeRangeConflict: boolean } {
+    if (this.isOverlapping(date, startTime, endTime)) {
+      return { timeRangeConflict: true };
+    }
+  
     this.appointments.push({
       uuid: this.generateUUID(),
       date,
-      title,
+      title: title || '',
+      WorkTime,
       startTime,
       endTime,
       color: this.getRandomColor(),
     });
+  
+    return { timeRangeConflict: false };
   }
+  
 
   deleteAppointment(appointment: Appointment, event: Event) {
     event.stopPropagation();
@@ -279,31 +286,38 @@ export class CalendarComponent {
     const hour = new Date().getHours();
     const minutes = new Date().getMinutes();
     const h = hour < 10 ? `0${hour}` : hour;
-    const m = minutes < 10 ? `0` : minutes;
+    const m = minutes < 10 ? `00` : `00`;
+    
     const dialogRef = this.dialog.open(AppointmentDialogComponent, {
       width: '500px',
       panelClass: 'dialog-container',
       data: {
+        uuid: '',
         date: this.selectedDate,
         title: '',
+        WorkTime: '',
         startTime: this.selectedStartTime || `${h}:${m}`,
         endTime: this.selectedStartTime || `${h}:${m}`,
+        color: '',
+        appointments: this.appointments,
       },
     });
-
+  
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.addAppointment(
           result.date,
           result.title,
+          result.WorkTime,
           result.startTime,
           result.endTime
         );
       }
     });
-  }
-
+  }  
+  
   getAppointmentsForDate(day: Date, timeSlots: string[]) {
+    
     return this.appointments
       .filter((appointment) => {
         return this.isSameDate(appointment.date, day);
@@ -337,17 +351,19 @@ export class CalendarComponent {
   }
 
   getAppointmentsForDateTime(date: Date, timeSlot: string): Appointment[] {
-    const appointmentsForDateTime: Appointment[] = this.appointments.filter(
+    
+
+    return this.appointments.filter(
       (appointment) =>
         this.isSameDate(appointment.date, date) &&
-        appointment.startTime <= timeSlot &&
-        appointment.endTime >= timeSlot
+        (
+          (appointment.startTime <= timeSlot && appointment.endTime > timeSlot) ||
+          (appointment.startTime === timeSlot) 
+        )
     );
-
-    return appointmentsForDateTime;
   }
-
-  getRandomColor(): string {
+  
+  getRandomColor(): string { // TODO : Changer pour tableau de couleur 
     const r = Math.floor(Math.random() * 256);
     const g = Math.floor(Math.random() * 256);
     const b = Math.floor(Math.random() * 256);
@@ -355,25 +371,76 @@ export class CalendarComponent {
     return `rgba(${r},${g},${b},${a})`;
   }
 
+  isOverlapping(date: Date, startTime: string, endTime: string, appointmentToSkip?: Appointment): boolean {
+    return this.appointments.some((appointment) => {
+      if (appointmentToSkip && appointment.uuid === appointmentToSkip.uuid) {
+        return false;
+      }
+      
+      if (!this.isSameDate(appointment.date, date)) {
+        return false;
+      }
+  
+      return (
+        (startTime >= appointment.startTime && startTime < appointment.endTime) ||
+        (endTime > appointment.startTime && endTime <= appointment.endTime) ||
+        (startTime <= appointment.startTime && endTime >= appointment.endTime)
+      );
+    });
+  }
+
   editAppointment(appointment: Appointment, event: Event) {
     event.preventDefault();
     const dialogRef = this.dialog.open(AppointmentDialogComponent, {
       width: '500px',
       panelClass: 'dialog-container',
-      data: appointment,
+      data: {
+        ...appointment,
+        appointments: this.appointments,
+      },
     });
-
-    dialogRef.afterClosed().subscribe((result) => {
+  
+    dialogRef.beforeClosed().subscribe((result) => {
       if (result) {
-        const index = this.appointments.findIndex(
-          (appointment) => appointment.uuid === result.uuid
-        );
+        const index = this.appointments.findIndex((a) => a.uuid === result.uuid);
         if (result.remove) {
           this.appointments.splice(index, 1);
         } else {
+          const conflict = this.isOverlapping(
+            result.date,
+            result.startTime,
+            result.endTime,
+            appointment
+          );
+  
+          if (conflict) {
+            this.messageErreurEdit = 'Les horaires se chevauchent. Veuillez choisir un autre créneau.';
+            return;
+          }
+  
           this.appointments[index] = result;
+          this.messageErreurEdit = null; 
         }
       }
     });
+  }  
+
+  calculateDuration(startTime: string, endTime: string): number {
+    const [startHours] = startTime.split(':').map(Number);
+    const [endHours] = endTime.split(':').map(Number);
+  
+    if (endHours <= startHours) {
+      return 1; 
+    }
+  
+    const duration = endHours - startHours;
+    return duration;
+  }
+  
+  getTotalHours(): number {
+    return this.appointments.reduce((total, appointment) => {
+      const duration = this.calculateDuration(appointment.startTime, appointment.endTime);
+      return total + duration;
+    }, 0);
   }
 }

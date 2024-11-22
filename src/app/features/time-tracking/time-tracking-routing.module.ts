@@ -4,8 +4,9 @@ import { CalendarComponent } from './components/calendar/calendar.component';
 import { unauthenticatedGuard } from '../../shared/guards/authenticated.guard';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'calendrier', pathMatch: 'full' },
-  { path: 'calendrier', component: CalendarComponent, canActivate: [unauthenticatedGuard] }
+  { path: '', redirectTo: '', pathMatch: 'full' },
+  { path: 'calendrier', component: CalendarComponent, canActivate: [unauthenticatedGuard]},
+
 ];
 
 @NgModule({

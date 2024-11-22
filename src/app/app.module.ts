@@ -19,6 +19,7 @@ import {InputTextModule} from 'primeng/inputtext';
 import {FloatLabelModule} from 'primeng/floatlabel';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatNativeDateModule } from '@angular/material/core';
+import { DropdownModule } from 'primeng/dropdown';
 
 @NgModule({
     declarations: [
@@ -40,7 +41,9 @@ import { MatNativeDateModule } from '@angular/material/core';
         BrowserAnimationsModule,
         ButtonModule,
         InputTextModule,
-        FloatLabelModule
+        FloatLabelModule,
+        DropdownModule,
+
     ],
     providers: [
         provideHttpClient(),

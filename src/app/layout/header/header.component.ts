@@ -10,7 +10,7 @@ import { Link } from '../../core/models/link';
 export class HeaderComponent {
     links: Link[] = [
         { title: 'Accueil', url: "/" },
-        { title: 'Pointage', url: "/pointage",
+        { title: 'Pointage', url: "",
             children: [
                 { title: 'Calendrier', url: '/pointage/calendrier' },
                 { title: 'Pointages employés', url: '/pointage/pointages-employes' },
