@@ -14,33 +14,14 @@
     </div>
     <div class="p-field">
         <label for="password">Mot de passe</label>
-        <input
-            id="password"
-            type="password"
-            pInputText
-            formControlName="password"
-        />
+        <input id="password" type="password" pInputText formControlName="password" />
     </div>
     <div class="p-field">
         <p-dropdown [options]="roles" optionLabel="label" formControlName="role_Id" placeholder="Sélectionnez un rôle" ></p-dropdown>
     </div>
     <div class="p-field">
-        <label for="heures_annuelles_prestables"
-        >Heures annuelles prestables</label
-        >
-        <input
-            id="heures_annuelles_prestables"
-            type="number"
-            pInputText
-            formControlName="heures_annuelles_prestables"
-        />
+        <label for="heures_annuelles_prestables">Heures annuelles prestables</label><input id="heures_annuelles_prestables" type="number"  pInputText formControlName="heures_annuelles_prestables" />
     </div>
     <!-- Bouton de soumission du formulaire -->
-    <button
-        pButton
-        type="submit"
-        [label]="user ? 'Modifier' : 'Ajouter'"
-    icon="pi pi-check"
-    [disabled]="userForm.invalid"
-    ></button>
+    <button pButton type="submit" [label]="user ? 'Modifier' : 'Ajouter'" icon="pi pi-check" [disabled]="userForm.invalid"></button>
 </form>

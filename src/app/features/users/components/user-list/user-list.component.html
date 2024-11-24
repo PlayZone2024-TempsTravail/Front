@@ -1,44 +1,20 @@
 <div class="user-list-container">
-    <!-- Conteneur pour les boutons Ajouter et Modifier -->
+    <!-- Conteneur pour les boutons ajouter et Modifier -->
     <div class="actions-header">
-        <button
-            pButton
-            type="button"
-            label="Ajouter"
-            icon="pi pi-plus"
-            class="p-button-success"
-            (click)="showAddUserDialog()"
-        ></button>
+        <button pButton type="button" label="Ajouter" icon="pi pi-plus" class="p-button-success" (click)="showAddUserDialog()"></button>
     </div>
 
-    <!-- Barre de recherche et de filtrage -->
+    <!-- TODO: rendre fonctionnel barre de recherche et de filtrage -->
     <div class="search-filter-container">
-    <span class="p-input-icon-left">
-      <i class="pi pi-search"></i>
-      <input
-          pInputText
-          type="text"
-          placeholder="Rechercher..."
-          (input)="applyGlobalFilter($event)"
-      />
-    </span>
-        <p-dropdown
-            [options]="roles"
-            placeholder="Filtrer par rôle"
-            optionLabel="label"
-            (onChange)="filterByRole($event)"
-        ></p-dropdown>
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input pInputText type="text" placeholder="Rechercher..."/>
+        </span>
+        <p-dropdown [options]="roles" placeholder="Filtrer par rôle" optionLabel="label"></p-dropdown>
     </div>
 
     <!-- Tableau des utilisateurs -->
-    <p-table
-        [value]="filteredUsers"
-        [paginator]="true"
-        [rows]="10"
-        [tableStyle]="{ 'min-width': '50rem' }"
-        [globalFilterFields]="['nom', 'prenom', 'email']"
-        #dt
-    >
+    <p-table [value]="users" [paginator]="true" [rows]="10" [tableStyle]="{ 'min-width': '50rem' }" #dt>
         <!-- En-tête du tableau -->
         <ng-template pTemplate="header">
             <tr>
@@ -67,30 +43,13 @@
                 <td>{{ user.VAEX }}</td>
                 <td>{{ user.RC }}</td>
                 <td>
-                    <p-chip
-                        [label]="user.isActive ? 'Actif' : 'Désactivé'"
-                        [class]="user.isActive ? 'p-chip-success' : 'p-chip-danger'"
-                    ></p-chip>
+                    <p-chip [label]="user.isActive ? 'Actif' : 'Désactivé'" [class]="user.isActive ? 'p-chip-success' : 'p-chip-danger'"></p-chip>
                 </td>
                 <td>
                     <!-- Bouton pour modifier un utilisateur -->
-                    <button
-                        pButton
-                        type="button"
-                        icon="pi pi-pencil"
-                        label="Modifier"
-                        class="p-button-text"
-                        (click)="showModifyUserDialog(user)"
-                    ></button>
+                    <button pButton type="button" icon="pi pi-pencil" label="Modifier" class="p-button-text" (click)="showModifyUserDialog(user)"></button>
                     <!-- Bouton pour désactiver un utilisateur -->
-                    <button
-                        pButton
-                        type="button"
-                        icon="pi pi-trash"
-                        label="Désactiver"
-                        class="p-button-text p-button-danger"
-                        (click)="deactivateUser(user)"
-                    ></button>
+                    <button pButton type="button" icon="pi pi-trash" label="Désactiver" class="p-button-text p-button-danger" (click)="deactivateUser(user)"></button>
                 </td>
             </tr>
         </ng-template>
@@ -98,24 +57,11 @@
 </div>
 
 <!-- Dialog pour l'ajout d'utilisateur -->
-<p-dialog
-    header="Ajouter un utilisateur"
-    [(visible)]="displayAddUserDialog"
-    [modal]="true"
-    [style]="{ width: '500px' }"
->
+<p-dialog header="Ajouter un utilisateur" [(visible)]="displayAddUserDialog" [modal]="true" [style]="{ width: '500px' }">
     <app-user-form (ngSubmit)="onAddUser()"></app-user-form>
 </p-dialog>
 
 <!-- Dialog pour la modification d'utilisateur -->
-<p-dialog
-    header="Modifier un utilisateur"
-    [(visible)]="displayModifyUserDialog"
-    [modal]="true"
-    [style]="{ width: '500px' }"
->
-    <app-user-form
-        [user]="selectedUser"
-        (ngSubmit)="onModifyUser()"
-    ></app-user-form>
+<p-dialog header="Modifier un utilisateur" [(visible)]="displayModifyUserDialog" [modal]="true" [style]="{ width: '500px' }" >
+    <app-user-form [user]="selectedUser" (ngSubmit)="onModifyUser()"></app-user-form>
 </p-dialog>

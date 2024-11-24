@@ -16,7 +16,7 @@ export class UserFormComponent implements OnInit {
     // Déclaration du formulaire réactif
     userForm!: FormGroup;
 
-    // Liste des rôles disponibles pour le dropdown
+    // Liste des rôles disponibles pour le dropdown du form
     roles = [
         { label: 'Admin', value: 1 },
         { label: 'Employé', value: 2 },
@@ -52,7 +52,7 @@ export class UserFormComponent implements OnInit {
         if (this.userForm.valid) {
             const userData: UserForm = this.userForm.value;
             if (this.user) {
-                // Si un utilisateur existe, c'est une modification
+                // TODO : Si un utilisateur existe, c'est une modification
                 console.log('Utilisateur modifié :', userData);
             } else {
                 // Sinon, c'est un ajout

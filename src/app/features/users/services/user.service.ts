@@ -12,7 +12,7 @@ export class UserService {
 
     constructor(private _http: HttpClient) {}
 
-
+    // TODO : a faire avec les ifnos de l'API (pour le moment tout est en dur)
 
     createUser(user: UserForm): Observable<any> {
         return this._http.post(this.apiUrl, user);

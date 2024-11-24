@@ -11,9 +11,6 @@ export class UserListComponent implements OnInit {
     // Liste des utilisateurs
     users: User[] = [];
 
-    // Liste des utilisateurs filtrés
-    filteredUsers: User[] = [];
-
     // Options de rôles pour le filtrage
     roles: any[] = [];
 
@@ -28,7 +25,7 @@ export class UserListComponent implements OnInit {
     constructor() { }
 
     ngOnInit(): void {
-        // Initialisation de la liste des faux utilisateurs
+        // Initialisation de la liste des faux utilisateurs en dur (attente des donénes de l'API)
         this.users = [
             {
                 id_user: 1,
@@ -211,10 +208,6 @@ export class UserListComponent implements OnInit {
                 RC: 9
             }
         ];
-
-        // Initialisation de la liste filtrée
-        this.filteredUsers = [...this.users];
-
         // Options pour le dropdown de filtrage des rôles
         this.roles = [
             { label: 'Tous', value: null },
@@ -243,31 +236,10 @@ export class UserListComponent implements OnInit {
         this.displayAddUserDialog = true;
     }
 
-    // Afficher la boîte de dialogue pour modifier un utilisateur
+    // Afficher la boîte de dialogue pour modifier un utilisateur sélectionné
     showModifyUserDialog(user: User) {
         this.selectedUser = user;
         this.displayModifyUserDialog = true;
-    }
-
-    // Appliquer un filtre global sur la liste des utilisateurs
-    applyGlobalFilter(event: any) {
-        const query = event.target.value.toLowerCase();
-        this.filteredUsers = this.users.filter(
-            (user) =>
-                user.nom.toLowerCase().includes(query) ||
-                user.prenom.toLowerCase().includes(query) ||
-                user.email.toLowerCase().includes(query)
-        );
-    }
-
-    // Filtrer les utilisateurs par rôle
-    filterByRole(event: any) {
-        const roleId = event.value;
-        if (roleId === null) {
-            this.filteredUsers = [...this.users];
-        } else {
-            this.filteredUsers = this.users.filter((user) => user.role_Id === roleId);
-        }
     }
 
     // Désactiver un utilisateur
@@ -278,12 +250,6 @@ export class UserListComponent implements OnInit {
         if (index !== -1) {
             // Mettre à jour la propriété isActive de l'utilisateur
             this.users[index].isActive = false;
-
-            // Mettre à jour la liste filtrée si nécessaire
-            const filteredIndex = this.filteredUsers.findIndex(u => u.id_user === user.id_user);
-            if (filteredIndex !== -1) {
-                this.filteredUsers[filteredIndex].isActive = false;
-            }
         }
     }
 
