@@ -44,7 +44,7 @@ export interface WorkTime {
     DropdownModule
   ],
 })
-export class AppointmentDialogComponent implements OnInit {
+export class AppointmentDialogComponent {
   messageErreurEdit: string | null = null;
   appointmentForm: FormGroup;
   WorkTime: WorkTime[] | undefined;
@@ -59,7 +59,7 @@ export class AppointmentDialogComponent implements OnInit {
       WorkTime: WorkTime;
       startTime: string;
       endTime: string;
-      color: string;
+      //color: string;
       appointments: Array<{
         uuid: string;
         date: Date;
@@ -76,7 +76,6 @@ export class AppointmentDialogComponent implements OnInit {
       endTime: [this.data.endTime || '', Validators.required],
       title: [''],
     }, { validators: this.timeRangeValidator });
-    
     
   }
 
@@ -151,35 +150,14 @@ export class AppointmentDialogComponent implements OnInit {
     return null;
   };
 
-  ngOnInit() {
-    console.log('WorkTime data:', this.data.WorkTime);  // Vérifiez que la donnée est bien passée
-  
-    this.WorkTime = [
-      { name: 'VIEC', color: '#FFDDC1' },
-      { name: 'RC', color: '#A7D3F1' },
-      { name: 'VA', color: '#C6EBCB' },
-      { name: 'VAEX', color: '#FBCFE8' },
-      { name: 'JF', color: '#F9C74F' },
-      { name: 'MA', color: '#D9B9FF' },
-      { name: 'CSS', color: '#F5B7B1' },
-    ];
-  
-    if (this.data.WorkTime) {
-      // Utilisez l'objet entier, pas seulement le nom
-      const selectedWorkTime = this.WorkTime.find(workTime => workTime.name === this.data.WorkTime.name);
-      this.appointmentForm.controls['WorkTime'].setValue(selectedWorkTime); // Définir l'objet entier
-    } else {
-      this.appointmentForm.controls['WorkTime'].setValue(null); // Initialiser pour la création
-    }
-  }
-  
 
   onWorkTimeChange(event: any) {
     console.log('Selected WorkTime:', event.value);
   }
 
-
   get workTimeControl(): FormControl {
     return this.appointmentForm.get('WorkTime') as FormControl;
   }
 }
+
+

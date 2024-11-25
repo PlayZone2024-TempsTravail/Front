@@ -2,16 +2,7 @@ import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { AppointmentDialogComponent, WorkTime } from '../appointment-dialog/appointment-dialog.component';
-
-interface Appointment {
-  uuid?: string;
-  date: Date;
-  title: string;
-  startTime: string;
-  endTime: string;
-  color?: string;
-  WorkTime: WorkTime;
-}
+import { AppointmentService, Appointment } from '../../../services/services-calendar.service';
 
 export enum CalendarView {
   Month = 'month',
@@ -26,37 +17,39 @@ export enum CalendarView {
 })
 
 export class CalendarComponent {
-  @Input() messageErreurEdit: string | null = null;
-  viewDate: Date = new Date();
-  selectedDate: Date | null = null;
-  selectedStartTime: string | undefined;
-  weekDays: string[] = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
-  monthDays: Date[] = [];
-  appointments: Appointment[] = [
-    {
-      uuid: '00000000-0000-0000-0000-000000000001',
-      date: new Date(
-        new Date().getFullYear(),
-        new Date().getMonth(),
-        new Date().getDate()
-      ),
-      title: 'Meeting with Bob',
-      WorkTime: { name: 'JF', color: '#F9C74F' },
-      startTime: '09:00',
-      endTime: '16:00',
-    },
-  ];
-  currentView: CalendarView = CalendarView.Month;
-  timeSlots: string[] = [];
-  weeks: Date[][] = [];
+  @Input() messageErreurEdit: string | null = null; 
+  viewDate: Date = new Date(); 
+  selectedDate: Date | null = null; 
+  selectedStartTime: string | undefined; 
+  weekDays: string[] = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche']; 
+  monthDays: Date[] = []; 
+  appointments: Appointment[] = []; 
+  currentView: CalendarView = CalendarView.Month; 
+  timeSlots: string[] = []; 
+  weeks: Date[][] = []; 
   public CalendarView = CalendarView;
 
-  constructor(public dialog: MatDialog) {
-    this.appointments.forEach((appointment) => {
-      appointment.color = this.getRandomColor();
-    });
-    this.generateView(this.currentView, this.viewDate);
-    this.generateTimeSlots();
+  constructor(public dialog: MatDialog, private appointmentService: AppointmentService) { 
+    this.appointmentService.getAppointments().subscribe({ 
+      next: (appointments) => { 
+        console.log('Appointments reçus:', appointments); 
+        if (appointments && appointments.length > 0) { 
+          this.appointments = appointments.map(appointment => ({ 
+            ...appointment
+          })); 
+            console.log('Mapped Appointments:', this.appointments);
+            console.log('Appointments chargé:', this.appointments); 
+          } 
+          else { 
+            console.error('ne recois rien'); 
+          } 
+        }, 
+        error: (error) => { 
+          console.error('erreur: ',error); 
+        } 
+      }); 
+      this.generateView(this.currentView, this.viewDate); 
+      this.generateTimeSlots(); 
   }
 
   generateView(view: CalendarView, date: Date) {
@@ -209,6 +202,10 @@ export class CalendarComponent {
   }
 
   isSameDate(date1: Date, date2: Date): boolean {
+    if (!(date1 instanceof Date)){
+      date1 = new Date(date1)
+    }
+    
     return (
       date1.getDate() === date2.getDate() &&
       date1.getMonth() === date2.getMonth() &&
@@ -267,7 +264,7 @@ export class CalendarComponent {
       WorkTime,
       startTime,
       endTime,
-      color: this.getRandomColor(),
+      //color: this.getRandomColor(),
     });
   
     return { timeRangeConflict: false };
@@ -298,7 +295,7 @@ export class CalendarComponent {
         WorkTime: '',
         startTime: this.selectedStartTime || `${h}:${m}`,
         endTime: this.selectedStartTime || `${h}:${m}`,
-        color: '',
+        //color: '',
         appointments: this.appointments,
       },
     });
@@ -363,13 +360,13 @@ export class CalendarComponent {
     );
   }
   
-  getRandomColor(): string { // TODO : Changer pour tableau de couleur 
-    const r = Math.floor(Math.random() * 256);
-    const g = Math.floor(Math.random() * 256);
-    const b = Math.floor(Math.random() * 256);
-    const a = 0.4;
-    return `rgba(${r},${g},${b},${a})`;
-  }
+  // getRandomColor(): string { // TODO : Changer pour tableau de couleur 
+  //   const r = Math.floor(Math.random() * 256);
+  //   const g = Math.floor(Math.random() * 256);
+  //   const b = Math.floor(Math.random() * 256);
+  //   const a = 0.4;
+  //   return `rgba(${r},${g},${b},${a})`;
+  // }
 
   isOverlapping(date: Date, startTime: string, endTime: string, appointmentToSkip?: Appointment): boolean {
     return this.appointments.some((appointment) => {
@@ -443,4 +440,9 @@ export class CalendarComponent {
       return total + duration;
     }, 0);
   }
+
+  getColor(workTimeName: string): string {
+    return this.appointmentService.getColor(workTimeName);
+  }
+
 }
