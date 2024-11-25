@@ -1,5 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
-* {
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+
+body, html {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -21,5 +24,15 @@ header {
     width: 12%;
     height: 100vh;
     position: fixed;
+}
+
+main {
+    background-color: var(--blanc);
+    margin-left: 12%;
+    padding: 1rem;
+    width: 88%;
+    min-height: calc(100vh - 50px);
+    display: flex;
+    flex-direction: column;
 }
 
