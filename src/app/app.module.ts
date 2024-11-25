@@ -2,12 +2,19 @@ import {NgModule} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {HeaderComponent} from './layout/header/header.component';
-import { HomeComponent } from './features/home/home.component';
-import { AuthModule } from './features/auth/auth.module';
-import {provideHttpClient} from '@angular/common/http'; 
+import {HeaderComponent} from './layout/header/header.component'; 
+import { AuthModule } from './features/auth/auth.module'; 
 import { TimeTrackingModule } from './features/time-tracking/time-tracking.module';
 import { TimeTrackingRoutingModule } from './features/time-tracking/time-tracking-routing.module';
+import { HomeComponent } from './features/home/components/home.component';
+
+import {provideHttpClient} from '@angular/common/http';
+import {ChipModule} from 'primeng/chip';
+import {TableModule} from 'primeng/table'; 
+import {CardModule} from 'primeng/card';
+import {ToastModule} from 'primeng/toast';
+import {PanelMenuModule} from "primeng/panelmenu";
+import { FooterComponent } from './layout/footer/footer.component';
 // import { provideHttpClient, withInterceptors } from '@angular/common/http';
 // import { tokenInterceptor } from './interceptors/token.interceptor';
 
@@ -26,6 +33,7 @@ import { DropdownModule } from 'primeng/dropdown';
         AppComponent,
         HeaderComponent,
         HomeComponent,
+        FooterComponent,
     ],
     imports: [
         AppRoutingModule,
@@ -44,6 +52,11 @@ import { DropdownModule } from 'primeng/dropdown';
         FloatLabelModule,
         DropdownModule,
 
+        // PrimeNG
+        BrowserModule,
+        BrowserAnimationsModule, 
+        ButtonModule,
+        InputTextModule, 
     ],
     providers: [
         provideHttpClient(),

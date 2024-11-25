@@ -2,60 +2,49 @@
     :root {
         --primary-color: #84c101
     }
+    .sidebar {
+        span {
+            color: #f4f4f4;
+        }
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #f4f4f4;
+        width: 200px;
+        height: 100vh;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 
-nav {
-    width: 100%;
-    padding: 1rem;
-    background-color: var(--primary-color);
+        .logo-container {
+            margin: 1rem auto 3rem auto;
+            width: 80%;
 
-    h1 {
-      font-size: 1.5rem;
-      text-transform: uppercase;
-      font-weight: 800;
-      padding: .5rem;
-      margin: 0;
-      margin-bottom: 3rem;
-      span {
-        font-size: 1rem;;
-      }
-    }
-
-    ul {
-      list-style: none;
-      padding: 0;
-      margin-left: .4rem;
-
-      li {
-        margin: 1rem 0;
-        padding: 1rem 0;
-
-        a {
-          color: var(--blanc);
-          font-family: "Quicksand", sans-serif;
-          text-transform: uppercase;
-          font-weight: 500;
-          font-size: 1.1rem;
-          letter-spacing: .05rem;
-          text-decoration: none;
-          transition: color 0.3s ease;
-
-          &:hover {
-            color: var(--titre);
-          }
         }
 
         ul {
-          margin-left: 1.7rem;
-          li {
-            padding: .5rem 0;
-            a {
+            list-style: none;
+            padding: 0;
+            width: 80%;
+            margin: 1rem auto 4rem auto;
 
-              &:hover {
-                color: var(--titre);
-              }
+            li {
+                margin: 2rem 0;
+
+                .nav-button {
+                    width: 100%;
+                    font-size: 16px;
+                    font-weight: bold;
+                    color: #fff;
+                    background-color: #84c101;
+                    border: none;
+                    border-radius: 5px;
+                    text-align: center;
+
+                    &:hover {
+                        background-color: #444;
+                    }
+                }
             }
-          }
         }
-      }
     }
-  }
+
+

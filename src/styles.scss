@@ -1,5 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-@import "primeng/resources/themes/lara-light-green/theme.css";
+@import "primeng/resources/themes/lara-light-blue/theme.css";
 @import "primeng/resources/primeng.css";
 
 body, html {
@@ -26,15 +26,12 @@ header {
 }
 
 main {
-    background-color: var(--blanc); 
+    background-color: var(--blanc);
     margin-left: 12%;
     padding: 1rem;
-    width: 88%; 
-    min-height: calc(100vh - 50px); 
+    width: 88%;
+    min-height: calc(100vh - 50px);
     display: flex;
     flex-direction: column;
 }
 
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -1,0 +1,67 @@
+<div class="user-list-container">
+    <!-- Conteneur pour les boutons ajouter et Modifier -->
+    <div class="actions-header">
+        <button pButton type="button" label="Ajouter" icon="pi pi-plus" class="p-button-success" (click)="showAddUserDialog()"></button>
+    </div>
+
+    <!-- TODO: rendre fonctionnel barre de recherche et de filtrage -->
+    <div class="search-filter-container">
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input pInputText type="text" placeholder="Rechercher..."/>
+        </span>
+        <p-dropdown [options]="roles" placeholder="Filtrer par rôle" optionLabel="label"></p-dropdown>
+    </div>
+
+    <!-- Tableau des utilisateurs -->
+    <p-table [value]="users" [paginator]="true" [rows]="10" [tableStyle]="{ 'min-width': '50rem' }" #dt>
+        <!-- En-tête du tableau -->
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Email</th>
+                <th>Rôle</th>
+                <th>Heures Prestables</th>
+                <th>VA</th>
+                <th>VAEX</th>
+                <th>RC</th>
+                <th>Actif</th>
+                <th>Actions</th>
+            </tr>
+        </ng-template>
+
+        <!-- Corps du tableau -->
+        <ng-template pTemplate="body" let-user>
+            <tr>
+                <td>{{ user.nom }}</td>
+                <td>{{ user.prenom }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ getRoleName(user.role_Id) }}</td>
+                <td>{{ user.heures_annuelles_prestables }}</td>
+                <td>{{ user.VA }}</td>
+                <td>{{ user.VAEX }}</td>
+                <td>{{ user.RC }}</td>
+                <td>
+                    <p-chip [label]="user.isActive ? 'Actif' : 'Désactivé'" [class]="user.isActive ? 'p-chip-success' : 'p-chip-danger'"></p-chip>
+                </td>
+                <td>
+                    <!-- Bouton pour modifier un utilisateur -->
+                    <button pButton type="button" icon="pi pi-pencil" label="Modifier" class="p-button-text" (click)="showModifyUserDialog(user)"></button>
+                    <!-- Bouton pour désactiver un utilisateur -->
+                    <button pButton type="button" icon="pi pi-trash" label="Désactiver" class="p-button-text p-button-danger" (click)="deactivateUser(user)"></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<!-- Dialog pour l'ajout d'utilisateur -->
+<p-dialog header="Ajouter un utilisateur" [(visible)]="displayAddUserDialog" [modal]="true" [style]="{ width: '500px' }">
+    <app-user-form (ngSubmit)="onAddUser()"></app-user-form>
+</p-dialog>
+
+<!-- Dialog pour la modification d'utilisateur -->
+<p-dialog header="Modifier un utilisateur" [(visible)]="displayModifyUserDialog" [modal]="true" [style]="{ width: '500px' }" >
+    <app-user-form [user]="selectedUser" (ngSubmit)="onModifyUser()"></app-user-form>
+</p-dialog>
