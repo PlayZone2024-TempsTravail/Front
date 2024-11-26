@@ -22,11 +22,9 @@
                 <th>Prénom</th>
                 <th>Email</th>
                 <th>Rôle</th>
-                <th>Heures Prestables</th>
                 <th>VA</th>
                 <th>VAEX</th>
                 <th>RC</th>
-                <th>Actif</th>
                 <th>Actions</th>
             </tr>
         </ng-template>
@@ -38,19 +36,13 @@
                 <td>{{ user.prenom }}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ getRoleName(user.role_Id) }}</td>
-                <td>{{ user.heures_annuelles_prestables }}</td>
                 <td>{{ user.VA }}</td>
                 <td>{{ user.VAEX }}</td>
                 <td>{{ user.RC }}</td>
                 <td>
-                    <p-chip [label]="user.isActive ? 'Actif' : 'Désactivé'" [class]="user.isActive ? 'p-chip-success' : 'p-chip-danger'"></p-chip>
-                </td>
-                <td>
                     <!-- Bouton pour modifier un utilisateur -->
-                    <button pButton type="button" icon="pi pi-pencil" label="Modifier" class="p-button-text" (click)="showModifyUserDialog(user)"></button>
-                    <!-- Bouton pour désactiver un utilisateur -->
-                    <button pButton type="button" icon="pi pi-trash" label="Désactiver" class="p-button-text p-button-danger" (click)="deactivateUser(user)"></button>
-                </td>
+                    <button pButton type="button" icon="pi pi-pencil" label="Modifier" class="p-button-text" (ngSubmit)="showModifyUserDialog(user)"></button>
+                 </td>
             </tr>
         </ng-template>
     </p-table>

@@ -1,26 +1,35 @@
 ﻿import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import {map, Observable} from 'rxjs';
 import { UserForm } from '../models/user.form.model';
+import {User} from '../models/user.model';
 
 @Injectable({
     providedIn: 'root',
 })
 
 export class UserService {
-    private apiUrl = 'https://blablabla.com/api/users'; // Remplace avec ton URL
+    private apiUrl = 'http://localhost:3000/users'; // TODO : changer avec la vraie API
 
     constructor(private _http: HttpClient) {}
 
-    // TODO : a faire avec les ifnos de l'API (pour le moment tout est en dur)
-
-    createUser(user: UserForm): Observable<any> {
-        return this._http.post(this.apiUrl, user);
+    getUsers(): Observable<User[]> {
+        return this._http.get<User[]>(this.apiUrl);
     }
 
-    /*
-    updateUser(id: number, user: UserForm): Observable<any> {
-        return this._http.put(`${this.apiUrl}/${id}`, user);
+    getUserById(id: number): Observable<User> {
+        return this._http.get<User>(this.apiUrl + id);
     }
-    */
+
+    addUser(user: UserForm): Observable<User> {
+        return this._http.post<User>(this.apiUrl, user);
+    }
+
+    updateUser(id: number, user: UserForm): Observable<User> {
+        return this._http.put<User>(this.apiUrl + id, user);
+    }
+
+    deleteUser(id: number): Observable<User> {
+        return this._http.delete<User>(this.apiUrl + id);
+    }
 }

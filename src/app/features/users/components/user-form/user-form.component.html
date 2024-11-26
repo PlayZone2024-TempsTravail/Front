@@ -1,5 +1,5 @@
 <!-- Formulaire pour ajouter ou modifier un utilisateur -->
-<form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="p-fluid">
+<form [formGroup]="userForm" (ngSubmit)="submit()" class="p-fluid">
     <div class="p-field">
         <label for="nom">Nom</label>
         <input id="nom" type="text" pInputText formControlName="nom" />
@@ -19,9 +19,12 @@
     <div class="p-field">
         <p-dropdown [options]="roles" optionLabel="label" formControlName="role_Id" placeholder="Sélectionnez un rôle" ></p-dropdown>
     </div>
-    <div class="p-field">
-        <label for="heures_annuelles_prestables">Heures annuelles prestables</label><input id="heures_annuelles_prestables" type="number"  pInputText formControlName="heures_annuelles_prestables" />
-    </div>
+    @if(user) {
+        <div class="p-field">
+            <p-dropdown [options]="statusOptions" optionLabel="label" formControlName="isActive" placeholder="Sélectionnez un statut"></p-dropdown>
+        </div>
+    }
+
     <!-- Bouton de soumission du formulaire -->
     <button pButton type="submit" [label]="user ? 'Modifier' : 'Ajouter'" icon="pi pi-check" [disabled]="userForm.invalid"></button>
 </form>
