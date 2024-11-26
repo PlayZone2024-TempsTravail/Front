@@ -6,7 +6,7 @@ import { CalendarComponent } from './features/time-tracking/components/calendar/
 
 const routes: Routes = [
     { path: '', redirectTo: '/pointage', pathMatch: 'full' },
-    { path: 'pointage', component: CalendarComponent, canActivate: [unauthenticatedGuard]},
+    { path: 'pointage', loadChildren: () => import('./features/time-tracking/time-tracking.module').then(m => m.TimeTrackingModule), canActivate: [unauthenticatedGuard]},
     { path: 'projet', loadChildren: () => import('./features/projects/projects.module').then(m => m.ProjectsModule), canActivate: [unauthenticatedGuard] },
     { path: 'equipe', loadChildren: () => import('./features/users/users.module').then(m => m.UsersModule), canActivate: [unauthenticatedGuard] },
     { path: 'configuration', loadChildren: () => import('./features/configuration/configuration.module').then(m => m.ConfigurationModule), canActivate: [unauthenticatedGuard] },

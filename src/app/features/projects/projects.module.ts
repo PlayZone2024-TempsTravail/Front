@@ -3,6 +3,14 @@ import { CommonModule } from '@angular/common';
 
 import { ProjectsRoutingModule } from './projects-routing.module';
 import { ProjectsComponent } from './components/projects.component';
+import {TableModule} from 'primeng/table';
+import {ChipModule} from 'primeng/chip';
+import {ButtonModule} from 'primeng/button';
+import {InputTextModule} from 'primeng/inputtext';
+import {CardModule} from 'primeng/card';
+import {ToastModule} from 'primeng/toast';
+import {DialogModule} from 'primeng/dialog';
+import {DropdownModule} from 'primeng/dropdown';
 
 
 @NgModule({
@@ -11,7 +19,18 @@ import { ProjectsComponent } from './components/projects.component';
   ],
   imports: [
     CommonModule,
-    ProjectsRoutingModule
+    ProjectsRoutingModule,
+
+
+      // PrimeNG
+      TableModule,
+      ChipModule,
+      ButtonModule,
+      InputTextModule,
+      CardModule,
+      ToastModule,
+      DialogModule,
+      DropdownModule,
   ]
 })
 export class ProjectsModule { }
