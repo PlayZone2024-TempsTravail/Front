@@ -70,7 +70,8 @@ export class AppointmentDialogComponent {
       }>;
     },
     private appointmentService: AppointmentService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private http: HttpClient
   ) {
     this.appointmentForm = this.formBuilder.group({
       WorkTime: [null, Validators.required], // Contrôle pour le dropdown
@@ -89,25 +90,66 @@ export class AppointmentDialogComponent {
     this.dialogRef.close();
   }
 
-  onSaveClick(): void {
-    const appointmentFormData = this.appointmentForm.value;
-    this.http.post(`http://localhost:3000/appointments`, appointmentFormData).subscribe((Response) => {
-      if (this.appointmentForm.valid) {
-        const startTime = this.forceHoursOnly(this.appointmentForm.controls['startTime'].value);
-        const endTime = this.forceHoursOnly(this.appointmentForm.controls['endTime'].value);
+  // onSaveClick(): void {
+  //   const appointmentFormData = this.appointmentForm.value;
+  //   this.http.post(`http://localhost:3000/appointments`, appointmentFormData).subscribe((Response) => {
+  //     if (this.appointmentForm.valid) {
+  //       const startTime = this.forceHoursOnly(this.appointmentForm.controls['startTime'].value);
+  //       const endTime = this.forceHoursOnly(this.appointmentForm.controls['endTime'].value);
     
-        const data = {
-          WorkTime: this.appointmentForm.controls['WorkTime'].value, 
-          date: this.appointmentForm.controls['date'].value,
-          startTime,
-          endTime,
-          uuid: this.data.uuid,
-          title: this.appointmentForm.controls['title'].value || '', 
-        };
-        this.dialogRef.close(data);
-      }
-    });
+  //       const data = {
+  //         WorkTime: this.appointmentForm.controls['WorkTime'].value, 
+  //         date: this.appointmentForm.controls['date'].value,
+  //         startTime,
+  //         endTime,
+  //         uuid: this.data.uuid,
+  //         title: this.appointmentForm.controls['title'].value || '', 
+  //       };
+  //       this.dialogRef.close(data);
+  //     }
+  //   });
+  // }
+
+  onSaveClick(): void {
+    if (!this.appointmentForm.valid) {
+      this.messageErreurEdit = 'Le formulaire contient des erreurs.';
+      return;
+    }
+  
+    const appointmentFormData = this.appointmentForm.value;
+  
+    this.http
+      .post<{ success: boolean; message: string }>(
+        `http://localhost:3000/appointments`,
+        appointmentFormData
+      )
+      .subscribe({
+        next: (response) => {
+          const startTime = this.forceHoursOnly(
+            this.appointmentForm.controls['startTime'].value
+          );
+          const endTime = this.forceHoursOnly(
+            this.appointmentForm.controls['endTime'].value
+          );
+  
+          const data = {
+            WorkTime: this.appointmentForm.controls['WorkTime'].value,
+            date: this.appointmentForm.controls['date'].value,
+            startTime,
+            endTime,
+            uuid: this.data.uuid,
+            title: this.appointmentForm.controls['title'].value || '',
+          };
+  
+          this.dialogRef.close(data);
+        },
+        error: (err) => {
+          this.messageErreurEdit = 'Erreur lors de la sauvegarde. Veuillez réessayer.';
+          console.error('Erreur :', err);
+        },
+      });
   }
+  
   
   private forceHoursOnly(time: string): string {
     const [hours] = time.split(':');
