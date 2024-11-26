@@ -21,7 +21,6 @@ export class UserFormComponent {
 
     // Déclaration du formulaire réactif
     userForm!: FormGroup;
-    userId: number;
 
     // Liste des rôles disponibles pour le dropdown du form
     roles = [
@@ -66,9 +65,61 @@ export class UserFormComponent {
                 });
             }
         });
+        }
+        this.userId = +this._ar.snapshot.params['id'];
+        this._userService.getUserById(1).subscribe({
+            next: (user: User) => {
+                //id_user: number;
+                //     role_Id: number;
+                //     isActive: boolean;
+                //     nom: string;
+                //     prenom: string;
+                //     email: string;
+                //     VA: number;
+                //     VAEX: number;
+                //     RC: number;
+                this.userForm.setValue({
+                    role_Id: user.role_Id,
+                    isActive: user.isActive,
+                    nom: user.nom,
+                    prenom: user.prenom,
+                    email: user.email,
+                    VA: user.VA,
+                    VAEX: user.VAEX,
+                    RC: user.RC
+                });
+            }
+        });
     }
 
     submit() {
+        if(this.userForm.invalid) {
+            return;
+        }
+            console.log('Le formulaire est valide');
+            const userData: UserForm = this.userForm.value;
+
+            if (this.user) {
+                console.log('Utilisateur modifié :', userData);
+                this._userService.updateUser(this.userId, userData).subscribe({
+                    next: (user: User) => {
+                        console.log('Utilisateur modifié avec succès :', user);
+                    },
+                    error: (err: HttpErrorResponse) => {
+                        console.error('Erreur lors de la modification de l\'utilisateur :', err.error);
+                    }
+                });
+            }
+        else {
+            console.log('Nouvel utilisateur ajouté :', userData);
+            this._userService.addUser(userData).subscribe({
+                next: (user: User) => {
+                    console.log('Utilisateur ajouté avec succès :', user);
+                },
+                error: (err: HttpErrorResponse) => {
+                    console.log(err.error);
+                }
+            })
         if(this.userForm.invalid) {
             return;
         }
@@ -97,6 +148,8 @@ export class UserFormComponent {
                 }
             })
         }
-
+        else {
+            console.log('Le formulaire est invalide');
+        }
     }
 }
