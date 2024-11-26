@@ -1,0 +1,103 @@
+<div class="dialog-content">
+  <h5 mat-dialog-title *ngIf="!data.uuid">Ajouter un horaire</h5>
+  <h5 mat-dialog-title *ngIf="data.uuid">Modifier l'horaire</h5>
+  <div [formGroup]="appointmentForm">
+    <div mat-dialog-content>
+
+      <!-- <mat-form-field class="form-field">
+        <mat-label>Titre</mat-label>
+        <input formControlName="title" matInput />
+      </mat-form-field> -->
+
+      <div class="dropdwon_appointment">
+          <p-dropdown 
+            [options]="WorkTime"
+            [formControl]="workTimeControl"
+            optionLabel="name"
+            [filter]="true"
+            filterBy="name"
+            [showClear]="true"
+            styleClass="pd-style"
+            placeholder="Catégorie"
+            (onChange)="onWorkTimeChange($event)">
+            <ng-template let-WorkTime pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                    <div>{{ WorkTime.name }}</div>
+                </div>
+            </ng-template>
+      </p-dropdown>
+
+        @if (appointmentForm.controls['WorkTime'].value?.name === 'VIEC') 
+        {
+          <p>test</p> <!-- TODO : Mettre un dropdown -->
+        }
+
+        <div>
+          <p class="error">
+            @if (!appointmentForm.controls['WorkTime'].value && appointmentForm.touched){
+              Veuillez sélectionner un projet.
+            }
+          </p>
+        </div>
+      </div>
+
+      <mat-form-field class="form-field">
+        <mat-label>Date</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="date" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field class="form-field">
+        <mat-label>Heure de début</mat-label>
+        <input matInput formControlName="startTime" type="time" [step]="3600" />
+      </mat-form-field>
+      
+      <mat-form-field class="form-field">
+        <mat-label>Heure de fin</mat-label>
+        <input matInput formControlName="endTime" type="time" [step]="3600" />
+      </mat-form-field>
+
+      <div *ngIf="appointmentForm.errors && appointmentForm.errors['timeRangeInvalid']"class="error">
+        L'heure de fin doit être définite après l'heure de début.
+      </div>
+
+      <div *ngIf="appointmentForm.errors && appointmentForm.errors['timeRangeConflict']" class="error">
+        Il est impossible d'avoir deux horaires qui se chevauchent sur la même case.
+      </div>
+
+      <div *ngIf="messageErreurEdit" class="error">
+        {{ messageErreurEdit }} 
+      </div>
+
+    </div>
+    <div mat-dialog-actions align="end">
+      <button
+        type="submit"
+        mat-flat-button
+        (click)="onSaveClick()"
+        [disabled]="!appointmentForm.valid || !appointmentForm.controls['WorkTime'].value"
+      >
+        <span *ngIf="data.uuid">Modifier l'horaire</span>
+        <span *ngIf="!data.uuid">Ajouter un horaire</span>
+      </button>
+    
+      <button
+        (click)="onDeleteClick()"
+        *ngIf="data.uuid"
+        style="margin-left: 10px"
+        mat-stroked-button
+      >
+        Supprimer
+      </button>
+      <button
+        style="margin-left: 10px"
+        mat-stroked-button
+        (click)="onNoClick()"
+      >
+        Fermer
+      </button>
+    </div>
+    
+  </div>
+</div>

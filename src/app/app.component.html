@@ -1,6 +1,10 @@
 <header>
     <app-header></app-header>
 </header>
+    
 <main>
+    <div class="container_btn">
+        <p-button label="{{ isLoggedIn ? 'déconnexion' : 'Connexion' }}" id="btn_login" (click)="handleAuthAction()"></p-button>
+    </div>
     <router-outlet></router-outlet>
 </main>

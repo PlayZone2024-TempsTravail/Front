@@ -1,16 +1,91 @@
 ﻿{
-    "Admin":[
+    "admin" : [
         {
-            "id_user": "1",
-            "role_Id": "1",
-            "email": "admin@email.com",
-            "password": "Password123!"
+            "id_user" : 1,
+            "id_role" : 1,
+            "token" : "",
+            "email": "admin@mail.com",
+            "password": "test1234"
         }
     ],
-    "Role":[
+    "role":[
         {
-            "id_role": "1",
-            "name": "Admin"
+            "id_role":"1",
+            "name":"Admin"
         }
-    ]
+    ],
+    "appointments": [
+    {
+        "uuid": "124",
+        "date": "2024-11-25T09:00:00Z",
+        "title": "Project Planning",
+        "startTime": "09:00",
+        "endTime": "15:00",
+        "color": "",
+        "WorkTime": {
+            "name": "VIEC",
+            "color": ""
+        }
+    },
+    {
+        "uuid": "125",
+        "date": "2024-11-25T14:00:00Z",
+        "title": "Client Meeting",
+        "startTime": "15:00",
+        "endTime": "15:00",
+        "color": "",
+        "WorkTime": {
+            "name": "RC",
+            "color": ""
+        }
+    },
+    {
+        "uuid": "126",
+        "date": "2024-11-26T11:30:00Z",
+        "title": "Team Sync-up",
+        "startTime": "12:00",
+        "endTime": "12:00",
+        "color": "",
+        "WorkTime": {
+            "name": "VA",
+            "color": ""
+        }
+    },
+    {
+        "uuid": "127",
+        "date": "2024-11-28T16:00:00Z",
+        "title": "HR Meeting",
+        "startTime": "17:00",
+        "endTime": "17:00",
+        "color": "",
+        "WorkTime": {
+            "name": "VAEX",
+            "color": ""
+        }
+    },
+    {
+        "uuid": "128",
+        "date": "2024-11-28T10:00:00Z",
+        "title": "Weekly Review",
+        "startTime": "11:00",
+        "endTime": "11:00",
+        "color": "",
+        "WorkTime": {
+            "name": "JF",
+            "color": ""
+        }
+    },
+    {
+        "uuid": "128",
+        "date": "2024-11-30T10:00:00Z",
+        "title": "Weekly Review",
+        "startTime": "11:00",
+        "endTime": "11:00",
+        "color": "",
+        "WorkTime": {
+            "name": "MA",
+            "color": ""
+        }
+    }
+]
 }
