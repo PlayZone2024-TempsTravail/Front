@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { AppointmentDialogComponent, WorkTime } from '../appointment-dialog/appointment-dialog.component';
-import { AppointmentService, Appointment } from '../../../services/services-calendar.service';
+import { AppointmentDialogComponent, WorkTimeCategory } from '../appointment-dialog/appointment-dialog.component';
+import { AppointmentService, Appointment, WorkTime } from '../../../services/services-calendar.service';
 
 export enum CalendarView {
   Month = 'month',
@@ -27,9 +27,11 @@ export class CalendarComponent {
   currentView: CalendarView = CalendarView.Month; 
   timeSlots: string[] = []; 
   weeks: Date[][] = []; 
+  workTime:WorkTime[]=[];
   public CalendarView = CalendarView;
 
   constructor(public dialog: MatDialog, private appointmentService: AppointmentService) { 
+    this.workTime=this.appointmentService.getWorkTimeList()
     this.appointmentService.getAppointments().subscribe({ 
       next: (appointments) => { 
         console.log('Appointments reçus:', appointments); 
@@ -37,11 +39,11 @@ export class CalendarComponent {
           this.appointments = appointments.map(appointment => ({ 
             ...appointment
           })); 
-            console.log('Mapped Appointments:', this.appointments);
-            console.log('Appointments chargé:', this.appointments); 
+            // console.log('Mapped Appointments:', this.appointments);
+            // console.log('Appointments chargé:', this.appointments); 
           } 
           else { 
-            console.error('ne recois rien'); 
+            console.error('Not found'); 
           } 
         }, 
         error: (error) => { 
@@ -249,7 +251,7 @@ export class CalendarComponent {
   addAppointment(
     date: Date,
     title: string,
-    WorkTime: WorkTime,
+    WorkTime: WorkTimeCategory,
     startTime: string,
     endTime: string,
   ): { timeRangeConflict: boolean } {
@@ -441,8 +443,17 @@ export class CalendarComponent {
     }, 0);
   }
 
-  getColor(workTimeName: string): string {
-    return this.appointmentService.getColor(workTimeName);
+  getColor(a:Appointment)
+  {
+      let color:string|undefined;
+      if(a.color?.length == 0)
+      {
+        color= this.workTime.find(mapping => mapping.name == a.WorkTime.name)?.color;
+        //console.log(color);
+      }
+      else{
+          color= a.WorkTime.color;
+      }
+      return color;
   }
-
 }

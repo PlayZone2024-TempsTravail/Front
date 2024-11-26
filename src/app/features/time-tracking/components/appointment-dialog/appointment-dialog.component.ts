@@ -16,11 +16,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { CommonModule } from '@angular/common';
 import { FormControl } from '@angular/forms';
+import { WorkTime, AppointmentService } from '../../../services/services-calendar.service';
+import { HttpClient } from '@angular/common/http';
 
 //PRIMENG
 import { DropdownModule } from 'primeng/dropdown';
 
-export interface WorkTime {
+export interface WorkTimeCategory {
   name: string;
   color: `#${string}`;
 }
@@ -47,7 +49,7 @@ export interface WorkTime {
 export class AppointmentDialogComponent {
   messageErreurEdit: string | null = null;
   appointmentForm: FormGroup;
-  WorkTime: WorkTime[] | undefined;
+  WorkTime: WorkTime[] = [];
   selectedWorkTime: any | undefined;
   constructor(
     public dialogRef: MatDialogRef<AppointmentDialogComponent>,
@@ -67,6 +69,7 @@ export class AppointmentDialogComponent {
         endTime: string;
       }>;
     },
+    private appointmentService: AppointmentService,
     private formBuilder: FormBuilder
   ) {
     this.appointmentForm = this.formBuilder.group({
@@ -76,7 +79,10 @@ export class AppointmentDialogComponent {
       endTime: [this.data.endTime || '', Validators.required],
       title: [''],
     }, { validators: this.timeRangeValidator });
-    
+  }
+
+  ngOnInit(): void {
+    this.WorkTime = this.appointmentService.getWorkTimeList();
   }
 
   onNoClick(): void {
@@ -84,20 +90,23 @@ export class AppointmentDialogComponent {
   }
 
   onSaveClick(): void {
-    if (this.appointmentForm.valid) {
-      const startTime = this.forceHoursOnly(this.appointmentForm.controls['startTime'].value);
-      const endTime = this.forceHoursOnly(this.appointmentForm.controls['endTime'].value);
-  
-      const data = {
-        WorkTime: this.appointmentForm.controls['WorkTime'].value, 
-        date: this.appointmentForm.controls['date'].value,
-        startTime,
-        endTime,
-        uuid: this.data.uuid,
-        title: this.appointmentForm.controls['title'].value || '', 
-      };
-      this.dialogRef.close(data);
-    }
+    const appointmentFormData = this.appointmentForm.value;
+    this.http.post(`http://localhost:3000/appointments`, appointmentFormData).subscribe((Response) => {
+      if (this.appointmentForm.valid) {
+        const startTime = this.forceHoursOnly(this.appointmentForm.controls['startTime'].value);
+        const endTime = this.forceHoursOnly(this.appointmentForm.controls['endTime'].value);
+    
+        const data = {
+          WorkTime: this.appointmentForm.controls['WorkTime'].value, 
+          date: this.appointmentForm.controls['date'].value,
+          startTime,
+          endTime,
+          uuid: this.data.uuid,
+          title: this.appointmentForm.controls['title'].value || '', 
+        };
+        this.dialogRef.close(data);
+      }
+    });
   }
   
   private forceHoursOnly(time: string): string {
@@ -149,7 +158,6 @@ export class AppointmentDialogComponent {
   
     return null;
   };
-
 
   onWorkTimeChange(event: any) {
     console.log('Selected WorkTime:', event.value);

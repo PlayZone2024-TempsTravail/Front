@@ -7,35 +7,5 @@ import { Component } from '@angular/core';
     styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-    links: Link[] = [
-        { title: 'Accueil', url: "/" },
-        { title: 'Pointage', url: "",
-            children: [
-                { title: 'Calendrier', url: '/pointage/calendrier' },
-                { title: 'Pointages employés', url: '/pointage/pointages-employes' },
-            ], isVisibile: false
-        },
-        { title: 'Projet', url: '/projet',
-            children: [
-                {title: 'Budget', url: '/projet/budget'},
-                {title: 'Rapport', url: '/projet/rapport'},
-                {title: 'Projet', url: '/projet/projet'},
-            ], isVisibile: false
-        },
-        {title: 'Gestion', url: '/gestion',
-            children: [
-                {title: 'Utilisateurs', url: '/gestion/utilisateurs'},
-                {title: 'Projets', url: '/gestion/projets'},
-            ], isVisibile: false
-        }
-    ];
 
-    toggleIsVisible(link: Link) {
-        for (let l of this.links) {
-            if (l !== link) {
-                l.isVisibile = false;
-            }
-        }
-        link.isVisibile = !link.isVisibile;
-    }
 }

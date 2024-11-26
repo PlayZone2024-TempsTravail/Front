@@ -37,18 +37,15 @@ export class AppointmentService {
     );
   }  
 
-  private workTimeList: WorkTime[] = [
-    { name: 'VIEC', color: '#FFDDC1' },
-    { name: 'RC', color: '#A7D3F1' },
-    { name: 'VA', color: '#C6EBCB' },
-    { name: 'VAEX', color: '#FBCFE8' },
-    { name: 'JF', color: '#F9C74F' },
-    { name: 'MA', color: '#D9B9FF' },
-    { name: 'CSS', color: '#F5B7B1' },
-  ];
-
-  getColor(name: string): string {
-    const workTime = this.workTimeList.find(wt => wt.name === name);
-    return workTime ? workTime.color : '#FFFFFF';
+  getWorkTimeList(): WorkTime[] {
+    return [
+      { name: 'VIEC', color: '#FFDDC1' },
+      { name: 'RC', color: '#A7D3F1' },
+      { name: 'VA', color: '#C6EBCB' },
+      { name: 'VAEX', color: '#FBCFE8' },
+      { name: 'JF', color: '#F9C74F' },
+      { name: 'MA', color: '#D9B9FF' },
+      { name: 'CSS', color: '#F5B7B1' },
+    ];
   }
 }
