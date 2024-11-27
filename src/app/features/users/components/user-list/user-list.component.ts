@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {User} from '../../models/user.model';
+import {UserDTO, UserForm} from '../../models/user.dto.model';
 import {ActivatedRoute} from '@angular/router';
-import {UserForm} from '../../models/user.form.model';
+import {UserService} from '../../services/user.service';
 
 @Component({
     selector: 'app-user-list',
@@ -10,60 +10,104 @@ import {UserForm} from '../../models/user.form.model';
 })
 export class UserListComponent implements OnInit {
 
-    // Utilisateur sélectionné pour modification
-    selectedUser: UserForm | null = null;
+    users: UserDTO[] = []; // Liste complète des utilisateurs
+    filteredUsers: UserDTO[] = [];
+    selectedUser: UserDTO | null = null;
+    displayForm: boolean = false;
+    searchQuery: string = '';
 
-    // Liste des utilisateurs
-    users: User[] = [];
-
-    // Options de rôles pour le filtrage
-    roles: any[] = [];
-
-    // Contrôle de l'affichage des dialogues
-    displayAddUserDialog: boolean = false;
-    displayModifyUserDialog: boolean = false;
-
-    constructor(private readonly route: ActivatedRoute) { }
+    constructor(private userService: UserService) {}
 
     ngOnInit(): void {
-        // On récup la liste des utilisateurs préchargée par le resolver
-        this.route.data.subscribe(data => {
-            this.users = data['users'];
+        this.refreshUsers();
+    }
+    refreshUsers() {
+        // Récupère la liste des utilisateurs depuis le service
+        this.userService.getUsers().subscribe((data) => {
+            this.users = data;
+            this.sortUsers();
+            this.filteredUsers = [...this.users];
         });
     }
 
-    // Méthode pour obtenir le nom du rôle à parrit de l'id -> pour la liste des utilisateurs
-    getRoleName(roleId: number): string {
-        switch (roleId) {
-            case 1:
-                return 'Admin';
-            case 2:
-                return 'Employé';
-            case 3:
-                return 'Chargé de mission';
-            default:
-                return 'Inconnu';
+    // Filtre les utilisateurs selon le champ de recherche
+    sortUsers() {
+        // Trie les utilisateurs actifs en premier
+        this.users.sort((a, b) => Number(b.isActive) - Number(a.isActive));
+    }
+
+    // Ouvre la boîte de dialogue pour ajouter un utilisateur
+    openAddUserForm() {
+        // Ouvre le formulaire pour ajouter un utilisateur
+        this.selectedUser = null;
+        this.displayForm = true;
+    }
+
+    // Ouvre la boîte de dialogue pour modifier un utilisateur sélectionné
+    openEditUserForm(user: UserDTO) {
+        // Ouvre le formulaire pour modifier un utilisateur
+        this.selectedUser = user;
+        this.displayForm = true;
+    }
+
+    // Méthode de submti du form
+    onFormSubmit(userForm: any) {
+        if (this.selectedUser) {
+            // Mise à jour de l'utilisateur existant
+            this.userService.updateUser(this.selectedUser.idUser, userForm).subscribe(() => {
+                this.displayForm = false;
+                this.refreshUsers();
+            });
+        } else {
+            // Ajout d'un nouvel utilisateur
+            this.userService.addUser(userForm).subscribe(() => {
+                this.displayForm = false;
+                this.refreshUsers();
+            });
         }
     }
 
-    // Afficher la boîte de dialogue pour ajouter un utilisateur
-    showAddUserDialog() {
-        this.displayAddUserDialog = true;
+    // Désactive un utilisateur ( pas de suppression)
+    deactivateUser(user: UserDTO) {
+        // Désactive un utilisateur en mettant 'isActive' à false
+        this.userService.deactivateUser(user.idUser).subscribe(() => {
+            this.refreshUsers();
+        });
     }
 
-    // Afficher la boîte de dialogue pour modifier un utilisateur sélectionné
-    showModifyUserDialog(user: User) {
-        this.selectedUser = user;
-        this.displayModifyUserDialog = true;
+    // Filtre les utilisateurs en fonction du filtre sélectionné
+    filterUsers(filter: string) {
+        // Filtre les utilisateurs en fonction du filtre sélectionné
+        switch (filter) {
+            case 'Employé':
+            case 'Admin':
+                this.filteredUsers = this.users.filter((u) =>
+                    u.roles.some((role) => role.name === filter)
+                );
+                break;
+            case 'Actifs':
+                this.filteredUsers = this.users.filter((u) => u.isActive);
+                break;
+            case 'Inactifs':
+                this.filteredUsers = this.users.filter((u) => !u.isActive);
+                break;
+            default:
+                this.filteredUsers = [...this.users];
+        }
     }
 
-    // Fonction appelée lors de l'ajout d'un utilisateur
-    onAddUser() {
-        this.displayAddUserDialog = false;
+    // Recherche intelligente parmi les utilisateurs
+    searchUsers() {
+        // Recherche intelligente parmi les utilisateurs
+        this.filteredUsers = this.users.filter((u) =>
+            `${u.nom} ${u.prenom} ${u.email}`.toLowerCase().includes(this.searchQuery.toLowerCase())
+        );
     }
 
-    // Fonction appelée lors de la modification d'un utilisateur
-    onModifyUser() {
-        this.displayModifyUserDialog = false;
+    // Permet l'ouverture/fermeture de la pop up de formulaire
+    onDialogHide() {
+        // Réinitialiser le formulaire et l'utilisateur sélectionné lorsque le dialogue est fermé
+        this.selectedUser = null;
+        this.displayForm = false;
     }
 }

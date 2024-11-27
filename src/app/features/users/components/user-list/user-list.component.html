@@ -1,59 +1,83 @@
-<div class="user-list-container">
-    <!-- Conteneur pour les boutons ajouter et Modifier -->
-    <div class="actions-header">
-        <button pButton type="button" label="Ajouter" icon="pi pi-plus" class="p-button-success" (click)="showAddUserDialog()"></button>
-    </div>
+<!-- users/components/user-list/user-list.component.html -->
 
-    <!-- TODO: rendre fonctionnel barre de recherche et de filtrage -->
-    <div class="search-filter-container">
-        <span class="p-input-icon-left">
-          <i class="pi pi-search"></i>
-          <input pInputText type="text" placeholder="Rechercher..."/>
-        </span>
-        <p-dropdown [options]="roles" placeholder="Filtrer par rôle" optionLabel="label"></p-dropdown>
+<div class="user-list-container">
+    <!-- En-tête avec boutons d'action -->
+    <div class="header">
+        <div >
+            <button pButton label="Ajouter" class="add-btn" icon="pi pi-plus" (click)="openAddUserForm()"></button>
+        </div>
+        <div>
+            <input class="search-btn"
+                pInputText
+                type="text"
+                placeholder="Rechercher..."
+                [(ngModel)]="searchQuery"
+                (input)="searchUsers()"
+            />
+            <p-dropdown
+                [options]="[
+          { label: 'Tous', value: null },
+          { label: 'Employés', value: 'Employé' },
+          { label: 'Admins', value: 'Admin' },
+          { label: 'Actifs', value: 'Actifs' },
+          { label: 'Inactifs', value: 'Inactifs' }
+        ]"
+                placeholder="Filtrer"
+                (onChange)="filterUsers($event.value)"
+            ></p-dropdown>
+        </div>
     </div>
 
     <!-- Tableau des utilisateurs -->
-    <p-table [value]="users" [paginator]="true" [rows]="10" [tableStyle]="{ 'min-width': '50rem' }" #dt>
-        <!-- En-tête du tableau -->
+    <p-table [value]="filteredUsers" [paginator]="true" [rows]="8" [tableStyle]="{ 'min-width': '50rem' }">
         <ng-template pTemplate="header">
             <tr>
                 <th>Nom</th>
                 <th>Prénom</th>
                 <th>Email</th>
-                <th>Rôle</th>
-                <th>VA</th>
-                <th>VAEX</th>
-                <th>RC</th>
-                <th>Actions</th>
+                <th>Rôles</th>
+                <th>Statut</th>
+                <th>Action</th>
             </tr>
         </ng-template>
-
-        <!-- Corps du tableau -->
         <ng-template pTemplate="body" let-user>
             <tr>
                 <td>{{ user.nom }}</td>
                 <td>{{ user.prenom }}</td>
                 <td>{{ user.email }}</td>
-                <td>{{ getRoleName(user.role_Id) }}</td>
-                <td>{{ user.VA }}</td>
-                <td>{{ user.VAEX }}</td>
-                <td>{{ user.RC }}</td>
+                <td class="roles">
+                    <ng-container *ngFor="let role of user.roles">
+                        <p-chip label="{{ role.name }}"></p-chip>
+                    </ng-container>
+                </td>
                 <td>
-                    <!-- Bouton pour modifier un utilisateur -->
-                    <button pButton type="button" icon="pi pi-pencil" label="Modifier" class="p-button-text" (ngSubmit)="showModifyUserDialog(user)"></button>
-                 </td>
+                    <p-chip
+                        [label]="user.isActive ? 'Actif' : 'Inactif'">
+                    </p-chip>
+                </td>
+                <td>
+                    <button class="modify-btn"
+                        pButton
+                        icon="pi pi-pencil"
+                            label="Modifier"
+                        (click)="openEditUserForm(user)"
+                    ></button>
+                </td>
             </tr>
         </ng-template>
     </p-table>
 </div>
 
-<!-- Dialog pour l'ajout d'utilisateur -->
-<p-dialog header="Ajouter un utilisateur" [(visible)]="displayAddUserDialog" [modal]="true" [style]="{ width: '500px' }">
-    <app-user-form (ngSubmit)="onAddUser()"></app-user-form>
-</p-dialog>
-
-<!-- Dialog pour la modification d'utilisateur -->
-<p-dialog header="Modifier un utilisateur" [(visible)]="displayModifyUserDialog" [modal]="true" [style]="{ width: '500px' }" >
-    <app-user-form [user]="selectedUser" (ngSubmit)="onModifyUser()"></app-user-form>
+<!-- Dialogue pour le formulaire d'ajout/modification -->
+<p-dialog header="{{ selectedUser ? 'Modifier Utilisateur' : 'Ajouter Utilisateur' }}"
+    [(visible)]="displayForm"
+    [modal]="true"
+    [closable]="true"
+    [resizable]="false"
+    (onHide)="onDialogHide()"
+>
+    <app-user-form
+        [userData]="selectedUser"
+        (formSubmit)="onFormSubmit($event)"
+    ></app-user-form>
 </p-dialog>

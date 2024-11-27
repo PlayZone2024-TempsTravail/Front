@@ -1,91 +1,431 @@
-﻿{
-    "admin" : [
+{
+  "users": [
+    {
+      "idUser": 1,
+      "nom": "Admin",
+      "prenom": "Admin",
+      "email": "admin@gmail.com",
+      "password": "admin1234",
+      "isActive": true,
+      "roles": [
         {
-            "id_user" : 1,
-            "id_role" : 1,
-            "token" : "",
-            "email": "admin@mail.com",
-            "password": "test1234"
+          "idRole": 1,
+          "name": "Admin"
         }
-    ],
-    "role":[
+      ],
+      "historique": [
         {
-            "id_role":"1",
-            "name":"Admin"
+          "date": "2021-01-01",
+          "salaire": 60000,
+          "regime": 100
         }
-    ],
-    "appointments": [
-    {
-        "uuid": "124",
-        "date": "2024-11-25T09:00:00Z",
-        "title": "Project Planning",
-        "startTime": "09:00",
-        "endTime": "15:00",
-        "color": "",
-        "WorkTime": {
-            "name": "VIEC",
-            "color": ""
-        }
+      ]
     },
     {
-        "uuid": "125",
-        "date": "2024-11-25T14:00:00Z",
-        "title": "Client Meeting",
-        "startTime": "15:00",
-        "endTime": "15:00",
-        "color": "",
-        "WorkTime": {
-            "name": "RC",
-            "color": ""
+      "idUser": 2,
+      "nom": "Dupont",
+      "prenom": "Jean",
+      "email": "jean.dupont@example.com",
+      "password": "password1",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 2,
+          "name": "Employé"
         }
+      ],
+      "historique": [
+        {
+          "date": "2022-02-01",
+          "salaire": 40000,
+          "regime": 80
+        },
+        {
+          "date": "2023-01-01",
+          "salaire": 42000,
+          "regime": 80
+        }
+      ]
     },
     {
-        "uuid": "126",
-        "date": "2024-11-26T11:30:00Z",
-        "title": "Team Sync-up",
-        "startTime": "12:00",
-        "endTime": "12:00",
-        "color": "",
-        "WorkTime": {
-            "name": "VA",
-            "color": ""
+      "idUser": 3,
+      "nom": "Martin",
+      "prenom": "Marie",
+      "email": "marie.martin@example.com",
+      "password": "password2",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 2,
+          "name": "Employé"
         }
+      ],
+      "historique": [
+        {
+          "date": "2021-05-15",
+          "salaire": 38000,
+          "regime": 100
+        }
+      ]
     },
     {
-        "uuid": "127",
-        "date": "2024-11-28T16:00:00Z",
-        "title": "HR Meeting",
-        "startTime": "17:00",
-        "endTime": "17:00",
-        "color": "",
-        "WorkTime": {
-            "name": "VAEX",
-            "color": ""
+      "idUser": 4,
+      "nom": "Durand",
+      "prenom": "Luc",
+      "email": "luc.durand@example.com",
+      "password": "password3",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 2,
+          "name": "Employé"
         }
+      ],
+      "historique": [
+        {
+          "date": "2020-03-20",
+          "salaire": 45000,
+          "regime": 90
+        }
+      ]
     },
     {
-        "uuid": "128",
-        "date": "2024-11-28T10:00:00Z",
-        "title": "Weekly Review",
-        "startTime": "11:00",
-        "endTime": "11:00",
-        "color": "",
-        "WorkTime": {
-            "name": "JF",
-            "color": ""
+      "idUser": 5,
+      "nom": "Petit",
+      "prenom": "Emma",
+      "email": "emma.petit@example.com",
+      "password": "password4",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 2,
+          "name": "Employé"
+        },
+        {
+          "idRole": 1,
+          "name": "Admin"
         }
+      ],
+      "historique": [
+        {
+          "date": "2022-07-01",
+          "salaire": 50000,
+          "regime": 100
+        }
+      ]
     },
     {
-        "uuid": "128",
-        "date": "2024-11-30T10:00:00Z",
-        "title": "Weekly Review",
-        "startTime": "11:00",
-        "endTime": "11:00",
-        "color": "",
-        "WorkTime": {
-            "name": "MA",
-            "color": ""
+      "idUser": 6,
+      "nom": "Moreau",
+      "prenom": "Hugo",
+      "email": "hugo.moreau@example.com",
+      "password": "password5",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 2,
+          "name": "Employé"
         }
+      ],
+      "historique": [
+        {
+          "date": "2021-09-01",
+          "salaire": 37000,
+          "regime": 75
+        }
+      ]
+    },
+    {
+      "idUser": 7,
+      "nom": "Lefevre",
+      "prenom": "Chloé",
+      "email": "chloe.lefevre@example.com",
+      "password": "password6",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 2,
+          "name": "Employé"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2020-12-01",
+          "salaire": 42000,
+          "regime": 100
+        }
+      ]
+    },
+    {
+      "idUser": 8,
+      "nom": "Garnier",
+      "prenom": "Thomas",
+      "email": "thomas.garnier@example.com",
+      "password": "password7",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 2,
+          "name": "Employé"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2019-06-15",
+          "salaire": 39000,
+          "regime": 80
+        }
+      ]
+    },
+    {
+      "idUser": 9,
+      "nom": "Roux",
+      "prenom": "Laura",
+      "email": "laura.roux@example.com",
+      "password": "password8",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 2,
+          "name": "Employé"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2022-11-01",
+          "salaire": 41000,
+          "regime": 100
+        }
+      ]
+    },
+    {
+      "idUser": 10,
+      "nom": "Blanc",
+      "prenom": "Lucas",
+      "email": "lucas.blanc@example.com",
+      "password": "password9",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 1,
+          "name": "Admin"
+        },
+        {
+          "idRole": 2,
+          "name": "Employé"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2020-04-01",
+          "salaire": 55000,
+          "regime": 100
+        }
+      ]
+    },
+    {
+      "idUser": 11,
+      "nom": "Fournier",
+      "prenom": "Léa",
+      "email": "lea.fournier@example.com",
+      "password": "password10",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 2,
+          "name": "Employé"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2021-08-01",
+          "salaire": 38000,
+          "regime": 90
+        }
+      ]
+    },
+    {
+      "idUser": 12,
+      "nom": "Girard",
+      "prenom": "Nathan",
+      "email": "nathan.girard@example.com",
+      "password": "password11",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 2,
+          "name": "Employé"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2018-03-01",
+          "salaire": 36000,
+          "regime": 100
+        }
+      ]
+    },
+    {
+      "idUser": 13,
+      "nom": "Bonnet",
+      "prenom": "Sarah",
+      "email": "sarah.bonnet@example.com",
+      "password": "password12",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 1,
+          "name": "Admin"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2019-09-01",
+          "salaire": 58000,
+          "regime": 100
+        }
+      ]
+    },
+    {
+      "idUser": 14,
+      "nom": "Dupuy",
+      "prenom": "Maxime",
+      "email": "maxime.dupuy@example.com",
+      "password": "password13",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 2,
+          "name": "Employé"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2021-05-01",
+          "salaire": 39000,
+          "regime": 85
+        }
+      ]
+    },
+    {
+      "idUser": 15,
+      "nom": "Lefevre",
+      "prenom": "Paul",
+      "email": "paul.lefevre@example.com",
+      "password": "password14",
+      "isActive": false,
+      "roles": [
+        {
+          "idRole": 2,
+          "name": "Employé"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2020-05-01",
+          "salaire": 35000,
+          "regime": 60
+        }
+      ]
     }
-]
+  ],
+  "roles": [
+    {
+      "idRole": 1,
+      "name": "Admin"
+    },
+    {
+      "idRole": 2,
+      "name": "Employé"
+    }
+  ],
+  "admin": [
+    {
+      "id_user": 1,
+      "id_role": 1,
+      "token": "",
+      "email": "admin@mail.com",
+      "password": "test1234"
+    }
+  ],
+  "role": [
+    {
+      "id_role": "1",
+      "name": "Admin"
+    }
+  ],
+  "appointments": [
+    {
+      "uuid": "124",
+      "date": "2024-11-25T09:00:00Z",
+      "title": "Project Planning",
+      "startTime": "09:00",
+      "endTime": "15:00",
+      "color": "",
+      "WorkTime": {
+        "name": "VIEC",
+        "color": ""
+      }
+    },
+    {
+      "uuid": "125",
+      "date": "2024-11-25T14:00:00Z",
+      "title": "Client Meeting",
+      "startTime": "15:00",
+      "endTime": "15:00",
+      "color": "",
+      "WorkTime": {
+        "name": "RC",
+        "color": ""
+      }
+    },
+    {
+      "uuid": "126",
+      "date": "2024-11-26T11:30:00Z",
+      "title": "Team Sync-up",
+      "startTime": "12:00",
+      "endTime": "12:00",
+      "color": "",
+      "WorkTime": {
+        "name": "VA",
+        "color": ""
+      }
+    },
+    {
+      "uuid": "127",
+      "date": "2024-11-28T16:00:00Z",
+      "title": "HR Meeting",
+      "startTime": "17:00",
+      "endTime": "17:00",
+      "color": "",
+      "WorkTime": {
+        "name": "VAEX",
+        "color": ""
+      }
+    },
+    {
+      "uuid": "128",
+      "date": "2024-11-28T10:00:00Z",
+      "title": "Weekly Review",
+      "startTime": "11:00",
+      "endTime": "11:00",
+      "color": "",
+      "WorkTime": {
+        "name": "JF",
+        "color": ""
+      }
+    },
+    {
+      "uuid": "128",
+      "date": "2024-11-30T10:00:00Z",
+      "title": "Weekly Review",
+      "startTime": "11:00",
+      "endTime": "11:00",
+      "color": "",
+      "WorkTime": {
+        "name": "MA",
+        "color": ""
+      }
+    }
+  ]
 }
