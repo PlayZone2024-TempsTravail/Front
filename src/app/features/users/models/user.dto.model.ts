@@ -1,6 +1,6 @@
 ﻿// modèle des infos à récupérer d'un utilisateur
 export interface UserDTO {
-    idUser: number;
+    id: number;
     nom: string;
     prenom: string;
     email: string;

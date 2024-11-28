@@ -69,12 +69,12 @@
 </div>
 
 <!-- Dialogue pour le formulaire d'ajout/modification -->
-<p-dialog header="{{ selectedUser ? 'Modifier Utilisateur' : 'Ajouter Utilisateur' }}"
-    [(visible)]="displayForm"
-    [modal]="true"
-    [closable]="true"
-    [resizable]="false"
-    (onHide)="onDialogHide()"
+<p-dialog  header="{{ selectedUser ? 'Modifier Utilisateur' : 'Ajouter Utilisateur' }}"
+           [(visible)]="displayForm"
+           [modal]="true"
+           [closable]="true"
+           [resizable]="false"
+           (onHide)="onDialogHide()"
 >
     <app-user-form
         [userData]="selectedUser"

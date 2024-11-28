@@ -28,13 +28,11 @@ export class UserService {
 
     // Méthode pour ajouter un nouvel utilisateur
     addUser(userForm: UserForm): Observable<UserDTO> {
-        // Création de l'objet utilisateur à partir du formulaire
-        const newUserDTO: UserDTO = {
-            idUser: 0, // L'ID sera généré par le backend
+        const newUserDTO: Omit<UserDTO, 'idUser'> = {
             nom: userForm.nom,
             prenom: userForm.prenom,
             email: userForm.email,
-            isActive: true,
+            isActive: userForm.isActive !== undefined ? userForm.isActive : true,
             roles: userForm.roles.map((roleId) => ({
                 idRole: roleId,
                 name: this.getRoleNameById(roleId),
@@ -47,51 +45,102 @@ export class UserService {
                 },
             ],
         };
-
-        // Requête HTTP POST pour ajouter le nouvel utilisateur
         return this._http.post<UserDTO>(`${this.apiUrl}/users`, newUserDTO);
+        // const newUserDTO: UserDTO = {
+        //     idUser: 0, // L'ID sera généré par le backend
+        //     nom: userForm.nom,
+        //     prenom: userForm.prenom,
+        //     email: userForm.email,
+        //     isActive: true,
+        //     roles: userForm.roles.map((roleId) => ({
+        //         idRole: roleId,
+        //         name: this.getRoleNameById(roleId),
+        //     })),
+        //     historique: [
+        //         {
+        //             date: userForm.date,
+        //             salaire: userForm.salaire,
+        //             regime: userForm.regime,
+        //         },
+        //     ],
+        // };
+        // return this._http.post<UserDTO>(`${this.apiUrl}/users`, newUserDTO);
     }
 
     // Méthode pour mettre à jour un utilisateur existant
     updateUser(id: number, userForm: UserForm): Observable<UserDTO> {
-        // Récupérer l'utilisateur existant avec getUserById pour  obtenir les informations actuelles de l'utilisateur
-        // TODO doc pipe
-        return this.getUserById(id).pipe(
-            //switchMap permet de prendre le résultat d'un Observable (getUserById(id)) et de le transformer en un nouvel Observable (this._http.put(...)).
-            // nécessaire car on utilise une opération asynchrone (récupérer l'utilisateur) avant d'en effectuer une autre (mettre à jour l'utilisateur).
-            switchMap((existingUser: UserDTO) => {
-                // Créer une nouvelle entrée d'historique avec les données du formulaire
-                const newHistoriqueEntry: HistoriqueEntry = {
-                    date: userForm.date,
-                    salaire: userForm.salaire,
-                    regime: userForm.regime,
-                };
+        // // Récupérer l'utilisateur existant avec getUserById pour  obtenir les informations actuelles de l'utilisateur
+        // // le pipe permet de chaîner les opérations
+        // return this.getUserById(id).pipe(
+        //     //switchMap permet de prendre le résultat d'un Observable (getUserById(id)) et de le transformer en un nouvel Observable (this._http.put(...)).
+        //     // nécessaire car on utilise une opération asynchrone (récupérer l'utilisateur) avant d'en effectuer une autre (mettre à jour l'utilisateur).
+        //     switchMap((existingUser: UserDTO) => {
+        //         // Créer une nouvelle entrée d'historique avec les données du formulaire
+        //         const newHistoriqueEntry: HistoriqueEntry = {
+        //             date: userForm.date,
+        //             salaire: userForm.salaire,
+        //             regime: userForm.regime,
+        //         };
+        //
+        //         // Combiner l'historique existant avec la nouvelle entrée récupérée du formulaire
+        //         const updatedHistorique = [
+        //             // opérateur de décomposition ... pour créer un nouveau tableau qui contient toutes les entrées de l'historique existant + la nouvelle entrée
+        //             ...existingUser.historique, // Historique existant
+        //             newHistoriqueEntry, // nouvelle entrée
+        //         ];
+        //
+        //         // Construire l'objet utilisateur mis à jour
+        //         // Partial indique que toutes les propriétés sont optionnelles. On ne met pas à jour toutes les propriétés, seulement certaines
+        //         const updatedUser: Partial<UserDTO> = {
+        //             nom: userForm.nom,
+        //             prenom: userForm.prenom,
+        //             email: userForm.email,
+        //             roles: userForm.roles.map((roleId) => ({ // le map ici permet de transformer les idRole en objets Role
+        //                 idRole: roleId,
+        //                 name: this.getRoleNameById(roleId), // appel de la méthode pour obtenir le nom du rôle
+        //             })),
+        //             historique: updatedHistorique,
+        //             isActive: userForm.isActive !== undefined ? userForm.isActive : existingUser.isActive,
+        //         };
+        //
+        //         // Envoyer la requête PUT pour mettre à jour l'utilisateur
+        //         return this._http.put<UserDTO>(`${this.apiUrl}/users/${id}`, updatedUser);
+        //     })
+        // );
+            return this.getUserById(id).pipe(
+                switchMap((existingUser: UserDTO) => {
+                    const newHistoriqueEntry: HistoriqueEntry = {
+                        date: userForm.date,
+                        salaire: userForm.salaire,
+                        regime: userForm.regime,
+                    };
 
-                // Combiner l'historique existant avec la nouvelle entrée récupérée du formulaire
-                const updatedHistorique = [
-                    // opérateur de décomposition ... pour créer un nouveau tableau qui contient toutes les entrées de l'historique existant + la nouvelle entrée
-                    ...existingUser.historique, // Historique existant
-                    newHistoriqueEntry, // nouvelle entrée
-                ];
+                    const updatedHistorique = [
+                        ...existingUser.historique,
+                        newHistoriqueEntry,
+                    ];
 
-                // Construire l'objet utilisateur mis à jour
-                // Partial indique que toutes les propriétés sont optionnelles. On ne met pas à jour toutes les propriétés, seulement certaines
-                const updatedUser: Partial<UserDTO> = {
-                    nom: userForm.nom,
-                    prenom: userForm.prenom,
-                    email: userForm.email,
-                    roles: userForm.roles.map((roleId) => ({
-                        idRole: roleId,
-                        name: this.getRoleNameById(roleId),
-                    })),
-                    historique: updatedHistorique,
-                    isActive: userForm.isActive !== undefined ? userForm.isActive : existingUser.isActive,
-                };
+                    const updatedUser: UserDTO = {
+                        idUser: existingUser.idUser,
+                        nom: userForm.nom,
+                        prenom: userForm.prenom,
+                        email: userForm.email,
+                        isActive: userForm.isActive !== undefined ? userForm.isActive : existingUser.isActive,
+                        roles: userForm.roles.map((roleId) => ({
+                            idRole: roleId,
+                            name: this.getRoleNameById(roleId),
+                        })),
+                        historique: updatedHistorique,
+                    };
 
-                // Envoyer la requête PUT pour mettre à jour l'utilisateur
-                return this._http.put<UserDTO>(`${this.apiUrl}/users/${id}`, updatedUser);
-            })
-        );
+                    console.log('Mise à jour de l\'utilisateur avec les données :', updatedUser);
+
+                    return this._http.put<UserDTO>(`${this.apiUrl}/users/${id}`, updatedUser);
+                })
+            );
+
+
+
     }
 
     // Méthode pour désactiver un utilisateur (mettre 'isActive' à false)
@@ -120,20 +169,3 @@ export class UserService {
         return role ? role.name : '';
     }
 }
-
-
-// getUserDTOById(id: number): Observable<UserDTO> {
-//     return this._http.get<UserDTO>(this.apiUrl + id);
-// }
-//
-// addUserDTO(user: UserForm): Observable<UserDTO> {
-//     return this._http.post<UserDTO>(this.apiUrl, user);
-// }
-//
-// updateUserDTO(id: number, user: UserForm): Observable<UserDTO> {
-//     return this._http.put<UserDTO>(this.apiUrl + id, user);
-// }
-//
-// deleteUserDTO(id: number): Observable<UserDTO> {
-//     return this._http.delete<UserDTO>(this.apiUrl + id);
-// }

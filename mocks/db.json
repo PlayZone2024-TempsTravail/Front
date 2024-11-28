@@ -1,7 +1,7 @@
 {
   "users": [
     {
-      "idUser": 1,
+      "id": 1,
       "nom": "Admin",
       "prenom": "Admin",
       "email": "admin@gmail.com",
@@ -22,7 +22,7 @@
       ]
     },
     {
-      "idUser": 2,
+      "id": 2,
       "nom": "Dupont",
       "prenom": "Jean",
       "email": "jean.dupont@example.com",
@@ -48,7 +48,7 @@
       ]
     },
     {
-      "idUser": 3,
+      "id": 3,
       "nom": "Martin",
       "prenom": "Marie",
       "email": "marie.martin@example.com",
@@ -69,7 +69,7 @@
       ]
     },
     {
-      "idUser": 4,
+      "id": 4,
       "nom": "Durand",
       "prenom": "Luc",
       "email": "luc.durand@example.com",
@@ -90,7 +90,7 @@
       ]
     },
     {
-      "idUser": 5,
+      "id": 5,
       "nom": "Petit",
       "prenom": "Emma",
       "email": "emma.petit@example.com",
@@ -115,7 +115,7 @@
       ]
     },
     {
-      "idUser": 6,
+      "id": 6,
       "nom": "Moreau",
       "prenom": "Hugo",
       "email": "hugo.moreau@example.com",
@@ -136,7 +136,7 @@
       ]
     },
     {
-      "idUser": 7,
+      "id": 7,
       "nom": "Lefevre",
       "prenom": "Chloé",
       "email": "chloe.lefevre@example.com",
@@ -157,7 +157,7 @@
       ]
     },
     {
-      "idUser": 8,
+      "id": 8,
       "nom": "Garnier",
       "prenom": "Thomas",
       "email": "thomas.garnier@example.com",
@@ -178,7 +178,7 @@
       ]
     },
     {
-      "idUser": 9,
+      "id": 9,
       "nom": "Roux",
       "prenom": "Laura",
       "email": "laura.roux@example.com",
@@ -199,7 +199,7 @@
       ]
     },
     {
-      "idUser": 10,
+      "id": 10,
       "nom": "Blanc",
       "prenom": "Lucas",
       "email": "lucas.blanc@example.com",
@@ -224,7 +224,7 @@
       ]
     },
     {
-      "idUser": 11,
+      "id": 11,
       "nom": "Fournier",
       "prenom": "Léa",
       "email": "lea.fournier@example.com",
@@ -245,7 +245,7 @@
       ]
     },
     {
-      "idUser": 12,
+      "id": 12,
       "nom": "Girard",
       "prenom": "Nathan",
       "email": "nathan.girard@example.com",
@@ -266,7 +266,7 @@
       ]
     },
     {
-      "idUser": 13,
+      "id": 13,
       "nom": "Bonnet",
       "prenom": "Sarah",
       "email": "sarah.bonnet@example.com",
@@ -287,7 +287,7 @@
       ]
     },
     {
-      "idUser": 14,
+      "id": 14,
       "nom": "Dupuy",
       "prenom": "Maxime",
       "email": "maxime.dupuy@example.com",
@@ -308,7 +308,7 @@
       ]
     },
     {
-      "idUser": 15,
+      "id": 15,
       "nom": "Lefevre",
       "prenom": "Paul",
       "email": "paul.lefevre@example.com",
@@ -327,6 +327,223 @@
           "regime": 60
         }
       ]
+    },
+    {
+      "nom": "test1",
+      "prenom": "test1",
+      "email": "test1@gmail.com",
+      "roles": [
+        {
+          "idRole": 2,
+          "name": "Employé"
+        }
+      ],
+      "salaire": 30000000000,
+      "regime": 90,
+      "date": "2024-11-28T23:00:00.000Z",
+      "isActive": true,
+      "id": 16
+    },
+    {
+      "nom": "test2",
+      "prenom": "test2",
+      "email": "test2@gmail.com",
+      "roles": [
+        {
+          "idRole": 1,
+          "name": "Admin"
+        }
+      ],
+      "salaire": 30000,
+      "regime": 60,
+      "date": "2024-11-28T23:00:00.000Z",
+      "isActive": true,
+      "id": 17
+    },
+    {
+      "nom": "testest",
+      "prenom": "testest",
+      "email": "testest@gmail.Com",
+      "roles": [
+        {
+          "idRole": 1,
+          "name": "Admin"
+        }
+      ],
+      "salaire": 2000,
+      "regime": 20,
+      "date": "2024-11-28T23:00:00.000Z",
+      "isActive": true,
+      "id": 18
+    },
+    {
+      "nom": "testest",
+      "prenom": "testest",
+      "email": "testest@gmail.Com",
+      "roles": [
+        {
+          "idRole": 1,
+          "name": "Admin"
+        }
+      ],
+      "salaire": 2000,
+      "regime": 20,
+      "date": "2024-11-28T23:00:00.000Z",
+      "isActive": true,
+      "id": 19
+    },
+    {
+      "nom": "test3",
+      "prenom": "test3",
+      "email": "eva.maudoux@gmail.com",
+      "roles": [
+        {
+          "idRole": 1,
+          "name": "Admin"
+        }
+      ],
+      "salaire": 3000,
+      "regime": 50,
+      "date": "2024-11-28T23:00:00.000Z",
+      "isActive": true,
+      "id": 20
+    },
+    {
+      "nom": "Arial",
+      "prenom": "test3",
+      "email": "eva.maudoux@gmail.com",
+      "roles": [
+        {
+          "idRole": 1,
+          "name": "Admin"
+        }
+      ],
+      "salaire": 3000,
+      "regime": 50,
+      "date": "2024-11-28T23:00:00.000Z",
+      "isActive": true,
+      "id": 21
+    },
+    {
+      "nom": "cule",
+      "prenom": "test3",
+      "email": "eva.maudoux@gmail.com",
+      "roles": [
+        {
+          "idRole": 1,
+          "name": "Admin"
+        }
+      ],
+      "salaire": 3000,
+      "regime": 50,
+      "date": "2024-11-28T23:00:00.000Z",
+      "isActive": true,
+      "id": 22
+    },
+    {
+      "nom": "test5",
+      "prenom": "maudoux",
+      "email": "eva.maudoux@gmail.com",
+      "roles": [
+        {
+          "idRole": 1,
+          "name": "Admin"
+        },
+        {
+          "idRole": 2,
+          "name": "Employé"
+        }
+      ],
+      "salaire": 3000000000000,
+      "regime": 50,
+      "date": "2024-11-28T23:00:00.000Z",
+      "isActive": true,
+      "id": 23
+    },
+    {
+      "idUser": 0,
+      "nom": "test6",
+      "prenom": "maudoux",
+      "email": "eva.maudoux@gmail.com",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 1,
+          "name": "Admin"
+        },
+        {
+          "idRole": 2,
+          "name": "Employé"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2024-11-28T23:00:00.000Z",
+          "salaire": 3000000000000,
+          "regime": 50
+        }
+      ],
+      "id": 24
+    },
+    {
+      "nom": "test7",
+      "prenom": "tes7",
+      "email": "eva.maudoux@gmail.com",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 1,
+          "name": "Admin"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2024-11-28T23:00:00.000Z",
+          "salaire": 3000000000000,
+          "regime": 50
+        }
+      ],
+      "id": 25
+    },
+    {
+      "nom": "test8",
+      "prenom": "test8",
+      "email": "eva.maudoux@gmail.com",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 1,
+          "name": "Admin"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2024-11-17T23:00:00.000Z",
+          "salaire": 200,
+          "regime": 50
+        }
+      ],
+      "id": 26
+    },
+    {
+      "nom": "test9",
+      "prenom": "test9",
+      "email": "eva.maudoux@gmail.com",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 1,
+          "name": "Admin"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2024-11-17T23:00:00.000Z",
+          "salaire": 200,
+          "regime": 50
+        }
+      ],
+      "id": 27
     }
   ],
   "roles": [

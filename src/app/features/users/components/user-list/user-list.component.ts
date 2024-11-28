@@ -19,12 +19,13 @@ export class UserListComponent implements OnInit {
     constructor(private userService: UserService) {}
 
     ngOnInit(): void {
-        this.refreshUsers();
+        this.loadUsers();
     }
-    refreshUsers() {
+
+    loadUsers() {
         // Récupère la liste des utilisateurs depuis le service
-        this.userService.getUsers().subscribe((data) => {
-            this.users = data;
+        this.userService.getUsers().subscribe((users) => {
+            this.users = users;
             this.sortUsers();
             this.filteredUsers = [...this.users];
         });
@@ -45,33 +46,71 @@ export class UserListComponent implements OnInit {
 
     // Ouvre la boîte de dialogue pour modifier un utilisateur sélectionné
     openEditUserForm(user: UserDTO) {
+        console.log('Utilisateur sélectionné pour modification :', user);
         // Ouvre le formulaire pour modifier un utilisateur
         this.selectedUser = user;
         this.displayForm = true;
     }
 
     // Méthode de submti du form
-    onFormSubmit(userForm: any) {
+    // onFormSubmit(userForm: any) {
+    //     if (this.selectedUser) {
+    //         console.log(this.selectedUser);
+    //         // Mise à jour de l'utilisateur existant
+    //         this.userService.updateUser(this.selectedUser.idUser, userForm).subscribe(() => {
+    //             this.displayForm = false;
+    //             this.loadUsers();
+    //         });
+    //     } else {
+    //         // Ajout d'un nouvel utilisateur
+    //         this.userService.addUser(userForm).subscribe(() => {
+    //             this.displayForm = false;
+    //             this.loadUsers();
+    //         });
+    //     }
+    // }
+
+    // onFormSubmit(): void {
+    //     this.displayForm = false;
+    //     this.loadUsers(); // Recharger la liste des utilisateurs après modification
+    // }
+
+    onFormSubmit(userForm: UserForm): void {
         if (this.selectedUser) {
-            // Mise à jour de l'utilisateur existant
-            this.userService.updateUser(this.selectedUser.idUser, userForm).subscribe(() => {
-                this.displayForm = false;
-                this.refreshUsers();
+            console.log('Mise à jour de l\'utilisateur avec ID :', this.selectedUser.idUser);
+            console.log('Données du formulaire :', userForm);
+
+            this.userService.updateUser(this.selectedUser.idUser, userForm).subscribe({
+                next: () => {
+                    this.displayForm = false;
+                    this.loadUsers();
+                },
+                error: (err) => {
+                    console.error('Erreur lors de la mise à jour de l\'utilisateur :', err);
+                }
             });
         } else {
             // Ajout d'un nouvel utilisateur
-            this.userService.addUser(userForm).subscribe(() => {
-                this.displayForm = false;
-                this.refreshUsers();
+            this.userService.addUser(userForm).subscribe({
+                next: () => {
+                    this.displayForm = false;
+                    this.loadUsers();
+                },
+                error: (err) => {
+                    console.error('Erreur lors de l\'ajout de l\'utilisateur :', err);
+                }
             });
         }
     }
+
+
+
 
     // Désactive un utilisateur ( pas de suppression)
     deactivateUser(user: UserDTO) {
         // Désactive un utilisateur en mettant 'isActive' à false
         this.userService.deactivateUser(user.idUser).subscribe(() => {
-            this.refreshUsers();
+            this.loadUsers();
         });
     }
 
