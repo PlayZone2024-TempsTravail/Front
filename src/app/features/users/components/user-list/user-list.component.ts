@@ -77,10 +77,10 @@ export class UserListComponent implements OnInit {
 
     onFormSubmit(userForm: UserForm): void {
         if (this.selectedUser) {
-            console.log('Mise à jour de l\'utilisateur avec ID :', this.selectedUser.idUser);
+            console.log('Mise à jour de l\'utilisateur avec ID :', this.selectedUser.id);
             console.log('Données du formulaire :', userForm);
 
-            this.userService.updateUser(this.selectedUser.idUser, userForm).subscribe({
+            this.userService.updateUser(this.selectedUser.id, userForm).subscribe({
                 next: () => {
                     this.displayForm = false;
                     this.loadUsers();
@@ -109,7 +109,7 @@ export class UserListComponent implements OnInit {
     // Désactive un utilisateur ( pas de suppression)
     deactivateUser(user: UserDTO) {
         // Désactive un utilisateur en mettant 'isActive' à false
-        this.userService.deactivateUser(user.idUser).subscribe(() => {
+        this.userService.deactivateUser(user.id).subscribe(() => {
             this.loadUsers();
         });
     }

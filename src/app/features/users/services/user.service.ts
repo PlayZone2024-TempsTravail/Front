@@ -28,7 +28,7 @@ export class UserService {
 
     // Méthode pour ajouter un nouvel utilisateur
     addUser(userForm: UserForm): Observable<UserDTO> {
-        const newUserDTO: Omit<UserDTO, 'idUser'> = {
+        const newUserDTO: Omit<UserDTO, 'id'> = {
             nom: userForm.nom,
             prenom: userForm.prenom,
             email: userForm.email,
@@ -121,7 +121,7 @@ export class UserService {
                     ];
 
                     const updatedUser: UserDTO = {
-                        idUser: existingUser.idUser,
+                        id: existingUser.id,
                         nom: userForm.nom,
                         prenom: userForm.prenom,
                         email: userForm.email,

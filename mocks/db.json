@@ -50,9 +50,8 @@
     {
       "id": 3,
       "nom": "Martin",
-      "prenom": "Marie",
+      "prenom": "Maria",
       "email": "marie.martin@example.com",
-      "password": "password2",
       "isActive": true,
       "roles": [
         {
@@ -61,6 +60,11 @@
         }
       ],
       "historique": [
+        {
+          "date": "2021-05-15",
+          "salaire": 38000,
+          "regime": 100
+        },
         {
           "date": "2021-05-15",
           "salaire": 38000,
@@ -94,19 +98,19 @@
       "nom": "Petit",
       "prenom": "Emma",
       "email": "emma.petit@example.com",
-      "password": "password4",
       "isActive": true,
       "roles": [
         {
           "idRole": 2,
           "name": "Employé"
-        },
-        {
-          "idRole": 1,
-          "name": "Admin"
         }
       ],
       "historique": [
+        {
+          "date": "2022-07-01",
+          "salaire": 50000,
+          "regime": 100
+        },
         {
           "date": "2022-07-01",
           "salaire": 50000,
@@ -138,9 +142,8 @@
     {
       "id": 7,
       "nom": "Lefevre",
-      "prenom": "Chloé",
+      "prenom": "Chloélette",
       "email": "chloe.lefevre@example.com",
-      "password": "password6",
       "isActive": true,
       "roles": [
         {
@@ -153,15 +156,19 @@
           "date": "2020-12-01",
           "salaire": 42000,
           "regime": 100
+        },
+        {
+          "date": "2020-12-01",
+          "salaire": 42000,
+          "regime": 100
         }
       ]
     },
     {
       "id": 8,
       "nom": "Garnier",
-      "prenom": "Thomas",
+      "prenom": "Thomassette",
       "email": "thomas.garnier@example.com",
-      "password": "password7",
       "isActive": true,
       "roles": [
         {
@@ -170,6 +177,11 @@
         }
       ],
       "historique": [
+        {
+          "date": "2019-06-15",
+          "salaire": 39000,
+          "regime": 80
+        },
         {
           "date": "2019-06-15",
           "salaire": 39000,
