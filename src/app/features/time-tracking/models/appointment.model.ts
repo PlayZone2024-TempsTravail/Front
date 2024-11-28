@@ -1,17 +1,23 @@
-export interface Appointment{
-    id: number;
-    date: Date;
+export interface Appointment {
     WorkTime: WorkTimeCategory;
-    startTime: string;
-    endTime: string;
-}
-
-export interface WorkTime {
-    name: string;
+    id_WorkTime?: number;
+    start: Date;
+    end: Date;
+    isOnSite: boolean;
+    category_Id: number;
+    project_Id?: number;
+    user_Id: number;
+    date: Date;
+  }
+  
+  export interface WorkTime {
+    idWorktimeCategory: number;
+    abreviation: string;
     color: string;
-}
-
-export interface WorkTimeCategory {
-    name: string;
+  }
+  
+  export interface WorkTimeCategory {
+    idWorktimeCategory: number;
+    abreviation: string;
     color: `#${string}`;
-}
+  }

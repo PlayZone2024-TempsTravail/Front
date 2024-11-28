@@ -7,20 +7,20 @@
         <p-dropdown
           [options]="workTimeList"
           [formControl]="workTimeControl"
-          optionLabel="name"
+          optionLabel="abreviation"
           [filter]="true"
-          filterBy="name"
+          filterBy="abreviation"
           [showClear]="true"
           styleClass="pd-style"
           placeholder="Catégorie">
           <ng-template let-workTime pTemplate="item">
             <div class="flex align-items-center gap-2">
-              <div>{{ workTime.name }}</div>
+              <div>{{ workTime.abreviation }}</div>
             </div>
           </ng-template>
         </p-dropdown>
 
-        <div *ngIf="appointmentForm.controls['WorkTime'].value?.name === 'VIEC'">
+        <div *ngIf="appointmentForm.controls['WorkTime'].value?.abreviation === 'VIEC'">
           <p>test</p> <!-- TODO : Mettre un dropdown -->
         </div>
 

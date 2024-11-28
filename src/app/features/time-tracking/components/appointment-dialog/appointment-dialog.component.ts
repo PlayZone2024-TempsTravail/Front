@@ -1,4 +1,4 @@
-import { Component, Inject, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, ViewEncapsulation, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {
   AbstractControl,
@@ -41,8 +41,7 @@ import { WorkTime, Appointment } from '../../models/appointment.model';
     DropdownModule
   ],
 })
-export class AppointmentDialogComponent {
-
+export class AppointmentDialogComponent implements OnInit {
   appointments: Appointment[] = [];
   appointmentForm: FormGroup;
   workTimeList: WorkTime[] = [];
@@ -57,7 +56,6 @@ export class AppointmentDialogComponent {
     private appointmentService: AppointmentService,
     private formBuilder: FormBuilder
   ) {
-    this.workTimeList = this.appointmentService.getWorkTimeList();
     this.appointments = data.appointments;
 
     this.appointmentForm = this.formBuilder.group({
@@ -71,6 +69,21 @@ export class AppointmentDialogComponent {
     this.appointmentForm.patchValue(data.appointment);
   }
 
+  ngOnInit(): void {
+    this.loadWorkTimeList();
+  }
+
+  private loadWorkTimeList(): void {
+    this.appointmentService.getWorkTimeList().subscribe(
+      (data: WorkTime[]) => {
+        this.workTimeList = data;
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des catégories de WorkTime:', error);
+      }
+    );
+  }
+
   onNoClick(): void {
     this.dialogRef.close();
   }
@@ -79,17 +92,31 @@ export class AppointmentDialogComponent {
     if (!this.appointmentForm.valid) {
       return;
     }
-    const data = this.appointmentForm.value;
-    if (data.id) {
+    const formData = this.appointmentForm.value;
+    const selectedWorkTime = this.workTimeList.find(wt => wt.idWorktimeCategory === formData.WorkTime);
+    if (selectedWorkTime) {
+      formData.WorkTime = {
+        abreviation: selectedWorkTime.abreviation,
+        color: selectedWorkTime.color
+      };
+    }
+
+    const appointment: Appointment = {
+      ...formData,
+      start: this.appointmentService.convertStringToDate(formData.date, formData.startTime),
+      end: this.appointmentService.convertStringToDate(formData.date, formData.endTime),
+    };
+
+    if (appointment.id_WorkTime) {
       // Modifier l'appointment
-      this.appointmentService.editAppointment(data).subscribe({
+      this.appointmentService.editAppointment(appointment).subscribe({
         next: () => {
           this.dialogRef.close();
         }
       });
     } else {
       // Ajouter un nouveau
-      this.appointmentService.addAppointment(data).subscribe({
+      this.appointmentService.addAppointment(appointment).subscribe({
         next: () => {
           this.dialogRef.close();
         }
@@ -101,11 +128,6 @@ export class AppointmentDialogComponent {
     this.appointmentService.deleteAppointment(this.appointmentForm.value.id).subscribe({
       next: () => this.dialogRef.close()
     });
-  }
-
-  private forceHoursOnly(time: string): string {
-    const [hours] = time.split(':');
-    return `${hours}:00`;
   }
 
   timeRangeValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
@@ -129,9 +151,9 @@ export class AppointmentDialogComponent {
 
       if (
         this.appointments.some((appt) => {
-          if (appt.id === this.appointmentForm?.value.id) return false;
-          const [apptStartHours, apptStartMinutes] = appt.startTime.split(':').map(Number);
-          const [apptEndHours, apptEndMinutes] = appt.endTime.split(':').map(Number);
+          if (appt.category_Id === this.appointmentForm?.value.category_Id) return false;
+          const [apptStartHours, apptStartMinutes] = this.appointmentService.convertTimeToString(appt.start).split(':').map(Number);
+          const [apptEndHours, apptEndMinutes] = this.appointmentService.convertTimeToString(appt.end).split(':').map(Number);
 
           const apptStartDate = new Date(appt.date);
           apptStartDate.setHours(apptStartHours, apptStartMinutes);
