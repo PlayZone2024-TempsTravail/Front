@@ -13,13 +13,14 @@ import {DialogModule} from 'primeng/dialog';
 import {DropdownModule} from 'primeng/dropdown';
 import {UserListComponent} from '../users/components/user-list/user-list.component';
 import {UserFormComponent} from '../users/components/user-form/user-form.component';
-import {VoirGraphiqueComponent} from './components/voir-graphique/voir-graphique.component';
+import {ProjectGraphComponent} from './components/voir-graphique/voir-graphique.component';
+import {ChartModule} from 'primeng/chart';
 
 
 @NgModule({
   declarations: [
       ProjectsComponent,
-      VoirGraphiqueComponent
+      ProjectGraphComponent
   ],
   imports: [
     CommonModule,
@@ -36,10 +37,11 @@ import {VoirGraphiqueComponent} from './components/voir-graphique/voir-graphique
       ToastModule,
       DialogModule,
       DropdownModule,
+      ChartModule
   ],
     exports: [
         ProjectsComponent,
-        VoirGraphiqueComponent
+        ProjectGraphComponent
     ],
 })
 export class ProjectsModule { }

@@ -1,1 +1,8 @@
-<p-chart type="line" [data]="data" [options]="options" />
+<div class ="project-graphique">
+    <p>Graphique</p>
+    <div class="chart-container" *ngIf="expenses.length > 0 || incomes.length > 0">
+
+        <h4>Dépenses : Rentrée : Réel / Prévision</h4>
+        <a routerLink="#"><p-chart type="line" [data]="ChartData" [options]="chartOptions"></p-chart></a>
+    </div>
+</div>

@@ -27,7 +27,6 @@ import {FloatLabelModule} from 'primeng/floatlabel';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatNativeDateModule } from '@angular/material/core';
 import { DropdownModule } from 'primeng/dropdown';
-import { VoirGraphiqueComponent } from './features/projects/components/voir-graphique/voir-graphique.component';
 import {ChartModule} from 'primeng/chart';
 
 @NgModule({
@@ -36,7 +35,6 @@ import {ChartModule} from 'primeng/chart';
         HeaderComponent,
         HomeComponent,
         FooterComponent,
-        VoirGraphiqueComponent,
     ],
     imports: [
         AppRoutingModule,
@@ -54,7 +52,6 @@ import {ChartModule} from 'primeng/chart';
         InputTextModule,
         FloatLabelModule,
         DropdownModule,
-        ChartModule,
 
         // PrimeNG
         BrowserModule,
