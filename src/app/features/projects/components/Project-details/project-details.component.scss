@@ -1,0 +1,54 @@
+.project-detail {
+    padding: 2rem;
+
+    h2 {
+        margin-bottom: 1.5rem;
+        color: #444;
+    }
+
+    .project-container {
+        display: flex;
+        justify-content: space-between;
+        background: #f9f9f9;
+        padding: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+
+        .project-info {
+
+            p {
+                margin: 0.5rem 0;
+            }
+
+            strong {
+                color: #555;
+            }
+        }
+
+        p-table {
+            margin-top: 1.5rem;
+
+            th, td {
+                text-align: center;
+                vertical-align: middle;
+            }
+
+            th {
+                background: #f4f4f4;
+                position: sticky;
+                top: 0;
+            }
+
+            td {
+                padding: 0.5rem;
+                min-width: 8rem;
+            }
+        }
+
+        .chart-container {
+            height: 50%;
+            width: 50%;
+        }
+    }
+}

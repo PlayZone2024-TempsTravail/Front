@@ -1,0 +1,60 @@
+<div class="project-detail">
+    <!-- Section des détails du projet -->
+    <h2>Détails du Projet</h2>
+
+    <div class ="project-container" *ngIf="project; else loading">
+        <div class="project-info">
+            <p><strong>Nom du Projet :</strong> {{ project.name }}</p>
+            <p><strong>Organisme :</strong> {{ project.organisme_id}}</p>
+            <p><strong>Budget :</strong> {{ project.montant_budget | currency: 'EUR' }}</p>
+            <p><strong>Date de Début :</strong> {{ project.date_debut_projet }}</p>
+            <p><strong>Date de Fin :</strong> {{ project.date_fin_projet }}</p>
+            <p><strong>Statut :</strong> {{ project.isActive ? 'Actif' : 'Inactif' }}</p>
+        </div>
+
+        <!-- Section du graphique -->
+        <div class="chart-container" *ngIf="expenses.length > 0">
+            <h4>Dépenses : Réel / Prévision</h4>
+            <a routerLink="#"><p-chart type="line" [data]="chartData" [options]="chartOptions" style="height: 50px; width: 50px;"></p-chart></a>
+        </div>
+
+    </div>
+
+    <!-- Message de chargement -->
+    <ng-template #loading>
+        <p>Chargement des détails...</p>
+    </ng-template>
+
+    <!-- Section tableau des dépenses -->
+    <h2>Dépenses par Libellé</h2>
+    <p-table
+        *ngIf="expenses.length > 0"
+        [value]="expenses"
+        [scrollable]="true"
+        scrollDirection="both"
+        [tableStyle]="{ 'min-width': '80rem' }"
+    >
+        <!-- Header du tableau -->
+        <ng-template pTemplate="header">
+            <tr>
+                <th pFrozenColumn style="min-width:400px">Libellé</th>
+                <ng-container *ngFor="let month of getMonthsRange()">
+                    <th>{{ month }}</th>
+                </ng-container>
+            </tr>
+        </ng-template>
+
+        <!-- Corps du tableau -->
+        <ng-template pTemplate="body" let-expense>
+            <tr>
+                <td pFrozenColumn>{{ expense.libelle }}</td>
+                <ng-container *ngFor="let month of getMonthsRange()">
+                    <td>{{ expense.data[month] || 0 | currency: 'EUR' }}</td>
+                </ng-container>
+            </tr>
+        </ng-template>
+    </p-table>
+
+    <!-- Message si aucune dépense n'est trouvée -->
+    <p *ngIf="expenses.length === 0 && project">Aucune dépense trouvée pour ce projet.</p>
+</div>
