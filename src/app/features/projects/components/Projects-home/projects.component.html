@@ -24,23 +24,35 @@
     <p-table [value]="projects" [paginator]="true" [rows]="10" [tableStyle]="{'min-width':'50rem'}" #dt>
         <ng-template pTemplate="header">
             <tr>
+                <th>N° du projet</th>
                 <th>Projet</th>
+                <th>Organisme</th>
                 <th>Chargé de mission</th>
                 <th>Prévision à ce jour</th>
                 <th>Dépenses à ce jour</th>
                 <th>Variation</th>
                 <th>Statut</th>
-                <th>Action</th>
+                <th>Actions</th>
             </tr>
         </ng-template>
 
         <ng-template pTemplate="body" let-project>
             <tr>
-                <td>{{project.organisme_id}}</td>
-                <td>{{project.montant_budget}}</td>
-                <td>{{project.color}}</td>
+                <td>{{project.id_project}}</td>
+                <td>{{project.name}}</td>
+                <td>@for (organisme of project.organismes; track organisme.id) {
+                    {{organisme.name}}
+                } </td>
+                <td>@for (charge_de_projet of project.charges_de_projet; track charge_de_projet.idUser){
+                    {{charge_de_projet.nom}} {{charge_de_projet.prenom}}
+                }
+
+                </td>
+
                 <td>{{project.date_debut_projet}}</td>
                 <td>{{project.date_fin_projet}}</td>
+
+                <td></td>
                 <td>
                     <button pButton type="button" icon="pi pi-pencil" label="Modifier" class="p-button-text"></button>
                 </td>

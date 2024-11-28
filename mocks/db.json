@@ -1,179 +1,277 @@
 ﻿{
-    "admin" : [
+    "admin": [
         {
-            "id_user" : 1,
-            "id_role" : 1,
-            "token" : "",
+            "id_user": 1,
+            "id_role": 1,
+            "token": "",
             "email": "admin@mail.com",
             "password": "test1234"
         }
     ],
-    "role":[
+    "role": [
         {
-            "id_role":"1",
-            "name":"Admin"
+            "id_role": "1",
+            "name": "Admin"
         }
     ],
     "appointments": [
-    {
-        "uuid": "124",
-        "date": "2024-11-25T09:00:00Z",
-        "title": "Project Planning",
-        "startTime": "09:00",
-        "endTime": "15:00",
-        "color": "",
-        "WorkTime": {
-            "name": "VIEC",
-            "color": ""
+        {
+            "uuid": "124",
+            "date": "2024-11-25T09:00:00Z",
+            "title": "Project Planning",
+            "startTime": "09:00",
+            "endTime": "15:00",
+            "color": "",
+            "WorkTime": {
+                "name": "VIEC",
+                "color": ""
+            }
+        },
+        {
+            "uuid": "125",
+            "date": "2024-11-25T14:00:00Z",
+            "title": "Client Meeting",
+            "startTime": "15:00",
+            "endTime": "15:00",
+            "color": "",
+            "WorkTime": {
+                "name": "RC",
+                "color": ""
+            }
+        },
+        {
+            "uuid": "126",
+            "date": "2024-11-26T11:30:00Z",
+            "title": "Team Sync-up",
+            "startTime": "12:00",
+            "endTime": "12:00",
+            "color": "",
+            "WorkTime": {
+                "name": "VA",
+                "color": ""
+            }
+        },
+        {
+            "uuid": "127",
+            "date": "2024-11-28T16:00:00Z",
+            "title": "HR Meeting",
+            "startTime": "17:00",
+            "endTime": "17:00",
+            "color": "",
+            "WorkTime": {
+                "name": "VAEX",
+                "color": ""
+            }
+        },
+        {
+            "uuid": "128",
+            "date": "2024-11-28T10:00:00Z",
+            "title": "Weekly Review",
+            "startTime": "11:00",
+            "endTime": "11:00",
+            "color": "",
+            "WorkTime": {
+                "name": "JF",
+                "color": ""
+            }
+        },
+        {
+            "uuid": "128",
+            "date": "2024-11-30T10:00:00Z",
+            "title": "Weekly Review",
+            "startTime": "11:00",
+            "endTime": "11:00",
+            "color": "",
+            "WorkTime": {
+                "name": "MA",
+                "color": ""
+            }
         }
-    },
-    {
-        "uuid": "125",
-        "date": "2024-11-25T14:00:00Z",
-        "title": "Client Meeting",
-        "startTime": "15:00",
-        "endTime": "15:00",
-        "color": "",
-        "WorkTime": {
-            "name": "RC",
-            "color": ""
-        }
-    },
-    {
-        "uuid": "126",
-        "date": "2024-11-26T11:30:00Z",
-        "title": "Team Sync-up",
-        "startTime": "12:00",
-        "endTime": "12:00",
-        "color": "",
-        "WorkTime": {
-            "name": "VA",
-            "color": ""
-        }
-    },
-    {
-        "uuid": "127",
-        "date": "2024-11-28T16:00:00Z",
-        "title": "HR Meeting",
-        "startTime": "17:00",
-        "endTime": "17:00",
-        "color": "",
-        "WorkTime": {
-            "name": "VAEX",
-            "color": ""
-        }
-    },
-    {
-        "uuid": "128",
-        "date": "2024-11-28T10:00:00Z",
-        "title": "Weekly Review",
-        "startTime": "11:00",
-        "endTime": "11:00",
-        "color": "",
-        "WorkTime": {
-            "name": "JF",
-            "color": ""
-        }
-    },
-    {
-        "uuid": "128",
-        "date": "2024-11-30T10:00:00Z",
-        "title": "Weekly Review",
-        "startTime": "11:00",
-        "endTime": "11:00",
-        "color": "",
-        "WorkTime": {
-            "name": "MA",
-            "color": ""
-        }
-    }
-],
-
-
+    ],
     "projects": [
         {
             "id_project": 1,
-            "organisme_id": 1,
+            "organismes": [
+                {
+                    "id_organisme": 1,
+                    "name": "NeonCortex Systems"
+                }
+            ],
             "isActive": true,
             "name": "Mcmouche Solution",
             "montant_budget": 10000,
             "color": "ff5733",
             "date_debut_projet": "2024-04-13",
             "date_fin_projet": "2025-04-13",
-            "charge_de_projet": 50000
+            "charges_de_projet": [
+                {
+                    "idUser": 1,
+                    "nom": "Admin",
+                    "prenom": "Admin"
+
+                }
+            ]
         },
         {
             "id_project": 2,
-            "organisme_id": 2,
+            "organismes": [
+                {
+                    "id_organisme": 2,
+                    "name": "SynthWave Corp"
+                }
+            ],
             "isActive": false,
             "name": "TechNova Solutions",
             "montant_budget": 20000,
             "color": "3498db",
             "date_debut_projet": "2023-01-01",
             "date_fin_projet": "2023-12-31",
-            "charge_de_projet": 30000
+            "charges_de_projet": [
+                {
+                    "idUser": 6,
+                    "nom": "Chen",
+                    "prenom": "Li"
+                }
+            ]
         },
         {
             "id_project": 3,
-            "organisme_id": 3,
+            "organismes": [
+                {
+                    "id_organisme": 3,
+                    "name": "BytePunk Syndicate"
+                }
+            ],
             "isActive": true,
             "name": "EcoEnergy Initiatives",
             "montant_budget": 15000,
             "color": "2ecc71",
             "date_debut_projet": "2024-06-01",
             "date_fin_projet": "2025-06-01",
-            "charge_de_projet": 45000
+            "charges_de_projet": [
+                {
+                    "idUser": 5,
+                    "nom": "Tanaka",
+                    "prenom": "Hiroshi"
+                }
+            ]
         },
         {
             "id_project": 4,
-            "organisme_id": 4,
+            "organismes": [
+                {
+                    "id_organisme": 4,
+                    "name": "CryoHaven Industries"
+                }
+            ],
             "isActive": false,
             "name": "NextGen Robotics",
             "montant_budget": 30000,
             "color": "e74c3c",
             "date_debut_projet": "2022-05-15",
             "date_fin_projet": "2023-05-15",
-            "charge_de_projet": 60000
+            "charges_de_projet": [
+                {
+                    "idUser": 3,
+                    "nom": "Smith",
+                    "prenom": "John"
+                }
+            ]
         },
         {
             "id_project": 5,
-            "organisme_id": 5,
+            "organismes": [
+                {
+                    "id_organisme": 5,
+                    "name": "MechaHive Networks"
+                }
+            ],
             "isActive": true,
             "name": "GreenTech Horizon",
             "montant_budget": 25000,
             "color": "9b59b6",
             "date_debut_projet": "2024-03-01",
             "date_fin_projet": "2025-03-01",
-            "charge_de_projet": 50000
+            "charges_de_projet": [
+                {
+                    "idUser": 2,
+                    "nom": "Dupont",
+                    "prenom": "Jean"
+                }
+            ]
         }
     ],
+    "organismes": [
+        {
+            "id_organisme": 1,
+            "name": "NeonCortex Systems"
+        },
+        {
+            "id_organisme": 2,
+            "name": "SynthWave Corp"
+        },
+        {
+            "id_organisme": 3,
+            "name": "BytePunk Syndicate"
+        },
+        {
+            "id_organisme": 4,
+            "name": "CryoHaven Industries"
+        },
+        {
+            "id_organisme": 5,
+            "name": "MechaHive Networks"
+        }
+    ],
+    "users": [
+        {
+            "idUser": 1,
+            "nom": "Admin",
+            "prenom": "Admin",
+            "email": "admin@gmail.com",
+            "isActive": true,
+            "roles": 1
+        },
+        {
+            "idUser": 2,
+            "nom": "Dupont",
+            "prenom": "Jean",
+            "email": "jean.dupont@example.com",
+            "isActive": true,
+            "roles": 2
+        },
+        {
+            "idUser": 3,
+            "nom": "Smith",
+            "prenom": "John",
+            "email": "john.smith@example.com",
+            "isActive": true,
+            "roles": 2
+        },
+        {
+            "idUser": 4,
+            "nom": "Lopez",
+            "prenom": "Maria",
+            "email": "maria.lopez@example.com",
 
-"organisme": [
-    {
-        "id_organisme": 1,
-        "name": "NeonCortex Systems"
-    },
-    {
-        "id_organisme": 2,
-        "name": "SynthWave Corp"
-    },
-    {
-        "id_organisme": 3,
-        "name": "BytePunk Syndicate"
-    },
-    {
-        "id_organisme": 4,
-        "name": "CryoHaven Industries"
-    },
-    {
-        "id_organisme": 5,
-        "name": "MechaHive Networks"
-    }
-]
-
+            "isActive": false,
+            "roles": 3
+        },
+        {
+            "idUser": 5,
+            "nom": "Tanaka",
+            "prenom": "Hiroshi",
+            "email": "hiroshi.tanaka@example.com",
+            "isActive": true,
+            "roles": 2
+        },
+        {
+            "idUser": 6,
+            "nom": "Chen",
+            "prenom": "Li",
+            "email": "li.chen@example.com",
+            "isActive": false,
+            "roles": 3
+        }
+    ]
 }
-
-
-
-
-
