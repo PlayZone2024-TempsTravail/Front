@@ -1,0 +1,51 @@
+    <!-- ici ce trouve les bouttons pour detail et autre  -->
+
+<div class="actions-header">
+    <button pButton type="button" label="Voir détail" icon="pi pi-plus" class="p-button-success"></button>
+    <button pButton type="button" label="Voir graphique" icon="pi pi-plus" class="p-button-success"></button>
+    <button pButton type="button" label="Encoder coûts" icon="pi pi-plus" class="p-button-success"></button>
+
+    <button pButton type="button" label="Créer rapport" icon="pi pi-plus" class="p-button-success"></button>
+    <button pButton type="button" label="Encoder entrées" icon="pi pi-plus" class="p-button-success"></button>
+    <button pButton type="button" label="Créer projet" icon="pi pi-plus" class="p-button-success"></button>
+    <button pButton type="button" label="Editer projet" icon="pi pi-plus" class="p-button-success"></button>
+</div>
+
+<!--  bare de recherche non foncionelle -->
+
+<div class="search-filter-container">
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input pInputText type="text" placeholder="Rechercher..."/>
+        </span>
+<!--    <p-dropdown [options]="roles" placeholder="Filtrer par rôle" optionLabel="label"></p-dropdown>-->
+</div>
+<div>
+    <p-table [value]="projects" [paginator]="true" [rows]="10" [tableStyle]="{'min-width':'50rem'}" #dt>
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Projet</th>
+                <th>Chargé de mission</th>
+                <th>Prévision à ce jour</th>
+                <th>Dépenses à ce jour</th>
+                <th>Variation</th>
+                <th>Statut</th>
+                <th>Action</th>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-project>
+            <tr>
+                <td>{{project.organisme_id}}</td>
+                <td>{{project.montant_budget}}</td>
+                <td>{{project.color}}</td>
+                <td>{{project.date_debut_projet}}</td>
+                <td>{{project.date_fin_projet}}</td>
+                <td>
+                    <button pButton type="button" icon="pi pi-pencil" label="Modifier" class="p-button-text"></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+

@@ -1,10 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {UserListComponent} from '../users/components/user-list/user-list.component';
-import {ProjectsComponent} from './components/projects.component';
+import {ProjectsComponent} from './components/Projects-home/projects.component';
+import {projectResolverResolver} from './resolvers/project-resolver.resolver';
 
 const routes: Routes = [
-    { path: '', component: ProjectsComponent}
+    { path: '',
+        component: ProjectsComponent,
+    resolve: {
+        projects : projectResolverResolver,
+    },
+    }
 ];
 
 @NgModule({

@@ -87,5 +87,93 @@
             "color": ""
         }
     }
+],
+
+
+    "projects": [
+        {
+            "id_project": 1,
+            "organisme_id": 1,
+            "isActive": true,
+            "name": "Mcmouche Solution",
+            "montant_budget": 10000,
+            "color": "ff5733",
+            "date_debut_projet": "2024-04-13",
+            "date_fin_projet": "2025-04-13",
+            "charge_de_projet": 50000
+        },
+        {
+            "id_project": 2,
+            "organisme_id": 2,
+            "isActive": false,
+            "name": "TechNova Solutions",
+            "montant_budget": 20000,
+            "color": "3498db",
+            "date_debut_projet": "2023-01-01",
+            "date_fin_projet": "2023-12-31",
+            "charge_de_projet": 30000
+        },
+        {
+            "id_project": 3,
+            "organisme_id": 3,
+            "isActive": true,
+            "name": "EcoEnergy Initiatives",
+            "montant_budget": 15000,
+            "color": "2ecc71",
+            "date_debut_projet": "2024-06-01",
+            "date_fin_projet": "2025-06-01",
+            "charge_de_projet": 45000
+        },
+        {
+            "id_project": 4,
+            "organisme_id": 4,
+            "isActive": false,
+            "name": "NextGen Robotics",
+            "montant_budget": 30000,
+            "color": "e74c3c",
+            "date_debut_projet": "2022-05-15",
+            "date_fin_projet": "2023-05-15",
+            "charge_de_projet": 60000
+        },
+        {
+            "id_project": 5,
+            "organisme_id": 5,
+            "isActive": true,
+            "name": "GreenTech Horizon",
+            "montant_budget": 25000,
+            "color": "9b59b6",
+            "date_debut_projet": "2024-03-01",
+            "date_fin_projet": "2025-03-01",
+            "charge_de_projet": 50000
+        }
+    ],
+
+"organisme": [
+    {
+        "id_organisme": 1,
+        "name": "NeonCortex Systems"
+    },
+    {
+        "id_organisme": 2,
+        "name": "SynthWave Corp"
+    },
+    {
+        "id_organisme": 3,
+        "name": "BytePunk Syndicate"
+    },
+    {
+        "id_organisme": 4,
+        "name": "CryoHaven Industries"
+    },
+    {
+        "id_organisme": 5,
+        "name": "MechaHive Networks"
+    }
 ]
+
 }
+
+
+
+
+
