@@ -13,11 +13,13 @@ import {DialogModule} from 'primeng/dialog';
 import {DropdownModule} from 'primeng/dropdown';
 import {UserListComponent} from '../users/components/user-list/user-list.component';
 import {UserFormComponent} from '../users/components/user-form/user-form.component';
+import {VoirGraphiqueComponent} from './components/voir-graphique/voir-graphique.component';
 
 
 @NgModule({
   declarations: [
-    ProjectsComponent
+      ProjectsComponent,
+      VoirGraphiqueComponent
   ],
   imports: [
     CommonModule,
@@ -37,6 +39,7 @@ import {UserFormComponent} from '../users/components/user-form/user-form.compone
   ],
     exports: [
         ProjectsComponent,
+        VoirGraphiqueComponent
     ],
 })
 export class ProjectsModule { }
