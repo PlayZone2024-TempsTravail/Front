@@ -1,4 +1,619 @@
 {
+  "users": [
+    {
+      "id": 1,
+      "nom": "Admin",
+      "prenom": "Admin",
+      "email": "admin@gmail.com",
+      "password": "admin1234",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 1,
+          "name": "Admin"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2021-01-01",
+          "salaire": 60000,
+          "regime": 100
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "nom": "Dupont",
+      "prenom": "Jeannette",
+      "email": "jean.dupont@example.com",
+      "isActive": false,
+      "roles": [
+        {
+          "idRole": 2,
+          "name": "Employé"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2022-02-01",
+          "salaire": 40000,
+          "regime": 80
+        },
+        {
+          "date": "2023-01-01",
+          "salaire": 42000,
+          "regime": 80
+        },
+        {
+          "date": "2022-02-01",
+          "salaire": 40000,
+          "regime": 80
+        },
+        {
+          "date": "2022-02-01",
+          "salaire": 40000,
+          "regime": 80
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "nom": "Martin",
+      "prenom": "Maria",
+      "email": "marie.martin@example.com",
+      "isActive": false,
+      "roles": [
+        {
+          "idRole": 2,
+          "name": "Employé"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2021-05-15",
+          "salaire": 38000,
+          "regime": 100
+        },
+        {
+          "date": "2021-05-15",
+          "salaire": 38000,
+          "regime": 100
+        },
+        {
+          "date": "2021-05-15",
+          "salaire": 38000,
+          "regime": 100
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "nom": "Durand",
+      "prenom": "Lucas",
+      "email": "luc.durand@example.com",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 2,
+          "name": "Employé"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2020-03-20",
+          "salaire": 45000,
+          "regime": 90
+        },
+        {
+          "date": "2020-03-20",
+          "salaire": 45000,
+          "regime": 90
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "nom": "Petit",
+      "prenom": "Emma",
+      "email": "emma.petit@example.com",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 2,
+          "name": "Employé"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2022-07-01",
+          "salaire": 50000,
+          "regime": 100
+        },
+        {
+          "date": "2022-07-01",
+          "salaire": 50000,
+          "regime": 100
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "nom": "Moreau",
+      "prenom": "Hugo",
+      "email": "hugo.moreau@example.com",
+      "password": "password5",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 2,
+          "name": "Employé"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2021-09-01",
+          "salaire": 37000,
+          "regime": 75
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "nom": "Lefevre",
+      "prenom": "Chloélette",
+      "email": "chloe.lefevre@example.com",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 2,
+          "name": "Employé"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2020-12-01",
+          "salaire": 42000,
+          "regime": 100
+        },
+        {
+          "date": "2020-12-01",
+          "salaire": 42000,
+          "regime": 100
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "nom": "Garnier",
+      "prenom": "Thomassette",
+      "email": "thomas.garnier@example.com",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 2,
+          "name": "Employé"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2019-06-15",
+          "salaire": 39000,
+          "regime": 80
+        },
+        {
+          "date": "2019-06-15",
+          "salaire": 39000,
+          "regime": 80
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "nom": "Roux",
+      "prenom": "Laura",
+      "email": "laura.roux@example.com",
+      "password": "password8",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 2,
+          "name": "Employé"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2022-11-01",
+          "salaire": 41000,
+          "regime": 100
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "nom": "Blanc",
+      "prenom": "Lucas",
+      "email": "lucas.blanc@example.com",
+      "password": "password9",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 1,
+          "name": "Admin"
+        },
+        {
+          "idRole": 2,
+          "name": "Employé"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2020-04-01",
+          "salaire": 55000,
+          "regime": 100
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "nom": "Fournier",
+      "prenom": "Léa",
+      "email": "lea.fournier@example.com",
+      "password": "password10",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 2,
+          "name": "Employé"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2021-08-01",
+          "salaire": 38000,
+          "regime": 90
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "nom": "Girard",
+      "prenom": "Nathan",
+      "email": "nathan.girard@example.com",
+      "password": "password11",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 2,
+          "name": "Employé"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2018-03-01",
+          "salaire": 36000,
+          "regime": 100
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "nom": "Bonnet",
+      "prenom": "Sarah",
+      "email": "sarah.bonnet@example.com",
+      "password": "password12",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 1,
+          "name": "Admin"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2019-09-01",
+          "salaire": 58000,
+          "regime": 100
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "nom": "Dupuy",
+      "prenom": "Maxime",
+      "email": "maxime.dupuy@example.com",
+      "password": "password13",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 2,
+          "name": "Employé"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2021-05-01",
+          "salaire": 39000,
+          "regime": 85
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "nom": "Lefevre",
+      "prenom": "Paul",
+      "email": "paul.lefevre@example.com",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 2,
+          "name": "Employé"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2020-05-01",
+          "salaire": 35000,
+          "regime": 60
+        },
+        {
+          "date": "2020-05-01",
+          "salaire": 35000,
+          "regime": 60
+        }
+      ]
+    },
+    {
+      "nom": "test1",
+      "prenom": "test1",
+      "email": "test1@gmail.com",
+      "roles": [
+        {
+          "idRole": 2,
+          "name": "Employé"
+        }
+      ],
+      "salaire": 30000000000,
+      "regime": 90,
+      "date": "2024-11-28T23:00:00.000Z",
+      "isActive": true,
+      "id": 16
+    },
+    {
+      "nom": "test2",
+      "prenom": "test2",
+      "email": "test2@gmail.com",
+      "roles": [
+        {
+          "idRole": 1,
+          "name": "Admin"
+        }
+      ],
+      "salaire": 30000,
+      "regime": 60,
+      "date": "2024-11-28T23:00:00.000Z",
+      "isActive": true,
+      "id": 17
+    },
+    {
+      "nom": "testest",
+      "prenom": "testest",
+      "email": "testest@gmail.Com",
+      "roles": [
+        {
+          "idRole": 1,
+          "name": "Admin"
+        }
+      ],
+      "salaire": 2000,
+      "regime": 20,
+      "date": "2024-11-28T23:00:00.000Z",
+      "isActive": true,
+      "id": 18
+    },
+    {
+      "nom": "testest",
+      "prenom": "testest",
+      "email": "testest@gmail.Com",
+      "roles": [
+        {
+          "idRole": 1,
+          "name": "Admin"
+        }
+      ],
+      "salaire": 2000,
+      "regime": 20,
+      "date": "2024-11-28T23:00:00.000Z",
+      "isActive": true,
+      "id": 19
+    },
+    {
+      "nom": "test3",
+      "prenom": "test3",
+      "email": "eva.maudoux@gmail.com",
+      "roles": [
+        {
+          "idRole": 1,
+          "name": "Admin"
+        }
+      ],
+      "salaire": 3000,
+      "regime": 50,
+      "date": "2024-11-28T23:00:00.000Z",
+      "isActive": true,
+      "id": 20
+    },
+    {
+      "nom": "Arial",
+      "prenom": "test3",
+      "email": "eva.maudoux@gmail.com",
+      "roles": [
+        {
+          "idRole": 1,
+          "name": "Admin"
+        }
+      ],
+      "salaire": 3000,
+      "regime": 50,
+      "date": "2024-11-28T23:00:00.000Z",
+      "isActive": true,
+      "id": 21
+    },
+    {
+      "nom": "cule",
+      "prenom": "test3",
+      "email": "eva.maudoux@gmail.com",
+      "roles": [
+        {
+          "idRole": 1,
+          "name": "Admin"
+        }
+      ],
+      "salaire": 3000,
+      "regime": 50,
+      "date": "2024-11-28T23:00:00.000Z",
+      "isActive": true,
+      "id": 22
+    },
+    {
+      "nom": "test5",
+      "prenom": "maudoux",
+      "email": "eva.maudoux@gmail.com",
+      "roles": [
+        {
+          "idRole": 1,
+          "name": "Admin"
+        },
+        {
+          "idRole": 2,
+          "name": "Employé"
+        }
+      ],
+      "salaire": 3000000000000,
+      "regime": 50,
+      "date": "2024-11-28T23:00:00.000Z",
+      "isActive": true,
+      "id": 23
+    },
+    {
+      "idUser": 0,
+      "nom": "test6",
+      "prenom": "maudoux",
+      "email": "eva.maudoux@gmail.com",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 1,
+          "name": "Admin"
+        },
+        {
+          "idRole": 2,
+          "name": "Employé"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2024-11-28T23:00:00.000Z",
+          "salaire": 3000000000000,
+          "regime": 50
+        }
+      ],
+      "id": 24
+    },
+    {
+      "nom": "test7",
+      "prenom": "tes7",
+      "email": "eva.maudoux@gmail.com",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 1,
+          "name": "Admin"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2024-11-28T23:00:00.000Z",
+          "salaire": 3000000000000,
+          "regime": 50
+        }
+      ],
+      "id": 25
+    },
+    {
+      "nom": "test8",
+      "prenom": "test8",
+      "email": "eva.maudoux@gmail.com",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 1,
+          "name": "Admin"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2024-11-17T23:00:00.000Z",
+          "salaire": 200,
+          "regime": 50
+        }
+      ],
+      "id": 26
+    },
+    {
+      "nom": "test9",
+      "prenom": "test9",
+      "email": "eva.maudoux@gmail.com",
+      "isActive": true,
+      "roles": [
+        {
+          "idRole": 1,
+          "name": "Admin"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2024-11-17T23:00:00.000Z",
+          "salaire": 200,
+          "regime": 50
+        }
+      ],
+      "id": 27
+    },
+    {
+      "nom": "Dupont",
+      "prenom": "Jeannette",
+      "email": "jean.dupont@example.com",
+      "isActive": false,
+      "roles": [
+        {
+          "idRole": 2,
+          "name": "Employé"
+        },
+        {
+          "idRole": 1,
+          "name": "Admin"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2024-11-29T23:00:00.000Z",
+          "salaire": 40000,
+          "regime": 90
+        }
+      ],
+      "id": 28
+    }
+  ],
+  "roles": [
+    {
+      "idRole": 1,
+      "name": "Admin"
+    },
+    {
+      "idRole": 2,
+      "name": "Employé"
+    }
+  ],
   "admin": [
     {
       "id_user": 1,
@@ -16,54 +631,76 @@
   ],
   "appointments": [
     {
-      "id": 2,
+      "uuid": "124",
+      "date": "2024-11-25T09:00:00Z",
+      "title": "Project Planning",
+      "startTime": "09:00",
+      "endTime": "15:00",
+      "color": "",
       "WorkTime": {
-        "name": "VAEX",
-        "color": "#FBCFE8"
-      },
-      "date": "2024-11-25T15:18:56.563Z",
-      "startTime": "06:00",
-      "endTime": "16:00"
+        "name": "VIEC",
+        "color": ""
+      }
     },
     {
-      "id": 3,
-      "WorkTime": {
-        "name": "VA",
-        "color": "#C6EBCB"
-      },
-      "date": "2024-11-28T15:20:06.959Z",
-      "startTime": "06:00",
-      "endTime": "08:00"
-    },
-    {
-      "id": 5,
+      "uuid": "125",
+      "date": "2024-11-25T14:00:00Z",
+      "title": "Client Meeting",
+      "startTime": "15:00",
+      "endTime": "15:00",
+      "color": "",
       "WorkTime": {
         "name": "RC",
-        "color": "#A7D3F1"
-      },
-      "date": "2024-11-28T15:20:06.959Z",
-      "startTime": "08:00",
-      "endTime": "10:00"
+        "color": ""
+      }
     },
     {
-      "id": 6,
+      "uuid": "126",
+      "date": "2024-11-26T11:30:00Z",
+      "title": "Team Sync-up",
+      "startTime": "12:00",
+      "endTime": "12:00",
+      "color": "",
       "WorkTime": {
         "name": "VA",
-        "color": "#C6EBCB"
-      },
-      "date": "2024-11-27T15:25:32.116Z",
-      "startTime": "03:00",
-      "endTime": "04:00"
+        "color": ""
+      }
     },
     {
-      "id": 7,
+      "uuid": "127",
+      "date": "2024-11-28T16:00:00Z",
+      "title": "HR Meeting",
+      "startTime": "17:00",
+      "endTime": "17:00",
+      "color": "",
       "WorkTime": {
-        "name": "VA",
-        "color": "#C6EBCB"
-      },
-      "date": "2024-11-27T15:25:32.116Z",
-      "startTime": "06:00",
-      "endTime": "08:00"
+        "name": "VAEX",
+        "color": ""
+      }
+    },
+    {
+      "uuid": "128",
+      "date": "2024-11-28T10:00:00Z",
+      "title": "Weekly Review",
+      "startTime": "11:00",
+      "endTime": "11:00",
+      "color": "",
+      "WorkTime": {
+        "name": "JF",
+        "color": ""
+      }
+    },
+    {
+      "uuid": "128",
+      "date": "2024-11-30T10:00:00Z",
+      "title": "Weekly Review",
+      "startTime": "11:00",
+      "endTime": "11:00",
+      "color": "",
+      "WorkTime": {
+        "name": "MA",
+        "color": ""
+      }
     }
   ]
 }

@@ -1,265 +1,152 @@
 import {Component, OnInit} from '@angular/core';
-import {User} from '../../models/user.model';
+import {UserDTO, UserForm} from '../../models/user.dto.model';
+import {ActivatedRoute} from '@angular/router';
+import {UserService} from '../../services/user.service';
 
 @Component({
-  selector: 'app-user-list',
-  templateUrl: './user-list.component.html',
-  styleUrl: './user-list.component.scss'
+    selector: 'app-user-list',
+    templateUrl: './user-list.component.html',
+    styleUrl: './user-list.component.scss'
 })
 export class UserListComponent implements OnInit {
 
-    // Liste des utilisateurs
-    users: User[] = [];
+    users: UserDTO[] = []; // Liste complète des utilisateurs
+    filteredUsers: UserDTO[] = [];
+    selectedUser: UserDTO | null = null;
+    displayForm: boolean = false;
+    searchQuery: string = '';
 
-    // Options de rôles pour le filtrage
-    roles: any[] = [];
-
-    // Contrôle de l'affichage des dialogues
-    displayAddUserDialog: boolean = false;
-    displayModifyUserDialog: boolean = false;
-
-    // Utilisateur sélectionné pour modification
-    selectedUser: User | null = null;
-
-
-    constructor() { }
+    constructor(private userService: UserService) {}
 
     ngOnInit(): void {
-        // Initialisation de la liste des faux utilisateurs en dur (attente des donénes de l'API)
-        this.users = [
-            {
-                id_user: 1,
-                role_Id: 1,
-                isActive: true,
-                nom: 'Dupont',
-                prenom: 'Jean',
-                email: 'jean.dupont@example.com',
-                heures_annuelles_prestables: 1600,
-                VA: 20,
-                VAEX: 5,
-                RC: 10
-            },
-            {
-                id_user: 2,
-                role_Id: 2,
-                isActive: true,
-                nom: 'Martin',
-                prenom: 'Marie',
-                email: 'marie.martin@example.com',
-                heures_annuelles_prestables: 1600,
-                VA: 25,
-                VAEX: 4,
-                RC: 12
-            },
-            {
-                id_user: 3,
-                role_Id: 3,
-                isActive: false,
-                nom: 'Bernard',
-                prenom: 'Paul',
-                email: 'paul.bernard@example.com',
-                heures_annuelles_prestables: 1500,
-                VA: 22,
-                VAEX: 6,
-                RC: 8
-            },
-            {
-                id_user: 4,
-                role_Id: 2,
-                isActive: true,
-                nom: 'Dubois',
-                prenom: 'Anne',
-                email: 'anne.dubois@example.com',
-                heures_annuelles_prestables: 1600,
-                VA: 18,
-                VAEX: 5,
-                RC: 11
-            },
-            {
-                id_user: 5,
-                role_Id: 1,
-                isActive: true,
-                nom: 'Thomas',
-                prenom: 'Luc',
-                email: 'luc.thomas@example.com',
-                heures_annuelles_prestables: 1600,
-                VA: 20,
-                VAEX: 5,
-                RC: 9
-            },
-            {
-                id_user: 6,
-                role_Id: 2,
-                isActive: false,
-                nom: 'Petit',
-                prenom: 'Julie',
-                email: 'julie.petit@example.com',
-                heures_annuelles_prestables: 1550,
-                VA: 23,
-                VAEX: 4,
-                RC: 10
-            },
-            {
-                id_user: 7,
-                role_Id: 3,
-                isActive: true,
-                nom: 'Robert',
-                prenom: 'David',
-                email: 'david.robert@example.com',
-                heures_annuelles_prestables: 1600,
-                VA: 21,
-                VAEX: 6,
-                RC: 12
-            },
-            {
-                id_user: 8,
-                role_Id: 2,
-                isActive: true,
-                nom: 'Richard',
-                prenom: 'Emma',
-                email: 'emma.richard@example.com',
-                heures_annuelles_prestables: 1600,
-                VA: 19,
-                VAEX: 5,
-                RC: 11
-            },
-            {
-                id_user: 9,
-                role_Id: 1,
-                isActive: true,
-                nom: 'Durand',
-                prenom: 'Pierre',
-                email: 'pierre.durand@example.com',
-                heures_annuelles_prestables: 1600,
-                VA: 20,
-                VAEX: 5,
-                RC: 10
-            },
-            {
-                id_user: 10,
-                role_Id: 2,
-                isActive: true,
-                nom: 'Leroy',
-                prenom: 'Sophie',
-                email: 'sophie.leroy@example.com',
-                heures_annuelles_prestables: 1600,
-                VA: 24,
-                VAEX: 4,
-                RC: 9
-            },
-            {
-                id_user: 11,
-                role_Id: 3,
-                isActive: true,
-                nom: 'Moreau',
-                prenom: 'Thomas',
-                email: 'thomas.moreau@example.com',
-                heures_annuelles_prestables: 1600,
-                VA: 22,
-                VAEX: 5,
-                RC: 12
-            },
-            {
-                id_user: 12,
-                role_Id: 2,
-                isActive: false,
-                nom: 'Simon',
-                prenom: 'Isabelle',
-                email: 'isabelle.simon@example.com',
-                heures_annuelles_prestables: 1550,
-                VA: 20,
-                VAEX: 6,
-                RC: 8
-            },
-            {
-                id_user: 13,
-                role_Id: 1,
-                isActive: true,
-                nom: 'Laurent',
-                prenom: 'Michel',
-                email: 'michel.laurent@example.com',
-                heures_annuelles_prestables: 1600,
-                VA: 21,
-                VAEX: 5,
-                RC: 10
-            },
-            {
-                id_user: 14,
-                role_Id: 2,
-                isActive: true,
-                nom: 'Lefebvre',
-                prenom: 'Chloé',
-                email: 'chloe.lefebvre@example.com',
-                heures_annuelles_prestables: 1600,
-                VA: 23,
-                VAEX: 4,
-                RC: 11
-            },
-            {
-                id_user: 15,
-                role_Id: 3,
-                isActive: true,
-                nom: 'Faure',
-                prenom: 'Alexandre',
-                email: 'alexandre.faure@example.com',
-                heures_annuelles_prestables: 1600,
-                VA: 19,
-                VAEX: 5,
-                RC: 9
-            }
-        ];
-        // Options pour le dropdown de filtrage des rôles
-        this.roles = [
-            { label: 'Tous', value: null },
-            { label: 'Admin', value: 1 },
-            { label: 'Employé', value: 2 },
-            { label: 'Chargé de mission', value: 3 },
-        ];
+        this.loadUsers();
     }
 
-    // Méthode pour obtenir le nom du rôle à partir de son ID
-    getRoleName(roleId: number): string {
-        switch (roleId) {
-            case 1:
-                return 'Admin';
-            case 2:
-                return 'Employé';
-            case 3:
-                return 'Chargé de mission';
-            default:
-                return 'Inconnu';
-        }
+    loadUsers() {
+        // Récupère la liste des utilisateurs depuis le service
+        this.userService.getUsers().subscribe((users) => {
+            this.users = users;
+            this.sortUsers();
+            this.filteredUsers = [...this.users];
+        });
     }
 
-    // Afficher la boîte de dialogue pour ajouter un utilisateur
-    showAddUserDialog() {
-        this.displayAddUserDialog = true;
+    // Filtre les utilisateurs selon le champ de recherche
+    sortUsers() {
+        // Trie les utilisateurs actifs en premier
+        this.users.sort((a, b) => Number(b.isActive) - Number(a.isActive));
     }
 
-    // Afficher la boîte de dialogue pour modifier un utilisateur sélectionné
-    showModifyUserDialog(user: User) {
+    // Ouvre la boîte de dialogue pour ajouter un utilisateur
+    openAddUserForm() {
+        // Ouvre le formulaire pour ajouter un utilisateur
+        this.selectedUser = null;
+        this.displayForm = true;
+    }
+
+    // Ouvre la boîte de dialogue pour modifier un utilisateur sélectionné
+    openEditUserForm(user: UserDTO) {
+        console.log('Utilisateur sélectionné pour modification :', user);
+        // Ouvre le formulaire pour modifier un utilisateur
         this.selectedUser = user;
-        this.displayModifyUserDialog = true;
+        this.displayForm = true;
     }
 
-    // Désactiver un utilisateur
-    deactivateUser(user: User): void {
-        // Trouver l'index de l'utilisateur dans la liste des utilisateurs
-        const index = this.users.findIndex(u => u.id_user === user.id_user);
+    // Méthode de submti du form
+    // onFormSubmit(userForm: any) {
+    //     if (this.selectedUser) {
+    //         console.log(this.selectedUser);
+    //         // Mise à jour de l'utilisateur existant
+    //         this.userService.updateUser(this.selectedUser.idUser, userForm).subscribe(() => {
+    //             this.displayForm = false;
+    //             this.loadUsers();
+    //         });
+    //     } else {
+    //         // Ajout d'un nouvel utilisateur
+    //         this.userService.addUser(userForm).subscribe(() => {
+    //             this.displayForm = false;
+    //             this.loadUsers();
+    //         });
+    //     }
+    // }
 
-        if (index !== -1) {
-            // Mettre à jour la propriété isActive de l'utilisateur
-            this.users[index].isActive = false;
+    // onFormSubmit(): void {
+    //     this.displayForm = false;
+    //     this.loadUsers(); // Recharger la liste des utilisateurs après modification
+    // }
+
+    onFormSubmit(userForm: UserForm): void {
+        if (this.selectedUser) {
+            console.log('Mise à jour de l\'utilisateur avec ID :', this.selectedUser.id);
+            console.log('Données du formulaire :', userForm);
+
+            this.userService.updateUser(this.selectedUser.id, userForm).subscribe({
+                next: () => {
+                    this.displayForm = false;
+                    this.loadUsers();
+                },
+                error: (err) => {
+                    console.error('Erreur lors de la mise à jour de l\'utilisateur :', err);
+                }
+            });
+        } else {
+            // Ajout d'un nouvel utilisateur
+            this.userService.addUser(userForm).subscribe({
+                next: () => {
+                    this.displayForm = false;
+                    this.loadUsers();
+                },
+                error: (err) => {
+                    console.error('Erreur lors de l\'ajout de l\'utilisateur :', err);
+                }
+            });
         }
     }
 
-    // Fonction appelée lors de l'ajout d'un utilisateur
-    onAddUser() {
-        this.displayAddUserDialog = false;
+
+
+
+    // Désactive un utilisateur ( pas de suppression)
+    deactivateUser(user: UserDTO) {
+        // Désactive un utilisateur en mettant 'isActive' à false
+        this.userService.deactivateUser(user.id).subscribe(() => {
+            this.loadUsers();
+        });
     }
 
-    // Fonction appelée lors de la modification d'un utilisateur
-    onModifyUser() {
-        this.displayModifyUserDialog = false;
+    // Filtre les utilisateurs en fonction du filtre sélectionné
+    filterUsers(filter: string) {
+        // Filtre les utilisateurs en fonction du filtre sélectionné
+        switch (filter) {
+            case 'Employé':
+            case 'Admin':
+                this.filteredUsers = this.users.filter((u) =>
+                    u.roles.some((role) => role.name === filter)
+                );
+                break;
+            case 'Actifs':
+                this.filteredUsers = this.users.filter((u) => u.isActive);
+                break;
+            case 'Inactifs':
+                this.filteredUsers = this.users.filter((u) => !u.isActive);
+                break;
+            default:
+                this.filteredUsers = [...this.users];
+        }
+    }
+
+    // Recherche intelligente parmi les utilisateurs
+    searchUsers() {
+        // Recherche intelligente parmi les utilisateurs
+        this.filteredUsers = this.users.filter((u) =>
+            `${u.nom} ${u.prenom} ${u.email}`.toLowerCase().includes(this.searchQuery.toLowerCase())
+        );
+    }
+
+    // Permet l'ouverture/fermeture de la pop up de formulaire
+    onDialogHide() {
+        // Réinitialiser le formulaire et l'utilisateur sélectionné lorsque le dialogue est fermé
+        this.selectedUser = null;
+        this.displayForm = false;
     }
 }

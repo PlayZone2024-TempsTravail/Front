@@ -13,6 +13,8 @@ import {CardModule} from 'primeng/card';
 import {ToastModule} from 'primeng/toast';
 import {DialogModule} from 'primeng/dialog';
 import {DropdownModule} from 'primeng/dropdown';
+import {MultiSelectModule} from 'primeng/multiselect';
+import {CalendarModule} from 'primeng/calendar';
 
 
 @NgModule({
@@ -35,6 +37,8 @@ import {DropdownModule} from 'primeng/dropdown';
         ToastModule,
         DialogModule,
         DropdownModule,
+        MultiSelectModule,
+        CalendarModule,
 
     ],
     exports: [
