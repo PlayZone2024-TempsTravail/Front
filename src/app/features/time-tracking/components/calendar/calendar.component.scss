@@ -3,8 +3,11 @@
     --total-weeks: 6;
   }
   .container {
-    max-width: 1140px;
+    max-width: 1440px;
     margin: auto;
+    margin-top: 25px;
+    display: flex;
+    gap: 25px;
   }
   .cell-overlay {
     position: absolute;
@@ -211,3 +214,35 @@
     }
   }
   
+  .compteurs{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    border-radius: 5px;
+    width: 325px;
+    margin-top: 97px;
+    table{
+      border-spacing: 0px;
+      th {
+        border: solid 1px #c5c5c5;
+        border-left: none;
+        padding: 7px;
+
+        &:first-child{
+          border-left: solid 1px #c5c5c5;
+        }
+      }
+
+      td {
+        border: solid 1px #c5c5c5;
+        border-left: none;
+        border-top: none;
+        padding: 7px;
+
+        &:first-child{
+          border-left: solid 1px #c5c5c5;
+        }
+      }
+    }
+  }

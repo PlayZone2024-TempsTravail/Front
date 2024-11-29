@@ -1,14 +1,15 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { AppointmentDialogComponent, WorkTimeCategory } from '../appointment-dialog/appointment-dialog.component';
-import { AppointmentService, Appointment, WorkTime } from '../../../services/services-calendar.service';
+import { AppointmentDialogComponent } from '../appointment-dialog/appointment-dialog.component';
+import { AppointmentService } from '../../../services/services-calendar.service';
+import { Appointment, WorkTime } from '../../models/appointment.model';
 
 export enum CalendarView {
   Month = 'month',
   Week = 'week',
   Day = 'day',
-} 
+}
 
 @Component({
   selector: 'app-calendar',
@@ -17,41 +18,53 @@ export enum CalendarView {
 })
 
 export class CalendarComponent {
-  @Input() messageErreurEdit: string | null = null; 
-  viewDate: Date = new Date(); 
-  selectedDate: Date | null = null; 
-  selectedStartTime: string | undefined; 
-  weekDays: string[] = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche']; 
-  monthDays: Date[] = []; 
-  appointments: Appointment[] = []; 
-  currentView: CalendarView = CalendarView.Month; 
-  timeSlots: string[] = []; 
-  weeks: Date[][] = []; 
-  workTime:WorkTime[]=[];
+  viewDate: Date = new Date();
+  weekDays: string[] = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+  monthDays: Date[] = [];
+  appointments: Appointment[] = [];
+  currentView: CalendarView = CalendarView.Month;
+  weeks: Date[][] = [];
+  workTime: WorkTime[] = [];
+  timeSlots: string[] = [];
+  currentDate: number = new Date().getFullYear();
   public CalendarView = CalendarView;
+  
 
-  constructor(public dialog: MatDialog, private appointmentService: AppointmentService) { 
-    this.workTime=this.appointmentService.getWorkTimeList()
-    this.appointmentService.getAppointments().subscribe({ 
-      next: (appointments) => { 
-        console.log('Appointments reçus:', appointments); 
-        if (appointments && appointments.length > 0) { 
-          this.appointments = appointments.map(appointment => ({ 
-            ...appointment
-          })); 
-            // console.log('Mapped Appointments:', this.appointments);
-            // console.log('Appointments chargé:', this.appointments); 
-          } 
-          else { 
-            console.error('Not found'); 
-          } 
-        }, 
-        error: (error) => { 
-          console.error('erreur: ',error); 
-        } 
-      }); 
-      this.generateView(this.currentView, this.viewDate); 
-      this.generateTimeSlots(); 
+  constructor(public dialog: MatDialog, public appointmentService: AppointmentService) {
+    this.loadWorkTimeList();
+    this.loadAppointments();
+    this.generateView(this.currentView, this.viewDate);
+    this.generateTimeSlots();
+  }
+
+  private loadWorkTimeList(): void {
+    this.appointmentService.getWorkTimeList().subscribe(
+      (data: WorkTime[]) => {
+        this.workTime = data;
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des catégories de WorkTime:', error);
+      }
+    );
+  }
+
+  loadAppointments(): void {
+    this.appointmentService.getAppointments().subscribe({
+      next: (appointments) => {
+        if (appointments && appointments.length > 0) {
+          this.appointments = appointments.map(appointment => ({
+            ...appointment,
+            start: this.appointmentService.convertStringToDate(appointment.date, this.appointmentService.convertTimeToString(appointment.start)),
+            end: this.appointmentService.convertStringToDate(appointment.date, this.appointmentService.convertTimeToString(appointment.end)),
+          }));
+        } else {
+          console.error('Not found');
+        }
+      },
+      error: (error) => {
+        console.error('erreur: ', error);
+      }
+    });
   }
 
   generateView(view: CalendarView, date: Date) {
@@ -192,22 +205,11 @@ export class CalendarComponent {
     );
   }
 
-  isSelected(date: Date): boolean {
-    if (!this.selectedDate) {
-      return false;
-    }
-    return (
-      date.getDate() === this.selectedDate.getDate() &&
-      date.getMonth() === this.selectedDate.getMonth() &&
-      date.getFullYear() === this.selectedDate.getFullYear()
-    );
-  }
-
   isSameDate(date1: Date, date2: Date): boolean {
-    if (!(date1 instanceof Date)){
-      date1 = new Date(date1)
+    if (!(date1 instanceof Date)) {
+      date1 = new Date(date1);
     }
-    
+
     return (
       date1.getDate() === date2.getDate() &&
       date1.getMonth() === date2.getMonth() &&
@@ -215,131 +217,51 @@ export class CalendarComponent {
     );
   }
 
-  selectDate(date?: Date, startTime?: string) {
-    if (date) {
-      this.selectedDate = date;
-    } else {
-      this.selectedDate = new Date();
+  selectDate(date?: Date, start?: string) {
+    if (!date) {
+      date = new Date();
     }
-    this.selectedStartTime = startTime;
-    this.openDialog();
+    this.openDialog({ date, start });
   }
 
-  generateUUID(): string {
-    let d = new Date().getTime(); 
-    let d2 =
-      (typeof performance !== 'undefined' &&
-        performance.now &&
-        performance.now() * 1000) ||
-      0;
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
-      /[xy]/g,
-      function (c) {
-        let r = Math.random() * 16; 
-        if (d > 0) {
-          r = (d + r) % 16 | 0;
-          d = Math.floor(d / 16);
-        } else {
-          r = (d2 + r) % 16 | 0;
-          d2 = Math.floor(d2 / 16);
-        }
-        return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
-      }
-    );
-  }
-
-  addAppointment(
-    date: Date,
-    title: string,
-    WorkTime: WorkTimeCategory,
-    startTime: string,
-    endTime: string,
-  ): { timeRangeConflict: boolean } {
-    if (this.isOverlapping(date, startTime, endTime)) {
-      return { timeRangeConflict: true };
-    }
-  
-    this.appointments.push({
-      uuid: this.generateUUID(),
-      date,
-      title: title || '',
-      WorkTime,
-      startTime,
-      endTime,
-      //color: this.getRandomColor(),
-    });
-  
-    return { timeRangeConflict: false };
-  }
-  
-
-  deleteAppointment(appointment: Appointment, event: Event) {
-    event.stopPropagation();
-    const index = this.appointments.indexOf(appointment);
-    if (index > -1) {
-      this.appointments.splice(index, 1);
-    }
-  }
-
-  openDialog(): void {
-    const hour = new Date().getHours();
-    const minutes = new Date().getMinutes();
-    const h = hour < 10 ? `0${hour}` : hour;
-    const m = minutes < 10 ? `00` : `00`;
-    
+  openDialog(appointment: any): void {
     const dialogRef = this.dialog.open(AppointmentDialogComponent, {
       width: '500px',
       panelClass: 'dialog-container',
       data: {
-        uuid: '',
-        date: this.selectedDate,
-        title: '',
-        WorkTime: '',
-        startTime: this.selectedStartTime || `${h}:${m}`,
-        endTime: this.selectedStartTime || `${h}:${m}`,
-        //color: '',
-        appointments: this.appointments,
+        appointment,
+        appointments: this.appointments
       },
     });
-  
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.addAppointment(
-          result.date,
-          result.title,
-          result.WorkTime,
-          result.startTime,
-          result.endTime
-        );
-      }
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.appointmentService.getAppointments().subscribe(data => this.appointments = data);
     });
-  }  
-  
+  }
+
   getAppointmentsForDate(day: Date, timeSlots: string[]) {
-    
     return this.appointments
       .filter((appointment) => {
         return this.isSameDate(appointment.date, day);
       })
       .map((appointment) => {
-        const startTimeIndex = timeSlots.indexOf(appointment.startTime);
-        const endTimeIndex = timeSlots.indexOf(appointment.endTime);
+        const startTimeIndex = timeSlots.indexOf(this.appointmentService.convertTimeToString(appointment.start));
+        const endTimeIndex = timeSlots.indexOf(this.appointmentService.convertTimeToString(appointment.end));
         return { ...appointment, startTimeIndex, endTimeIndex };
       });
   }
 
-  drop(event: CdkDragDrop<Appointment[]>, date: Date, slot?: string) {
-    const movedAppointment = event.item.data;
-    movedAppointment.date = date;
-    if (slot) {
-      movedAppointment.startTime = slot;
-      movedAppointment.endTime = slot;
-    }
-  }
-
   viewToday(): void {
     this.viewDate = new Date();
-    this.generateMonthView(this.viewDate);
+    if (this.currentView === CalendarView.Month) {
+      this.generateMonthView(this.viewDate);
+    }
+    if (this.currentView === CalendarView.Week) {
+      this.generateWeekView(this.viewDate);
+    }
+    if (this.currentView === CalendarView.Day) {
+      this.generateDayView(this.viewDate);
+    }
   }
 
   isCurrentMonth(date: Date): boolean {
@@ -350,110 +272,77 @@ export class CalendarComponent {
   }
 
   getAppointmentsForDateTime(date: Date, timeSlot: string): Appointment[] {
-    
-
+    const timeSlotDate = this.appointmentService.convertStringToDate(date, timeSlot);
     return this.appointments.filter(
       (appointment) =>
         this.isSameDate(appointment.date, date) &&
         (
-          (appointment.startTime <= timeSlot && appointment.endTime > timeSlot) ||
-          (appointment.startTime === timeSlot) 
+          (appointment.start <= timeSlotDate && appointment.end > timeSlotDate) ||
+          (appointment.start.getTime() === timeSlotDate.getTime())
         )
     );
   }
-  
-  // getRandomColor(): string { // TODO : Changer pour tableau de couleur 
-  //   const r = Math.floor(Math.random() * 256);
-  //   const g = Math.floor(Math.random() * 256);
-  //   const b = Math.floor(Math.random() * 256);
-  //   const a = 0.4;
-  //   return `rgba(${r},${g},${b},${a})`;
-  // }
 
-  isOverlapping(date: Date, startTime: string, endTime: string, appointmentToSkip?: Appointment): boolean {
+  isOverlapping(date: Date, start: string, end: string, appointmentToSkip?: Appointment): boolean {
+    const startDate = this.appointmentService.convertStringToDate(date, start);
+    const endDate = this.appointmentService.convertStringToDate(date, end);
+
     return this.appointments.some((appointment) => {
-      if (appointmentToSkip && appointment.uuid === appointmentToSkip.uuid) {
+      if (appointmentToSkip && appointment.category_Id === appointmentToSkip.category_Id) {
         return false;
       }
-      
+
       if (!this.isSameDate(appointment.date, date)) {
         return false;
       }
-  
+
       return (
-        (startTime >= appointment.startTime && startTime < appointment.endTime) ||
-        (endTime > appointment.startTime && endTime <= appointment.endTime) ||
-        (startTime <= appointment.startTime && endTime >= appointment.endTime)
+        (startDate >= appointment.start && startDate < appointment.end) ||
+        (endDate > appointment.start && endDate <= appointment.end) ||
+        (startDate <= appointment.start && endDate >= appointment.end)
       );
     });
   }
 
   editAppointment(appointment: Appointment, event: Event) {
-    event.preventDefault();
-    const dialogRef = this.dialog.open(AppointmentDialogComponent, {
-      width: '500px',
-      panelClass: 'dialog-container',
-      data: {
-        ...appointment,
-        appointments: this.appointments,
-      },
-    });
-  
-    dialogRef.beforeClosed().subscribe((result) => {
-      if (result) {
-        const index = this.appointments.findIndex((a) => a.uuid === result.uuid);
-        if (result.remove) {
-          this.appointments.splice(index, 1);
-        } else {
-          const conflict = this.isOverlapping(
-            result.date,
-            result.startTime,
-            result.endTime,
-            appointment
-          );
-  
-          if (conflict) {
-            this.messageErreurEdit = 'Les horaires se chevauchent. Veuillez choisir un autre créneau.';
-            return;
-          }
-  
-          this.appointments[index] = result;
-          this.messageErreurEdit = null; 
-        }
-      }
-    });
-  }  
+    this.openDialog(appointment);
+  }
 
-  calculateDuration(startTime: string, endTime: string): number {
-    const [startHours] = startTime.split(':').map(Number);
-    const [endHours] = endTime.split(':').map(Number);
-  
-    if (endHours <= startHours) {
-      return 1; 
-    }
-  
-    const duration = endHours - startHours;
+  calculateDuration(start: string, end: string): number {
+    const [startHours, startMinutes] = start.split(':').map(Number);
+    const [endHours, endMinutes] = end.split(':').map(Number);
+
+    const startDate = new Date();
+    startDate.setHours(startHours, startMinutes);
+
+    const endDate = new Date();
+    endDate.setHours(endHours, endMinutes);
+
+    const duration = (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60); // Convertir en heures
     return duration;
   }
-  
+
   getTotalHours(): number {
     return this.appointments.reduce((total, appointment) => {
-      const duration = this.calculateDuration(appointment.startTime, appointment.endTime);
+      const startTimeString = this.appointmentService.convertTimeToString(appointment.start);
+      const endTimeString = this.appointmentService.convertTimeToString(appointment.end);
+      const duration = this.calculateDuration(startTimeString, endTimeString);
       return total + duration;
     }, 0);
   }
 
-  getColor(a:Appointment)
-  {
-      let color:string|undefined;
-      if(a.color?.length == 0)
-      {
-        color= this.workTime.find(mapping => mapping.name == a.WorkTime.name)?.color;
-        //console.log(color);
-      }
-      else{
-          color= a.WorkTime.color;
-      }
-      return color;
+  getColor(a: Appointment) {
+    let color: string | undefined;
+    if (a.WorkTime.color?.length == 0) {
+      color = this.workTime.find(mapping => mapping.abreviation == a.WorkTime.abreviation)?.color;
+    } else {
+      color = a.WorkTime.color;
+    }
+    return color;
+  }
+
+  updateDateHeader(): void {
+    const currentYear = new Date().getFullYear();
+    this.currentDate = currentYear;
   }
 }
