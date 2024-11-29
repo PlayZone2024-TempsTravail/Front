@@ -200,4 +200,25 @@
       </tbody>
     </table>
   </div>
+  <div class="container_info">
+    <div class="compteurs">
+      <table>
+        <tr>
+            <th></th>
+            <th id="dateHeader">02-01-{{ currentDate }}</th>
+            <th>Utilisé</th>
+            <th>Solde</th>
+        </tr>
+        <tr *ngFor="let workTime of workTime">
+          <td class="category">{{ workTime.abreviation }}</td>
+          <td class="nb_day"></td>
+          <td></td>
+          <td></td>
+        </tr>
+    </table>
+    </div>
+    <!--Autre truc a mettre-->
+  </div>
 </div>
+
+

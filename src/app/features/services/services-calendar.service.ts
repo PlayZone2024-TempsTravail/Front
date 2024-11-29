@@ -3,7 +3,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Appointment, WorkTime } from '../time-tracking/models/appointment.model';
-import { formatISO } from 'date-fns';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +12,7 @@ export class AppointmentService {
   private workTimeCategoryUrl = 'https://api.technobel.pro/api/WorktimeCategory';
   private workTimeAddUrl = 'https://api.technobel.pro/api/Worktime';
 
-  private readonly jwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjEiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDI0LTExLTI4VDEwOjQyOjAyLjkwOTMwMTFaIiwibm9tIjoiSGFuc2UiLCJwcmVub20iOiJTdGV2ZW4iLCJlbWFpbCI6InN0ZXZlbkB0ZWNoLmJlIiwiUGVybWlzc2lvbnMiOlsiQUpPVVRFUl9QT0lOVEFHRSIsIkFKT1VURVJfUk9MRSIsIkFKT1VURVJfVVNFUiIsIkRFQlVHX1BFUk1JU1NJT04iLCJNT0RJRklFUl9QT0lOVEFHRSIsIk1PRElGSUVSX1JPTEUiLCJNT0RJRklFUl9VU0VSIiwiU1VQUFJJTUVSX1BPSU5UQUdFIiwiU1VQUFJJTUVSX1JPTEUiLCJTVVBQUklNRVJfVVNFUiIsIlZPSVJfQUxMX1BPSU5UQUdFUyIsIlZPSVJfUE9JTlRBR0UiLCJWT0lSX1JPTEVTIiwiVk9JUl9VU0VSUyJdLCJleHAiOjE3MzI3OTA1MjIsImlzcyI6IkFQSV9JRUMiLCJhdWQiOiJGUk9OVF9JRUMifQ.ut6lG9Vx_XXkcBoJVrScB87xWTKZXMds31oBiFG_AkE";
+  private readonly jwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjEiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDI0LTExLTI5VDEzOjMxOjM4LjYwMzg2OTNaIiwibm9tIjoiSGFuc2UiLCJwcmVub20iOiJTdGV2ZW4iLCJlbWFpbCI6InN0ZXZlbkB0ZWNoLmJlIiwiUGVybWlzc2lvbnMiOlsiQUpPVVRFUl9QT0lOVEFHRSIsIkFKT1VURVJfUk9MRSIsIkFKT1VURVJfVVNFUiIsIkRFQlVHX1BFUk1JU1NJT04iLCJNT0RJRklFUl9QT0lOVEFHRSIsIk1PRElGSUVSX1JPTEUiLCJNT0RJRklFUl9VU0VSIiwiU1VQUFJJTUVSX1BPSU5UQUdFIiwiU1VQUFJJTUVSX1JPTEUiLCJTVVBQUklNRVJfVVNFUiIsIlZPSVJfQUxMX1BPSU5UQUdFUyIsIlZPSVJfUE9JTlRBR0UiLCJWT0lSX1JPTEVTIiwiVk9JUl9VU0VSUyJdLCJleHAiOjE3MzI4ODcwOTgsImlzcyI6IkFQSV9JRUMiLCJhdWQiOiJGUk9OVF9JRUMifQ.fbHqeK6_IhVZQRP7_1UO8sXSAXHIFuqZb0fkhd4uhiE";
 
   constructor(private http: HttpClient) {}
 
@@ -29,25 +28,30 @@ export class AppointmentService {
 
   addAppointment(a: Appointment) {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${this.jwtToken}`);
-
-    const startTime = this.convertTimeToString(a.start); 
-    const endTime = this.convertTimeToString(a.end);  
-
-    const startDate = this.mergeDateAndTime(a.date, startTime);  
-    const endDate = this.mergeDateAndTime(a.date, endTime);  
-
+  
+    const startTime = this.convertTimeToString(a.start);
+    const endTime = this.convertTimeToString(a.end);
+  
+    const startDate = this.mergeDateAndTime(a.date, startTime);
+    const endDate = this.mergeDateAndTime(a.date, endTime);
+  
     const body = {
-      start: formatISO(startDate),  
-      end: formatISO(endDate),  
-      isOnSite: true, // TODO : A changer
+      start: startDate.toISOString(),
+      end: endDate.toISOString(),
+      isOnSite: true,
       categoryId: a.WorkTime.idWorktimeCategory,
-      projectId: 1010, // TODO : A changer
-      userId: 101, // TODO : A changer
+      projectId: 1010,
+      userId: 101,
     };
-
+  
     console.log('Data being sent:', body);
-
-    return this.http.post(this.workTimeAddUrl, body, { headers });
+  
+    return this.http.post(this.workTimeAddUrl, body, { headers }).pipe(
+      catchError(error => {
+        console.error('Erreur lors de l\'ajout du rendez-vous:', error);
+        return throwError(() => error);  // Ajoutez cette ligne pour propager l'erreur.
+      })
+    );
   }
 
   editAppointment(a: Appointment) {

@@ -16,6 +16,7 @@ export enum CalendarView {
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
 })
+
 export class CalendarComponent {
   viewDate: Date = new Date();
   weekDays: string[] = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
@@ -25,7 +26,9 @@ export class CalendarComponent {
   weeks: Date[][] = [];
   workTime: WorkTime[] = [];
   timeSlots: string[] = [];
+  currentDate: number = new Date().getFullYear();
   public CalendarView = CalendarView;
+  
 
   constructor(public dialog: MatDialog, public appointmentService: AppointmentService) {
     this.loadWorkTimeList();
@@ -336,5 +339,10 @@ export class CalendarComponent {
       color = a.WorkTime.color;
     }
     return color;
+  }
+
+  updateDateHeader(): void {
+    const currentYear = new Date().getFullYear();
+    this.currentDate = currentYear;
   }
 }
