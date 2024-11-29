@@ -24,10 +24,9 @@
     {
       "id": 2,
       "nom": "Dupont",
-      "prenom": "Jean",
+      "prenom": "Jeannette",
       "email": "jean.dupont@example.com",
-      "password": "password1",
-      "isActive": true,
+      "isActive": false,
       "roles": [
         {
           "idRole": 2,
@@ -44,6 +43,16 @@
           "date": "2023-01-01",
           "salaire": 42000,
           "regime": 80
+        },
+        {
+          "date": "2022-02-01",
+          "salaire": 40000,
+          "regime": 80
+        },
+        {
+          "date": "2022-02-01",
+          "salaire": 40000,
+          "regime": 80
         }
       ]
     },
@@ -52,7 +61,7 @@
       "nom": "Martin",
       "prenom": "Maria",
       "email": "marie.martin@example.com",
-      "isActive": true,
+      "isActive": false,
       "roles": [
         {
           "idRole": 2,
@@ -69,15 +78,19 @@
           "date": "2021-05-15",
           "salaire": 38000,
           "regime": 100
+        },
+        {
+          "date": "2021-05-15",
+          "salaire": 38000,
+          "regime": 100
         }
       ]
     },
     {
       "id": 4,
       "nom": "Durand",
-      "prenom": "Luc",
+      "prenom": "Lucas",
       "email": "luc.durand@example.com",
-      "password": "password3",
       "isActive": true,
       "roles": [
         {
@@ -86,6 +99,11 @@
         }
       ],
       "historique": [
+        {
+          "date": "2020-03-20",
+          "salaire": 45000,
+          "regime": 90
+        },
         {
           "date": "2020-03-20",
           "salaire": 45000,
@@ -324,8 +342,7 @@
       "nom": "Lefevre",
       "prenom": "Paul",
       "email": "paul.lefevre@example.com",
-      "password": "password14",
-      "isActive": false,
+      "isActive": true,
       "roles": [
         {
           "idRole": 2,
@@ -333,6 +350,11 @@
         }
       ],
       "historique": [
+        {
+          "date": "2020-05-01",
+          "salaire": 35000,
+          "regime": 60
+        },
         {
           "date": "2020-05-01",
           "salaire": 35000,
@@ -556,6 +578,30 @@
         }
       ],
       "id": 27
+    },
+    {
+      "nom": "Dupont",
+      "prenom": "Jeannette",
+      "email": "jean.dupont@example.com",
+      "isActive": false,
+      "roles": [
+        {
+          "idRole": 2,
+          "name": "Employé"
+        },
+        {
+          "idRole": 1,
+          "name": "Admin"
+        }
+      ],
+      "historique": [
+        {
+          "date": "2024-11-29T23:00:00.000Z",
+          "salaire": 40000,
+          "regime": 90
+        }
+      ],
+      "id": 28
     }
   ],
   "roles": [
