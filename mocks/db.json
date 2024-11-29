@@ -1,91 +1,69 @@
-﻿{
-    "admin" : [
-        {
-            "id_user" : 1,
-            "id_role" : 1,
-            "token" : "",
-            "email": "admin@mail.com",
-            "password": "test1234"
-        }
-    ],
-    "role":[
-        {
-            "id_role":"1",
-            "name":"Admin"
-        }
-    ],
-    "appointments": [
+{
+  "admin": [
     {
-        "uuid": "124",
-        "date": "2024-11-25T09:00:00Z",
-        "title": "Project Planning",
-        "startTime": "09:00",
-        "endTime": "15:00",
-        "color": "",
-        "WorkTime": {
-            "name": "VIEC",
-            "color": ""
-        }
-    },
-    {
-        "uuid": "125",
-        "date": "2024-11-25T14:00:00Z",
-        "title": "Client Meeting",
-        "startTime": "15:00",
-        "endTime": "15:00",
-        "color": "",
-        "WorkTime": {
-            "name": "RC",
-            "color": ""
-        }
-    },
-    {
-        "uuid": "126",
-        "date": "2024-11-26T11:30:00Z",
-        "title": "Team Sync-up",
-        "startTime": "12:00",
-        "endTime": "12:00",
-        "color": "",
-        "WorkTime": {
-            "name": "VA",
-            "color": ""
-        }
-    },
-    {
-        "uuid": "127",
-        "date": "2024-11-28T16:00:00Z",
-        "title": "HR Meeting",
-        "startTime": "17:00",
-        "endTime": "17:00",
-        "color": "",
-        "WorkTime": {
-            "name": "VAEX",
-            "color": ""
-        }
-    },
-    {
-        "uuid": "128",
-        "date": "2024-11-28T10:00:00Z",
-        "title": "Weekly Review",
-        "startTime": "11:00",
-        "endTime": "11:00",
-        "color": "",
-        "WorkTime": {
-            "name": "JF",
-            "color": ""
-        }
-    },
-    {
-        "uuid": "128",
-        "date": "2024-11-30T10:00:00Z",
-        "title": "Weekly Review",
-        "startTime": "11:00",
-        "endTime": "11:00",
-        "color": "",
-        "WorkTime": {
-            "name": "MA",
-            "color": ""
-        }
+      "id_user": 1,
+      "id_role": 1,
+      "token": "",
+      "email": "admin@mail.com",
+      "password": "test1234"
     }
-]
+  ],
+  "role": [
+    {
+      "id_role": "1",
+      "name": "Admin"
+    }
+  ],
+  "appointments": [
+    {
+      "id": 2,
+      "WorkTime": {
+        "name": "VAEX",
+        "color": "#FBCFE8"
+      },
+      "date": "2024-11-25T15:18:56.563Z",
+      "startTime": "06:00",
+      "endTime": "16:00"
+    },
+    {
+      "id": 3,
+      "WorkTime": {
+        "name": "VA",
+        "color": "#C6EBCB"
+      },
+      "date": "2024-11-28T15:20:06.959Z",
+      "startTime": "06:00",
+      "endTime": "08:00"
+    },
+    {
+      "id": 5,
+      "WorkTime": {
+        "name": "RC",
+        "color": "#A7D3F1"
+      },
+      "date": "2024-11-28T15:20:06.959Z",
+      "startTime": "08:00",
+      "endTime": "10:00"
+    },
+    {
+      "id": 6,
+      "WorkTime": {
+        "name": "VA",
+        "color": "#C6EBCB"
+      },
+      "date": "2024-11-27T15:25:32.116Z",
+      "startTime": "03:00",
+      "endTime": "04:00"
+    },
+    {
+      "id": 7,
+      "WorkTime": {
+        "name": "VA",
+        "color": "#C6EBCB"
+      },
+      "date": "2024-11-27T15:25:32.116Z",
+      "startTime": "06:00",
+      "endTime": "08:00"
+    }
+  ]
 }
