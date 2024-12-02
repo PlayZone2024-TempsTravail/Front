@@ -52,29 +52,6 @@ export class UserListComponent implements OnInit {
         this.displayForm = true;
     }
 
-    // Méthode de submti du form
-    // onFormSubmit(userForm: any) {
-    //     if (this.selectedUser) {
-    //         console.log(this.selectedUser);
-    //         // Mise à jour de l'utilisateur existant
-    //         this.userService.updateUser(this.selectedUser.idUser, userForm).subscribe(() => {
-    //             this.displayForm = false;
-    //             this.loadUsers();
-    //         });
-    //     } else {
-    //         // Ajout d'un nouvel utilisateur
-    //         this.userService.addUser(userForm).subscribe(() => {
-    //             this.displayForm = false;
-    //             this.loadUsers();
-    //         });
-    //     }
-    // }
-
-    // onFormSubmit(): void {
-    //     this.displayForm = false;
-    //     this.loadUsers(); // Recharger la liste des utilisateurs après modification
-    // }
-
     onFormSubmit(userForm: UserForm): void {
         if (this.selectedUser) {
             console.log('Mise à jour de l\'utilisateur avec ID :', this.selectedUser.id);
