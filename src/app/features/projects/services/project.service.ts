@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Project} from '../models/project.model';
-import {organisme} from '../models/organisme.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +13,9 @@ export class ProjectService {
 
     getAllProjects(): Observable<Project[]> {
         return this.http.get<Project[]>(`${this.apiUrl}/projects`);
-
     }
 
-
-
+    createProject(projectData: Project): Observable<Project> {
+        return this.http.post<Project>(`${this.apiUrl}/projects`, projectData);
+    }
 }
