@@ -13,28 +13,31 @@ import {DialogModule} from 'primeng/dialog';
 import {DropdownModule} from 'primeng/dropdown';
 import {UserListComponent} from '../users/components/user-list/user-list.component';
 import {UserFormComponent} from '../users/components/user-form/user-form.component';
+import { EncodageCoutsProjetComponent } from './components/encodage-couts-projet/encodage-couts-projet.component';
+import {FormsModule} from '@angular/forms';
 
 
 @NgModule({
   declarations: [
-    ProjectsComponent
+    ProjectsComponent,
+    EncodageCoutsProjetComponent
   ],
-  imports: [
-    CommonModule,
-    ProjectsRoutingModule,
+    imports: [
+        CommonModule,
+        ProjectsRoutingModule,
 
 
-
-      // PrimeNG
-      TableModule,
-      ChipModule,
-      ButtonModule,
-      InputTextModule,
-      CardModule,
-      ToastModule,
-      DialogModule,
-      DropdownModule,
-  ],
+        // PrimeNG
+        TableModule,
+        ChipModule,
+        ButtonModule,
+        InputTextModule,
+        CardModule,
+        ToastModule,
+        DialogModule,
+        DropdownModule,
+        FormsModule,
+    ],
     exports: [
         ProjectsComponent,
     ],

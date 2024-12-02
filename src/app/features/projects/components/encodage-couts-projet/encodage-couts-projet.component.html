@@ -1,0 +1,29 @@
+<div class="depense-list-container">
+    <!-- En-tête avec boutons d'action -->
+
+    <!-- Tableau des utilisateurs -->
+    <p-table [value]="depenses" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Nature</th>
+                <th>Organisme ou intervenant extérieur</th>
+                <th>Motif</th>
+                <th>Montant TVAC</th>
+                <th>Date prestation</th>
+                <th>Date facturation</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body">
+            <tr>
+                @for(depense of depenses; track depense.id_depense) {
+                    <td>{{ depense.libelle }}</td>
+                    <td>{{ depense.organisme_intervenant_ext }}</td>
+                    <td>{{ depense.motif }}</td>
+                    <td>{{ depense.montant }}</td>
+                    <td>{{ depense.date_prestation }}</td>
+                    <td>{{ depense.date_facturation }}</td>
+                }
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

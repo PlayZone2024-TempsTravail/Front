@@ -110,8 +110,64 @@
                     "prenom": "Admin"
 
                 }
+            ],
+            "depenses": [
+                {
+                    "id_depense": 1,
+                    "libelle": [
+                        {
+                            "id_libelle": 13,
+                            "name": "FS - 'Frais de Visa & assurance"
+                        }
+                    ],
+                    "organisme_intervenant_ext": "FNAC",
+                    "motif": "Location",
+                    "montant": 4933.94,
+                    "date_facturation": "2024-06-08"
+                },
+                {
+                    "id_depense": 2,
+                    "libelle": [
+                        {
+                            "id_libelle": 29,
+                            "name": "I - Autres"
+                        }
+                    ],
+                    "organisme_intervenant_ext": "IKEA",
+                    "motif": "Location",
+                    "montant": 3256.6,
+                    "date_facturation": "2024-10-19"
+                },
+                {
+                    "id_depense": 3,
+                    "libelle": [
+                        {
+                            "id_libelle": 28,
+                            "name": "I - Matériels informatiques"
+                        }
+                    ],
+                    "organisme_intervenant_ext": "FNAC",
+                    "motif": "Contrat annuel",
+                    "montant": 1363.08,
+                    "date_facturation": "2024-12-21"
+                },
+                {
+                    "id_depense": 4,
+                    "libelle": [
+                        {
+                            "id_libelle": 1,
+                            "name": "R - Experts/Intervenants externes"
+                        }
+                    ],
+                    "organisme_intervenant_ext": "IKEA",
+                    "motif": "Consultation",
+                    "montant": 4760.15,
+                    "date_prestation": "2024-11-05",
+                    "date_facturation": "2024-11-17"
+                }
             ]
         },
+
         {
             "id_project": 2,
             "organismes": [
@@ -131,6 +187,100 @@
                     "idUser": 6,
                     "nom": "Chen",
                     "prenom": "Li"
+                }
+            ],
+            "depenses" : [
+                {
+                    "id_depense": 1,
+                    "libelle": [
+                        {
+                            "id_libelle": 10,
+                            "name": "FS - Frais de Location de salles"
+                        }
+                    ],
+                    "organisme_intervenant_ext": "Google",
+                    "motif": "Achat de matériel",
+                    "montant": 3978.4,
+                    "date_facturation": "2024-01-21"
+                },
+                {
+                    "id_depense": 2,
+                    "libelle": [
+                        {
+                            "id_libelle": 4,
+                            "name": "FS - Achat de livres et de publications"
+                        }
+                    ],
+                    "organisme_intervenant_ext": "IKEA",
+                    "motif": "Achat de matériel",
+                    "montant": 807.42,
+                    "date_facturation": "2024-12-22"
+                },
+                {
+                    "id_depense": 3,
+                    "libelle": [
+                        {
+                            "id_libelle": 7,
+                            "name": "FS - Frais de Communication et Pub"
+                        }
+                    ],
+                    "organisme_intervenant_ext": "IKEA",
+                    "motif": "Consultation",
+                    "montant": 3758.77,
+                    "date_facturation": "2024-12-22"
+                },
+                {
+                    "id_depense": 4,
+                    "libelle": [
+                        {
+                            "id_libelle": 1,
+                            "name": "R - Experts/Intervenants externes"
+                        }
+                    ],
+                    "organisme_intervenant_ext": "IKEA",
+                    "motif": "Consultation",
+                    "montant": 4760.15,
+                    "date_prestation": "2024-11-05",
+                    "date_facturation": "2024-11-17"
+                },
+                {
+                    "id_depense": 5,
+                    "libelle": [
+                        {
+                            "id_libelle": 13,
+                            "name": "FS - 'Frais de Visa & assurance"
+                        }
+                    ],
+                    "organisme_intervenant_ext": "IKEA",
+                    "motif": "Achat de matériel",
+                    "montant": 1520.02,
+                    "date_facturation": "2024-09-18"
+                },
+                {
+                    "id_depense": 6,
+                    "libelle": [
+                        {
+                            "id_libelle": 24,
+                            "name": "FG - Fournitures Informatique"
+                        }
+                    ],
+                    "organisme_intervenant_ext": "Decathlon",
+                    "motif": "Prestation de service",
+                    "montant": 1885.21,
+                    "date_facturation": "2024-06-27"
+                },
+                {
+                    "id_depense": 7,
+                    "libelle": [
+                        {
+                            "id_libelle": 20,
+                            "name": "FG - Charges TIC"
+                        }
+                    ],
+                    "organisme_intervenant_ext": "Microsoft",
+                    "motif": "Contrat annuel",
+                    "montant": 2296.92,
+                    "date_facturation": "2024-04-06"
                 }
             ]
         },
@@ -154,6 +304,100 @@
                     "nom": "Tanaka",
                     "prenom": "Hiroshi"
                 }
+            ],
+            "depenses" : [
+                {
+                    "id_depense": 1,
+                    "libelle": [
+                        {
+                            "id_libelle": 26,
+                            "name": "FG - Autres"
+                        }
+                    ],
+                    "organisme_intervenant_ext": "Amazon",
+                    "motif": "Prestation de service",
+                    "montant": 2683.37,
+                    "date_facturation": "2024-07-14"
+                },
+                {
+                    "id_depense": 2,
+                    "libelle": [
+                        {
+                            "id_libelle": 1,
+                            "name": "R - Experts/Intervenants externes"
+                        }
+                    ],
+                    "organisme_intervenant_ext": "IKEA",
+                    "motif": "Consultation",
+                    "montant": 4760.15,
+                    "date_prestation": "2024-11-05",
+                    "date_facturation": "2024-11-17"
+                },
+                {
+                    "id_depense": 3,
+                    "libelle": [
+                        {
+                            "id_libelle": 20,
+                            "name": "FG - Communications téléphoniques"
+                        }
+                    ],
+                    "organisme_intervenant_ext": "Amazon",
+                    "motif": "Achat de matériel",
+                    "montant": 2800.44,
+                    "date_facturation": "2024-04-06"
+                },
+                {
+                    "id_depense": 4,
+                    "libelle": [
+                        {
+                            "id_libelle": 25,
+                            "name": "FG - Entretien et réparation"
+                        }
+                    ],
+                    "organisme_intervenant_ext": "Apple",
+                    "motif": "Contrat annuel",
+                    "montant": 4581.73,
+                    "date_facturation": "2024-10-23"
+                },
+                {
+                    "id_depense": 5,
+                    "libelle": [
+                        {
+                            "id_libelle": 20,
+                            "name": "FG - Communications téléphoniques"
+                        }
+                    ],
+                    "organisme_intervenant_ext": "Amazon",
+                    "motif": "Contrat annuel",
+                    "montant": 2676.36,
+                    "date_facturation": "2024-05-02"
+                },
+                {
+                    "id_depense": 6,
+                    "libelle": [
+                        {
+                            "id_libelle": 19,
+                            "name": "FG - Charges locatives (Eau, Electricité"
+                        }
+                    ],
+                    "organisme_intervenant_ext": "IKEA",
+                    "motif": "Consultation",
+                    "montant": 4135.3,
+                    "date_facturation": "2024-01-22"
+                },
+                {
+                    "id_depense": 7,
+                    "libelle": [
+                        {
+                            "id_libelle": 13,
+                            "name": "FS - 'Frais de Visa & assurance"
+                        }
+                    ],
+                    "organisme_intervenant_ext": "Apple",
+                    "motif": "Consultation",
+                    "montant": 3676.32,
+                    "date_facturation": "2024-06-29"
+                }
             ]
         },
         {
@@ -175,6 +419,61 @@
                     "idUser": 3,
                     "nom": "Smith",
                     "prenom": "John"
+                }
+            ],
+            "depenses" :  [
+                {
+                    "id_depense": 1,
+                    "libelle": [
+                        {
+                            "id_libelle": 10,
+                            "name": "FS - Frais de Location de salles"
+                        }
+                    ],
+                    "organisme_intervenant_ext": "Google",
+                    "motif": "Location",
+                    "montant": 1591.17,
+                    "date_facturation": "2024-03-30"
+                },
+                {
+                    "id_depense": 2,
+                    "libelle": [
+                        {
+                            "id_libelle": 10,
+                            "name": "FS - Frais de Location de salles"
+                        }
+                    ],
+                    "organisme_intervenant_ext": "IKEA",
+                    "motif": "Consultation",
+                    "montant": 3678.5,
+                    "date_facturation": "2024-10-16"
+                },
+                {
+                    "id_depense": 3,
+                    "libelle": [
+                        {
+                            "id_libelle": 1,
+                            "name": "R - Experts/Intervenants externes"
+                        }
+                    ],
+                    "organisme_intervenant_ext": "IKEA",
+                    "motif": "Consultation",
+                    "montant": 4760.15,
+                    "date_prestation": "2024-11-05",
+                    "date_facturation": "2024-11-17"
+                },
+                {
+                    "id_depense": 4,
+                    "libelle": [
+                        {
+                            "id_libelle": 6,
+                            "name": "FS - Frais de catering"
+                        }
+                    ],
+                    "organisme_intervenant_ext": "FNAC",
+                    "motif": "Contrat annuel",
+                    "montant": 437.22,
+                    "date_facturation": "2024-08-10"
                 }
             ]
         },
@@ -198,80 +497,562 @@
                     "nom": "Dupont",
                     "prenom": "Jean"
                 }
+            ],
+            "depenses" :  [
+                {
+                    "id_depense": 1,
+                    "libelle": [
+                        {
+                            "id_libelle": 10,
+                            "name": "FS - Frais de Location de salles"
+                        }
+                    ],
+                    "organisme_intervenant_ext": "Google",
+                    "motif": "Location",
+                    "montant": 1591.17,
+                    "date_facturation": "2024-03-30"
+                },
+                {
+                    "id_depense": 2,
+                    "libelle": [
+                        {
+                            "id_libelle": 10,
+                            "name": "FS - Frais de Location de salles"
+                        }
+                    ],
+                    "organisme_intervenant_ext": "IKEA",
+                    "motif": "Consultation",
+                    "montant": 3678.5,
+                    "date_facturation": "2024-10-16"
+                },
+                {
+                    "id_depense": 3,
+                    "libelle": [
+                        {
+                            "id_libelle": 1,
+                            "name": "R - Experts/Intervenants externes"
+                        }
+                    ],
+                    "organisme_intervenant_ext": "IKEA",
+                    "motif": "Consultation",
+                    "montant": 4760.15,
+                    "date_prestation": "2024-11-05",
+                    "date_facturation": "2024-11-17"
+                },
+                {
+                    "id_depense": 4,
+                    "libelle": [
+                        {
+                            "id_libelle": 6,
+                            "name": "FS - Frais de catering"
+                        }
+                    ],
+                    "organisme_intervenant_ext": "FNAC",
+                    "motif": "Contrat annuel",
+                    "montant": 437.22,
+                    "date_facturation": "2024-08-10"
+                },
+                {
+                    "id_depense": 5,
+                    "libelle": [
+                        {
+                            "id_libelle": 14,
+                            "name": "FS - Frais d'hébergement/logement"
+                        }
+                    ],
+                    "organisme_intervenant_ext": "Decathlon",
+                    "motif": "Location",
+                    "montant": 4509.64,
+                    "date_facturation": "2024-08-24"
+                },
+                {
+                    "id_depense": 6,
+                    "libelle": [
+                        {
+                            "id_libelle": 8,
+                            "name": "FS - Frais de déplacement mission"
+                        }
+                    ],
+                    "organisme_intervenant_ext": "Amazon",
+                    "motif": "Location",
+                    "montant": 4981.3,
+                    "date_facturation": "2024-03-07"
+                },
+                {
+                    "id_depense": 7,
+                    "libelle": [
+                        {
+                            "id_libelle": 5,
+                            "name": "FS - Achat de matériel et petit équipement"
+                        }
+                    ],
+                    "organisme_intervenant_ext": "Google",
+                    "motif": "Contrat annuel",
+                    "montant": 4992.7,
+                    "date_facturation": "2024-01-23"
+                },
+                {
+                    "id_depense": 8,
+                    "libelle": [
+                        {
+                            "id_libelle": 6,
+                            "name": "FS - Frais de catering"
+                        }
+                    ],
+                    "organisme_intervenant_ext": "FNAC",
+                    "motif": "Contrat annuel",
+                    "montant": 2705.73,
+                    "date_facturation": "2024-02-26"
+                }
             ]
         }
     ],
-    "organismes": [
+    "libelles": [
         {
-            "id_organisme": 1,
-            "name": "NeonCortex Systems"
+            "id_libelle": 1,
+            "name": "R - Experts/Intervenants externes"
         },
         {
-            "id_organisme": 2,
-            "name": "SynthWave Corp"
+            "id_libelle": 2,
+            "name": "R - Employés IEC"
         },
         {
-            "id_organisme": 3,
-            "name": "BytePunk Syndicate"
+            "id_libelle": 3,
+            "name": "R - Autres"
         },
         {
-            "id_organisme": 4,
-            "name": "CryoHaven Industries"
+            "id_libelle": 4,
+            "name": "FS - Achat de livres et de publications"
         },
         {
-            "id_organisme": 5,
-            "name": "MechaHive Networks"
+            "id_libelle": 5,
+            "name": "FS - Achat de matériel et petit équipement"
+        },
+        {
+            "id_libelle": 6,
+            "name": "FS - Frais de catering"
+        },
+        {
+            "id_libelle": 7,
+            "name": "FS - Frais de Communication et Pub"
+        },
+        {
+            "id_libelle": 8,
+            "name": "FS - Frais de déplacement mission"
+        },
+        {
+            "id_libelle": 9,
+            "name": "FS - Frais de déplacements internationnaux"
+        },
+        {
+            "id_libelle": 10,
+            "name": "FS - Frais de Location de salles"
+        },
+        {
+            "id_libelle": 11,
+            "name": "FS - Frais de Réalisation/acquisition de supports pédagogiques"
+        },
+        {
+            "id_libelle": 12,
+            "name": "FS - Frais de séjour (Perdiem)"
+        },
+        {
+            "id_libelle": 13,
+            "name": "FS - 'Frais de Visa & assurance"
+        },
+        {
+            "id_libelle": 14,
+            "name": "FS - Frais d’hébergement/logement"
+        },
+        {
+            "id_libelle": 15,
+            "name": "FS - Frais d’impression"
+        },
+        {
+            "id_libelle": 16,
+            "name": "FS - Frais d’organisation d’atelier/séminaire"
+        },
+        {
+            "id_libelle": 17,
+            "name": "FS - Autres frais liés aux projets"
+        },
+        {
+            "id_libelle": 18,
+            "name": "FG - Loyers"
+        },
+        {
+            "id_libelle": 19,
+            "name": "FG - Charges locatives (Eau, Electricité"
+        },
+        {
+            "id_libelle": 20,
+            "name": "FG - Charges TIC"
+        },
+        {
+            "id_libelle": 21,
+            "name": "FG - Communications téléphoniques"
+        },
+        {
+            "id_libelle": 22,
+            "name": "FG - 'Frais postaux"
+        },
+        {
+            "id_libelle": 23,
+            "name": "FG - Fournitures de Bureau"
+        },
+        {
+            "id_libelle": 24,
+            "name": "FG - Fournitures Informatique"
+        },
+        {
+            "id_libelle": 25,
+            "name": "FG - Entretien et réparation"
+        },
+        {
+            "id_libelle": 26,
+            "name": "FG - Autres"
+        },
+        {
+            "id_libelle": 27,
+            "name": "I - Matériels et mobilier de bureau"
+        },
+        {
+            "id_libelle": 28,
+            "name": "I - Matériels informatiques"
+        },
+        {
+            "id_libelle": 29,
+            "name": "I - Autres"
         }
     ],
-    "users": [
+    "users" : [
         {
             "idUser": 1,
             "nom": "Admin",
             "prenom": "Admin",
             "email": "admin@gmail.com",
+            "password": "admin1234",
             "isActive": true,
-            "roles": 1
+            "roles": [
+                {
+                    "idRole": 1,
+                    "name": "Admin"
+                }
+            ],
+            "historique": [
+                {
+                    "date": "2021-01-01",
+                    "salaire": 60000,
+                    "regime": 100
+                }
+            ]
         },
         {
             "idUser": 2,
             "nom": "Dupont",
             "prenom": "Jean",
             "email": "jean.dupont@example.com",
+            "password": "password1",
             "isActive": true,
-            "roles": 2
+            "roles": [
+                {
+                    "idRole": 2,
+                    "name": "Employé"
+                }
+            ],
+            "historique": [
+                {
+                    "date": "2022-02-01",
+                    "salaire": 40000,
+                    "regime": 80
+                },
+                {
+                    "date": "2023-01-01",
+                    "salaire": 42000,
+                    "regime": 80
+                }
+            ]
         },
         {
             "idUser": 3,
-            "nom": "Smith",
-            "prenom": "John",
-            "email": "john.smith@example.com",
+            "nom": "Martin",
+            "prenom": "Marie",
+            "email": "marie.martin@example.com",
+            "password": "password2",
             "isActive": true,
-            "roles": 2
+            "roles": [
+                {
+                    "idRole": 2,
+                    "name": "Employé"
+                }
+            ],
+            "historique": [
+                {
+                    "date": "2021-05-15",
+                    "salaire": 38000,
+                    "regime": 100
+                }
+            ]
         },
         {
             "idUser": 4,
-            "nom": "Lopez",
-            "prenom": "Maria",
-            "email": "maria.lopez@example.com",
-
-            "isActive": false,
-            "roles": 3
+            "nom": "Durand",
+            "prenom": "Luc",
+            "email": "luc.durand@example.com",
+            "password": "password3",
+            "isActive": true,
+            "roles": [
+                {
+                    "idRole": 2,
+                    "name": "Employé"
+                }
+            ],
+            "historique": [
+                {
+                    "date": "2020-03-20",
+                    "salaire": 45000,
+                    "regime": 90
+                }
+            ]
         },
         {
             "idUser": 5,
-            "nom": "Tanaka",
-            "prenom": "Hiroshi",
-            "email": "hiroshi.tanaka@example.com",
+            "nom": "Petit",
+            "prenom": "Emma",
+            "email": "emma.petit@example.com",
+            "password": "password4",
             "isActive": true,
-            "roles": 2
+            "roles": [
+                {
+                    "idRole": 2,
+                    "name": "Employé"
+                },
+                {
+                    "idRole": 1,
+                    "name": "Admin"
+                }
+            ],
+            "historique": [
+                {
+                    "date": "2022-07-01",
+                    "salaire": 50000,
+                    "regime": 100
+                }
+            ]
         },
         {
             "idUser": 6,
-            "nom": "Chen",
-            "prenom": "Li",
-            "email": "li.chen@example.com",
+            "nom": "Moreau",
+            "prenom": "Hugo",
+            "email": "hugo.moreau@example.com",
+            "password": "password5",
+            "isActive": true,
+            "roles": [
+                {
+                    "idRole": 2,
+                    "name": "Employé"
+                }
+            ],
+            "historique": [
+                {
+                    "date": "2021-09-01",
+                    "salaire": 37000,
+                    "regime": 75
+                }
+            ]
+        },
+        {
+            "idUser": 7,
+            "nom": "Lefevre",
+            "prenom": "Chloé",
+            "email": "chloe.lefevre@example.com",
+            "password": "password6",
+            "isActive": true,
+            "roles": [
+                {
+                    "idRole": 2,
+                    "name": "Employé"
+                }
+            ],
+            "historique": [
+                {
+                    "date": "2020-12-01",
+                    "salaire": 42000,
+                    "regime": 100
+                }
+            ]
+        },
+        {
+            "idUser": 8,
+            "nom": "Garnier",
+            "prenom": "Thomas",
+            "email": "thomas.garnier@example.com",
+            "password": "password7",
+            "isActive": true,
+            "roles": [
+                {
+                    "idRole": 2,
+                    "name": "Employé"
+                }
+            ],
+            "historique": [
+                {
+                    "date": "2019-06-15",
+                    "salaire": 39000,
+                    "regime": 80
+                }
+            ]
+        },
+        {
+            "idUser": 9,
+            "nom": "Roux",
+            "prenom": "Laura",
+            "email": "laura.roux@example.com",
+            "password": "password8",
+            "isActive": true,
+            "roles": [
+                {
+                    "idRole": 2,
+                    "name": "Employé"
+                }
+            ],
+            "historique": [
+                {
+                    "date": "2022-11-01",
+                    "salaire": 41000,
+                    "regime": 100
+                }
+            ]
+        },
+        {
+            "idUser": 10,
+            "nom": "Blanc",
+            "prenom": "Lucas",
+            "email": "lucas.blanc@example.com",
+            "password": "password9",
+            "isActive": true,
+            "roles": [
+                {
+                    "idRole": 1,
+                    "name": "Admin"
+                },
+                {
+                    "idRole": 2,
+                    "name": "Employé"
+                }
+            ],
+            "historique": [
+                {
+                    "date": "2020-04-01",
+                    "salaire": 55000,
+                    "regime": 100
+                }
+            ]
+        },
+        {
+            "idUser": 11,
+            "nom": "Fournier",
+            "prenom": "Léa",
+            "email": "lea.fournier@example.com",
+            "password": "password10",
+            "isActive": true,
+            "roles": [
+                {
+                    "idRole": 2,
+                    "name": "Employé"
+                }
+            ],
+            "historique": [
+                {
+                    "date": "2021-08-01",
+                    "salaire": 38000,
+                    "regime": 90
+                }
+            ]
+        },
+        {
+            "idUser": 12,
+            "nom": "Girard",
+            "prenom": "Nathan",
+            "email": "nathan.girard@example.com",
+            "password": "password11",
+            "isActive": true,
+            "roles": [
+                {
+                    "idRole": 2,
+                    "name": "Employé"
+                }
+            ],
+            "historique": [
+                {
+                    "date": "2018-03-01",
+                    "salaire": 36000,
+                    "regime": 100
+                }
+            ]
+        },
+        {
+            "idUser": 13,
+            "nom": "Bonnet",
+            "prenom": "Sarah",
+            "email": "sarah.bonnet@example.com",
+            "password": "password12",
+            "isActive": true,
+            "roles": [
+                {
+                    "idRole": 1,
+                    "name": "Admin"
+                }
+            ],
+            "historique": [
+                {
+                    "date": "2019-09-01",
+                    "salaire": 58000,
+                    "regime": 100
+                }
+            ]
+        },
+        {
+            "idUser": 14,
+            "nom": "Dupuy",
+            "prenom": "Maxime",
+            "email": "maxime.dupuy@example.com",
+            "password": "password13",
+            "isActive": true,
+            "roles": [
+                {
+                    "idRole": 2,
+                    "name": "Employé"
+                }
+            ],
+            "historique": [
+                {
+                    "date": "2021-05-01",
+                    "salaire": 39000,
+                    "regime": 85
+                }
+            ]
+        },
+        {
+            "idUser": 15,
+            "nom": "Lefevre",
+            "prenom": "Paul",
+            "email": "paul.lefevre@example.com",
+            "password": "password14",
             "isActive": false,
-            "roles": 3
+            "roles": [
+                {
+                    "idRole": 2,
+                    "name": "Employé"
+                }
+            ],
+            "historique": [
+                {
+                    "date": "2020-05-01",
+                    "salaire": 35000,
+                    "regime": 60
+                }
+            ]
         }
     ]
 }

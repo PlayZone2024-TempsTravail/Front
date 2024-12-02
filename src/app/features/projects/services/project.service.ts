@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {Project} from '../models/project.model';
+import {Depense, Project} from '../models/project.model';
 import {UserInMisson} from '../models/userProject.model';
 import {User} from '../../users/models/user.model';
 
@@ -25,6 +25,10 @@ export class ProjectService {
 
     getAllUsers(): Observable<UserInMisson[]> {
         return this.http.get<UserInMisson[]>(`${this.apiUrl}/users`);
+    }
+
+    getDepensesByProject(): Observable<Depense[]> {
+        return this.http.get<Depense[]>(`${this.apiUrl}/projects`);
     }
 
 
