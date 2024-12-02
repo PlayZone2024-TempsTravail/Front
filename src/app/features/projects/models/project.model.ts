@@ -1,26 +1,19 @@
 export interface Project {
-    id_project: number;
-    organismes: Organisme[] ;
+    idProject: number;
     isActive: boolean;
     name: string;
-    montant_budget: number;
+    organismeId: number;
+    organismeName: string;
     color: string;
-    date_debut_projet: string;
-    date_fin_projet: string;
-    charges_de_projet: Charge_de_projet[];
+    montantBudget: number;
+    dateDebutProjet: Date;
+    dateFinProjet: Date;
+    chargeDeProjetId: number;
+    chargeDeProjetName: string;
+    previsionDepenseActuelle : number;
+    depenseReelActuelle : number;
 }
 
-export interface Organisme {
-    id_organisme: number;
-    name: string;
-}
-
-export interface Charge_de_projet {
-    idUser: number;
-    nom: string;
-    prenom: string;
-
-}
 
 
 

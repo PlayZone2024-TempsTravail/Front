@@ -13,6 +13,9 @@ export class ProjectsComponent implements OnInit  {
     //list of projects
     projects: Project[] = [];
     usersInMisson : UserInMisson[] = [];
+    selectedProject : Project[] = [];
+    isNotSelectButton: boolean = true;
+
 
 
     constructor(private readonly route: ActivatedRoute,private readonly projectService: ProjectService) { }
@@ -25,6 +28,22 @@ export class ProjectsComponent implements OnInit  {
         });
 
     }
+
+    totalPourcent(depence:number , previson:number){
+
+        let total = ((depence / previson) - 1) * 100;
+        console.log(total)
+        if (Number.isNaN(total)){
+            return 0;
+        }
+        else{
+
+            return Math.round(total * 100) / 100;
+        }
+
+    }
+
+
 
 
 

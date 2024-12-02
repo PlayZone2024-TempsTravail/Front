@@ -11,30 +11,33 @@ import {CardModule} from 'primeng/card';
 import {ToastModule} from 'primeng/toast';
 import {DialogModule} from 'primeng/dialog';
 import {DropdownModule} from 'primeng/dropdown';
+import { RadioButtonModule } from 'primeng/radiobutton';
 import {UserListComponent} from '../users/components/user-list/user-list.component';
 import {UserFormComponent} from '../users/components/user-form/user-form.component';
+import {FormsModule} from '@angular/forms';
 
 
 @NgModule({
   declarations: [
     ProjectsComponent
   ],
-  imports: [
-    CommonModule,
-    ProjectsRoutingModule,
+    imports: [
+        CommonModule,
+        ProjectsRoutingModule,
 
 
-
-      // PrimeNG
-      TableModule,
-      ChipModule,
-      ButtonModule,
-      InputTextModule,
-      CardModule,
-      ToastModule,
-      DialogModule,
-      DropdownModule,
-  ],
+        // PrimeNG
+        TableModule,
+        ChipModule,
+        ButtonModule,
+        InputTextModule,
+        CardModule,
+        ToastModule,
+        DialogModule,
+        DropdownModule,
+        RadioButtonModule,
+        FormsModule,
+    ],
     exports: [
         ProjectsComponent,
     ],

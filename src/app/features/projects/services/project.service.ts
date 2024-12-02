@@ -10,21 +10,12 @@ import {User} from '../../users/models/user.model';
 })
 export class ProjectService {
 
-    private apiUrl = 'http://localhost:3000'; //attention changer quand vrai api
+    private apiUrl = 'http://api.technobel.pro:444/'; //attention changer quand vrai api
     constructor(private http: HttpClient) { }
 
     getAllProjects(): Observable<Project[]> {
-        return this.http.get<Project[]>(`${this.apiUrl}/projects`);
+        return this.http.get<Project[]>(`${this.apiUrl}/api/Project/GetAll`);
 
-    }
-
-
-    getUserInMissonById(id: number): Observable<UserInMisson[]> {
-        return this.http.get<UserInMisson[]>(`${this.apiUrl}/users/${id}`);
-    }
-
-    getAllUsers(): Observable<UserInMisson[]> {
-        return this.http.get<UserInMisson[]>(`${this.apiUrl}/users`);
     }
 
 

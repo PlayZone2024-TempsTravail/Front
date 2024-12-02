@@ -1,0 +1,38 @@
+
+th , td {
+    text-align: center;
+}
+
+button {
+    background-color: var(--primary-color);
+}
+
+button:disabled,
+button[disabled]{
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+    pointer-events: all !important;
+}
+
+
+.actions-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+
+}
+
+.actions-header , button {
+    margin:20px 4px 20px 4px;
+}
+
+.search-filter-container{
+   display: flex;
+    flex-direction:row-reverse;
+    margin-bottom: 20px;
+}
+
+
