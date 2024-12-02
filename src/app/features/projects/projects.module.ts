@@ -15,6 +15,7 @@ import {UserListComponent} from '../users/components/user-list/user-list.compone
 import {UserFormComponent} from '../users/components/user-form/user-form.component';
 import { ProjectDetailsComponent } from './components/Project-details/project-details.component';
 import {ChartModule} from 'primeng/chart';
+import {SharedModule} from '../../shared/shared.module';
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import {ChartModule} from 'primeng/chart';
         DialogModule,
         DropdownModule,
         ChartModule,
+        SharedModule,
     ],
     exports: [
         ProjectsComponent,
