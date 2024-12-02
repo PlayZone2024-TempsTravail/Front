@@ -9,6 +9,13 @@ body, html {
     box-sizing: border-box;
 }
 
+.button-back {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    margin-top: -50px;
+}
+
 :root {
     --primary-color: #84c101
 }

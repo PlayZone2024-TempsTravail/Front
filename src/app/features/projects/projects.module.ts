@@ -13,15 +13,17 @@ import {DialogModule} from 'primeng/dialog';
 import {DropdownModule} from 'primeng/dropdown';
 import {UserListComponent} from '../users/components/user-list/user-list.component';
 import {UserFormComponent} from '../users/components/user-form/user-form.component';
-import { ProjectDetailsComponent } from './components/Project-details/project-details.component';
+import { ProjectDetailsComponent } from './components/project-details/project-details.component';
 import {ChartModule} from 'primeng/chart';
 import {SharedModule} from '../../shared/shared.module';
+import { ProjectCreationComponent } from './components/project-creation/project-creation.component';
 
 
 @NgModule({
   declarations: [
     ProjectsComponent,
-    ProjectDetailsComponent
+    ProjectDetailsComponent,
+    ProjectCreationComponent
   ],
     imports: [
         CommonModule,

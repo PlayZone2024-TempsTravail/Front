@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {ProjectsComponent} from './components/Projects-home/projects.component';
 import {projectResolverResolver} from './resolvers/project-resolver.resolver';
-import { ProjectDetailsComponent } from './components/Project-details/project-details.component';
+import { ProjectDetailsComponent } from './components/project-details/project-details.component';
 
 const routes: Routes = [
     { path: '',
