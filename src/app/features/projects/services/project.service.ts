@@ -3,14 +3,13 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Project} from '../models/project.model';
 import { map } from 'rxjs/operators';
-import {organisme} from '../models/organisme.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectService {
 
-    private apiUrl = 'http://localhost:3000'; //attention changer quand vrai api
+    private apiUrl = 'http://api.technobel.pro:444/api'; //attention changer quand vrai api
     constructor(private http: HttpClient) { }
 
     getAllProjects(): Observable<Project[]> {
@@ -18,12 +17,14 @@ export class ProjectService {
     }
 
     getProjectById(id: number): Observable<Project> {
-        return this.http.get<Project[]>(`${this.apiUrl}/projects?id_project=${id}`).pipe(
-            map((projects) => projects[0]) // Récupère le premier élément du tableau
-        );
+        return this.http.get<Project>(`${this.apiUrl}/Project/idproject/${id}`);
     }
 
-    getProjectExpenses(projectId: number): Observable<any[]> {
-        return this.http.get<any[]>(`${this.apiUrl}/expenses?project_id=${projectId}`);
+    getProjectPrevisions(id: number): Observable<any[]> {
+        return this.http.get<any[]>(`${this.apiUrl}/Project/idproject/${id}`);
+    }
+
+    getProjectExpenses(id: number): Observable<any[]> {
+        return this.http.get<any[]>(`${this.apiUrl}/Project/idproject/${id}`);
     }
 }

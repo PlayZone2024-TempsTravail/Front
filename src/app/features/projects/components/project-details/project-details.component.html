@@ -10,17 +10,17 @@
     <div class ="project-container" *ngIf="project; else loading">
         <div class="project-info">
             <p><strong>Nom du Projet :</strong> {{ project.name }}</p>
-            <p><strong>Organisme :</strong> {{ project.organisme_id}}</p>
-            <p><strong>Budget :</strong> {{ project.montant_budget | currency: 'EUR' }}</p>
-            <p><strong>Date de Début :</strong> {{ project.date_debut_projet }}</p>
-            <p><strong>Date de Fin :</strong> {{ project.date_fin_projet }}</p>
+            <p><strong>Organisme :</strong> {{ project.organismeName}}</p>
+            <p><strong>Budget :</strong> {{ project.montantBudget | currency: 'EUR' }}</p>
+            <p><strong>Date de Début :</strong> {{ project.dateDebutProjet | date: 'mediumDate' }}</p>
+            <p><strong>Date de Fin :</strong> {{ project.dateFinProjet | date: 'mediumDate' }}</p>
             <p><strong>Statut :</strong> {{ project.isActive ? 'Actif' : 'Inactif' }}</p>
         </div>
 
         <div class="project-info-2">
-            <h5><strong>Prévision :</strong> Prévision </h5>
-            <h5><strong>Coût :</strong> Coût </h5>
-            <h5><strong>Variation :</strong> Variation </h5>
+            <h5><strong>Prévision :</strong> {{ project.previsionDepenseActuelle | currency: 'EUR' }}</h5>
+            <h5><strong>Coût :</strong> {{ project.depenseReelActuelle | currency: 'EUR' }}</h5>
+            <h5><strong>Variation :</strong> {{ variation | number: '1.1-2' }} %</h5>
         </div>
 
         <!-- Section du graphique -->

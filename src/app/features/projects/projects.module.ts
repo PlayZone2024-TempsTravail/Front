@@ -16,14 +16,13 @@ import {UserFormComponent} from '../users/components/user-form/user-form.compone
 import { ProjectDetailsComponent } from './components/project-details/project-details.component';
 import {ChartModule} from 'primeng/chart';
 import {SharedModule} from '../../shared/shared.module';
-import { ProjectCreationComponent } from './components/project-creation/project-creation.component';
+
 
 
 @NgModule({
   declarations: [
     ProjectsComponent,
     ProjectDetailsComponent,
-    ProjectCreationComponent
   ],
     imports: [
         CommonModule,

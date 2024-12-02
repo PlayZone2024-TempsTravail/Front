@@ -14,29 +14,38 @@ export class ProjectDetailsComponent implements OnInit {
     chartData: any; // Données du graphique
     chartOptions: any; // Options du graphique
     totalExpenses: { [month: string]: number } = {}; // Totals for each month
+    totalPrevisions = 0; // Total previsions
+    totalCost = 0; // Total cost (real expenses)
+    variation = 0; // Variation percentage
 
     constructor(private route: ActivatedRoute, private projectService: ProjectService) {}
 
     ngOnInit(): void {
         const projectId = this.route.snapshot.params['id'];
 
-        // Charger les détails du projet
+        // Fetch project details
         this.projectService.getProjectById(projectId).subscribe((project) => {
             this.project = project;
 
-            // Charger les dépenses liées au projet
+            // Fetch expenses and calculate totals
             this.projectService.getProjectExpenses(projectId).subscribe((expenses) => {
                 this.expenses = this.groupExpensesByLabel(expenses);
-
-                // Calculate total expenses for each month
                 this.calculateTotalExpenses();
+                this.totalCost = this.calculateTotalCost();
+                this.calculateVariation();
 
-                // Générer les données du graphique
+                // Generate chart data
                 this.generateChartData();
+            });
+
+            // Fetch previsions
+            this.projectService.getProjectPrevisions(projectId).subscribe((previsions) => {
+                this.totalPrevisions = this.calculateTotalPrevisions(previsions);
+                this.calculateVariation();
             });
         });
 
-        // Configurer les options du graphique
+        // Configure chart options
         this.chartOptions = {
             responsive: true,
             plugins: {
@@ -59,7 +68,7 @@ export class ProjectDetailsComponent implements OnInit {
         const grouped: { [key: string]: any } = {};
 
         expenses.forEach((expense) => {
-            const month = new Date(expense.date).toLocaleString('default', { month: 'short', year: 'numeric' });
+            const month = new Date(expense.dateIntervention).toLocaleString('default', { month: 'short', year: 'numeric' });
 
             if (!grouped[expense.libelle]) {
                 grouped[expense.libelle] = { libelle: expense.libelle, data: {} };
@@ -85,13 +94,30 @@ export class ProjectDetailsComponent implements OnInit {
         });
     }
 
+    // Calculate total cost (real expenses)
+    calculateTotalCost(): number {
+        return Object.values(this.totalExpenses).reduce((sum, value) => sum + value, 0);
+    }
+
+    // Calculate total previsions
+    calculateTotalPrevisions(previsions: any[]): number {
+        return previsions.reduce((sum, prevision) => sum + prevision.montant, 0);
+    }
+
+    // Calculate variation percentage
+    calculateVariation(): void {
+        if (this.totalPrevisions > 0) {
+            this.variation = ((this.totalCost - this.totalPrevisions) / this.totalPrevisions) * 100;
+        }
+    }
+
     // Générer une plage de mois dynamique
     getMonthsRange(): string[] {
         if (!this.project) return [];
 
-        const start = new Date(this.project.date_debut_projet);
+        const start = new Date(this.project.dateDebutProjet);
         const today = new Date();
-        const end = this.project.isActive ? today : new Date(this.project.date_fin_projet);
+        const end = this.project.isActive ? today : new Date(this.project.dateFinProjet);
 
         const months = [];
         while (start <= end) {
@@ -102,7 +128,7 @@ export class ProjectDetailsComponent implements OnInit {
         return months;
     }
 
-    // Générer les données du graphique
+    // Generate chart data
     generateChartData(): void {
         const months = this.getMonthsRange();
 
@@ -112,10 +138,10 @@ export class ProjectDetailsComponent implements OnInit {
         let cumulativePredicted = 0;
 
         months.forEach((month) => {
-            // Calculer les dépenses réelles et prévisionnelles
+            // Calculate real and predicted expenses
             const monthExpenses = this.expenses.map((e) => e.data[month] || 0);
             const totalReal = monthExpenses.reduce((sum, val) => sum + val, 0);
-            const predicted = Math.random() * 500; // Simule une prévision pour cet exemple
+            const predicted = Math.random() * 500; // Simulate a prediction for demonstration
 
             cumulativeReal += totalReal;
             cumulativePredicted += predicted;
@@ -124,7 +150,7 @@ export class ProjectDetailsComponent implements OnInit {
             predictedExpenses.push(cumulativePredicted);
         });
 
-        // Configurer les données pour le graphique
+        // Set chart data
         this.chartData = {
             labels: months,
             datasets: [
