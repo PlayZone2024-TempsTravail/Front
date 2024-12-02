@@ -336,212 +336,198 @@
         {
             "id_depense": 1,
             "project_id": 1,
-            "libelle": "Marketing",
+            "libelle": "Experts / Intervenants externes",
             "montant": 1500,
             "date": "2024-05-01"
         },
         {
             "id_depense": 2,
             "project_id": 1,
-            "libelle": "IT Infrastructure",
+            "libelle": "Employés IEC",
             "montant": 2000,
             "date": "2024-06-01"
         },
         {
             "id_depense": 3,
             "project_id": 1,
-            "libelle": "Consulting",
+            "libelle": "Autres",
             "montant": 3000,
             "date": "2024-07-01"
         },
         {
             "id_depense": 4,
             "project_id": 1,
-            "libelle": "Operations",
+            "libelle": "Achat de livres et de publications",
             "montant": 1000,
             "date": "2023-03-01"
         },
         {
             "id_depense": 5,
             "project_id": 1,
-            "libelle": "Sustainability R&D",
+            "libelle": "Achat de matériel et petit équipement",
             "montant": 5000,
             "date": "2024-06-15"
         },
         {
             "id_depense": 6,
             "project_id": 1,
-            "libelle": "Equipment Purchase",
+            "libelle": "Frais de catering",
             "montant": 2500,
             "date": "2023-04-01"
         },
         {
             "id_depense": 7,
             "project_id": 1,
-            "libelle": "Training",
+            "libelle": "Frais de Communication et Pub",
             "montant": 3500,
             "date": "2022-06-01"
         },
         {
             "id_depense": 8,
             "project_id": 1,
-            "libelle": "Travel Expenses",
+            "libelle": "Frais de déplacement mission",
             "montant": 1200,
             "date": "2024-04-15"
         },
         {
             "id_depense": 9,
             "project_id": 1,
-            "libelle": "Software Licenses",
+            "libelle": "Frais de déplacements Internationaux",
             "montant": 2200,
             "date": "2024-08-01"
         },
         {
             "id_depense": 10,
             "project_id": 7,
-            "libelle": "Research Materials",
+            "libelle": "Frais de Location de salles",
             "montant": 4000,
             "date": "2023-05-15"
         },
         {
             "id_depense": 11,
             "project_id": 8,
-            "libelle": "Cloud Services",
+            "libelle": "Frais de Réalisation/acquisition de supports pédagogiques",
             "montant": 1800,
             "date": "2024-09-01"
         },
         {
             "id_depense": 12,
             "project_id": 9,
-            "libelle": "Hardware Upgrades",
+            "libelle": "Frais de séjour (Perdiem)",
             "montant": 2600,
             "date": "2024-10-01"
         },
         {
             "id_depense": 13,
             "project_id": 10,
-            "libelle": "Data Analysis Tools",
+            "libelle": "Frais de Visa & assurance",
             "montant": 3100,
             "date": "2023-06-01"
         },
         {
             "id_depense": 14,
             "project_id": 11,
-            "libelle": "User Interface Design",
+            "libelle": "Frais d’hébergement/logement",
             "montant": 1400,
             "date": "2024-11-15"
         },
         {
             "id_depense": 15,
             "project_id": 12,
-            "libelle": "Blockchain Nodes Setup",
+            "libelle": "Frais d’impression",
             "montant": 2700,
             "date": "2024-12-01"
         },
         {
             "id_depense": 16,
             "project_id": 13,
-            "libelle": "IoT Devices",
+            "libelle": "Frais d’organisation d’atelier/séminaire",
             "montant": 1900,
             "date": "2023-07-01"
         },
         {
             "id_depense": 17,
             "project_id": 14,
-            "libelle": "Edge Servers",
+            "libelle": "Autres frais liés aux projets",
             "montant": 2400,
             "date": "2025-01-01"
         },
         {
             "id_depense": 18,
             "project_id": 15,
-            "libelle": "Network Infrastructure",
+            "libelle": "Loyers",
             "montant": 4000,
             "date": "2023-08-01"
         },
         {
             "id_depense": 19,
             "project_id": 16,
-            "libelle": "Quantum Hardware",
+            "libelle": "Charges locatives (Eau, Electricité)",
             "montant": 5000,
             "date": "2025-02-01"
         },
         {
             "id_depense": 20,
             "project_id": 17,
-            "libelle": "Autonomous Vehicle Prototypes",
+            "libelle": "Charges TIC",
             "montant": 4500,
             "date": "2024-03-01"
         },
         {
             "id_depense": 21,
             "project_id": 18,
-            "libelle": "City Sensors Installation",
+            "libelle": "Communications téléphoniques",
             "montant": 6000,
             "date": "2024-04-01"
         },
         {
             "id_depense": 22,
             "project_id": 19,
-            "libelle": "Lab Equipment",
+            "libelle": "Frais postaux",
             "montant": 5500,
             "date": "2024-05-01"
         },
         {
             "id_depense": 23,
             "project_id": 20,
-            "libelle": "Spacecraft Materials",
+            "libelle": "Fournitures de Bureau",
             "montant": 7500,
             "date": "2023-09-01"
         },
         {
             "id_depense": 24,
             "project_id": 6,
-            "libelle": "Security Software",
+            "libelle": "Fournitures Informatique",
             "montant": 3200,
             "date": "2024-08-15"
         },
         {
             "id_depense": 25,
             "project_id": 7,
-            "libelle": "AI Algorithms Development",
+            "libelle": "Entretien et réparation",
             "montant": 5000,
             "date": "2023-06-15"
         },
         {
             "id_depense": 26,
             "project_id": 8,
-            "libelle": "Migration Services",
+            "libelle": "Matériels et mobilier de bureau",
             "montant": 1800,
             "date": "2024-09-15"
         },
         {
             "id_depense": 27,
             "project_id": 9,
-            "libelle": "VR Equipment",
+            "libelle": "Matériels informatiques",
             "montant": 2200,
             "date": "2024-10-15"
         },
         {
             "id_depense": 28,
             "project_id": 10,
-            "libelle": "Data Warehousing",
+            "libelle": "Autre",
             "montant": 3500,
             "date": "2023-06-15"
-        },
-        {
-            "id_depense": 29,
-            "project_id": 11,
-            "libelle": "App Testing",
-            "montant": 1600,
-            "date": "2024-11-30"
-        },
-        {
-            "id_depense": 30,
-            "project_id": 12,
-            "libelle": "Smart Contracts Development",
-            "montant": 2700,
-            "date": "2024-12-15"
         }
     ]
 }

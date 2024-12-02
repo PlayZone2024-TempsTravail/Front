@@ -16,13 +16,31 @@
         margin-bottom: 2rem;
 
         .project-info {
-
             p {
                 margin: 0.5rem 0;
             }
 
             strong {
                 color: #555;
+            }
+        }
+
+        .project-info-2 {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+            padding: 1rem;
+
+            h5 {
+                font-size: 1.1rem;
+                margin: 0;
+                color: #333;
+
+                strong {
+                    font-weight: bold;
+                    color: #555;
+                }
             }
         }
 
@@ -49,6 +67,17 @@
         .chart-container {
             height: 50%;
             width: 50%;
+        }
+    }
+
+    .export-pdf-button-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+
+        h2 {
+            margin: 0;
         }
     }
 }

@@ -13,6 +13,7 @@ export class ProjectDetailsComponent implements OnInit {
     expenses: any[] = []; // Dépenses par libellé
     chartData: any; // Données du graphique
     chartOptions: any; // Options du graphique
+    totalExpenses: { [month: string]: number } = {}; // Totals for each month
 
     constructor(private route: ActivatedRoute, private projectService: ProjectService) {}
 
@@ -26,6 +27,9 @@ export class ProjectDetailsComponent implements OnInit {
             // Charger les dépenses liées au projet
             this.projectService.getProjectExpenses(projectId).subscribe((expenses) => {
                 this.expenses = this.groupExpensesByLabel(expenses);
+
+                // Calculate total expenses for each month
+                this.calculateTotalExpenses();
 
                 // Générer les données du graphique
                 this.generateChartData();
@@ -47,6 +51,9 @@ export class ProjectDetailsComponent implements OnInit {
         };
     }
 
+    // Exporter le rapport PDF
+    // Placeholder
+
     // Regrouper les dépenses par libellé et par mois
     groupExpensesByLabel(expenses: any[]): any[] {
         const grouped: { [key: string]: any } = {};
@@ -62,6 +69,20 @@ export class ProjectDetailsComponent implements OnInit {
         });
 
         return Object.values(grouped);
+    }
+
+    // Calculate total expenses for each month
+    calculateTotalExpenses(): void {
+        const months = this.getMonthsRange();
+        this.totalExpenses = {};
+
+        months.forEach((month) => {
+            let total = 0;
+            this.expenses.forEach((expense) => {
+                total += expense.data[month] || 0;
+            });
+            this.totalExpenses[month] = total;
+        });
     }
 
     // Générer une plage de mois dynamique

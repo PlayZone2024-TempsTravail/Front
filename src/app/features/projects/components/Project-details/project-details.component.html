@@ -12,6 +12,12 @@
             <p><strong>Statut :</strong> {{ project.isActive ? 'Actif' : 'Inactif' }}</p>
         </div>
 
+        <div class="project-info-2">
+            <h5><strong>Prévision :</strong> Prévision </h5>
+            <h5><strong>Coût :</strong> Coût </h5>
+            <h5><strong>Variation :</strong> Variation </h5>
+        </div>
+
         <!-- Section du graphique -->
         <div class="chart-container" *ngIf="expenses.length > 0">
             <h4>Dépenses : Réel / Prévision</h4>
@@ -26,7 +32,12 @@
     </ng-template>
 
     <!-- Section tableau des dépenses -->
+    <div class="export-pdf-button-container">
     <h2>Dépenses par Libellé</h2>
+        <p-button>
+            <strong>exporter rapport</strong>
+        </p-button>
+    </div>
     <p-table
         *ngIf="expenses.length > 0"
         [value]="expenses"
@@ -44,12 +55,22 @@
             </tr>
         </ng-template>
 
-        <!-- Corps du tableau -->
+        <!-- Table Body -->
         <ng-template pTemplate="body" let-expense>
             <tr>
                 <td pFrozenColumn>{{ expense.libelle }}</td>
                 <ng-container *ngFor="let month of getMonthsRange()">
                     <td>{{ expense.data[month] || 0 | currency: 'EUR' }}</td>
+                </ng-container>
+            </tr>
+        </ng-template>
+
+        <!-- Table Footer for Totals -->
+        <ng-template pTemplate="footer">
+            <tr>
+                <td pFrozenColumn><strong>Total</strong></td>
+                <ng-container *ngFor="let month of getMonthsRange()">
+                    <td><strong>{{ totalExpenses[month] || 0 | currency: 'EUR' }}</strong></td>
                 </ng-container>
             </tr>
         </ng-template>
