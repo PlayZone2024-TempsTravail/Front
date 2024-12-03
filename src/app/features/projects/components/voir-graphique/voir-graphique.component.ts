@@ -12,6 +12,7 @@ export class ProjectGraphComponent implements OnInit {
 
     constructor(private readonly route: ActivatedRoute, private projectService: ProjectService) {
     }
+    project: Project | null = null; // Détails du projet
     expenses: any[] = [];
     previsualExpenses: any[] = [];
     incomes: any[] = [];
@@ -25,7 +26,7 @@ export class ProjectGraphComponent implements OnInit {
         const projectId = this.route.snapshot.params['id'];
 
         this.projectService.getProjectById(projectId).subscribe((project) => {
-            this.projects = project;
+            this.project = project;
 
 
             this.chartData1 = {

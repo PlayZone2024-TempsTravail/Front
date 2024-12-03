@@ -19,9 +19,7 @@ export class ProjectService {
     }
 
     getProjectById(id: number): Observable<Project> {
-        return this.http.get<Project[]>(`${this.apiUrl}/projects?id_project=${id}`).pipe(
-            map((projects) => projects[0]) // Récupère le premier élément du tableau
-        );
+        return this.http.get<Project>(`${this.apiUrl}/Project/idproject/${id}`);
     }
 
     getProjectExpenses(id: number): Observable<any> {
