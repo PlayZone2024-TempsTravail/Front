@@ -1,8 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output, SimpleChanges} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {HistoriqueEntry, Role, UserDTO, UserForm} from '../../models/user.dto.model';
+import {UserSalaire, Role, UserDTO, UserForm, UserRole} from '../../models/user.dto.model';
 import {UserService} from '../../services/user.service';
-import {ActivatedRoute, Router} from '@angular/router';
 import {UserCreateUpdateForm} from '../../forms/user.form';
 
 // Importation des modules nécessaires
@@ -24,7 +23,7 @@ export class UserFormComponent implements OnInit {
         { label: 'Inactif', value: false },
     ];
     displayHistoryDialog: boolean = false; // pour afficher la fenêtre de dialogue de l'historique
-    historique: HistoriqueEntry[] = []; // Historique des salaires et des régimes
+    historique: UserSalaire[] = []; // Historique des salaires et des régimes
 
     // Constructeur avec injection de dépendances (de FormBuilder et UserService)
     constructor(private _fb: FormBuilder, private userService: UserService) {
@@ -54,13 +53,14 @@ export class UserFormComponent implements OnInit {
                 nom: this.userData.nom,
                 prenom: this.userData.prenom,
                 email: this.userData.email,
-                roles: this.userData.roles.map((role: Role) => role.idRole),
-                salaire: this.userData.historique[0]?.salaire || null,
-                regime: this.userData.historique[0]?.regime || null,
-                date: this.userData.historique[0]?.date || null,
+                roles: this.userData.userRoles.map((role: UserRole) => role.roleId),
+                montant: this.userData.userSalaires[0]?.montant || null,
+                regime: this.userData.userSalaires[0]?.regime || null,
+                date: this.userData.userSalaires[0]?.date || null,
                 isActive: this.userData.isActive,
             });
-            this.historique = this.userData.historique;
+            this.historique = this.userData.userSalaires;
+
         }
     }
 
@@ -78,7 +78,6 @@ export class UserFormComponent implements OnInit {
             return;
         }
 
-        // Émettre les données du formulaire au composant parent
         const formValue = this.userForm.value;
 
         const userForm: UserForm = {
@@ -87,4 +86,5 @@ export class UserFormComponent implements OnInit {
 
         this.formSubmit.emit(userForm);
     }
+
 }

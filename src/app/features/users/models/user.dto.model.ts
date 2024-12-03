@@ -1,35 +1,42 @@
 ﻿// modèle des infos à récupérer d'un utilisateur
 export interface UserDTO {
-    id: number;
+    idUser: number;
     nom: string;
     prenom: string;
     email: string;
     isActive: boolean;
-    roles: Role[];
-    historique: HistoriqueEntry[];
+    userRoles: UserRole[];
+    userSalaires: UserSalaire[];
 }
 
+export interface UserRole {
+    roleId: number;
+    roleName: string;
+}
 
 export interface Role {
     idRole: number;
     name: string;
 }
 
-export interface HistoriqueEntry {
+
+export interface UserSalaire {
+    idUserSalaire: number;
     date: string;
-    salaire: number;
     regime: number;
+    montant: number;
 }
+
 
 export interface UserForm {
     nom: string;
     prenom: string;
     email: string;
-    password: string;
-    roles: number[]; // Liste des idRole sélectionnés
-    salaire: number;
+    password?: string; // Optionnel pour la modification
+    roles: number[]; // Liste des roleId sélectionnés
+    montant: number;
     regime: number;
-    date: string; // Date pour le salaire et le régime
+    date: string;
     isActive?: boolean;
 }
 

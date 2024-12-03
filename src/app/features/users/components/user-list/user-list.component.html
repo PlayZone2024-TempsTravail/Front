@@ -46,10 +46,11 @@
                 <td>{{ user.prenom }}</td>
                 <td>{{ user.email }}</td>
                 <td class="roles">
-                    <ng-container *ngFor="let role of user.roles">
-                        <p-chip label="{{ role.name }}"></p-chip>
+                    <ng-container *ngFor="let role of user.userRoles">
+                        <p-chip label="{{ role.roleName }}"></p-chip>
                     </ng-container>
                 </td>
+
                 <td>
                     <p-chip
                         [label]="user.isActive ? 'Actif' : 'Inactif'">

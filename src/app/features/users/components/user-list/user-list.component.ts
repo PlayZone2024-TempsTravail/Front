@@ -47,24 +47,51 @@ export class UserListComponent implements OnInit {
     // Ouvre la boîte de dialogue pour modifier un utilisateur sélectionné
     openEditUserForm(user: UserDTO) {
         console.log('Utilisateur sélectionné pour modification :', user);
-        // Ouvre le formulaire pour modifier un utilisateur
         this.selectedUser = user;
         this.displayForm = true;
     }
 
+    // onFormSubmit(userForm: UserForm): void {
+    //     if (this.selectedUser) {
+    //         console.log('Mise à jour de l\'utilisateur avec ID :', this.selectedUser.id);
+    //         console.log('Données du formulaire :', userForm);
+    //
+    //         this.userService.updateUser(this.selectedUser.id, userForm).subscribe({
+    //             next: () => {
+    //                 this.displayForm = false;
+    //                 this.loadUsers();
+    //             },
+    //             error: (err) => {
+    //                 console.error('Erreur lors de la mise à jour de l\'utilisateur :', err);
+    //             }
+    //         });
+    //     } else {
+    //         // Ajout d'un nouvel utilisateur
+    //         this.userService.addUser(userForm).subscribe({
+    //             next: () => {
+    //                 this.displayForm = false;
+    //                 this.loadUsers();
+    //             },
+    //             error: (err) => {
+    //                 console.error('Erreur lors de l\'ajout de l\'utilisateur :', err);
+    //             }
+    //         });
+    //     }
+    // }
+
     onFormSubmit(userForm: UserForm): void {
         if (this.selectedUser) {
-            console.log('Mise à jour de l\'utilisateur avec ID :', this.selectedUser.id);
+            console.log('Mise à jour de l\'utilisateur avec ID :', this.selectedUser.idUser);
             console.log('Données du formulaire :', userForm);
 
-            this.userService.updateUser(this.selectedUser.id, userForm).subscribe({
+            this.userService.updateUser(this.selectedUser.idUser, userForm).subscribe({
                 next: () => {
                     this.displayForm = false;
                     this.loadUsers();
                 },
                 error: (err) => {
                     console.error('Erreur lors de la mise à jour de l\'utilisateur :', err);
-                }
+                },
             });
         } else {
             // Ajout d'un nouvel utilisateur
@@ -75,7 +102,7 @@ export class UserListComponent implements OnInit {
                 },
                 error: (err) => {
                     console.error('Erreur lors de l\'ajout de l\'utilisateur :', err);
-                }
+                },
             });
         }
     }
@@ -86,7 +113,7 @@ export class UserListComponent implements OnInit {
     // Désactive un utilisateur ( pas de suppression)
     deactivateUser(user: UserDTO) {
         // Désactive un utilisateur en mettant 'isActive' à false
-        this.userService.deactivateUser(user.id).subscribe(() => {
+        this.userService.deactivateUser(user.idUser).subscribe(() => {
             this.loadUsers();
         });
     }
@@ -98,7 +125,7 @@ export class UserListComponent implements OnInit {
             case 'Employé':
             case 'Admin':
                 this.filteredUsers = this.users.filter((u) =>
-                    u.roles.some((role) => role.name === filter)
+                    u.userRoles.some((role) => role.roleName === filter)
                 );
                 break;
             case 'Actifs':

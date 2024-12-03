@@ -2,15 +2,15 @@ import {NgModule} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {HeaderComponent} from './layout/header/header.component'; 
-import { AuthModule } from './features/auth/auth.module'; 
+import {HeaderComponent} from './layout/header/header.component';
+import { AuthModule } from './features/auth/auth.module';
 import { TimeTrackingModule } from './features/time-tracking/time-tracking.module';
 import { TimeTrackingRoutingModule } from './features/time-tracking/time-tracking-routing.module';
 import { HomeComponent } from './features/home/components/home.component';
 
-import {provideHttpClient} from '@angular/common/http';
+import {HttpClientModule, provideHttpClient} from '@angular/common/http';
 import {ChipModule} from 'primeng/chip';
-import {TableModule} from 'primeng/table'; 
+import {TableModule} from 'primeng/table';
 import {CardModule} from 'primeng/card';
 import {ToastModule} from 'primeng/toast';
 import {PanelMenuModule} from "primeng/panelmenu";
@@ -43,7 +43,7 @@ import { DropdownModule } from 'primeng/dropdown';
         TimeTrackingRoutingModule,
 
         MatNativeDateModule,
-        
+
         //PRIMENG
         BrowserModule,
         BrowserAnimationsModule,
@@ -54,9 +54,9 @@ import { DropdownModule } from 'primeng/dropdown';
 
         // PrimeNG
         BrowserModule,
-        BrowserAnimationsModule, 
+        BrowserAnimationsModule,
         ButtonModule,
-        InputTextModule, 
+        InputTextModule,
     ],
     providers: [
         provideHttpClient(),

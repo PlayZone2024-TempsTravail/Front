@@ -92,7 +92,7 @@
     },
     {
       "id": 4,
-      "nom": "Durand",
+      "nom": "Durant",
       "prenom": "Lucas",
       "email": "luc.durand@example.com",
       "isActive": true,
@@ -117,6 +117,11 @@
           "date": "2024-11-28T23:00:00.000Z",
           "salaire": 24000,
           "regime": 50
+        },
+        {
+          "date": "2020-03-20",
+          "salaire": 45000,
+          "regime": 90
         }
       ]
     },

@@ -114,8 +114,8 @@
         </ng-template>
         <ng-template pTemplate="body" let-entry>
             <tr>
-                <td>{{ entry.date }}</td>
-                <td>{{ entry.salaire }}</td>
+                <td>{{ entry.date | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ entry.montant }}</td>
                 <td>{{ entry.regime }}</td>
             </tr>
         </ng-template>
