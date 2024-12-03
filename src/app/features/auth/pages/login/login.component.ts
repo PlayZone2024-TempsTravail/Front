@@ -29,7 +29,6 @@ export class LoginComponent {
 
     this._authService.login(this.loginForm.value).subscribe({
       next: datas => {
-        console.log(datas);
         this._router.navigate(['/']);
       },
       error: err => {

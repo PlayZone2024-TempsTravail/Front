@@ -27,22 +27,37 @@ app-root {
 }
 
 header {
-    background-color: var(--primary-color);
-    width: 12%;
+    width: 218px;
     height: 100vh;
     position: fixed;
+    background-color: var(--primary-color);
 }
 
 main {
     background-color: var(--blanc);
-    margin-left: 12%;
+    margin-left: 230px;
     padding: 1rem;
-    width: 88%;
     min-height: calc(100vh - 50px);
     display: flex;
     flex-direction: column;
 }
 
-
 html, body { height: 100%; }
+
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+.p-dialog-content {
+    overflow: visible !important;
+}
+
+.p-button {
+    background-color: var(--primary-color);
+    border: none;
+}
+
+.p-dialog-header-close {
+    background-color : var(--blanc);
+}
+
+

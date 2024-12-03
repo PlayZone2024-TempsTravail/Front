@@ -5,6 +5,8 @@ import {projectResolverResolver} from './resolvers/project-resolver.resolver';
 import {ProjectGraphComponent} from './components/voir-graphique/voir-graphique.component';
 import { ProjectDetailsComponent } from './components/project-details/project-details.component';
 import {EncodageCoutsProjetComponent} from './components/encodage-couts-projet/encodage-couts-projet.component';
+import {CalendarComponent} from '../time-tracking/components/calendar/calendar.component';
+import {unauthenticatedGuard} from '../../shared/guards/authenticated.guard';
 
 const routes: Routes = [
     { path: '',

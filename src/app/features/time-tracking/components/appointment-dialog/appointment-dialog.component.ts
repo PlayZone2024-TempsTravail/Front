@@ -1,5 +1,6 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, ViewEncapsulation, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
 import {
   AbstractControl,
   FormBuilder,
@@ -16,24 +17,22 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { CommonModule } from '@angular/common';
 import { FormControl } from '@angular/forms';
-import { WorkTime, AppointmentService } from '../../../services/services-calendar.service';
-import { HttpClient } from '@angular/common/http';
+import { AppointmentService } from '../../../services/services-calendar.service';
+import { MAT_DATE_FORMATS, DateAdapter } from '@angular/material/core';
+import { CUSTOM_DATE_FORMATS, CustomDateAdapter } from '../../models/custom-date-adapter';
+import { WorkTime, Appointment } from '../../models/appointment.model';
 
 //PRIMENG
 import { DropdownModule } from 'primeng/dropdown';
-
-export interface WorkTimeCategory {
-  name: string;
-  color: `#${string}`;
-}
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 @Component({
   selector: 'app-appointment-dialog',
-  encapsulation:ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None,
   templateUrl: './appointment-dialog.component.html',
   styleUrls: ['./appointment-dialog.component.scss'],
   standalone: true,
-  imports: [
+  imports: [ 
     CommonModule,
     FormsModule,
     MatFormFieldModule,
@@ -43,121 +42,118 @@ export interface WorkTimeCategory {
     ReactiveFormsModule,
 
     //PRIMENG
-    DropdownModule
+    DropdownModule,
+    InputSwitchModule
+  ],
+  providers: [
+    { provide: DateAdapter, useClass: CustomDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS },
   ],
 })
-export class AppointmentDialogComponent {
-  messageErreurEdit: string | null = null;
+
+export class AppointmentDialogComponent implements OnInit {
+  appointments: Appointment[] = [];
   appointmentForm: FormGroup;
-  WorkTime: WorkTime[] = [];
-  selectedWorkTime: any | undefined;
+  workTimeList: WorkTime[] = [];
+  checkedIsOnSite: boolean = true;
+
   constructor(
     public dialogRef: MatDialogRef<AppointmentDialogComponent>,
     @Inject(MAT_DIALOG_DATA)
     public data: {
-      uuid: string;
-      date: Date;
-      title: string;
-      WorkTime: WorkTime;
-      startTime: string;
-      endTime: string;
-      //color: string;
-      appointments: Array<{
-        uuid: string;
-        date: Date;
-        startTime: string;
-        endTime: string;
-      }>;
+      appointment: any,
+      appointments: Appointment[],
     },
     private appointmentService: AppointmentService,
-    private formBuilder: FormBuilder,
-    private http: HttpClient
+    private formBuilder: FormBuilder
   ) {
+    this.appointments = data.appointments;
+  
     this.appointmentForm = this.formBuilder.group({
-      WorkTime: [null, Validators.required], // Contrôle pour le dropdown
-      date: [this.data.date, Validators.required],
-      startTime: [this.data.startTime || '', Validators.required],
-      endTime: [this.data.endTime || '', Validators.required],
-      title: [''],
+      idWorktime: [],
+      categoryId: [null, Validators.required],
+      date: [null, Validators.required],
+      startTime: [null, Validators.required],
+      endTime: [null, Validators.required],
+      checkedIsOnSite: [false] 
     }, { validators: this.timeRangeValidator });
+  
+    //console.log(data.appointment)
+
+    this.appointmentForm.patchValue({
+      ...data.appointment,
+      startTime: this.appointmentService.convertTimeToString(new Date(data.appointment.start)) || null,
+      endTime: this.appointmentService.convertTimeToString(new Date(data.appointment.end)) || null,
+    });
   }
 
   ngOnInit(): void {
-    this.WorkTime = this.appointmentService.getWorkTimeList();
+    this.loadWorkTimeList();
+  }
+
+  private loadWorkTimeList(): void {
+    this.appointmentService.getWorkTimeList().subscribe(
+      (data: WorkTime[]) => {
+        this.workTimeList = data;
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des catégories de WorkTime:', error);
+      }
+    );
   }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
-  // onSaveClick(): void {
-  //   const appointmentFormData = this.appointmentForm.value;
-  //   this.http.post(`http://localhost:3000/appointments`, appointmentFormData).subscribe((Response) => {
-  //     if (this.appointmentForm.valid) {
-  //       const startTime = this.forceHoursOnly(this.appointmentForm.controls['startTime'].value);
-  //       const endTime = this.forceHoursOnly(this.appointmentForm.controls['endTime'].value);
-    
-  //       const data = {
-  //         WorkTime: this.appointmentForm.controls['WorkTime'].value, 
-  //         date: this.appointmentForm.controls['date'].value,
-  //         startTime,
-  //         endTime,
-  //         uuid: this.data.uuid,
-  //         title: this.appointmentForm.controls['title'].value || '', 
-  //       };
-  //       this.dialogRef.close(data);
-  //     }
-  //   });
-  // }
-
   onSaveClick(): void {
     if (!this.appointmentForm.valid) {
-      this.messageErreurEdit = 'Le formulaire contient des erreurs.';
       return;
     }
   
-    const appointmentFormData = this.appointmentForm.value;
+    const formData = this.appointmentForm.value;
+    const selectedWorkTime = this.workTimeList.find(wt => wt.idWorktimeCategory === formData.workTime);
+    if (selectedWorkTime) {
+      formData.workTime = {
+        abreviation: selectedWorkTime.abreviation,
+        color: selectedWorkTime.color
+      };
+    }
   
-    this.http
-      .post<{ success: boolean; message: string }>(
-        `http://localhost:3000/appointments`,
-        appointmentFormData
-      )
-      .subscribe({
-        next: (response) => {
-          const startTime = this.forceHoursOnly(
-            this.appointmentForm.controls['startTime'].value
-          );
-          const endTime = this.forceHoursOnly(
-            this.appointmentForm.controls['endTime'].value
-          );
+    formData.isOnSite = !formData.checkedIsOnSite;
   
-          const data = {
-            WorkTime: this.appointmentForm.controls['WorkTime'].value,
-            date: this.appointmentForm.controls['date'].value,
-            startTime,
-            endTime,
-            uuid: this.data.uuid,
-            title: this.appointmentForm.controls['title'].value || '',
-          };
+    const appointment: Appointment = {
+      ...formData,
+      start: this.appointmentService.convertStringToDate(formData.date, formData.startTime),
+      end: this.appointmentService.convertStringToDate(formData.date, formData.endTime),
+    };
   
-          this.dialogRef.close(data);
-        },
-        error: (err) => {
-          this.messageErreurEdit = 'Erreur lors de la sauvegarde. Veuillez réessayer.';
-          console.error('Erreur :', err);
-        },
+    if (appointment.idWorktime) {
+      this.appointmentService.editAppointment(appointment).subscribe({
+        next: () => {
+          this.dialogRef.close();
+        }
       });
-  }
-  
-  
-  private forceHoursOnly(time: string): string {
-    const [hours] = time.split(':');
-    return `${hours}:00`;
+    } else {
+      this.appointmentService.addAppointment(appointment).subscribe({
+        next: () => {
+          this.dialogRef.close();
+        }
+      });
+    }
   }
 
   onDeleteClick(): void {
-    this.dialogRef.close({ remove: true, uuid: this.data.uuid });
+    const formData = this.appointmentForm.value;
+
+    const appointment: Appointment = {
+      ...formData
+    };
+
+    if (appointment.idWorktime)
+    this.appointmentService.deleteAppointment(appointment).subscribe({
+      next: () => this.dialogRef.close()
+    });
   }
 
   timeRangeValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
@@ -166,32 +162,34 @@ export class AppointmentDialogComponent {
     const date = control.get('date')?.value;
   
     if (startTime && endTime) {
-      const [startHours, startMinutes] = startTime.split(':').map(Number);
-      const [endHours, endMinutes] = endTime.split(':').map(Number);
   
       const startDate = new Date(date);
-      startDate.setHours(startHours, startMinutes);
+      startDate.setHours(startTime);
   
       const endDate = new Date(date);
-      endDate.setHours(endHours, endMinutes);
+      endDate.setHours(endTime);
   
-      if (startDate > endDate) {
+      if (startDate >= endDate) {
         return { timeRangeInvalid: true };
       }
   
       if (
-        this.data.appointments.some((appt) => {
-          if (appt.uuid === this.data.uuid) return false;
-          const [apptStartHours, apptStartMinutes] = appt.startTime.split(':').map(Number);
-          const [apptEndHours, apptEndMinutes] = appt.endTime.split(':').map(Number);
-  
+        this.appointments.some((appt) => {
+          if (appt.categoryId === this.appointmentForm?.value.category_Id) return false;
           const apptStartDate = new Date(appt.date);
-          apptStartDate.setHours(apptStartHours, apptStartMinutes);
-  
           const apptEndDate = new Date(appt.date);
+  
+          const [apptStartHours, apptStartMinutes] = appt.start.split(':').map(Number);
+          const [apptEndHours, apptEndMinutes] = appt.end.split(':').map(Number);
+  
+          apptStartDate.setHours(apptStartHours, apptStartMinutes);
           apptEndDate.setHours(apptEndHours, apptEndMinutes);
   
-          return startDate < apptEndDate && endDate > apptStartDate;
+          const tolerance = 1; 
+          const startDateWithTolerance = new Date(startDate.getTime() + tolerance * 60000);
+          const endDateWithTolerance = new Date(endDate.getTime() - tolerance * 60000);
+  
+          return startDateWithTolerance < apptEndDate && endDateWithTolerance > apptStartDate;
         })
       ) {
         return { timeRangeConflict: true };
@@ -201,13 +199,7 @@ export class AppointmentDialogComponent {
     return null;
   };
 
-  onWorkTimeChange(event: any) {
-    console.log('Selected WorkTime:', event.value);
-  }
-
   get workTimeControl(): FormControl {
-    return this.appointmentForm.get('WorkTime') as FormControl;
+    return this.appointmentForm.get('workTime') as FormControl;
   }
 }
-
-

@@ -1,27 +1,123 @@
-<!-- Formulaire pour ajouter ou modifier un utilisateur -->
-<form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="p-fluid">
-    <div class="p-field">
-        <label for="nom">Nom</label>
-        <input id="nom" type="text" pInputText formControlName="nom" />
+<!-- users/components/user-form/user-form.component.html -->
+
+<form [formGroup]="userForm" (ngSubmit)="submit()">
+    <div class="form-grid">
+        <!-- Colonne de gauche -->
+        <div class="column">
+            <!-- Champ Prénom -->
+            <div class="form-group">
+                <label for="prenom">Prénom</label>
+                <input id="prenom" type="text" pInputText formControlName="prenom" />
+            </div>
+
+            <!-- Champ Nom -->
+            <div class="form-group">
+                <label for="nom">Nom</label>
+                <input id="nom" type="text" pInputText formControlName="nom" />
+            </div>
+
+            <!-- Champ Email -->
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input id="email" type="email" pInputText formControlName="email" />
+            </div>
+
+            <!-- Champ Rôles -->
+            <div class="form-group">
+                <label>Rôles</label>
+                <p-multiSelect
+                    [options]="roles"
+                    optionLabel="name"
+                    optionValue="idRole"
+                    formControlName="roles"
+                    [display]="'chip'"
+                    placeholder="Sélectionner les rôles"
+                ></p-multiSelect>
+            </div>
+        </div>
+
+        <!-- Colonne de droite -->
+        <div class="column">
+
+            <!-- Groupe Salaire et Régime -->
+            <div class="form-group-inline">
+                <div class="form-group">
+                    <label for="salaire">Salaire</label>
+                    <input
+                        id="salaire"
+                        type="number"
+                        pInputText
+                        formControlName="salaire"
+                    />
+                </div>
+                <div class="form-group">
+                    <label for="regime">Régime de Travail</label>
+                    <input
+                        id="regime"
+                        type="number"
+                        pInputText
+                        formControlName="regime"
+                    />
+                </div>
+            </div>
+
+            <!-- Champ Date -->
+            <div class="form-group">
+                <label for="date" class="date-changement">Date du changement</label>
+                <p-calendar id="date" formControlName="date"
+                            [iconDisplay]="'input'"
+                            [showIcon]="true"
+                            inputId="icondisplay">
+                </p-calendar>
+            </div>
+
+            <div class="form-group" *ngIf="userData">
+                <label>Statut</label>
+                <p-dropdown
+                    [options]="statusOptions"
+                    formControlName="isActive"
+                    placeholder="Sélectionner le statut"
+                ></p-dropdown>
+            </div>
+        </div>
     </div>
-    <div class="p-field">
-        <label for="prenom">Prénom</label>
-        <input id="prenom" type="text" pInputText formControlName="prenom" />
+
+    <!-- Boutons d'action -->
+    <div class="form-actions">
+        <button pButton type="submit" label="Ajouter" *ngIf="!userData"></button>
+        <button pButton type="submit" label="Modifier" *ngIf="userData"></button>
+        <button
+            pButton
+            type="button"
+            label="Historique"
+            *ngIf="userData"
+            (click)="openHistory()"
+        ></button>
     </div>
-    <div class="p-field">
-        <label for="email">Email</label>
-        <input id="email" type="email" pInputText formControlName="email" />
-    </div>
-    <div class="p-field">
-        <label for="password">Mot de passe</label>
-        <input id="password" type="password" pInputText formControlName="password" />
-    </div>
-    <div class="p-field">
-        <p-dropdown [options]="roles" optionLabel="label" formControlName="role_Id" placeholder="Sélectionnez un rôle" ></p-dropdown>
-    </div>
-    <div class="p-field">
-        <label for="heures_annuelles_prestables">Heures annuelles prestables</label><input id="heures_annuelles_prestables" type="number"  pInputText formControlName="heures_annuelles_prestables" />
-    </div>
-    <!-- Bouton de soumission du formulaire -->
-    <button pButton type="submit" [label]="user ? 'Modifier' : 'Ajouter'" icon="pi pi-check" [disabled]="userForm.invalid"></button>
 </form>
+
+<p-dialog
+    header="Historique"
+    [(visible)]="displayHistoryDialog"
+    [modal]="true"
+    [closable]="true"
+    [resizable]="false"
+    (onHide)="closeHistory()"
+>
+    <p-table [value]="historique">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Date</th>
+                <th>Salaire</th>
+                <th>Régime</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-entry>
+            <tr>
+                <td>{{ entry.date | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ entry.montant }}</td>
+                <td>{{ entry.regime }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-dialog>

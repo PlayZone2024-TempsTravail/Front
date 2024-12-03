@@ -8,7 +8,7 @@ import { TimeTrackingModule } from './features/time-tracking/time-tracking.modul
 import { TimeTrackingRoutingModule } from './features/time-tracking/time-tracking-routing.module';
 import { HomeComponent } from './features/home/components/home.component';
 
-import {provideHttpClient} from '@angular/common/http';
+import {HttpClientModule, provideHttpClient, withInterceptors} from '@angular/common/http';
 import {ChipModule} from 'primeng/chip';
 import {TableModule} from 'primeng/table';
 import {CardModule} from 'primeng/card';
@@ -29,6 +29,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { DropdownModule } from 'primeng/dropdown';
 import {DepenseService} from './features/projects/services/depense.service';
 import {ChartModule} from 'primeng/chart';
+import {jwtInterceptor} from './core/interceptor/jwt.interceptor';
 
 @NgModule({
     declarations: [
@@ -61,7 +62,7 @@ import {ChartModule} from 'primeng/chart';
         InputTextModule,
     ],
     providers: [
-        provideHttpClient(),
+        provideHttpClient(withInterceptors([jwtInterceptor])),
         DepenseService,
         provideAnimationsAsync() // Ajout de l'interceptors => provideHttpClient(withInterceptors([tokenInterceptor]))
     ],

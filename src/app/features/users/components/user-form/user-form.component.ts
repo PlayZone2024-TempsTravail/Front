@@ -1,70 +1,90 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, SimpleChanges} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {UserForm} from '../../models/user.form.model';
+import {UserSalaire, Role, UserDTO, UserForm, UserRole} from '../../models/user.dto.model';
+import {UserService} from '../../services/user.service';
+import {UserCreateUpdateForm} from '../../forms/user.form';
 
 // Importation des modules nécessaires
 @Component({
-  selector: 'app-user-form',
-  templateUrl: './user-form.component.html',
-  styleUrl: './user-form.component.scss'
+    selector: 'app-user-form',
+    templateUrl: './user-form.component.html',
+    styleUrl: './user-form.component.scss'
 })
 
+
 export class UserFormComponent implements OnInit {
-    // Déclaration d'une propriété d'entrée pour recevoir un utilisateur existant
-    @Input() user: UserForm | null = null;
+    @Input() userData: UserDTO | null  = null; // objet de type UserDTO ou null et sert à préremplir le formulaire d'ajout OU de modif
+    @Output() formSubmit = new EventEmitter<UserForm>();  // objet de type UserForm qui va émettre les données du formulaire au composant parent (form d'ajout OU modification).
 
-    // Déclaration du formulaire réactif
-    userForm!: FormGroup;
-
-    // Liste des rôles disponibles pour le dropdown du form
-    roles = [
-        { label: 'Admin', value: 1 },
-        { label: 'Employé', value: 2 },
-        { label: 'Chargé de mission', value: 3 }
+    userForm: FormGroup; // Formulaire réactif pour ajout ou modification d'un utilisateur
+    roles: Role[] = []; // Liste des rôles disponibles pour le dropdown
+    statusOptions = [ // liste des options pour le statut de l'utilisateur
+        { label: 'Actif', value: true },
+        { label: 'Inactif', value: false },
     ];
+    displayHistoryDialog: boolean = false; // pour afficher la fenêtre de dialogue de l'historique
+    historique: UserSalaire[] = []; // Historique des salaires et des régimes
 
-    // Injection du FormBuilder pour construire le formulaire
-    constructor(private fb: FormBuilder) { }
+    // Constructeur avec injection de dépendances (de FormBuilder et UserService)
+    constructor(private _fb: FormBuilder, private userService: UserService) {
+        // Initialisation du formulaire avec des validations
+        this.userForm = this._fb.group({...UserCreateUpdateForm});
+    }
 
-    // Initialisation du composant
     ngOnInit(): void {
-        // Construction du formulaire avec les contrôles et les validateurs
-        this.userForm = this.fb.group({
-            nom: ['', Validators.required],
-            prenom: ['', Validators.required],
-            email: ['', [Validators.required, Validators.email]],
-            password: ['', Validators.required],
-            role_Id: [null, Validators.required],
-            heures_annuelles_prestables: [1600, Validators.required],
-            VA: [20],
-            VAEX: [5],
-            RC: [10]
+        console.log('userData reçu :', this.userData);
+        // Récupérer les rôles depuis le service
+        this.userService.getRoles().subscribe((roles) => {
+            this.roles = roles;
         });
+    }
 
-        // Si un utilisateur est passé en entrée, pré-remplir le formulaire
-        if (this.user) {
-            this.userForm.patchValue(this.user);
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes['userData'] && changes['userData'].currentValue) {
+            console.log('userData mis à jour :', this.userData);
+            this.preloadFormData();
         }
     }
 
-    // Fonction appelée lors de la soumission du formulaire
-    onSubmit() {
-        if (this.userForm.valid) {
-            const userData: UserForm = this.userForm.value;
-            if (this.user) {
-                // TODO : Si un utilisateur existe, c'est une modification
-                console.log('Utilisateur modifié :', userData);
-            } else {
-                // Sinon, c'est un ajout
-                console.log('Nouvel utilisateur ajouté :', userData);
-            }
-            // Réinitialiser le formulaire après soumission
-            this.userForm.reset({
-                heures_annuelles_prestables: 1600,
-                VA: 20,
-                VAEX: 5,
-                RC: 10,
+    private preloadFormData() {
+        if (this.userData) {
+            console.log('Préchargement des données du formulaire avec userData :', this.userData);
+            this.userForm.patchValue({
+                nom: this.userData.nom,
+                prenom: this.userData.prenom,
+                email: this.userData.email,
+                roles: this.userData.userRoles.map((role: UserRole) => role.roleId),
+                montant: this.userData.userSalaires[0]?.montant || null,
+                regime: this.userData.userSalaires[0]?.regime || null,
+                date: this.userData.userSalaires[0]?.date || null,
+                isActive: this.userData.isActive,
             });
+            this.historique = this.userData.userSalaires;
+
         }
     }
+
+    openHistory() {
+        this.displayHistoryDialog = true;
+    }
+
+    closeHistory() {
+        this.displayHistoryDialog = false;
+    }
+
+    submit() {
+        if (this.userForm.invalid) {
+            this.userForm.markAllAsTouched();
+            return;
+        }
+
+        const formValue = this.userForm.value;
+
+        const userForm: UserForm = {
+            ...formValue,
+        };
+
+        this.formSubmit.emit(userForm);
+    }
+
 }

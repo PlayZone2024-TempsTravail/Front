@@ -1,9 +1,29 @@
+:root {
+    --primary-color: #84c101
+}
+
 th, td {
     text-align: center;
 }
 
+
 .user-list-container {
-    padding: 20px;
+    margin: 1rem auto;
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+
+        .search-btn {
+            height: 3.1rem;
+            margin-right: 1rem;
+        }
+    }
+
+    .role {
+    }
 
     .actions-header {
         display: flex;
@@ -20,9 +40,14 @@ th, td {
             width: 50%;
         }
     }
+}
 
-    .p-button-success {
-        background-color: var(--primary-color);
-    }
+button {
+    background-color: var(--primary-color);
+    border: none;
+    padding: 10px 20px;
+}
 
+.add-btn {
+    padding: 16px 32px;
 }
