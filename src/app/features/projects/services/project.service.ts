@@ -27,10 +27,6 @@ export class ProjectService {
         return this.http.get<UserInMisson[]>(`${this.apiUrl}/users`);
     }
 
-    getDepensesByProject(): Observable<Depense[]> {
-        return this.http.get<Depense[]>(`${this.apiUrl}/projects`);
-    }
-
 
 
 }

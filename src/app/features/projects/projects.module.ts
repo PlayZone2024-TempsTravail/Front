@@ -14,7 +14,8 @@ import {DropdownModule} from 'primeng/dropdown';
 import {UserListComponent} from '../users/components/user-list/user-list.component';
 import {UserFormComponent} from '../users/components/user-form/user-form.component';
 import { EncodageCoutsProjetComponent } from './components/encodage-couts-projet/encodage-couts-projet.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {CalendarModule} from 'primeng/calendar';
 
 
 @NgModule({
@@ -37,6 +38,8 @@ import {FormsModule} from '@angular/forms';
         DialogModule,
         DropdownModule,
         FormsModule,
+        ReactiveFormsModule,
+        CalendarModule,
     ],
     exports: [
         ProjectsComponent,

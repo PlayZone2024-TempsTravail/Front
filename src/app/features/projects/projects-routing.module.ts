@@ -9,9 +9,12 @@ const routes: Routes = [
         component: ProjectsComponent,
     resolve: {
         projects : projectResolverResolver,
+        },
     },
+    {
+        path: 'encodage-couts-projet',
+        component: EncodageCoutsProjetComponent,
     },
-    { path : 'encodage-des-couts/:id', component : EncodageCoutsProjetComponent }
 ];
 
 @NgModule({

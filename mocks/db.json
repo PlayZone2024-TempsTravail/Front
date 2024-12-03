@@ -88,643 +88,413 @@
             }
         }
     ],
-    "projects": [
+    "categories": [
         {
-            "id_project": 1,
-            "organismes": [
-                {
-                    "id_organisme": 1,
-                    "name": "NeonCortex Systems"
-                }
-            ],
-            "isActive": true,
-            "name": "Mcmouche Solution",
-            "montant_budget": 10000,
-            "color": "ff5733",
-            "date_debut_projet": "2024-04-13",
-            "date_fin_projet": "2025-04-13",
-            "charges_de_projet": [
-                {
-                    "idUser": 1,
-                    "nom": "Admin",
-                    "prenom": "Admin"
-
-                }
-            ],
-            "depenses": [
-                {
-                    "id_depense": 1,
-                    "libelle": [
-                        {
-                            "id_libelle": 13,
-                            "name": "FS - 'Frais de Visa & assurance"
-                        }
-                    ],
-                    "organisme_intervenant_ext": "FNAC",
-                    "motif": "Location",
-                    "montant": 4933.94,
-                    "date_facturation": "2024-06-08"
-                },
-                {
-                    "id_depense": 2,
-                    "libelle": [
-                        {
-                            "id_libelle": 29,
-                            "name": "I - Autres"
-                        }
-                    ],
-                    "organisme_intervenant_ext": "IKEA",
-                    "motif": "Location",
-                    "montant": 3256.6,
-                    "date_facturation": "2024-10-19"
-                },
-                {
-                    "id_depense": 3,
-                    "libelle": [
-                        {
-                            "id_libelle": 28,
-                            "name": "I - Matériels informatiques"
-                        }
-                    ],
-                    "organisme_intervenant_ext": "FNAC",
-                    "motif": "Contrat annuel",
-                    "montant": 1363.08,
-                    "date_facturation": "2024-12-21"
-                },
-                {
-                    "id_depense": 4,
-                    "libelle": [
-                        {
-                            "id_libelle": 1,
-                            "name": "R - Experts/Intervenants externes"
-                        }
-                    ],
-                    "organisme_intervenant_ext": "IKEA",
-                    "motif": "Consultation",
-                    "montant": 4760.15,
-                    "date_prestation": "2024-11-05",
-                    "date_facturation": "2024-11-17"
-                }
-            ]
-        },
-
-        {
-            "id_project": 2,
-            "organismes": [
-                {
-                    "id_organisme": 2,
-                    "name": "SynthWave Corp"
-                }
-            ],
-            "isActive": false,
-            "name": "TechNova Solutions",
-            "montant_budget": 20000,
-            "color": "3498db",
-            "date_debut_projet": "2023-01-01",
-            "date_fin_projet": "2023-12-31",
-            "charges_de_projet": [
-                {
-                    "idUser": 6,
-                    "nom": "Chen",
-                    "prenom": "Li"
-                }
-            ],
-            "depenses" : [
-                {
-                    "id_depense": 1,
-                    "libelle": [
-                        {
-                            "id_libelle": 10,
-                            "name": "FS - Frais de Location de salles"
-                        }
-                    ],
-                    "organisme_intervenant_ext": "Google",
-                    "motif": "Achat de matériel",
-                    "montant": 3978.4,
-                    "date_facturation": "2024-01-21"
-                },
-                {
-                    "id_depense": 2,
-                    "libelle": [
-                        {
-                            "id_libelle": 4,
-                            "name": "FS - Achat de livres et de publications"
-                        }
-                    ],
-                    "organisme_intervenant_ext": "IKEA",
-                    "motif": "Achat de matériel",
-                    "montant": 807.42,
-                    "date_facturation": "2024-12-22"
-                },
-                {
-                    "id_depense": 3,
-                    "libelle": [
-                        {
-                            "id_libelle": 7,
-                            "name": "FS - Frais de Communication et Pub"
-                        }
-                    ],
-                    "organisme_intervenant_ext": "IKEA",
-                    "motif": "Consultation",
-                    "montant": 3758.77,
-                    "date_facturation": "2024-12-22"
-                },
-                {
-                    "id_depense": 4,
-                    "libelle": [
-                        {
-                            "id_libelle": 1,
-                            "name": "R - Experts/Intervenants externes"
-                        }
-                    ],
-                    "organisme_intervenant_ext": "IKEA",
-                    "motif": "Consultation",
-                    "montant": 4760.15,
-                    "date_prestation": "2024-11-05",
-                    "date_facturation": "2024-11-17"
-                },
-                {
-                    "id_depense": 5,
-                    "libelle": [
-                        {
-                            "id_libelle": 13,
-                            "name": "FS - 'Frais de Visa & assurance"
-                        }
-                    ],
-                    "organisme_intervenant_ext": "IKEA",
-                    "motif": "Achat de matériel",
-                    "montant": 1520.02,
-                    "date_facturation": "2024-09-18"
-                },
-                {
-                    "id_depense": 6,
-                    "libelle": [
-                        {
-                            "id_libelle": 24,
-                            "name": "FG - Fournitures Informatique"
-                        }
-                    ],
-                    "organisme_intervenant_ext": "Decathlon",
-                    "motif": "Prestation de service",
-                    "montant": 1885.21,
-                    "date_facturation": "2024-06-27"
-                },
-                {
-                    "id_depense": 7,
-                    "libelle": [
-                        {
-                            "id_libelle": 20,
-                            "name": "FG - Charges TIC"
-                        }
-                    ],
-                    "organisme_intervenant_ext": "Microsoft",
-                    "motif": "Contrat annuel",
-                    "montant": 2296.92,
-                    "date_facturation": "2024-04-06"
-                }
-            ]
+            "idCategory": 1,
+            "name": "Entree",
+            "isIncome": true,
+            "estimationParCategorie": true
         },
         {
-            "id_project": 3,
-            "organismes": [
-                {
-                    "id_organisme": 3,
-                    "name": "BytePunk Syndicate"
-                }
-            ],
-            "isActive": true,
-            "name": "EcoEnergy Initiatives",
-            "montant_budget": 15000,
-            "color": "2ecc71",
-            "date_debut_projet": "2024-06-01",
-            "date_fin_projet": "2025-06-01",
-            "charges_de_projet": [
-                {
-                    "idUser": 5,
-                    "nom": "Tanaka",
-                    "prenom": "Hiroshi"
-                }
-            ],
-            "depenses" : [
-                {
-                    "id_depense": 1,
-                    "libelle": [
-                        {
-                            "id_libelle": 26,
-                            "name": "FG - Autres"
-                        }
-                    ],
-                    "organisme_intervenant_ext": "Amazon",
-                    "motif": "Prestation de service",
-                    "montant": 2683.37,
-                    "date_facturation": "2024-07-14"
-                },
-                {
-                    "id_depense": 2,
-                    "libelle": [
-                        {
-                            "id_libelle": 1,
-                            "name": "R - Experts/Intervenants externes"
-                        }
-                    ],
-                    "organisme_intervenant_ext": "IKEA",
-                    "motif": "Consultation",
-                    "montant": 4760.15,
-                    "date_prestation": "2024-11-05",
-                    "date_facturation": "2024-11-17"
-                },
-                {
-                    "id_depense": 3,
-                    "libelle": [
-                        {
-                            "id_libelle": 20,
-                            "name": "FG - Communications téléphoniques"
-                        }
-                    ],
-                    "organisme_intervenant_ext": "Amazon",
-                    "motif": "Achat de matériel",
-                    "montant": 2800.44,
-                    "date_facturation": "2024-04-06"
-                },
-                {
-                    "id_depense": 4,
-                    "libelle": [
-                        {
-                            "id_libelle": 25,
-                            "name": "FG - Entretien et réparation"
-                        }
-                    ],
-                    "organisme_intervenant_ext": "Apple",
-                    "motif": "Contrat annuel",
-                    "montant": 4581.73,
-                    "date_facturation": "2024-10-23"
-                },
-                {
-                    "id_depense": 5,
-                    "libelle": [
-                        {
-                            "id_libelle": 20,
-                            "name": "FG - Communications téléphoniques"
-                        }
-                    ],
-                    "organisme_intervenant_ext": "Amazon",
-                    "motif": "Contrat annuel",
-                    "montant": 2676.36,
-                    "date_facturation": "2024-05-02"
-                },
-                {
-                    "id_depense": 6,
-                    "libelle": [
-                        {
-                            "id_libelle": 19,
-                            "name": "FG - Charges locatives (Eau, Electricité"
-                        }
-                    ],
-                    "organisme_intervenant_ext": "IKEA",
-                    "motif": "Consultation",
-                    "montant": 4135.3,
-                    "date_facturation": "2024-01-22"
-                },
-                {
-                    "id_depense": 7,
-                    "libelle": [
-                        {
-                            "id_libelle": 13,
-                            "name": "FS - 'Frais de Visa & assurance"
-                        }
-                    ],
-                    "organisme_intervenant_ext": "Apple",
-                    "motif": "Consultation",
-                    "montant": 3676.32,
-                    "date_facturation": "2024-06-29"
-                }
-            ]
+            "idCategory": 2,
+            "name": "Renumeration",
+            "isIncome": false,
+            "estimationParCategorie": true
         },
         {
-            "id_project": 4,
-            "organismes": [
-                {
-                    "id_organisme": 4,
-                    "name": "CryoHaven Industries"
-                }
-            ],
-            "isActive": false,
-            "name": "NextGen Robotics",
-            "montant_budget": 30000,
-            "color": "e74c3c",
-            "date_debut_projet": "2022-05-15",
-            "date_fin_projet": "2023-05-15",
-            "charges_de_projet": [
-                {
-                    "idUser": 3,
-                    "nom": "Smith",
-                    "prenom": "John"
-                }
-            ],
-            "depenses" :  [
-                {
-                    "id_depense": 1,
-                    "libelle": [
-                        {
-                            "id_libelle": 10,
-                            "name": "FS - Frais de Location de salles"
-                        }
-                    ],
-                    "organisme_intervenant_ext": "Google",
-                    "motif": "Location",
-                    "montant": 1591.17,
-                    "date_facturation": "2024-03-30"
-                },
-                {
-                    "id_depense": 2,
-                    "libelle": [
-                        {
-                            "id_libelle": 10,
-                            "name": "FS - Frais de Location de salles"
-                        }
-                    ],
-                    "organisme_intervenant_ext": "IKEA",
-                    "motif": "Consultation",
-                    "montant": 3678.5,
-                    "date_facturation": "2024-10-16"
-                },
-                {
-                    "id_depense": 3,
-                    "libelle": [
-                        {
-                            "id_libelle": 1,
-                            "name": "R - Experts/Intervenants externes"
-                        }
-                    ],
-                    "organisme_intervenant_ext": "IKEA",
-                    "motif": "Consultation",
-                    "montant": 4760.15,
-                    "date_prestation": "2024-11-05",
-                    "date_facturation": "2024-11-17"
-                },
-                {
-                    "id_depense": 4,
-                    "libelle": [
-                        {
-                            "id_libelle": 6,
-                            "name": "FS - Frais de catering"
-                        }
-                    ],
-                    "organisme_intervenant_ext": "FNAC",
-                    "motif": "Contrat annuel",
-                    "montant": 437.22,
-                    "date_facturation": "2024-08-10"
-                }
-            ]
+            "idCategory": 3,
+            "name": "Fonctionnement - Frais Specifique au projet",
+            "isIncome": false,
+            "estimationParCategorie": true
         },
         {
-            "id_project": 5,
-            "organismes": [
-                {
-                    "id_organisme": 5,
-                    "name": "MechaHive Networks"
-                }
-            ],
-            "isActive": true,
-            "name": "GreenTech Horizon",
-            "montant_budget": 25000,
-            "color": "9b59b6",
-            "date_debut_projet": "2024-03-01",
-            "date_fin_projet": "2025-03-01",
-            "charges_de_projet": [
-                {
-                    "idUser": 2,
-                    "nom": "Dupont",
-                    "prenom": "Jean"
-                }
-            ],
-            "depenses" :  [
-                {
-                    "id_depense": 1,
-                    "libelle": [
-                        {
-                            "id_libelle": 10,
-                            "name": "FS - Frais de Location de salles"
-                        }
-                    ],
-                    "organisme_intervenant_ext": "Google",
-                    "motif": "Location",
-                    "montant": 1591.17,
-                    "date_facturation": "2024-03-30"
-                },
-                {
-                    "id_depense": 2,
-                    "libelle": [
-                        {
-                            "id_libelle": 10,
-                            "name": "FS - Frais de Location de salles"
-                        }
-                    ],
-                    "organisme_intervenant_ext": "IKEA",
-                    "motif": "Consultation",
-                    "montant": 3678.5,
-                    "date_facturation": "2024-10-16"
-                },
-                {
-                    "id_depense": 3,
-                    "libelle": [
-                        {
-                            "id_libelle": 1,
-                            "name": "R - Experts/Intervenants externes"
-                        }
-                    ],
-                    "organisme_intervenant_ext": "IKEA",
-                    "motif": "Consultation",
-                    "montant": 4760.15,
-                    "date_prestation": "2024-11-05",
-                    "date_facturation": "2024-11-17"
-                },
-                {
-                    "id_depense": 4,
-                    "libelle": [
-                        {
-                            "id_libelle": 6,
-                            "name": "FS - Frais de catering"
-                        }
-                    ],
-                    "organisme_intervenant_ext": "FNAC",
-                    "motif": "Contrat annuel",
-                    "montant": 437.22,
-                    "date_facturation": "2024-08-10"
-                },
-                {
-                    "id_depense": 5,
-                    "libelle": [
-                        {
-                            "id_libelle": 14,
-                            "name": "FS - Frais d'hébergement/logement"
-                        }
-                    ],
-                    "organisme_intervenant_ext": "Decathlon",
-                    "motif": "Location",
-                    "montant": 4509.64,
-                    "date_facturation": "2024-08-24"
-                },
-                {
-                    "id_depense": 6,
-                    "libelle": [
-                        {
-                            "id_libelle": 8,
-                            "name": "FS - Frais de déplacement mission"
-                        }
-                    ],
-                    "organisme_intervenant_ext": "Amazon",
-                    "motif": "Location",
-                    "montant": 4981.3,
-                    "date_facturation": "2024-03-07"
-                },
-                {
-                    "id_depense": 7,
-                    "libelle": [
-                        {
-                            "id_libelle": 5,
-                            "name": "FS - Achat de matériel et petit équipement"
-                        }
-                    ],
-                    "organisme_intervenant_ext": "Google",
-                    "motif": "Contrat annuel",
-                    "montant": 4992.7,
-                    "date_facturation": "2024-01-23"
-                },
-                {
-                    "id_depense": 8,
-                    "libelle": [
-                        {
-                            "id_libelle": 6,
-                            "name": "FS - Frais de catering"
-                        }
-                    ],
-                    "organisme_intervenant_ext": "FNAC",
-                    "motif": "Contrat annuel",
-                    "montant": 2705.73,
-                    "date_facturation": "2024-02-26"
-                }
-            ]
+            "idCategory": 4,
+            "name": "Fonctionnement - Frais Generaux",
+            "isIncome": false,
+            "estimationParCategorie": false
+        },
+        {
+            "idCategory": 5,
+            "name": "Investissement",
+            "isIncome": false,
+            "estimationParCategorie": false
         }
     ],
-    "libelles": [
+    "projects": [
         {
-            "id_libelle": 1,
+            "idProject": 1,
+            "isActive": true,
+            "name": "Mcmouche Solution",
+            "organismeId": 1,
+            "organismeName": "NeonCortex Systems",
+            "color": "ff5733",
+            "montantBudget": 10000,
+            "dateDebutProjet": "2024-04-13T00:00:00",
+            "dateFinProjet": "2025-04-13T00:00:00",
+            "chargeDeProjetId": 1,
+            "chargeDeProjetName": "Admin",
+            "previsionDepenseActuelle": 0,
+            "depenseReelActuelle": 0
+        },
+        {
+            "idProject": 2,
+            "isActive": false,
+            "name": "TechNova Solutions",
+            "organismeId": 2,
+            "organismeName": "SynthWave Corp",
+            "color": "3498db",
+            "montantBudget": 20000,
+            "dateDebutProjet": "2023-01-01T00:00:00",
+            "dateFinProjet": "2023-12-31T00:00:00",
+            "chargeDeProjetId": 6,
+            "chargeDeProjetName": "Chen Li",
+            "previsionDepenseActuelle": 0,
+            "depenseReelActuelle": 0
+        },
+        {
+            "idProject": 3,
+            "isActive": true,
+            "name": "EcoEnergy Initiatives",
+            "organismeId": 3,
+            "organismeName": "BytePunk Syndicate",
+            "color": "2ecc71",
+            "montantBudget": 15000,
+            "dateDebutProjet": "2024-06-01T00:00:00",
+            "dateFinProjet": "2025-06-01T00:00:00",
+            "chargeDeProjetId": 5,
+            "chargeDeProjetName": "Tanaka Hiroshi",
+            "previsionDepenseActuelle": 0,
+            "depenseReelActuelle": 0
+        },
+        {
+            "idProject": 4,
+            "isActive": false,
+            "name": "NextGen Robotics",
+            "organismeId": 4,
+            "organismeName": "CryoHaven Industries",
+            "color": "e74c3c",
+            "montantBudget": 30000,
+            "dateDebutProjet": "2022-05-15T00:00:00",
+            "dateFinProjet": "2023-05-15T00:00:00",
+            "chargeDeProjetId": 3,
+            "chargeDeProjetName": "Smith John",
+            "previsionDepenseActuelle": 0,
+            "depenseReelActuelle": 0
+        },
+        {
+            "idProject": 5,
+            "isActive": true,
+            "name": "GreenTech Horizon",
+            "organismeId": 5,
+            "organismeName": "MechaHive Networks",
+            "color": "9b59b6",
+            "montantBudget": 25000,
+            "dateDebutProjet": "2024-03-01T00:00:00",
+            "dateFinProjet": "2025-03-01T00:00:00",
+            "chargeDeProjetId": 2,
+            "chargeDeProjetName": "Dupont Jean",
+            "previsionDepenseActuelle": 0,
+            "depenseReelActuelle": 0
+        }
+    ],
+
+    "depenses": [
+        {
+            "idDepense": 1,
+            "libeleId": 13,
+            "projectId": 1,
+            "organismeId": 6,
+            "montant": 4933.94,
+            "dateIntervention": "2024-06-08T00:00:00",
+            "dateFacturation": "2024-06-08T00:00:00",
+            "motif": "Location"
+        },
+        {
+            "idDepense": 2,
+            "libeleId": 29,
+            "projectId": 1,
+            "organismeId": 7,
+            "montant": 3256.6,
+            "dateIntervention": "2024-10-19T00:00:00",
+            "dateFacturation": "2024-10-19T00:00:00",
+            "motif": "Location"
+        },
+        {
+            "idDepense": 3,
+            "libeleId": 28,
+            "projectId": 1,
+            "organismeId": 6,
+            "montant": 1363.08,
+            "dateIntervention": "2024-12-21T00:00:00",
+            "dateFacturation": "2024-12-21T00:00:00",
+            "motif": "Contrat annuel"
+        },
+        {
+            "idDepense": 4,
+            "libeleId": 1,
+            "projectId": 1,
+            "organismeId": 7,
+            "montant": 4760.15,
+            "dateIntervention": "2024-11-05T00:00:00",
+            "dateFacturation": "2024-11-17T00:00:00",
+            "motif": "Consultation"
+        },
+
+        {
+            "idDepense": 5,
+            "libeleId": 13,
+            "projectId": 2,
+            "organismeId": 6,
+            "montant": 4933.94,
+            "dateIntervention": "2024-06-08T00:00:00",
+            "dateFacturation": "2024-06-08T00:00:00",
+            "motif": "Location"
+        },
+        {
+            "idDepense": 6,
+            "libeleId": 26,
+            "projectId": 3,
+            "organismeId": 11,
+            "montant": 2683.37,
+            "dateIntervention": "2024-07-14T00:00:00",
+            "dateFacturation": "2024-07-14T00:00:00",
+            "motif": "Prestation de service"
+        },
+        {
+            "idDepense": 7,
+            "libeleId": 1,
+            "projectId": 3,
+            "organismeId": 7,
+            "montant": 4760.15,
+            "dateIntervention": "2024-11-05T00:00:00",
+            "dateFacturation": "2024-11-17T00:00:00",
+            "motif": "Consultation"
+        },
+        {
+            "idDepense": 8,
+            "libeleId": 10,
+            "projectId": 4,
+            "organismeId": 8,
+            "montant": 1591.17,
+            "dateIntervention": "2024-03-30T00:00:00",
+            "dateFacturation": "2024-03-30T00:00:00",
+            "motif": "Location"
+        },
+
+        {
+            "idDepense": 9,
+            "libeleId": 10,
+            "projectId": 5,
+            "organismeId": 8,
+            "montant": 1591.17,
+            "dateIntervention": "2024-03-30T00:00:00",
+            "dateFacturation": "2024-03-30T00:00:00",
+            "motif": "Location"
+        }
+
+    ],
+
+    "libeles": [
+        {
+            "idLibele": 1,
+            "idCategory": 2,
             "name": "R - Experts/Intervenants externes"
         },
         {
-            "id_libelle": 2,
+            "idLibele": 2,
+            "idCategory": 2,
             "name": "R - Employés IEC"
         },
         {
-            "id_libelle": 3,
+            "idLibele": 3,
+            "idCategory": 2,
             "name": "R - Autres"
         },
         {
-            "id_libelle": 4,
+            "idLibele": 4,
+            "idCategory": 3,
             "name": "FS - Achat de livres et de publications"
         },
         {
-            "id_libelle": 5,
+            "idLibele": 5,
+            "idCategory": 3,
             "name": "FS - Achat de matériel et petit équipement"
         },
         {
-            "id_libelle": 6,
+            "idLibele": 6,
+            "idCategory": 3,
             "name": "FS - Frais de catering"
         },
         {
-            "id_libelle": 7,
+            "idLibele": 7,
+            "idCategory": 3,
             "name": "FS - Frais de Communication et Pub"
         },
         {
-            "id_libelle": 8,
+            "idLibele": 8,
+            "idCategory": 3,
             "name": "FS - Frais de déplacement mission"
         },
         {
-            "id_libelle": 9,
+            "idLibele": 9,
+            "idCategory": 3,
             "name": "FS - Frais de déplacements internationnaux"
         },
         {
-            "id_libelle": 10,
+            "idLibele": 10,
+            "idCategory": 3,
             "name": "FS - Frais de Location de salles"
         },
         {
-            "id_libelle": 11,
+            "idLibele": 11,
+            "idCategory": 3,
             "name": "FS - Frais de Réalisation/acquisition de supports pédagogiques"
         },
         {
-            "id_libelle": 12,
+            "idLibele": 12,
+            "idCategory": 3,
             "name": "FS - Frais de séjour (Perdiem)"
         },
         {
-            "id_libelle": 13,
-            "name": "FS - 'Frais de Visa & assurance"
+            "idLibele": 13,
+            "idCategory": 3,
+            "name": "FS - Frais de Visa & Assurance"
         },
         {
-            "id_libelle": 14,
+            "idLibele": 14,
+            "idCategory": 3,
             "name": "FS - Frais d’hébergement/logement"
         },
         {
-            "id_libelle": 15,
+            "idLibele": 15,
+            "idCategory": 3,
             "name": "FS - Frais d’impression"
         },
         {
-            "id_libelle": 16,
+            "idLibele": 16,
+            "idCategory": 3,
             "name": "FS - Frais d’organisation d’atelier/séminaire"
         },
         {
-            "id_libelle": 17,
+            "idLibele": 17,
+            "idCategory": 3,
             "name": "FS - Autres frais liés aux projets"
         },
         {
-            "id_libelle": 18,
+            "idLibele": 18,
+            "idCategory": 4,
             "name": "FG - Loyers"
         },
         {
-            "id_libelle": 19,
-            "name": "FG - Charges locatives (Eau, Electricité"
+            "idLibele": 19,
+            "idCategory": 4,
+            "name": "FG - Charges locatives (Eau, Electricité)"
         },
         {
-            "id_libelle": 20,
+            "idLibele": 20,
+            "idCategory": 4,
             "name": "FG - Charges TIC"
         },
         {
-            "id_libelle": 21,
+            "idLibele": 21,
+            "idCategory": 4,
             "name": "FG - Communications téléphoniques"
         },
         {
-            "id_libelle": 22,
-            "name": "FG - 'Frais postaux"
+            "idLibele": 22,
+            "idCategory": 4,
+            "name": "FG - Frais postaux"
         },
         {
-            "id_libelle": 23,
+            "idLibele": 23,
+            "idCategory": 4,
             "name": "FG - Fournitures de Bureau"
         },
         {
-            "id_libelle": 24,
+            "idLibele": 24,
+            "idCategory": 4,
             "name": "FG - Fournitures Informatique"
         },
         {
-            "id_libelle": 25,
+            "idLibele": 25,
+            "idCategory": 4,
             "name": "FG - Entretien et réparation"
         },
         {
-            "id_libelle": 26,
+            "idLibele": 26,
+            "idCategory": 4,
             "name": "FG - Autres"
         },
         {
-            "id_libelle": 27,
+            "idLibele": 27,
+            "idCategory": 5,
             "name": "I - Matériels et mobilier de bureau"
         },
         {
-            "id_libelle": 28,
+            "idLibele": 28,
+            "idCategory": 5,
             "name": "I - Matériels informatiques"
         },
         {
-            "id_libelle": 29,
+            "idLibele": 29,
+            "idCategory": 5,
             "name": "I - Autres"
         }
     ],
+
+
+    "organismes": [
+        {
+            "idOrganisme": 1,
+            "name": "NeonCortex Systems"
+        },
+        {
+            "idOrganisme": 2,
+            "name": "SynthWave Corp"
+        },
+        {
+            "idOrganisme": 3,
+            "name": "BytePunk Syndicate"
+        },
+        {
+            "idOrganisme": 4,
+            "name": "CryoHaven Industries"
+        },
+        {
+            "idOrganisme": 5,
+            "name": "MechaHive Networks"
+        },
+        {
+            "idOrganisme": 6,
+            "name": "FNAC"
+        },
+        {
+            "idOrganisme": 7,
+            "name": "IKEA"
+        },
+        {
+            "idOrganisme": 8,
+            "name": "Google"
+        },
+        {
+            "idOrganisme": 9,
+            "name": "Decathlon"
+        },
+        {
+            "idOrganisme": 10,
+            "name": "Microsoft"
+        },
+        {
+            "idOrganisme": 11,
+            "name": "Amazon"
+        },
+        {
+            "idOrganisme": 12,
+            "name": "Apple"
+        }
+    ],
+
+
     "users" : [
         {
             "idUser": 1,
