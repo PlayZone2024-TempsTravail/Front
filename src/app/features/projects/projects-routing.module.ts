@@ -16,7 +16,7 @@ const routes: Routes = [
         },
     },
     {
-        path: 'encodage-couts-projet',
+        path: 'encodage-couts-projet/:id',
         component: EncodageCoutsProjetComponent,
     },
     {

@@ -1,30 +1,29 @@
     <!-- ici ce trouve les bouttons pour detail et autre ATTENTION peut etres changer les liens des boutons pour le chemin -->
 
 <div class="actions-header">
-
     <div class="butt-project">
-        <button routerLink="['/projet/detail', project.id]" class="p-button font-bold" [disabled]="isNotSelectButton" >
+        <button [routerLink]="['details', selectedProject]" class="p-button font-bold" [disabled]="isNotSelectButton" >
         Voir détail
     </button>
-        <button routerLink="['/projet/graphique', project.id]" class="p-button font-bold" [disabled]="isNotSelectButton" >
+        <button [routerLink]="['graphique', selectedProject]" class="p-button font-bold" [disabled]="isNotSelectButton" >
         Voir graphique
     </button>
-        <button routerLink="['projet/Encodercoûts/', project.id" class="p-button font-bold" [disabled]="isNotSelectButton" >
+        <button [routerLink]="['encodage-couts-projet', selectedProject]" class="p-button font-bold" [disabled]="isNotSelectButton" >
         Encoder coûts
     </button>
     </div>
 
     <div class="butt-project-admin">
-        <button routerLink="['/projet/Créerrapport', project.id]" class="p-button font-bold" [disabled]="isNotSelectButton" >
+        <button [routerLink]="['/projet/Créerrapport', selectedProject]" class="p-button font-bold" [disabled]="isNotSelectButton" >
         Créer rapport
     </button>
-        <button routerLink="['/projet/Encoderentrées', project.id]" class="p-button font-bold" [disabled]="isNotSelectButton" >
+        <button [routerLink]="['/projet/Encoderentrées', selectedProject]" class="p-button font-bold" [disabled]="isNotSelectButton" >
         Encoder entrées
     </button>
-        <button routerLink="['/projet/Créerprojet', project.id]" class="p-button font-bold" [disabled]="isNotSelectButton" >
+        <button [routerLink]="['/projet/Créerprojet', selectedProject]" class="p-button font-bold" [disabled]="isNotSelectButton" >
         Créer projet
     </button>
-        <button routerLink="['/projet/Editer projet', project.id]" class="p-button font-bold" [disabled]="isNotSelectButton" >
+        <button [routerLink]="['/projet/Editer projet', selectedProject]" class="p-button font-bold" [disabled]="isNotSelectButton" >
     Editer projet
     </button>
     </div>
