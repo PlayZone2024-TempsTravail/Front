@@ -60,6 +60,10 @@ export class ProjectsComponent implements OnInit  {
         );
     }
 
+    mafct(monid: string) {
+        document.getElementById(monid)!.click()
+    }
+
 
 
 
@@ -68,7 +72,7 @@ export class ProjectsComponent implements OnInit  {
     totalPourcent(depence:number , previson:number){
 
         let total = ((depence / previson) - 1) * 100;
-        console.log(total)
+
         if (Number.isNaN(total)){
             return 0;
         }

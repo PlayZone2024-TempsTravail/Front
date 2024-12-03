@@ -10,7 +10,7 @@ import {User} from '../../users/models/user.model';
 })
 export class ProjectService {
 
-    private apiUrl = 'http://api.technobel.pro:444/'; //attention changer quand vrai api
+    private apiUrl = 'http://api.technobel.pro:444'; //attention changer quand vrai api
     constructor(private http: HttpClient) { }
 
     getAllProjects(): Observable<Project[]> {
