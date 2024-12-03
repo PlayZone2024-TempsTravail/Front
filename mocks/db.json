@@ -5,7 +5,6 @@
       "nom": "Admin",
       "prenom": "Admin",
       "email": "admin@gmail.com",
-      "password": "admin1234",
       "isActive": true,
       "roles": [
         {
@@ -17,6 +16,11 @@
         {
           "date": "2021-01-01",
           "salaire": 60000,
+          "regime": 100
+        },
+        {
+          "date": "2021-01-01",
+          "salaire": 600,
           "regime": 100
         }
       ]
@@ -88,7 +92,7 @@
     },
     {
       "id": 4,
-      "nom": "Durand",
+      "nom": "Durant",
       "prenom": "Lucas",
       "email": "luc.durand@example.com",
       "isActive": true,
@@ -103,6 +107,16 @@
           "date": "2020-03-20",
           "salaire": 45000,
           "regime": 90
+        },
+        {
+          "date": "2020-03-20",
+          "salaire": 45000,
+          "regime": 90
+        },
+        {
+          "date": "2024-11-28T23:00:00.000Z",
+          "salaire": 24000,
+          "regime": 50
         },
         {
           "date": "2020-03-20",
@@ -133,6 +147,16 @@
           "date": "2022-07-01",
           "salaire": 50000,
           "regime": 100
+        },
+        {
+          "date": "2022-07-01",
+          "salaire": 50000,
+          "regime": 100
+        },
+        {
+          "date": "2022-07-01",
+          "salaire": 50000,
+          "regime": 100
         }
       ]
     },
@@ -141,8 +165,7 @@
       "nom": "Moreau",
       "prenom": "Hugo",
       "email": "hugo.moreau@example.com",
-      "password": "password5",
-      "isActive": true,
+      "isActive": false,
       "roles": [
         {
           "idRole": 2,
@@ -154,15 +177,20 @@
           "date": "2021-09-01",
           "salaire": 37000,
           "regime": 75
+        },
+        {
+          "date": "2021-09-01",
+          "salaire": 37000,
+          "regime": 75
         }
       ]
     },
     {
       "id": 7,
       "nom": "Lefevre",
-      "prenom": "Chloélette",
+      "prenom": "Chloé",
       "email": "chloe.lefevre@example.com",
-      "isActive": true,
+      "isActive": false,
       "roles": [
         {
           "idRole": 2,
@@ -179,13 +207,23 @@
           "date": "2020-12-01",
           "salaire": 42000,
           "regime": 100
+        },
+        {
+          "date": "2020-12-01",
+          "salaire": 42000,
+          "regime": 100
+        },
+        {
+          "date": "2024-11-29T23:00:00.000Z",
+          "salaire": 2000,
+          "regime": 500
         }
       ]
     },
     {
       "id": 8,
       "nom": "Garnier",
-      "prenom": "Thomassette",
+      "prenom": "Thomas",
       "email": "thomas.garnier@example.com",
       "isActive": true,
       "roles": [
@@ -212,8 +250,7 @@
       "nom": "Roux",
       "prenom": "Laura",
       "email": "laura.roux@example.com",
-      "password": "password8",
-      "isActive": true,
+      "isActive": false,
       "roles": [
         {
           "idRole": 2,
@@ -221,6 +258,11 @@
         }
       ],
       "historique": [
+        {
+          "date": "2022-11-01",
+          "salaire": 41000,
+          "regime": 100
+        },
         {
           "date": "2022-11-01",
           "salaire": 41000,
@@ -363,148 +405,11 @@
       ]
     },
     {
-      "nom": "test1",
-      "prenom": "test1",
-      "email": "test1@gmail.com",
-      "roles": [
-        {
-          "idRole": 2,
-          "name": "Employé"
-        }
-      ],
-      "salaire": 30000000000,
-      "regime": 90,
-      "date": "2024-11-28T23:00:00.000Z",
-      "isActive": true,
-      "id": 16
-    },
-    {
-      "nom": "test2",
-      "prenom": "test2",
-      "email": "test2@gmail.com",
-      "roles": [
-        {
-          "idRole": 1,
-          "name": "Admin"
-        }
-      ],
-      "salaire": 30000,
-      "regime": 60,
-      "date": "2024-11-28T23:00:00.000Z",
-      "isActive": true,
-      "id": 17
-    },
-    {
-      "nom": "testest",
-      "prenom": "testest",
-      "email": "testest@gmail.Com",
-      "roles": [
-        {
-          "idRole": 1,
-          "name": "Admin"
-        }
-      ],
-      "salaire": 2000,
-      "regime": 20,
-      "date": "2024-11-28T23:00:00.000Z",
-      "isActive": true,
-      "id": 18
-    },
-    {
-      "nom": "testest",
-      "prenom": "testest",
-      "email": "testest@gmail.Com",
-      "roles": [
-        {
-          "idRole": 1,
-          "name": "Admin"
-        }
-      ],
-      "salaire": 2000,
-      "regime": 20,
-      "date": "2024-11-28T23:00:00.000Z",
-      "isActive": true,
-      "id": 19
-    },
-    {
-      "nom": "test3",
-      "prenom": "test3",
-      "email": "eva.maudoux@gmail.com",
-      "roles": [
-        {
-          "idRole": 1,
-          "name": "Admin"
-        }
-      ],
-      "salaire": 3000,
-      "regime": 50,
-      "date": "2024-11-28T23:00:00.000Z",
-      "isActive": true,
-      "id": 20
-    },
-    {
-      "nom": "Arial",
-      "prenom": "test3",
-      "email": "eva.maudoux@gmail.com",
-      "roles": [
-        {
-          "idRole": 1,
-          "name": "Admin"
-        }
-      ],
-      "salaire": 3000,
-      "regime": 50,
-      "date": "2024-11-28T23:00:00.000Z",
-      "isActive": true,
-      "id": 21
-    },
-    {
-      "nom": "cule",
-      "prenom": "test3",
-      "email": "eva.maudoux@gmail.com",
-      "roles": [
-        {
-          "idRole": 1,
-          "name": "Admin"
-        }
-      ],
-      "salaire": 3000,
-      "regime": 50,
-      "date": "2024-11-28T23:00:00.000Z",
-      "isActive": true,
-      "id": 22
-    },
-    {
-      "nom": "test5",
-      "prenom": "maudoux",
-      "email": "eva.maudoux@gmail.com",
-      "roles": [
-        {
-          "idRole": 1,
-          "name": "Admin"
-        },
-        {
-          "idRole": 2,
-          "name": "Employé"
-        }
-      ],
-      "salaire": 3000000000000,
-      "regime": 50,
-      "date": "2024-11-28T23:00:00.000Z",
-      "isActive": true,
-      "id": 23
-    },
-    {
-      "idUser": 0,
-      "nom": "test6",
-      "prenom": "maudoux",
+      "nom": "maudoux",
+      "prenom": "eva",
       "email": "eva.maudoux@gmail.com",
       "isActive": true,
       "roles": [
-        {
-          "idRole": 1,
-          "name": "Admin"
-        },
         {
           "idRole": 2,
           "name": "Employé"
@@ -513,95 +418,11 @@
       "historique": [
         {
           "date": "2024-11-28T23:00:00.000Z",
-          "salaire": 3000000000000,
-          "regime": 50
-        }
-      ],
-      "id": 24
-    },
-    {
-      "nom": "test7",
-      "prenom": "tes7",
-      "email": "eva.maudoux@gmail.com",
-      "isActive": true,
-      "roles": [
-        {
-          "idRole": 1,
-          "name": "Admin"
-        }
-      ],
-      "historique": [
-        {
-          "date": "2024-11-28T23:00:00.000Z",
-          "salaire": 3000000000000,
-          "regime": 50
-        }
-      ],
-      "id": 25
-    },
-    {
-      "nom": "test8",
-      "prenom": "test8",
-      "email": "eva.maudoux@gmail.com",
-      "isActive": true,
-      "roles": [
-        {
-          "idRole": 1,
-          "name": "Admin"
-        }
-      ],
-      "historique": [
-        {
-          "date": "2024-11-17T23:00:00.000Z",
-          "salaire": 200,
-          "regime": 50
-        }
-      ],
-      "id": 26
-    },
-    {
-      "nom": "test9",
-      "prenom": "test9",
-      "email": "eva.maudoux@gmail.com",
-      "isActive": true,
-      "roles": [
-        {
-          "idRole": 1,
-          "name": "Admin"
-        }
-      ],
-      "historique": [
-        {
-          "date": "2024-11-17T23:00:00.000Z",
-          "salaire": 200,
-          "regime": 50
-        }
-      ],
-      "id": 27
-    },
-    {
-      "nom": "Dupont",
-      "prenom": "Jeannette",
-      "email": "jean.dupont@example.com",
-      "isActive": false,
-      "roles": [
-        {
-          "idRole": 2,
-          "name": "Employé"
-        },
-        {
-          "idRole": 1,
-          "name": "Admin"
-        }
-      ],
-      "historique": [
-        {
-          "date": "2024-11-29T23:00:00.000Z",
-          "salaire": 40000,
+          "salaire": 300000000,
           "regime": 90
         }
       ],
-      "id": 28
+      "id": 16
     }
   ],
   "roles": [

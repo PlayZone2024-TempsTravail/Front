@@ -19,9 +19,10 @@ app-root {
 }
 
 header {
-    width: 200px;
+    width: 218px;
     height: 100vh;
     position: fixed;
+    background-color: var(--primary-color);
 }
 
 main {
@@ -33,7 +34,22 @@ main {
     flex-direction: column;
 }
 
-
 html, body { height: 100%; }
+
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+.p-dialog-content {
+    overflow: visible !important;
+}
+
+.p-button {
+    background-color: var(--primary-color);
+    border: none;
+}
+
+.p-dialog-header-close {
+    background-color : var(--blanc);
+}
+
 
