@@ -14,12 +14,13 @@ import {DropdownModule} from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import {UserListComponent} from '../users/components/user-list/user-list.component';
 import {UserFormComponent} from '../users/components/user-form/user-form.component';
-import {FormsModule} from '@angular/forms';
 import {ProjectGraphComponent} from './components/voir-graphique/voir-graphique.component';
 import {ChartModule} from 'primeng/chart';
 import { ProjectDetailsComponent } from './components/project-details/project-details.component';
 import {SharedModule} from '../../shared/shared.module';
-
+import { EncodageCoutsProjetComponent } from './components/encodage-couts-projet/encodage-couts-projet.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {CalendarModule} from 'primeng/calendar';
 
 
 @NgModule({
@@ -27,6 +28,8 @@ import {SharedModule} from '../../shared/shared.module';
       ProjectsComponent,
       ProjectGraphComponent,
       ProjectDetailsComponent,
+    ProjectsComponent,
+    EncodageCoutsProjetComponent
   ],
     imports: [
         CommonModule,
@@ -46,6 +49,8 @@ import {SharedModule} from '../../shared/shared.module';
         FormsModule,
         ChartModule,
         SharedModule,
+        ReactiveFormsModule,
+        CalendarModule,
     ],
     exports: [
         ProjectsComponent,

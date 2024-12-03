@@ -1,0 +1,4 @@
+{
+    "/api/Depense/projets/:id": "/depenses?projectId=:id",
+    "/api/Libele": "/libeles"
+}

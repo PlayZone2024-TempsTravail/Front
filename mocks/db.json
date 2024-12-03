@@ -88,190 +88,741 @@
             }
         }
     ],
-    "projects": [
+    "categories": [
         {
-            "id_project": 1,
-            "organismes": [
-                {
-                    "id_organisme": 1,
-                    "name": "NeonCortex Systems"
-                }
-            ],
-            "isActive": true,
-            "name": "Mcmouche Solution",
-            "montant_budget": 10000,
-            "color": "ff5733",
-            "date_debut_projet": "2024-04-13",
-            "date_fin_projet": "2025-04-13",
-            "charges_de_projet": [
-                {
-                    "idUser": 1,
-                    "nom": "Admin",
-                    "prenom": "Admin"
-
-                }
-            ]
+            "idCategory": 1,
+            "name": "Entree",
+            "isIncome": true,
+            "estimationParCategorie": true
         },
         {
-            "id_project": 2,
-            "organismes": [
-                {
-                    "id_organisme": 2,
-                    "name": "SynthWave Corp"
-                }
-            ],
-            "isActive": false,
-            "name": "TechNova Solutions",
-            "montant_budget": 20000,
-            "color": "3498db",
-            "date_debut_projet": "2023-01-01",
-            "date_fin_projet": "2023-12-31",
-            "charges_de_projet": [
-                {
-                    "idUser": 6,
-                    "nom": "Chen",
-                    "prenom": "Li"
-                }
-            ]
+            "idCategory": 2,
+            "name": "Renumeration",
+            "isIncome": false,
+            "estimationParCategorie": true
         },
         {
-            "id_project": 3,
-            "organismes": [
-                {
-                    "id_organisme": 3,
-                    "name": "BytePunk Syndicate"
-                }
-            ],
-            "isActive": true,
-            "name": "EcoEnergy Initiatives",
-            "montant_budget": 15000,
-            "color": "2ecc71",
-            "date_debut_projet": "2024-06-01",
-            "date_fin_projet": "2025-06-01",
-            "charges_de_projet": [
-                {
-                    "idUser": 5,
-                    "nom": "Tanaka",
-                    "prenom": "Hiroshi"
-                }
-            ]
+            "idCategory": 3,
+            "name": "Fonctionnement - Frais Specifique au projet",
+            "isIncome": false,
+            "estimationParCategorie": true
         },
         {
-            "id_project": 4,
-            "organismes": [
-                {
-                    "id_organisme": 4,
-                    "name": "CryoHaven Industries"
-                }
-            ],
-            "isActive": false,
-            "name": "NextGen Robotics",
-            "montant_budget": 30000,
-            "color": "e74c3c",
-            "date_debut_projet": "2022-05-15",
-            "date_fin_projet": "2023-05-15",
-            "charges_de_projet": [
-                {
-                    "idUser": 3,
-                    "nom": "Smith",
-                    "prenom": "John"
-                }
-            ]
+            "idCategory": 4,
+            "name": "Fonctionnement - Frais Generaux",
+            "isIncome": false,
+            "estimationParCategorie": false
         },
         {
-            "id_project": 5,
-            "organismes": [
-                {
-                    "id_organisme": 5,
-                    "name": "MechaHive Networks"
-                }
-            ],
-            "isActive": true,
-            "name": "GreenTech Horizon",
-            "montant_budget": 25000,
-            "color": "9b59b6",
-            "date_debut_projet": "2024-03-01",
-            "date_fin_projet": "2025-03-01",
-            "charges_de_projet": [
-                {
-                    "idUser": 2,
-                    "nom": "Dupont",
-                    "prenom": "Jean"
-                }
-            ]
+            "idCategory": 5,
+            "name": "Investissement",
+            "isIncome": false,
+            "estimationParCategorie": false
         }
     ],
+    "projects": [
+        {
+            "idProject": 1,
+            "isActive": true,
+            "name": "Mcmouche Solution",
+            "organismeId": 1,
+            "organismeName": "NeonCortex Systems",
+            "color": "ff5733",
+            "montantBudget": 10000,
+            "dateDebutProjet": "2024-04-13T00:00:00",
+            "dateFinProjet": "2025-04-13T00:00:00",
+            "chargeDeProjetId": 1,
+            "chargeDeProjetName": "Admin",
+            "previsionDepenseActuelle": 0,
+            "depenseReelActuelle": 0
+        },
+        {
+            "idProject": 2,
+            "isActive": false,
+            "name": "TechNova Solutions",
+            "organismeId": 2,
+            "organismeName": "SynthWave Corp",
+            "color": "3498db",
+            "montantBudget": 20000,
+            "dateDebutProjet": "2023-01-01T00:00:00",
+            "dateFinProjet": "2023-12-31T00:00:00",
+            "chargeDeProjetId": 6,
+            "chargeDeProjetName": "Chen Li",
+            "previsionDepenseActuelle": 0,
+            "depenseReelActuelle": 0
+        },
+        {
+            "idProject": 3,
+            "isActive": true,
+            "name": "EcoEnergy Initiatives",
+            "organismeId": 3,
+            "organismeName": "BytePunk Syndicate",
+            "color": "2ecc71",
+            "montantBudget": 15000,
+            "dateDebutProjet": "2024-06-01T00:00:00",
+            "dateFinProjet": "2025-06-01T00:00:00",
+            "chargeDeProjetId": 5,
+            "chargeDeProjetName": "Tanaka Hiroshi",
+            "previsionDepenseActuelle": 0,
+            "depenseReelActuelle": 0
+        },
+        {
+            "idProject": 4,
+            "isActive": false,
+            "name": "NextGen Robotics",
+            "organismeId": 4,
+            "organismeName": "CryoHaven Industries",
+            "color": "e74c3c",
+            "montantBudget": 30000,
+            "dateDebutProjet": "2022-05-15T00:00:00",
+            "dateFinProjet": "2023-05-15T00:00:00",
+            "chargeDeProjetId": 3,
+            "chargeDeProjetName": "Smith John",
+            "previsionDepenseActuelle": 0,
+            "depenseReelActuelle": 0
+        },
+        {
+            "idProject": 5,
+            "isActive": true,
+            "name": "GreenTech Horizon",
+            "organismeId": 5,
+            "organismeName": "MechaHive Networks",
+            "color": "9b59b6",
+            "montantBudget": 25000,
+            "dateDebutProjet": "2024-03-01T00:00:00",
+            "dateFinProjet": "2025-03-01T00:00:00",
+            "chargeDeProjetId": 2,
+            "chargeDeProjetName": "Dupont Jean",
+            "previsionDepenseActuelle": 0,
+            "depenseReelActuelle": 0
+        }
+    ],
+
+    "depenses": [
+        {
+            "idDepense": 1,
+            "libeleId": 13,
+            "projectId": 1,
+            "organismeId": 6,
+            "montant": 4933.94,
+            "dateIntervention": "2024-06-08T00:00:00",
+            "dateFacturation": "2024-06-08T00:00:00",
+            "motif": "Location"
+        },
+        {
+            "idDepense": 2,
+            "libeleId": 29,
+            "projectId": 1,
+            "organismeId": 7,
+            "montant": 3256.6,
+            "dateIntervention": "2024-10-19T00:00:00",
+            "dateFacturation": "2024-10-19T00:00:00",
+            "motif": "Location"
+        },
+        {
+            "idDepense": 3,
+            "libeleId": 28,
+            "projectId": 1,
+            "organismeId": 6,
+            "montant": 1363.08,
+            "dateIntervention": "2024-12-21T00:00:00",
+            "dateFacturation": "2024-12-21T00:00:00",
+            "motif": "Contrat annuel"
+        },
+        {
+            "idDepense": 4,
+            "libeleId": 1,
+            "projectId": 1,
+            "organismeId": 7,
+            "montant": 4760.15,
+            "dateIntervention": "2024-11-05T00:00:00",
+            "dateFacturation": "2024-11-17T00:00:00",
+            "motif": "Consultation"
+        },
+
+        {
+            "idDepense": 5,
+            "libeleId": 13,
+            "projectId": 2,
+            "organismeId": 6,
+            "montant": 4933.94,
+            "dateIntervention": "2024-06-08T00:00:00",
+            "dateFacturation": "2024-06-08T00:00:00",
+            "motif": "Location"
+        },
+        {
+            "idDepense": 6,
+            "libeleId": 26,
+            "projectId": 3,
+            "organismeId": 11,
+            "montant": 2683.37,
+            "dateIntervention": "2024-07-14T00:00:00",
+            "dateFacturation": "2024-07-14T00:00:00",
+            "motif": "Prestation de service"
+        },
+        {
+            "idDepense": 7,
+            "libeleId": 1,
+            "projectId": 3,
+            "organismeId": 7,
+            "montant": 4760.15,
+            "dateIntervention": "2024-11-05T00:00:00",
+            "dateFacturation": "2024-11-17T00:00:00",
+            "motif": "Consultation"
+        },
+        {
+            "idDepense": 8,
+            "libeleId": 10,
+            "projectId": 4,
+            "organismeId": 8,
+            "montant": 1591.17,
+            "dateIntervention": "2024-03-30T00:00:00",
+            "dateFacturation": "2024-03-30T00:00:00",
+            "motif": "Location"
+        },
+
+        {
+            "idDepense": 9,
+            "libeleId": 10,
+            "projectId": 5,
+            "organismeId": 8,
+            "montant": 1591.17,
+            "dateIntervention": "2024-03-30T00:00:00",
+            "dateFacturation": "2024-03-30T00:00:00",
+            "motif": "Location"
+        }
+
+    ],
+
+    "libeles": [
+        {
+            "idLibele": 1,
+            "idCategory": 2,
+            "name": "R - Experts/Intervenants externes"
+        },
+        {
+            "idLibele": 2,
+            "idCategory": 2,
+            "name": "R - Employés IEC"
+        },
+        {
+            "idLibele": 3,
+            "idCategory": 2,
+            "name": "R - Autres"
+        },
+        {
+            "idLibele": 4,
+            "idCategory": 3,
+            "name": "FS - Achat de livres et de publications"
+        },
+        {
+            "idLibele": 5,
+            "idCategory": 3,
+            "name": "FS - Achat de matériel et petit équipement"
+        },
+        {
+            "idLibele": 6,
+            "idCategory": 3,
+            "name": "FS - Frais de catering"
+        },
+        {
+            "idLibele": 7,
+            "idCategory": 3,
+            "name": "FS - Frais de Communication et Pub"
+        },
+        {
+            "idLibele": 8,
+            "idCategory": 3,
+            "name": "FS - Frais de déplacement mission"
+        },
+        {
+            "idLibele": 9,
+            "idCategory": 3,
+            "name": "FS - Frais de déplacements internationnaux"
+        },
+        {
+            "idLibele": 10,
+            "idCategory": 3,
+            "name": "FS - Frais de Location de salles"
+        },
+        {
+            "idLibele": 11,
+            "idCategory": 3,
+            "name": "FS - Frais de Réalisation/acquisition de supports pédagogiques"
+        },
+        {
+            "idLibele": 12,
+            "idCategory": 3,
+            "name": "FS - Frais de séjour (Perdiem)"
+        },
+        {
+            "idLibele": 13,
+            "idCategory": 3,
+            "name": "FS - Frais de Visa & Assurance"
+        },
+        {
+            "idLibele": 14,
+            "idCategory": 3,
+            "name": "FS - Frais d’hébergement/logement"
+        },
+        {
+            "idLibele": 15,
+            "idCategory": 3,
+            "name": "FS - Frais d’impression"
+        },
+        {
+            "idLibele": 16,
+            "idCategory": 3,
+            "name": "FS - Frais d’organisation d’atelier/séminaire"
+        },
+        {
+            "idLibele": 17,
+            "idCategory": 3,
+            "name": "FS - Autres frais liés aux projets"
+        },
+        {
+            "idLibele": 18,
+            "idCategory": 4,
+            "name": "FG - Loyers"
+        },
+        {
+            "idLibele": 19,
+            "idCategory": 4,
+            "name": "FG - Charges locatives (Eau, Electricité)"
+        },
+        {
+            "idLibele": 20,
+            "idCategory": 4,
+            "name": "FG - Charges TIC"
+        },
+        {
+            "idLibele": 21,
+            "idCategory": 4,
+            "name": "FG - Communications téléphoniques"
+        },
+        {
+            "idLibele": 22,
+            "idCategory": 4,
+            "name": "FG - Frais postaux"
+        },
+        {
+            "idLibele": 23,
+            "idCategory": 4,
+            "name": "FG - Fournitures de Bureau"
+        },
+        {
+            "idLibele": 24,
+            "idCategory": 4,
+            "name": "FG - Fournitures Informatique"
+        },
+        {
+            "idLibele": 25,
+            "idCategory": 4,
+            "name": "FG - Entretien et réparation"
+        },
+        {
+            "idLibele": 26,
+            "idCategory": 4,
+            "name": "FG - Autres"
+        },
+        {
+            "idLibele": 27,
+            "idCategory": 5,
+            "name": "I - Matériels et mobilier de bureau"
+        },
+        {
+            "idLibele": 28,
+            "idCategory": 5,
+            "name": "I - Matériels informatiques"
+        },
+        {
+            "idLibele": 29,
+            "idCategory": 5,
+            "name": "I - Autres"
+        }
+    ],
+
+
     "organismes": [
         {
-            "id_organisme": 1,
+            "idOrganisme": 1,
             "name": "NeonCortex Systems"
         },
         {
-            "id_organisme": 2,
+            "idOrganisme": 2,
             "name": "SynthWave Corp"
         },
         {
-            "id_organisme": 3,
+            "idOrganisme": 3,
             "name": "BytePunk Syndicate"
         },
         {
-            "id_organisme": 4,
+            "idOrganisme": 4,
             "name": "CryoHaven Industries"
         },
         {
-            "id_organisme": 5,
+            "idOrganisme": 5,
             "name": "MechaHive Networks"
+        },
+        {
+            "idOrganisme": 6,
+            "name": "FNAC"
+        },
+        {
+            "idOrganisme": 7,
+            "name": "IKEA"
+        },
+        {
+            "idOrganisme": 8,
+            "name": "Google"
+        },
+        {
+            "idOrganisme": 9,
+            "name": "Decathlon"
+        },
+        {
+            "idOrganisme": 10,
+            "name": "Microsoft"
+        },
+        {
+            "idOrganisme": 11,
+            "name": "Amazon"
+        },
+        {
+            "idOrganisme": 12,
+            "name": "Apple"
         }
     ],
-    "users": [
+
+
+    "users" : [
         {
             "idUser": 1,
             "nom": "Admin",
             "prenom": "Admin",
             "email": "admin@gmail.com",
+            "password": "admin1234",
             "isActive": true,
-            "roles": 1
+            "roles": [
+                {
+                    "idRole": 1,
+                    "name": "Admin"
+                }
+            ],
+            "historique": [
+                {
+                    "date": "2021-01-01",
+                    "salaire": 60000,
+                    "regime": 100
+                }
+            ]
         },
         {
             "idUser": 2,
             "nom": "Dupont",
             "prenom": "Jean",
             "email": "jean.dupont@example.com",
+            "password": "password1",
             "isActive": true,
-            "roles": 2
+            "roles": [
+                {
+                    "idRole": 2,
+                    "name": "Employé"
+                }
+            ],
+            "historique": [
+                {
+                    "date": "2022-02-01",
+                    "salaire": 40000,
+                    "regime": 80
+                },
+                {
+                    "date": "2023-01-01",
+                    "salaire": 42000,
+                    "regime": 80
+                }
+            ]
         },
         {
             "idUser": 3,
-            "nom": "Smith",
-            "prenom": "John",
-            "email": "john.smith@example.com",
+            "nom": "Martin",
+            "prenom": "Marie",
+            "email": "marie.martin@example.com",
+            "password": "password2",
             "isActive": true,
-            "roles": 2
+            "roles": [
+                {
+                    "idRole": 2,
+                    "name": "Employé"
+                }
+            ],
+            "historique": [
+                {
+                    "date": "2021-05-15",
+                    "salaire": 38000,
+                    "regime": 100
+                }
+            ]
         },
         {
             "idUser": 4,
-            "nom": "Lopez",
-            "prenom": "Maria",
-            "email": "maria.lopez@example.com",
-
-            "isActive": false,
-            "roles": 3
+            "nom": "Durand",
+            "prenom": "Luc",
+            "email": "luc.durand@example.com",
+            "password": "password3",
+            "isActive": true,
+            "roles": [
+                {
+                    "idRole": 2,
+                    "name": "Employé"
+                }
+            ],
+            "historique": [
+                {
+                    "date": "2020-03-20",
+                    "salaire": 45000,
+                    "regime": 90
+                }
+            ]
         },
         {
             "idUser": 5,
-            "nom": "Tanaka",
-            "prenom": "Hiroshi",
-            "email": "hiroshi.tanaka@example.com",
+            "nom": "Petit",
+            "prenom": "Emma",
+            "email": "emma.petit@example.com",
+            "password": "password4",
             "isActive": true,
-            "roles": 2
+            "roles": [
+                {
+                    "idRole": 2,
+                    "name": "Employé"
+                },
+                {
+                    "idRole": 1,
+                    "name": "Admin"
+                }
+            ],
+            "historique": [
+                {
+                    "date": "2022-07-01",
+                    "salaire": 50000,
+                    "regime": 100
+                }
+            ]
         },
         {
             "idUser": 6,
-            "nom": "Chen",
-            "prenom": "Li",
-            "email": "li.chen@example.com",
+            "nom": "Moreau",
+            "prenom": "Hugo",
+            "email": "hugo.moreau@example.com",
+            "password": "password5",
+            "isActive": true,
+            "roles": [
+                {
+                    "idRole": 2,
+                    "name": "Employé"
+                }
+            ],
+            "historique": [
+                {
+                    "date": "2021-09-01",
+                    "salaire": 37000,
+                    "regime": 75
+                }
+            ]
+        },
+        {
+            "idUser": 7,
+            "nom": "Lefevre",
+            "prenom": "Chloé",
+            "email": "chloe.lefevre@example.com",
+            "password": "password6",
+            "isActive": true,
+            "roles": [
+                {
+                    "idRole": 2,
+                    "name": "Employé"
+                }
+            ],
+            "historique": [
+                {
+                    "date": "2020-12-01",
+                    "salaire": 42000,
+                    "regime": 100
+                }
+            ]
+        },
+        {
+            "idUser": 8,
+            "nom": "Garnier",
+            "prenom": "Thomas",
+            "email": "thomas.garnier@example.com",
+            "password": "password7",
+            "isActive": true,
+            "roles": [
+                {
+                    "idRole": 2,
+                    "name": "Employé"
+                }
+            ],
+            "historique": [
+                {
+                    "date": "2019-06-15",
+                    "salaire": 39000,
+                    "regime": 80
+                }
+            ]
+        },
+        {
+            "idUser": 9,
+            "nom": "Roux",
+            "prenom": "Laura",
+            "email": "laura.roux@example.com",
+            "password": "password8",
+            "isActive": true,
+            "roles": [
+                {
+                    "idRole": 2,
+                    "name": "Employé"
+                }
+            ],
+            "historique": [
+                {
+                    "date": "2022-11-01",
+                    "salaire": 41000,
+                    "regime": 100
+                }
+            ]
+        },
+        {
+            "idUser": 10,
+            "nom": "Blanc",
+            "prenom": "Lucas",
+            "email": "lucas.blanc@example.com",
+            "password": "password9",
+            "isActive": true,
+            "roles": [
+                {
+                    "idRole": 1,
+                    "name": "Admin"
+                },
+                {
+                    "idRole": 2,
+                    "name": "Employé"
+                }
+            ],
+            "historique": [
+                {
+                    "date": "2020-04-01",
+                    "salaire": 55000,
+                    "regime": 100
+                }
+            ]
+        },
+        {
+            "idUser": 11,
+            "nom": "Fournier",
+            "prenom": "Léa",
+            "email": "lea.fournier@example.com",
+            "password": "password10",
+            "isActive": true,
+            "roles": [
+                {
+                    "idRole": 2,
+                    "name": "Employé"
+                }
+            ],
+            "historique": [
+                {
+                    "date": "2021-08-01",
+                    "salaire": 38000,
+                    "regime": 90
+                }
+            ]
+        },
+        {
+            "idUser": 12,
+            "nom": "Girard",
+            "prenom": "Nathan",
+            "email": "nathan.girard@example.com",
+            "password": "password11",
+            "isActive": true,
+            "roles": [
+                {
+                    "idRole": 2,
+                    "name": "Employé"
+                }
+            ],
+            "historique": [
+                {
+                    "date": "2018-03-01",
+                    "salaire": 36000,
+                    "regime": 100
+                }
+            ]
+        },
+        {
+            "idUser": 13,
+            "nom": "Bonnet",
+            "prenom": "Sarah",
+            "email": "sarah.bonnet@example.com",
+            "password": "password12",
+            "isActive": true,
+            "roles": [
+                {
+                    "idRole": 1,
+                    "name": "Admin"
+                }
+            ],
+            "historique": [
+                {
+                    "date": "2019-09-01",
+                    "salaire": 58000,
+                    "regime": 100
+                }
+            ]
+        },
+        {
+            "idUser": 14,
+            "nom": "Dupuy",
+            "prenom": "Maxime",
+            "email": "maxime.dupuy@example.com",
+            "password": "password13",
+            "isActive": true,
+            "roles": [
+                {
+                    "idRole": 2,
+                    "name": "Employé"
+                }
+            ],
+            "historique": [
+                {
+                    "date": "2021-05-01",
+                    "salaire": 39000,
+                    "regime": 85
+                }
+            ]
+        },
+        {
+            "idUser": 15,
+            "nom": "Lefevre",
+            "prenom": "Paul",
+            "email": "paul.lefevre@example.com",
+            "password": "password14",
             "isActive": false,
-            "roles": 3
+            "roles": [
+                {
+                    "idRole": 2,
+                    "name": "Employé"
+                }
+            ],
+            "historique": [
+                {
+                    "date": "2020-05-01",
+                    "salaire": 35000,
+                    "regime": 60
+                }
+            ]
         }
     ]
 }

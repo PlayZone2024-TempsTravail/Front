@@ -27,6 +27,7 @@ import {FloatLabelModule} from 'primeng/floatlabel';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MatNativeDateModule } from '@angular/material/core';
 import { DropdownModule } from 'primeng/dropdown';
+import {DepenseService} from './features/projects/services/depense.service';
 import {ChartModule} from 'primeng/chart';
 
 @NgModule({
@@ -61,6 +62,7 @@ import {ChartModule} from 'primeng/chart';
     ],
     providers: [
         provideHttpClient(),
+        DepenseService,
         provideAnimationsAsync() // Ajout de l'interceptors => provideHttpClient(withInterceptors([tokenInterceptor]))
     ],
     bootstrap: [AppComponent]
