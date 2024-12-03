@@ -15,11 +15,18 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import {UserListComponent} from '../users/components/user-list/user-list.component';
 import {UserFormComponent} from '../users/components/user-form/user-form.component';
 import {FormsModule} from '@angular/forms';
+import {ProjectGraphComponent} from './components/voir-graphique/voir-graphique.component';
+import {ChartModule} from 'primeng/chart';
+import { ProjectDetailsComponent } from './components/project-details/project-details.component';
+import {SharedModule} from '../../shared/shared.module';
+
 
 
 @NgModule({
   declarations: [
-    ProjectsComponent
+      ProjectsComponent,
+      ProjectGraphComponent,
+      ProjectDetailsComponent,
   ],
     imports: [
         CommonModule,
@@ -37,9 +44,13 @@ import {FormsModule} from '@angular/forms';
         DropdownModule,
         RadioButtonModule,
         FormsModule,
+        ChartModule,
+        SharedModule,
     ],
     exports: [
         ProjectsComponent,
+        ProjectDetailsComponent,
+        ProjectGraphComponent
     ],
 })
 export class ProjectsModule { }
