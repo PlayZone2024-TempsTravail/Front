@@ -1,10 +1,10 @@
 export interface Appointment {
-    WorkTime: WorkTimeCategory;
-    id_WorkTime?: number;
-    start: Date;
-    end: Date;
+    workTime?: WorkTime;
+    idWorktime?: number;
+    start: string;
+    end: string;
     isOnSite: boolean;
-    category_Id: number;
+    categoryId: number;
     project_Id?: number;
     user_Id: number;
     date: Date;
@@ -21,3 +21,11 @@ export interface Appointment {
     abreviation: string;
     color: `#${string}`;
   }
+
+  export interface CompteurWorktimeCategory {
+    category: string;
+    counter: number;
+    max: number;
+    difference: number;
+  }
+  

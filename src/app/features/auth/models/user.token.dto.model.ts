@@ -1,7 +1,9 @@
 export interface UserTokenDtoModel {
-    accessToken: string;
-    user: User
-  }
+  token: string;
+  email: string;
+  roles: string[];
+}
+
   
   export interface User{
     id: number;

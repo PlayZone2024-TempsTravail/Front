@@ -1,31 +1,26 @@
 <div class="dialog-content">
-  <h5 mat-dialog-title *ngIf="!appointmentForm.value.id">Ajouter un horaire</h5>
-  <h5 mat-dialog-title *ngIf="appointmentForm.value.id">Modifier l'horaire</h5>
+  <h5 mat-dialog-title *ngIf="!appointmentForm.value.idWorktime">Ajouter un horaire</h5>
+  <h5 mat-dialog-title *ngIf="appointmentForm.value.idWorktime">Modifier l'horaire</h5>
   <div [formGroup]="appointmentForm">
     <div mat-dialog-content>
       <div class="dropdwon_appointment">
         <p-dropdown
           [options]="workTimeList"
-          [formControl]="workTimeControl"
+          formControlName="categoryId"
           optionLabel="abreviation"
+          optionValue="idWorktimeCategory"
           [filter]="true"
           filterBy="abreviation"
-          [showClear]="true"
           styleClass="pd-style"
           placeholder="Catégorie">
-          <ng-template let-workTime pTemplate="item">
-            <div class="flex align-items-center gap-2">
-              <div>{{ workTime.abreviation }}</div>
-            </div>
-          </ng-template>
         </p-dropdown>
 
-        <div *ngIf="appointmentForm.controls['WorkTime'].value?.abreviation === 'VIEC'">
+        <div *ngIf="appointmentForm.controls['categoryId'].value?.abreviation === 'VIEC'">
           <p>test</p> <!-- TODO : Mettre un dropdown -->
         </div>
 
         <div>
-          <p class="error" *ngIf="!appointmentForm.controls['WorkTime'].value && appointmentForm.touched">
+          <p class="error" *ngIf="!appointmentForm.controls['categoryId'].value && appointmentForm.touched">
             Veuillez sélectionner un projet.
           </p>
         </div>
@@ -56,19 +51,25 @@
         Il est impossible d'avoir deux horaires qui se chevauchent sur la même case.
       </div>
     </div>
-    <div mat-dialog-actions align="end">
+    <div mat-dialog-actions align="end" >
+
+      <div class="surSite">
+        <label>Distanciel</label> 
+        <p-inputSwitch formControlName="checkedIsOnSite" />
+      </div>
+
       <button
         type="submit"
         mat-flat-button
         (click)="onSaveClick()"
-        [disabled]="!appointmentForm.valid || !appointmentForm.controls['WorkTime'].value">
-        <span *ngIf="appointmentForm.value.id">Modifier l'horaire</span>
-        <span *ngIf="!appointmentForm.value.id">Ajouter un horaire</span>
+        [disabled]="!appointmentForm.valid || !appointmentForm.controls['categoryId'].value">
+        <span *ngIf="appointmentForm.value.idWorktime">Modifier l'horaire</span>
+        <span *ngIf="!appointmentForm.value.idWorktime">Ajouter un horaire</span>
       </button>
 
       <button
         (click)="onDeleteClick()"
-        *ngIf="appointmentForm.value.id"
+        *ngIf="appointmentForm.value.idWorktime"
         style="margin-left: 10px"
         mat-stroked-button>
         Supprimer

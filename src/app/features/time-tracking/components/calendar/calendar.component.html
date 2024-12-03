@@ -103,7 +103,7 @@
                   [ngStyle]="{ 'background-color': getColor(appointment)}"
                   (click)="editAppointment(appointment, $event)"
                 >
-                  <span>{{ appointment.WorkTime.abreviation }} | {{ calculateDuration(appointmentService.convertTimeToString(appointment.start), appointmentService.convertTimeToString(appointment.end)) }} heures</span>
+                  <span>{{ appointment.workTime?.abreviation }} | {{ calculateDuration(appointmentService.convertTimeToString(todate(appointment.start)), appointmentService.convertTimeToString(todate(appointment.end))) }} heures</span>
                 </div>
               </ng-container>
             </div>
@@ -157,7 +157,9 @@
               [ngStyle]="{ 'background-color': getColor(appointment)}"
               (click)="editAppointment(appointment, $event)"
             >
-              <span>{{ appointment.WorkTime.abreviation }} | {{ calculateDuration(appointmentService.convertTimeToString(appointment.start), appointmentService.convertTimeToString(appointment.end)) }} heures</span>
+            @if (todate(appointment.start).getHours() === getHourFromSlot(timeSlot)){
+              <span>{{ appointment.workTime?.abreviation }} | {{ calculateDuration(appointmentService.convertTimeToString(todate(appointment.start)), appointmentService.convertTimeToString(todate(appointment.end))) }} heures</span>
+            }
             </div>
           </td>
         </tr>
@@ -185,7 +187,9 @@
             ></div>
             <div
               tabindex="0"
-              *ngFor="let appointment of getAppointmentsForDateTime(monthDays[0], slot); track appointment; let first = first"
+              *ngFor="let appointment of getAppointmentsForDateTime(monthDays[0], slot); track appointment; 
+              let index = index
+              let first = first"
               class="appointment"
               cdkDrag
               cdkDragHandle
@@ -193,7 +197,9 @@
               [ngStyle]="{ 'background-color': getColor(appointment)}"
               (click)="editAppointment(appointment, $event)"
             >
-              <span>{{ appointment.WorkTime.abreviation }} | {{ calculateDuration(appointmentService.convertTimeToString(appointment.start), appointmentService.convertTimeToString(appointment.end)) }} heures</span>
+              @if (todate(appointment.start).getHours() === getHourFromSlot(slot)){
+                <span>{{ appointment.workTime?.abreviation }} | {{ calculateDuration(appointmentService.convertTimeToString(todate(appointment.start)), appointmentService.convertTimeToString(todate(appointment.end))) }} heures</span>
+              }            
             </div>
           </td>
         </tr>
@@ -209,11 +215,11 @@
             <th>Utilisé</th>
             <th>Solde</th>
         </tr>
-        <tr *ngFor="let workTime of workTime">
-          <td class="category">{{ workTime.abreviation }}</td>
-          <td class="nb_day"></td>
-          <td></td>
-          <td></td>
+        <tr *ngFor="let workTime of compteurWorktimeCategory">
+          <td class="category">{{ workTime.category }}</td>
+          <td class="nb_day">{{ workTime.counter }}</td>
+          <td class="nb_day_utilise">{{ workTime.max }}</td>
+          <td class="nb_day_reste">{{ workTime.difference }}</td>
         </tr>
     </table>
     </div>

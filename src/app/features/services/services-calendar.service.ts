@@ -2,71 +2,82 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { Appointment, WorkTime } from '../time-tracking/models/appointment.model';
+import { Appointment, WorkTime, CompteurWorktimeCategory } from '../time-tracking/models/appointment.model';
+import { AuthService  } from '../../features/auth/services/auth.services';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AppointmentService {
   private appointmentsUrlJSON = ''; //http://localhost:3000/appointments
-  private workTimeCategoryUrl = 'https://api.technobel.pro/api/WorktimeCategory';
-  private workTimeAddUrl = 'https://api.technobel.pro/api/Worktime';
+  private workTimeCategoryUrl = 'http://api.technobel.pro:444/api/WorktimeCategory';
+  private workTimeUrl = 'http://api.technobel.pro:444/api/Worktime';
+  private workTimeRangeUrl = 'http://api.technobel.pro:444/api/Worktime/range';
+  private compteurWorktimeCategoryUrl = 'http://api.technobel.pro:444/api/CompteurWorktimeCategory';
 
-  private readonly jwtToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjEiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDI0LTExLTI5VDEzOjMxOjM4LjYwMzg2OTNaIiwibm9tIjoiSGFuc2UiLCJwcmVub20iOiJTdGV2ZW4iLCJlbWFpbCI6InN0ZXZlbkB0ZWNoLmJlIiwiUGVybWlzc2lvbnMiOlsiQUpPVVRFUl9QT0lOVEFHRSIsIkFKT1VURVJfUk9MRSIsIkFKT1VURVJfVVNFUiIsIkRFQlVHX1BFUk1JU1NJT04iLCJNT0RJRklFUl9QT0lOVEFHRSIsIk1PRElGSUVSX1JPTEUiLCJNT0RJRklFUl9VU0VSIiwiU1VQUFJJTUVSX1BPSU5UQUdFIiwiU1VQUFJJTUVSX1JPTEUiLCJTVVBQUklNRVJfVVNFUiIsIlZPSVJfQUxMX1BPSU5UQUdFUyIsIlZPSVJfUE9JTlRBR0UiLCJWT0lSX1JPTEVTIiwiVk9JUl9VU0VSUyJdLCJleHAiOjE3MzI4ODcwOTgsImlzcyI6IkFQSV9JRUMiLCJhdWQiOiJGUk9OVF9JRUMifQ.fbHqeK6_IhVZQRP7_1UO8sXSAXHIFuqZb0fkhd4uhiE";
-
-  constructor(private http: HttpClient) {}
-
-  getAppointments(): Observable<Appointment[]> {
-    return this.http.get<any>(this.appointmentsUrlJSON).pipe(
-      tap(data => console.log('Data received:', data)),
-      catchError(error => {
-        console.error('Erreur lors de la récupération des rendez-vous:', error);
-        return throwError(error);
-      })
-    );
-  }
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService
+  ) {}
 
   addAppointment(a: Appointment) {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.jwtToken}`);
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.jwtToken}`);
   
-    const startTime = this.convertTimeToString(a.start);
-    const endTime = this.convertTimeToString(a.end);
+    const startTime = this.convertTimeToString(new Date(a.start));
+    const endTime = this.convertTimeToString(new Date(a.end));
   
     const startDate = this.mergeDateAndTime(a.date, startTime);
     const endDate = this.mergeDateAndTime(a.date, endTime);
+
+    const userId = this.authService.getUserId(this.authService.jwtToken);
+
+    if (!userId) {
+      console.error('Impossible de récupérer "userId" dans le token JWT.');
+      return throwError(() => new Error('Invalid token'));
+    }
   
     const body = {
       start: startDate.toISOString(),
       end: endDate.toISOString(),
-      isOnSite: true,
-      categoryId: a.WorkTime.idWorktimeCategory,
-      projectId: 1010,
-      userId: 101,
+      isOnSite: a.isOnSite,
+      categoryId: a.categoryId,
+      projectId: a.project_Id,
+      userId: +userId,
     };
   
-    console.log('Data being sent:', body);
-  
-    return this.http.post(this.workTimeAddUrl, body, { headers }).pipe(
+    return this.http.post(this.workTimeUrl, body, { headers }).pipe(
       catchError(error => {
         console.error('Erreur lors de l\'ajout du rendez-vous:', error);
-        return throwError(() => error);  // Ajoutez cette ligne pour propager l'erreur.
+        return throwError(() => error);  
       })
     );
   }
 
   editAppointment(a: Appointment) {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.jwtToken}`);
-    return this.http.put(this.appointmentsUrlJSON + '/' + a.id_WorkTime, a, { headers });
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.jwtToken}`);
+    console.log(a)
+    return this.http.put(this.workTimeUrl + '/' + a.idWorktime, a, { headers });
+    // TODO : FINIR QUAND STEVEN A FINI
   }
 
-  deleteAppointment(uuid: string): Observable<any> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.jwtToken}`);
-    return this.http.delete(`${this.appointmentsUrlJSON}/${uuid}`, { headers });
+  deleteAppointment(a: Appointment): Observable<any> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.jwtToken}`);
+    return this.http.delete(`${this.workTimeUrl}/${a.idWorktime}`, { headers });
   }
 
   getWorkTimeList(): Observable<WorkTime[]> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.jwtToken}`);
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.jwtToken}`);
     return this.http.get<WorkTime[]>(this.workTimeCategoryUrl, { headers });
+  }
+
+  getAppointments(userId: string, startDate: string, endDate: string): Observable<Appointment[]> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.jwtToken}`);
+    const params = {
+      userId: userId,
+      startDate: startDate,
+      endDate: endDate
+    };
+    return this.http.get<Appointment[]>(this.workTimeRangeUrl, { headers, params });
   }
 
   public convertTimeToString(date: Date): string {
@@ -76,12 +87,24 @@ export class AppointmentService {
   }
 
   public convertStringToDate(date: Date, time: string): Date {
-    const [hours, minutes] = time.split(':').map(Number);
-    const resultDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hours, minutes, 0, 0);
+    const [hours, minutes] = time.split(':').map(Number); 
+    const resultDate =  new Date(date.getFullYear(), date.getMonth(), date.getDate(), hours, minutes, 0, 0);
     return resultDate;
   }
 
   public mergeDateAndTime(date: Date, time: string): Date {
     return this.convertStringToDate(date, time);
   }
-}
+
+  getCompteurWorktimeCategory(userId: string): Observable<CompteurWorktimeCategory[]> {
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.jwtToken}`);
+    const url = `${this.compteurWorktimeCategoryUrl}/${userId}`;
+
+    return this.http.get<CompteurWorktimeCategory[]>(url, { headers }).pipe(
+      catchError(error => {
+        console.error('Erreur lors de la récupération des données CompteurWorktimeCategory:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+} 
