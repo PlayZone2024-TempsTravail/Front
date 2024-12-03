@@ -27,12 +27,13 @@ export class ProjectDetailsComponent implements OnInit {
         this.projectService.getProjectById(projectId).subscribe((project) => {
             this.project = project;
 
+            // Calculate variation after loading project details
+            this.calculateVariation();
+
             // Fetch expenses and calculate totals
             this.projectService.getProjectExpenses(projectId).subscribe((expenses) => {
                 this.expenses = this.groupExpensesByLabel(expenses);
                 this.calculateTotalExpenses();
-                this.totalCost = this.calculateTotalCost();
-                this.calculateVariation();
 
                 // Generate chart data
                 this.generateChartData();
@@ -106,10 +107,13 @@ export class ProjectDetailsComponent implements OnInit {
 
     // Calculate variation percentage
     calculateVariation(): void {
-        if (this.totalPrevisions > 0) {
-            this.variation = ((this.totalCost - this.totalPrevisions) / this.totalPrevisions) * 100;
+        if (this.project && this.project.previsionDepenseActuelle > 0) {
+            this.variation = ((this.project.depenseReelActuelle - this.project.previsionDepenseActuelle) / this.project.previsionDepenseActuelle) * 100;
+        } else {
+            this.variation = 0;
         }
     }
+
 
     // Générer une plage de mois dynamique
     getMonthsRange(): string[] {
