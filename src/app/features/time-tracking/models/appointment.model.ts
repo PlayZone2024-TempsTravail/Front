@@ -14,7 +14,7 @@ export interface Appointment {
     idWorktimeCategory: number;
     abreviation: string;
     color: string;
-  }
+  } 
   
   export interface WorkTimeCategory {
     idWorktimeCategory: number;

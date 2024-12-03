@@ -13,7 +13,7 @@ export class AppointmentService {
   private workTimeCategoryUrl = 'http://api.technobel.pro:444/api/WorktimeCategory';
   private workTimeUrl = 'http://api.technobel.pro:444/api/Worktime';
   private workTimeRangeUrl = 'http://api.technobel.pro:444/api/Worktime/range';
-  private compteurWorktimeCategoryUrl = 'http://api.technobel.pro:444/api/CompteurWorktimeCategory';
+  private counterAbsenceUrl = 'http://api.technobel.pro:444/api/Counter/absence';
 
   constructor(
     private http: HttpClient,
@@ -26,8 +26,8 @@ export class AppointmentService {
     const startTime = this.convertTimeToString(new Date(a.start));
     const endTime = this.convertTimeToString(new Date(a.end));
   
-    const startDate = this.mergeDateAndTime(a.date, startTime);
-    const endDate = this.mergeDateAndTime(a.date, endTime);
+    const startDate = this.mergeDateAndTime(new Date(a.date), startTime);
+    const endDate = this.mergeDateAndTime(new Date(a.date), endTime);
 
     const userId = this.authService.getUserId(this.authService.jwtToken);
 
@@ -55,10 +55,19 @@ export class AppointmentService {
 
   editAppointment(a: Appointment) {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.jwtToken}`);
-    console.log(a)
-    return this.http.put(this.workTimeUrl + '/' + a.idWorktime, a, { headers });
-    // TODO : FINIR QUAND STEVEN A FINI
-  }
+    
+    const body = {
+      start: a.start,
+      end: a.end,
+      isOnSite: a.isOnSite,
+      categoryId: a.categoryId,
+      projectId: a.project_Id,
+      userId: a.user_Id
+    };
+
+    return this.http.put(this.workTimeUrl + '/' + a.idWorktime, body, { headers });
+}
+
 
   deleteAppointment(a: Appointment): Observable<any> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.jwtToken}`);
@@ -98,7 +107,7 @@ export class AppointmentService {
 
   getCompteurWorktimeCategory(userId: string): Observable<CompteurWorktimeCategory[]> {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.jwtToken}`);
-    const url = `${this.compteurWorktimeCategoryUrl}/${userId}`;
+    const url = `${this.counterAbsenceUrl}/${userId}`;
 
     return this.http.get<CompteurWorktimeCategory[]>(url, { headers }).pipe(
       catchError(error => {

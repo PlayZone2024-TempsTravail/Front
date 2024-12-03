@@ -10,7 +10,7 @@ export enum CalendarView {
   Month = 'month',
   Week = 'week',
   Day = 'day',
-}
+} 
 
 @Component({
   selector: 'app-calendar',
@@ -28,7 +28,7 @@ export class CalendarComponent {
   workTime: WorkTime[] = [];
   timeSlots: string[] = [];
   currentDate: number = new Date().getFullYear();
-  compteurWorktimeCategory: any[] = [];
+  CounterVA: any[] = [];
   public CalendarView = CalendarView;
 
   constructor(
@@ -64,8 +64,8 @@ export class CalendarComponent {
     if (userId) {
       this.appointmentService.getCompteurWorktimeCategory(userId.toString()).subscribe(
         (data: CompteurWorktimeCategory[]) => {
-          //console.log('CompteurWorktimeCategory Data:', data); 
-          this.compteurWorktimeCategory = data;
+          //console.log('CompteurWorktimeCategory Data:', data);
+          this.CounterVA = data;
         },
         (error) => {
           console.error('Erreur lors de la récupération des données CompteurWorktimeCategory:', error);
@@ -74,7 +74,6 @@ export class CalendarComponent {
     }
   }
 
-
   loadAppointments(): void {
     const userId = this.authService.getUserId(this.authService.jwtToken);
     const startDate = '2024-12-01T00:00:00Z';
@@ -82,7 +81,7 @@ export class CalendarComponent {
 
     this.appointmentService.getAppointments(userId!.toString(), startDate, endDate).subscribe({
       next: (appointments) => {
-        //console.log(appointments);
+        console.log(appointments);
 
         if (appointments && appointments.length > 0) {
           this.appointments = appointments.map(appointment => ({
@@ -261,9 +260,6 @@ export class CalendarComponent {
   }
 
   openDialog(appointment: any): void {
-    const userId = this.authService.getUserId(this.authService.jwtToken);
-    const startDate = '2024-12-01T10:33:36.597Z';
-    const endDate = '2024-12-31T10:33:36.597Z';
 
     const dialogRef = this.dialog.open(AppointmentDialogComponent, {
       width: '500px',
@@ -273,6 +269,8 @@ export class CalendarComponent {
         appointments: this.appointments
       },
     });
+
+    console.log('Opening dialog with appointment:', appointment);
 
     dialogRef.afterClosed().subscribe(() => {
       this.loadAppointments()
@@ -323,6 +321,7 @@ export class CalendarComponent {
     );
   }
 
+  // n'est jamais appelé !!!
   isOverlapping(date: Date, start: string, end: string, appointmentToSkip?: Appointment): boolean {
     const startDate = this.appointmentService.convertStringToDate(date, start);
     const endDate = this.appointmentService.convertStringToDate(date, end);
@@ -388,4 +387,3 @@ export class CalendarComponent {
     return new Date(date)
   }
 }
- 

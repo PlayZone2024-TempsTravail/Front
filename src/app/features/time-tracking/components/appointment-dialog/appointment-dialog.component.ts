@@ -21,6 +21,8 @@ import { AppointmentService } from '../../../services/services-calendar.service'
 import { MAT_DATE_FORMATS, DateAdapter } from '@angular/material/core';
 import { CUSTOM_DATE_FORMATS, CustomDateAdapter } from '../../models/custom-date-adapter';
 import { WorkTime, Appointment } from '../../models/appointment.model';
+import { AuthService } from '../../../auth/services/auth.services';
+
 
 //PRIMENG
 import { DropdownModule } from 'primeng/dropdown';
@@ -55,7 +57,7 @@ export class AppointmentDialogComponent implements OnInit {
   appointments: Appointment[] = [];
   appointmentForm: FormGroup;
   workTimeList: WorkTime[] = [];
-  checkedIsOnSite: boolean = true;
+  IsOnSite: boolean = true;
 
   constructor(
     public dialogRef: MatDialogRef<AppointmentDialogComponent>,
@@ -65,7 +67,8 @@ export class AppointmentDialogComponent implements OnInit {
       appointments: Appointment[],
     },
     private appointmentService: AppointmentService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private authService: AuthService
   ) {
     this.appointments = data.appointments;
   
@@ -75,14 +78,16 @@ export class AppointmentDialogComponent implements OnInit {
       date: [null, Validators.required],
       startTime: [null, Validators.required],
       endTime: [null, Validators.required],
-      checkedIsOnSite: [false] 
+      IsOnSite: [false] 
     }, { validators: this.timeRangeValidator });
-  
-    //console.log(data.appointment)
 
     this.appointmentForm.patchValue({
-      ...data.appointment,
-      startTime: this.appointmentService.convertTimeToString(new Date(data.appointment.start)) || null,
+      ...data.appointment,  
+
+      startTime: data.appointment.idWorktime 
+        ? this.appointmentService.convertTimeToString(new Date(data.appointment.start)) 
+        : data.appointment.start,
+      
       endTime: this.appointmentService.convertTimeToString(new Date(data.appointment.end)) || null,
     });
   }
@@ -120,29 +125,49 @@ export class AppointmentDialogComponent implements OnInit {
       };
     }
   
-    formData.isOnSite = !formData.checkedIsOnSite;
-  
+    formData.isOnSite = formData.IsOnSite;
+
+    const date = typeof formData.date === 'string' ? new Date(formData.date) : formData.date;
+
+    const startDate = this.appointmentService.convertStringToDate(date, formData.startTime);
+    const endDate = this.appointmentService.convertStringToDate(date, formData.endTime);
+
+    const userId = this.authService.getUserId(this.authService.jwtToken);
+
+    if (userId === null) {
+      console.error('User ID is null. Cannot save appointment.');
+      return;
+    }
+
     const appointment: Appointment = {
       ...formData,
-      start: this.appointmentService.convertStringToDate(formData.date, formData.startTime),
-      end: this.appointmentService.convertStringToDate(formData.date, formData.endTime),
+      start: startDate.toISOString(), 
+      end: endDate.toISOString(),
+      user_Id: userId,
+      date: date.toISOString() 
     };
   
     if (appointment.idWorktime) {
       this.appointmentService.editAppointment(appointment).subscribe({
-        next: () => {
+        next: () => {          
           this.dialogRef.close();
+        },
+        error: (err) => {
+          console.error('Error editing appointment:', err);
         }
       });
     } else {
       this.appointmentService.addAppointment(appointment).subscribe({
         next: () => {
           this.dialogRef.close();
+        },
+        error: (err) => {
+          console.error('Error adding appointment:', err);
         }
       });
     }
   }
-
+  
   onDeleteClick(): void {
     const formData = this.appointmentForm.value;
 
@@ -162,12 +187,11 @@ export class AppointmentDialogComponent implements OnInit {
     const date = control.get('date')?.value;
   
     if (startTime && endTime) {
-  
       const startDate = new Date(date);
-      startDate.setHours(startTime);
+      startDate.setHours(startTime.split(':')[0], startTime.split(':')[1]);
   
       const endDate = new Date(date);
-      endDate.setHours(endTime);
+      endDate.setHours(endTime.split(':')[0], endTime.split(':')[1]);
   
       if (startDate >= endDate) {
         return { timeRangeInvalid: true };
@@ -175,7 +199,7 @@ export class AppointmentDialogComponent implements OnInit {
   
       if (
         this.appointments.some((appt) => {
-          if (appt.categoryId === this.appointmentForm?.value.category_Id) return false;
+          if (appt.categoryId === this.appointmentForm?.value.categoryId) return false;
           const apptStartDate = new Date(appt.date);
           const apptEndDate = new Date(appt.date);
   
@@ -185,7 +209,7 @@ export class AppointmentDialogComponent implements OnInit {
           apptStartDate.setHours(apptStartHours, apptStartMinutes);
           apptEndDate.setHours(apptEndHours, apptEndMinutes);
   
-          const tolerance = 1; 
+          const tolerance = 1;
           const startDateWithTolerance = new Date(startDate.getTime() + tolerance * 60000);
           const endDateWithTolerance = new Date(endDate.getTime() - tolerance * 60000);
   
@@ -198,6 +222,7 @@ export class AppointmentDialogComponent implements OnInit {
   
     return null;
   };
+  
 
   get workTimeControl(): FormControl {
     return this.appointmentForm.get('workTime') as FormControl;
