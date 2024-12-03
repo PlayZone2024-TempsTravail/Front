@@ -1,11 +1,17 @@
+import {Timestamp} from 'rxjs';
+
 export interface Project {
-    id_project: number;
-    organisme_id: number;
+    idProject: number;
     isActive: boolean;
     name: string;
-    montant_budget: number;
+    organismeId: number;
+    organismeName: string;
     color: string;
-    date_debut_projet: string;
-    date_fin_projet: string;
-    charge_de_projet: number;
+    montantBudget: number;
+    dateDebutProjet: Date;
+    dateFinProjet: Date;
+    chargeDeProjetId: number;
+    chargeDeProjetName: string;
+    previsionDepenseActuelle : number;
+    depenseReelActuelle : number;
 }

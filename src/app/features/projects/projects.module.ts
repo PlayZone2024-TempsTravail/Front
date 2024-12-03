@@ -15,32 +15,37 @@ import {UserListComponent} from '../users/components/user-list/user-list.compone
 import {UserFormComponent} from '../users/components/user-form/user-form.component';
 import {ProjectGraphComponent} from './components/voir-graphique/voir-graphique.component';
 import {ChartModule} from 'primeng/chart';
+import { ProjectDetailsComponent } from './components/project-details/project-details.component';
+import {SharedModule} from '../../shared/shared.module';
+
 
 
 @NgModule({
   declarations: [
       ProjectsComponent,
-      ProjectGraphComponent
+      ProjectGraphComponent,
+      ProjectDetailsComponent,
   ],
-  imports: [
-    CommonModule,
-    ProjectsRoutingModule,
+    imports: [
+        CommonModule,
+        ProjectsRoutingModule,
 
 
-
-      // PrimeNG
-      TableModule,
-      ChipModule,
-      ButtonModule,
-      InputTextModule,
-      CardModule,
-      ToastModule,
-      DialogModule,
-      DropdownModule,
-      ChartModule
-  ],
+        // PrimeNG
+        TableModule,
+        ChipModule,
+        ButtonModule,
+        InputTextModule,
+        CardModule,
+        ToastModule,
+        DialogModule,
+        DropdownModule,
+        ChartModule,
+        SharedModule,
+    ],
     exports: [
         ProjectsComponent,
+        ProjectDetailsComponent,
         ProjectGraphComponent
     ],
 })
