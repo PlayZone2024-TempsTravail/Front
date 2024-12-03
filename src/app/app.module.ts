@@ -28,6 +28,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { MatNativeDateModule } from '@angular/material/core';
 import { DropdownModule } from 'primeng/dropdown';
 import {DepenseService} from './features/projects/services/depense.service';
+import {ChartModule} from 'primeng/chart';
 
 @NgModule({
     declarations: [

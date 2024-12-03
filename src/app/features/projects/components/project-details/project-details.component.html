@@ -1,0 +1,86 @@
+<a
+    type="button"
+    appBack>
+    <img src="/assets/back-button.svg" class="button-back" alt="Retour" width="62px" height="62px">
+</a>
+<div class="project-detail">
+    <!-- Section des détails du projet -->
+    <h2>Détails du Projet</h2>
+
+    <div class ="project-container" *ngIf="project; else loading">
+        <div class="project-info">
+            <p><strong>Nom du Projet :</strong> {{ project.name }}</p>
+            <p><strong>Organisme :</strong> {{ project.organismeName}}</p>
+            <p><strong>Budget :</strong> {{ project.montantBudget | currency: 'EUR' }}</p>
+            <p><strong>Date de Début :</strong> {{ project.dateDebutProjet | date: 'mediumDate' }}</p>
+            <p><strong>Date de Fin :</strong> {{ project.dateFinProjet | date: 'mediumDate' }}</p>
+            <p><strong>Statut :</strong> {{ project.isActive ? 'Actif' : 'Inactif' }}</p>
+        </div>
+
+        <div class="project-info-2">
+            <h5><strong>Prévision :</strong> {{ project.previsionDepenseActuelle | currency: 'EUR' }}</h5>
+            <h5><strong>Coût :</strong> {{ project.depenseReelActuelle | currency: 'EUR' }}</h5>
+            <h5><strong>Variation :</strong> {{ variation | number: '1.1-2' }} %</h5>
+        </div>
+
+        <!-- Section du graphique -->
+        <div class="chart-container" *ngIf="expenses.length > 0">
+            <h4>Dépenses : Réel / Prévision</h4>
+            <a routerLink="graphique/{id}"><p-chart type="line" [data]="chartData" [options]="chartOptions" style="height: 50px; width: 50px;"></p-chart></a>
+        </div>
+
+    </div>
+
+    <!-- Message de chargement -->
+    <ng-template #loading>
+        <p>Chargement des détails...</p>
+    </ng-template>
+
+    <!-- Section tableau des dépenses -->
+    <div class="export-pdf-button-container">
+    <h2>Dépenses par Libellé</h2>
+        <button pButton type="button" label="Exporter PDF" icon="pi pi-download" class="p-button-success">
+        </button>
+    </div>
+
+    <p-table
+        *ngIf="expenses.length > 0"
+        [value]="expenses"
+        [scrollable]="true"
+        scrollDirection="both"
+        [tableStyle]="{ 'min-width': '80rem' }"
+    >
+        <!-- Header du tableau -->
+        <ng-template pTemplate="header">
+            <tr>
+                <th pFrozenColumn style="min-width:400px">Libellé</th>
+                <ng-container *ngFor="let month of getMonthsRange()">
+                    <th>{{ month }}</th>
+                </ng-container>
+            </tr>
+        </ng-template>
+
+        <!-- Table Body -->
+        <ng-template pTemplate="body" let-expense>
+            <tr>
+                <td pFrozenColumn>{{ expense.libelle }}</td>
+                <ng-container *ngFor="let month of getMonthsRange()">
+                    <td>{{ expense.data[month] || 0 | currency: 'EUR' }}</td>
+                </ng-container>
+            </tr>
+        </ng-template>
+
+        <!-- Table Footer for Totals -->
+        <ng-template pTemplate="footer">
+            <tr>
+                <td pFrozenColumn><strong>Total</strong></td>
+                <ng-container *ngFor="let month of getMonthsRange()">
+                    <td><strong>{{ totalExpenses[month] || 0 | currency: 'EUR' }}</strong></td>
+                </ng-container>
+            </tr>
+        </ng-template>
+    </p-table>
+
+    <!-- Message si aucune dépense n'est trouvée -->
+    <p *ngIf="expenses.length === 0 && project">Aucune dépense trouvée pour ce projet.</p>
+</div>
