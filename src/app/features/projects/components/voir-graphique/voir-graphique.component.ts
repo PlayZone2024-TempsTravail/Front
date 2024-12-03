@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Project } from '../../models/project.model';
-import { ProjectService } from '../../services/project.service';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Project} from '../../models/project.model';
+import {ProjectService} from '../../services/project.service';
 
 @Component({
     selector: 'app-voir-graphique',
@@ -9,14 +9,17 @@ import { ProjectService } from '../../services/project.service';
     styleUrls: ['./voir-graphique.component.scss']
 })
 export class ProjectGraphComponent implements OnInit {
-    projects: Project | null = null; // déclaration de la variable projects
+
+    constructor(private readonly route: ActivatedRoute, private projectService: ProjectService) {
+    }
     expenses: any[] = [];
+    previsualExpenses: any[] = [];
     incomes: any[] = [];
-    ChartData: any;
+    previsualIncomes: any[] = [];
+    chartData1: any;
+    chartData2: any;
     chartOptions: any;
     objective: number = 5000; // Set your objective limit here
-
-    constructor(private readonly route: ActivatedRoute, private projectService: ProjectService) {}
 
     ngOnInit(): void {
         const projectId = this.route.snapshot.params['id'];
@@ -24,28 +27,51 @@ export class ProjectGraphComponent implements OnInit {
         this.projectService.getProjectById(projectId).subscribe((project) => {
             this.projects = project;
 
-            // Generate random data for expenses and incomes
-            this.expenses = Array.from({ length: 10 }, () => ({ amount: Math.floor(Math.random() * 1000) }));
-            this.incomes = Array.from({ length: 10 }, () => ({ amount: Math.floor(Math.random() * 1000) }));
 
-            this.ChartData = {
-                labels: Array.from({ length: 10 }, (_, i) => `Point ${i + 1}`),
+            this.chartData1 = {
+                labels: Array.from({length: 12}, (_, i) => `Point ${i + 1}`),
                 datasets: [
                     {
                         label: 'Dépenses',
                         data: this.expenses.map(expense => expense.amount),
                         borderColor: '#FF6384',
-                        fill: false
+                        fill: false,
                     },
                     {
-                        label: 'Revenus',
-                        data: this.incomes.map(income => income.amount),
+                        label: 'Prévisions Dépenses',
+                        data: this.previsualExpenses.map(income => income.amount),
                         borderColor: '#36A2EB',
-                        fill: false
+                        fill: false,
+                        borderDash: [5, 5],
                     },
                     {
                         label: 'Plafond',
-                        data: Array(10).fill(this.objective),
+                        data: Array(12).fill(this.objective),
+                        borderColor: '#FFCE56',
+                        borderDash: [5, 5],
+                        fill: false
+                    }
+                ]
+            };
+            this.chartData2 = {
+                labels: Array.from({length: 12}, (_, i) => `Point ${i + 1}`),
+                datasets: [
+                    {
+                        label: 'Dépenses',
+                        data: this.incomes.map(expense => expense.amount),
+                        borderColor: '#FF6384',
+                        fill: false,
+                    },
+                    {
+                        label: 'Prévisions Dépenses',
+                        data: this.previsualIncomes.map(income => income.amount),
+                        borderColor: '#36A2EB',
+                        fill: false,
+                        borderDash: [5, 5],
+                    },
+                    {
+                        label: 'Plafond',
+                        data: Array(12).fill(this.objective),
                         borderColor: '#FFCE56',
                         borderDash: [5, 5],
                         fill: false
@@ -54,11 +80,15 @@ export class ProjectGraphComponent implements OnInit {
             };
             this.chartOptions = {
                 responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Dépenses : Réel / Prévision',
+                    },
+                },
             };
         });
     }
