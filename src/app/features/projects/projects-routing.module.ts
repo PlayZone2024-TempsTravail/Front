@@ -5,6 +5,7 @@ import {projectResolverResolver} from './resolvers/project-resolver.resolver';
 import {ProjectGraphComponent} from './components/voir-graphique/voir-graphique.component';
 import { ProjectDetailsComponent } from './components/project-details/project-details.component';
 
+
 const routes: Routes = [
     { path: '',
         component: ProjectsComponent,

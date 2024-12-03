@@ -15,3 +15,7 @@ export interface Project {
     previsionDepenseActuelle : number;
     depenseReelActuelle : number;
 }
+
+
+
+

@@ -2,15 +2,16 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Project} from '../models/project.model';
+import {UserInMisson} from '../models/userProject.model';
+import {User} from '../../users/models/user.model';
 import {map } from 'rxjs/operators';
-import {organisme} from '../models/organisme.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectService {
 
-    private apiUrl = 'http://api.technobel.pro:444/api'; // URL to web api
+    private apiUrl = 'http://api.technobel.pro:444/api'; //attention changer quand vrai api
     constructor(private http: HttpClient) { }
 
     getAllProjects(): Observable<Project[]> {

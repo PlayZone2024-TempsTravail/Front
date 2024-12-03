@@ -11,8 +11,10 @@ import {CardModule} from 'primeng/card';
 import {ToastModule} from 'primeng/toast';
 import {DialogModule} from 'primeng/dialog';
 import {DropdownModule} from 'primeng/dropdown';
+import { RadioButtonModule } from 'primeng/radiobutton';
 import {UserListComponent} from '../users/components/user-list/user-list.component';
 import {UserFormComponent} from '../users/components/user-form/user-form.component';
+import {FormsModule} from '@angular/forms';
 import {ProjectGraphComponent} from './components/voir-graphique/voir-graphique.component';
 import {ChartModule} from 'primeng/chart';
 import { ProjectDetailsComponent } from './components/project-details/project-details.component';
@@ -40,6 +42,8 @@ import {SharedModule} from '../../shared/shared.module';
         ToastModule,
         DialogModule,
         DropdownModule,
+        RadioButtonModule,
+        FormsModule,
         ChartModule,
         SharedModule,
     ],

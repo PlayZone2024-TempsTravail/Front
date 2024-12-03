@@ -91,226 +91,117 @@
     "projects": [
         {
             "id_project": 1,
-            "organisme_id": 1,
+            "organismes": [
+                {
+                    "id_organisme": 1,
+                    "name": "NeonCortex Systems"
+                }
+            ],
             "isActive": true,
             "name": "Mcmouche Solution",
             "montant_budget": 10000,
             "color": "ff5733",
-            "date_debut_projet": "2022-04-13",
+            "date_debut_projet": "2024-04-13",
             "date_fin_projet": "2025-04-13",
-            "charge_de_projet": 50000
+            "charges_de_projet": [
+                {
+                    "idUser": 1,
+                    "nom": "Admin",
+                    "prenom": "Admin"
+
+                }
+            ]
         },
         {
             "id_project": 2,
-            "organisme_id": 2,
+            "organismes": [
+                {
+                    "id_organisme": 2,
+                    "name": "SynthWave Corp"
+                }
+            ],
             "isActive": false,
             "name": "TechNova Solutions",
             "montant_budget": 20000,
             "color": "3498db",
             "date_debut_projet": "2023-01-01",
             "date_fin_projet": "2023-12-31",
-            "charge_de_projet": 30000
+            "charges_de_projet": [
+                {
+                    "idUser": 6,
+                    "nom": "Chen",
+                    "prenom": "Li"
+                }
+            ]
         },
         {
             "id_project": 3,
-            "organisme_id": 3,
+            "organismes": [
+                {
+                    "id_organisme": 3,
+                    "name": "BytePunk Syndicate"
+                }
+            ],
             "isActive": true,
             "name": "EcoEnergy Initiatives",
             "montant_budget": 15000,
             "color": "2ecc71",
             "date_debut_projet": "2024-06-01",
             "date_fin_projet": "2025-06-01",
-            "charge_de_projet": 45000
+            "charges_de_projet": [
+                {
+                    "idUser": 5,
+                    "nom": "Tanaka",
+                    "prenom": "Hiroshi"
+                }
+            ]
         },
         {
             "id_project": 4,
-            "organisme_id": 4,
+            "organismes": [
+                {
+                    "id_organisme": 4,
+                    "name": "CryoHaven Industries"
+                }
+            ],
             "isActive": false,
             "name": "NextGen Robotics",
             "montant_budget": 30000,
             "color": "e74c3c",
             "date_debut_projet": "2022-05-15",
             "date_fin_projet": "2023-05-15",
-            "charge_de_projet": 60000
+            "charges_de_projet": [
+                {
+                    "idUser": 3,
+                    "nom": "Smith",
+                    "prenom": "John"
+                }
+            ]
         },
         {
             "id_project": 5,
-            "organisme_id": 5,
+            "organismes": [
+                {
+                    "id_organisme": 5,
+                    "name": "MechaHive Networks"
+                }
+            ],
             "isActive": true,
             "name": "GreenTech Horizon",
             "montant_budget": 25000,
             "color": "9b59b6",
             "date_debut_projet": "2024-03-01",
             "date_fin_projet": "2025-03-01",
-            "charge_de_projet": 50000
-        },
-        {
-            "id_project": 6,
-            "organisme_id": 1,
-            "isActive": true,
-            "name": "CyberSecurity Upgrade",
-            "montant_budget": 12000,
-            "color": "1abc9c",
-            "date_debut_projet": "2024-07-01",
-            "date_fin_projet": "2025-01-01",
-            "charge_de_projet": 55000
-        },
-        {
-            "id_project": 7,
-            "organisme_id": 2,
-            "isActive": false,
-            "name": "AI Research Initiative",
-            "montant_budget": 50000,
-            "color": "f1c40f",
-            "date_debut_projet": "2023-02-15",
-            "date_fin_projet": "2023-11-30",
-            "charge_de_projet": 80000
-        },
-        {
-            "id_project": 8,
-            "organisme_id": 3,
-            "isActive": true,
-            "name": "Cloud Migration",
-            "montant_budget": 18000,
-            "color": "e67e22",
-            "date_debut_projet": "2024-08-01",
-            "date_fin_projet": "2025-02-28",
-            "charge_de_projet": 40000
-        },
-        {
-            "id_project": 9,
-            "organisme_id": 4,
-            "isActive": true,
-            "name": "Virtual Reality Training",
-            "montant_budget": 22000,
-            "color": "ecf0f1",
-            "date_debut_projet": "2024-09-01",
-            "date_fin_projet": "2025-03-31",
-            "charge_de_projet": 65000
-        },
-        {
-            "id_project": 10,
-            "organisme_id": 5,
-            "isActive": false,
-            "name": "Data Analytics Platform",
-            "montant_budget": 35000,
-            "color": "95a5a6",
-            "date_debut_projet": "2023-05-01",
-            "date_fin_projet": "2024-05-01",
-            "charge_de_projet": 70000
-        },
-        {
-            "id_project": 11,
-            "organisme_id": 1,
-            "isActive": true,
-            "name": "Mobile App Development",
-            "montant_budget": 16000,
-            "color": "34495e",
-            "date_debut_projet": "2024-10-01",
-            "date_fin_projet": "2025-04-30",
-            "charge_de_projet": 48000
-        },
-        {
-            "id_project": 12,
-            "organisme_id": 2,
-            "isActive": true,
-            "name": "Blockchain Integration",
-            "montant_budget": 27000,
-            "color": "d35400",
-            "date_debut_projet": "2024-11-01",
-            "date_fin_projet": "2025-05-31",
-            "charge_de_projet": 52000
-        },
-        {
-            "id_project": 13,
-            "organisme_id": 3,
-            "isActive": false,
-            "name": "IoT Infrastructure Setup",
-            "montant_budget": 19000,
-            "color": "7f8c8d",
-            "date_debut_projet": "2023-06-01",
-            "date_fin_projet": "2024-06-01",
-            "charge_de_projet": 43000
-        },
-        {
-            "id_project": 14,
-            "organisme_id": 4,
-            "isActive": true,
-            "name": "Edge Computing Deployment",
-            "montant_budget": 24000,
-            "color": "27ae60",
-            "date_debut_projet": "2024-12-01",
-            "date_fin_projet": "2025-06-30",
-            "charge_de_projet": 61000
-        },
-        {
-            "id_project": 15,
-            "organisme_id": 5,
-            "isActive": false,
-            "name": "5G Network Expansion",
-            "montant_budget": 40000,
-            "color": "2980b9",
-            "date_debut_projet": "2023-07-01",
-            "date_fin_projet": "2024-07-01",
-            "charge_de_projet": 90000
-        },
-        {
-            "id_project": 16,
-            "organisme_id": 1,
-            "isActive": true,
-            "name": "Quantum Computing Research",
-            "montant_budget": 50000,
-            "color": "8e44ad",
-            "date_debut_projet": "2025-01-01",
-            "date_fin_projet": "2026-01-01",
-            "charge_de_projet": 100000
-        },
-        {
-            "id_project": 17,
-            "organisme_id": 2,
-            "isActive": true,
-            "name": "Autonomous Vehicles Pilot",
-            "montant_budget": 45000,
-            "color": "c0392b",
-            "date_debut_projet": "2024-01-01",
-            "date_fin_projet": "2024-12-31",
-            "charge_de_projet": 85000
-        },
-        {
-            "id_project": 18,
-            "organisme_id": 3,
-            "isActive": true,
-            "name": "Smart City Infrastructure",
-            "montant_budget": 60000,
-            "color": "bdc3c7",
-            "date_debut_projet": "2024-02-01",
-            "date_fin_projet": "2025-08-31",
-            "charge_de_projet": 120000
-        },
-        {
-            "id_project": 19,
-            "organisme_id": 4,
-            "isActive": true,
-            "name": "Biotech Research Program",
-            "montant_budget": 55000,
-            "color": "16a085",
-            "date_debut_projet": "2024-03-01",
-            "date_fin_projet": "2025-09-30",
-            "charge_de_projet": 95000
-        },
-        {
-            "id_project": 20,
-            "organisme_id": 5,
-            "isActive": false,
-            "name": "Space Exploration Initiative",
-            "montant_budget": 75000,
-            "color": "f39c12",
-            "date_debut_projet": "2023-08-01",
-            "date_fin_projet": "2024-08-01",
-            "charge_de_projet": 150000
+            "charges_de_projet": [
+                {
+                    "idUser": 2,
+                    "nom": "Dupont",
+                    "prenom": "Jean"
+                }
+            ]
         }
     ],
-    "organisme": [
+    "organismes": [
         {
             "id_organisme": 1,
             "name": "NeonCortex Systems"
@@ -332,202 +223,55 @@
             "name": "MechaHive Networks"
         }
     ],
-    "expenses": [
+    "users": [
         {
-            "id_depense": 1,
-            "project_id": 1,
-            "libelle": "Experts / Intervenants externes",
-            "montant": 1500,
-            "date": "2024-05-01"
+            "idUser": 1,
+            "nom": "Admin",
+            "prenom": "Admin",
+            "email": "admin@gmail.com",
+            "isActive": true,
+            "roles": 1
         },
         {
-            "id_depense": 2,
-            "project_id": 1,
-            "libelle": "Employés IEC",
-            "montant": 2000,
-            "date": "2024-06-01"
+            "idUser": 2,
+            "nom": "Dupont",
+            "prenom": "Jean",
+            "email": "jean.dupont@example.com",
+            "isActive": true,
+            "roles": 2
         },
         {
-            "id_depense": 3,
-            "project_id": 1,
-            "libelle": "Autres",
-            "montant": 3000,
-            "date": "2024-07-01"
+            "idUser": 3,
+            "nom": "Smith",
+            "prenom": "John",
+            "email": "john.smith@example.com",
+            "isActive": true,
+            "roles": 2
         },
         {
-            "id_depense": 4,
-            "project_id": 1,
-            "libelle": "Achat de livres et de publications",
-            "montant": 1000,
-            "date": "2023-03-01"
+            "idUser": 4,
+            "nom": "Lopez",
+            "prenom": "Maria",
+            "email": "maria.lopez@example.com",
+
+            "isActive": false,
+            "roles": 3
         },
         {
-            "id_depense": 5,
-            "project_id": 1,
-            "libelle": "Achat de matériel et petit équipement",
-            "montant": 5000,
-            "date": "2024-06-15"
+            "idUser": 5,
+            "nom": "Tanaka",
+            "prenom": "Hiroshi",
+            "email": "hiroshi.tanaka@example.com",
+            "isActive": true,
+            "roles": 2
         },
         {
-            "id_depense": 6,
-            "project_id": 1,
-            "libelle": "Frais de catering",
-            "montant": 2500,
-            "date": "2023-04-01"
-        },
-        {
-            "id_depense": 7,
-            "project_id": 1,
-            "libelle": "Frais de Communication et Pub",
-            "montant": 3500,
-            "date": "2022-06-01"
-        },
-        {
-            "id_depense": 8,
-            "project_id": 1,
-            "libelle": "Frais de déplacement mission",
-            "montant": 1200,
-            "date": "2024-04-15"
-        },
-        {
-            "id_depense": 9,
-            "project_id": 1,
-            "libelle": "Frais de déplacements Internationaux",
-            "montant": 2200,
-            "date": "2024-08-01"
-        },
-        {
-            "id_depense": 10,
-            "project_id": 7,
-            "libelle": "Frais de Location de salles",
-            "montant": 4000,
-            "date": "2023-05-15"
-        },
-        {
-            "id_depense": 11,
-            "project_id": 8,
-            "libelle": "Frais de Réalisation/acquisition de supports pédagogiques",
-            "montant": 1800,
-            "date": "2024-09-01"
-        },
-        {
-            "id_depense": 12,
-            "project_id": 9,
-            "libelle": "Frais de séjour (Perdiem)",
-            "montant": 2600,
-            "date": "2024-10-01"
-        },
-        {
-            "id_depense": 13,
-            "project_id": 10,
-            "libelle": "Frais de Visa & assurance",
-            "montant": 3100,
-            "date": "2023-06-01"
-        },
-        {
-            "id_depense": 14,
-            "project_id": 11,
-            "libelle": "Frais d’hébergement/logement",
-            "montant": 1400,
-            "date": "2024-11-15"
-        },
-        {
-            "id_depense": 15,
-            "project_id": 12,
-            "libelle": "Frais d’impression",
-            "montant": 2700,
-            "date": "2024-12-01"
-        },
-        {
-            "id_depense": 16,
-            "project_id": 13,
-            "libelle": "Frais d’organisation d’atelier/séminaire",
-            "montant": 1900,
-            "date": "2023-07-01"
-        },
-        {
-            "id_depense": 17,
-            "project_id": 14,
-            "libelle": "Autres frais liés aux projets",
-            "montant": 2400,
-            "date": "2025-01-01"
-        },
-        {
-            "id_depense": 18,
-            "project_id": 15,
-            "libelle": "Loyers",
-            "montant": 4000,
-            "date": "2023-08-01"
-        },
-        {
-            "id_depense": 19,
-            "project_id": 16,
-            "libelle": "Charges locatives (Eau, Electricité)",
-            "montant": 5000,
-            "date": "2025-02-01"
-        },
-        {
-            "id_depense": 20,
-            "project_id": 17,
-            "libelle": "Charges TIC",
-            "montant": 4500,
-            "date": "2024-03-01"
-        },
-        {
-            "id_depense": 21,
-            "project_id": 18,
-            "libelle": "Communications téléphoniques",
-            "montant": 6000,
-            "date": "2024-04-01"
-        },
-        {
-            "id_depense": 22,
-            "project_id": 19,
-            "libelle": "Frais postaux",
-            "montant": 5500,
-            "date": "2024-05-01"
-        },
-        {
-            "id_depense": 23,
-            "project_id": 20,
-            "libelle": "Fournitures de Bureau",
-            "montant": 7500,
-            "date": "2023-09-01"
-        },
-        {
-            "id_depense": 24,
-            "project_id": 6,
-            "libelle": "Fournitures Informatique",
-            "montant": 3200,
-            "date": "2024-08-15"
-        },
-        {
-            "id_depense": 25,
-            "project_id": 7,
-            "libelle": "Entretien et réparation",
-            "montant": 5000,
-            "date": "2023-06-15"
-        },
-        {
-            "id_depense": 26,
-            "project_id": 8,
-            "libelle": "Matériels et mobilier de bureau",
-            "montant": 1800,
-            "date": "2024-09-15"
-        },
-        {
-            "id_depense": 27,
-            "project_id": 9,
-            "libelle": "Matériels informatiques",
-            "montant": 2200,
-            "date": "2024-10-15"
-        },
-        {
-            "id_depense": 28,
-            "project_id": 10,
-            "libelle": "Autre",
-            "montant": 3500,
-            "date": "2023-06-15"
+            "idUser": 6,
+            "nom": "Chen",
+            "prenom": "Li",
+            "email": "li.chen@example.com",
+            "isActive": false,
+            "roles": 3
         }
     ]
 }
