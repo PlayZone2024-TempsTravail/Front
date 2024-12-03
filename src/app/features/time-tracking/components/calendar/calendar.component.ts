@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { AppointmentDialogComponent } from '../appointment-dialog/appointment-dialog.component';
 import { AppointmentService } from '../../../services/services-calendar.service';
-import { Appointment, WorkTime } from '../../models/appointment.model';
+import { Appointment, WorkTime, CompteurWorktimeCategory } from '../../models/appointment.model';
+import { AuthService } from '../../../auth/services/auth.services';
+import { forkJoin, Observable } from 'rxjs';
 
 export enum CalendarView {
   Month = 'month',
@@ -27,20 +28,29 @@ export class CalendarComponent {
   workTime: WorkTime[] = [];
   timeSlots: string[] = [];
   currentDate: number = new Date().getFullYear();
+  compteurWorktimeCategory: any[] = [];
   public CalendarView = CalendarView;
-  
 
-  constructor(public dialog: MatDialog, public appointmentService: AppointmentService) {
+  constructor(
+    public dialog: MatDialog,
+    public appointmentService: AppointmentService,
+    private authService: AuthService
+  ) {
     this.loadWorkTimeList();
-    this.loadAppointments();
     this.generateView(this.currentView, this.viewDate);
     this.generateTimeSlots();
+    this.loadCompteurWorktimeCategory();
+  }
+
+  getHourFromSlot(slot: string): number {
+    return parseInt(slot.split(':')[0], 10);
   }
 
   private loadWorkTimeList(): void {
     this.appointmentService.getWorkTimeList().subscribe(
       (data: WorkTime[]) => {
-        this.workTime = data;
+        this.workTime = data; 
+        this.loadAppointments();
       },
       (error) => {
         console.error('Erreur lors de la récupération des catégories de WorkTime:', error);
@@ -48,21 +58,47 @@ export class CalendarComponent {
     );
   }
 
+  private loadCompteurWorktimeCategory(): void {
+    const userId = this.authService.getUserId(this.authService.jwtToken);
+    //console.log('User ID:', userId); 
+    if (userId) {
+      this.appointmentService.getCompteurWorktimeCategory(userId.toString()).subscribe(
+        (data: CompteurWorktimeCategory[]) => {
+          //console.log('CompteurWorktimeCategory Data:', data); 
+          this.compteurWorktimeCategory = data;
+        },
+        (error) => {
+          console.error('Erreur lors de la récupération des données CompteurWorktimeCategory:', error);
+        }
+      );
+    }
+  }
+
+
   loadAppointments(): void {
-    this.appointmentService.getAppointments().subscribe({
+    const userId = this.authService.getUserId(this.authService.jwtToken);
+    const startDate = '2024-12-01T00:00:00Z';
+    const endDate = '2024-12-31T23:59:59Z';
+
+    this.appointmentService.getAppointments(userId!.toString(), startDate, endDate).subscribe({
       next: (appointments) => {
+        //console.log(appointments);
+
         if (appointments && appointments.length > 0) {
           this.appointments = appointments.map(appointment => ({
             ...appointment,
-            start: this.appointmentService.convertStringToDate(appointment.date, this.appointmentService.convertTimeToString(appointment.start)),
-            end: this.appointmentService.convertStringToDate(appointment.date, this.appointmentService.convertTimeToString(appointment.end)),
+            date: new Date(appointment.start),
+            start: appointment.start,
+            end: appointment.end,
+            workTime: this.workTime.find(wt => wt.idWorktimeCategory == appointment.categoryId)
           }));
+          //console.log('Rendez-vous chargés :', this.appointments);
         } else {
-          console.error('Not found');
+          console.error('Aucun rendez-vous trouvé');
         }
       },
       error: (error) => {
-        console.error('erreur: ', error);
+        console.error('Erreur lors de la récupération des rendez-vous :', error);
       }
     });
   }
@@ -225,6 +261,10 @@ export class CalendarComponent {
   }
 
   openDialog(appointment: any): void {
+    const userId = this.authService.getUserId(this.authService.jwtToken);
+    const startDate = '2024-12-01T10:33:36.597Z';
+    const endDate = '2024-12-31T10:33:36.597Z';
+
     const dialogRef = this.dialog.open(AppointmentDialogComponent, {
       width: '500px',
       panelClass: 'dialog-container',
@@ -235,7 +275,7 @@ export class CalendarComponent {
     });
 
     dialogRef.afterClosed().subscribe(() => {
-      this.appointmentService.getAppointments().subscribe(data => this.appointments = data);
+      this.loadAppointments()
     });
   }
 
@@ -245,8 +285,8 @@ export class CalendarComponent {
         return this.isSameDate(appointment.date, day);
       })
       .map((appointment) => {
-        const startTimeIndex = timeSlots.indexOf(this.appointmentService.convertTimeToString(appointment.start));
-        const endTimeIndex = timeSlots.indexOf(this.appointmentService.convertTimeToString(appointment.end));
+        const startTimeIndex = timeSlots.indexOf(this.appointmentService.convertTimeToString(this.todate(appointment.start)));
+        const endTimeIndex = timeSlots.indexOf(this.appointmentService.convertTimeToString(this.todate(appointment.end)));
         return { ...appointment, startTimeIndex, endTimeIndex };
       });
   }
@@ -277,8 +317,8 @@ export class CalendarComponent {
       (appointment) =>
         this.isSameDate(appointment.date, date) &&
         (
-          (appointment.start <= timeSlotDate && appointment.end > timeSlotDate) ||
-          (appointment.start.getTime() === timeSlotDate.getTime())
+          (this.todate(appointment.start) <= timeSlotDate && this.todate(appointment.end) > timeSlotDate) ||
+          (this.todate(appointment.start).getTime() === timeSlotDate.getTime())
         )
     );
   }
@@ -286,20 +326,22 @@ export class CalendarComponent {
   isOverlapping(date: Date, start: string, end: string, appointmentToSkip?: Appointment): boolean {
     const startDate = this.appointmentService.convertStringToDate(date, start);
     const endDate = this.appointmentService.convertStringToDate(date, end);
-
+  
+    const tolerance = 1;
+  
     return this.appointments.some((appointment) => {
-      if (appointmentToSkip && appointment.category_Id === appointmentToSkip.category_Id) {
+      if (appointmentToSkip && appointment.categoryId === appointmentToSkip.categoryId) {
         return false;
       }
-
+  
       if (!this.isSameDate(appointment.date, date)) {
         return false;
       }
-
+  
       return (
-        (startDate >= appointment.start && startDate < appointment.end) ||
-        (endDate > appointment.start && endDate <= appointment.end) ||
-        (startDate <= appointment.start && endDate >= appointment.end)
+        (startDate >= new Date(new Date(appointment.start).getTime() - tolerance * 60000) && startDate < new Date(new Date(appointment.end).getTime() + tolerance * 60000)) ||
+        (endDate > new Date(new Date(appointment.start).getTime()- tolerance * 60000) && endDate <= new Date(new Date(appointment.end).getTime() + tolerance * 60000)) ||
+        (startDate <= new Date(new Date(appointment.start).getTime() - tolerance * 60000) && endDate >= new Date(new Date(appointment.end).getTime() + tolerance * 60000))
       );
     });
   }
@@ -309,6 +351,8 @@ export class CalendarComponent {
   }
 
   calculateDuration(start: string, end: string): number {
+    //console.log(start);
+    
     const [startHours, startMinutes] = start.split(':').map(Number);
     const [endHours, endMinutes] = end.split(':').map(Number);
 
@@ -318,31 +362,30 @@ export class CalendarComponent {
     const endDate = new Date();
     endDate.setHours(endHours, endMinutes);
 
-    const duration = (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60); // Convertir en heures
+    const duration = Math.floor((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60));
     return duration;
   }
 
   getTotalHours(): number {
     return this.appointments.reduce((total, appointment) => {
-      const startTimeString = this.appointmentService.convertTimeToString(appointment.start);
-      const endTimeString = this.appointmentService.convertTimeToString(appointment.end);
+      const startTimeString = this.appointmentService.convertTimeToString(this.todate(appointment.start));
+      const endTimeString = this.appointmentService.convertTimeToString(this.todate(appointment.end));
       const duration = this.calculateDuration(startTimeString, endTimeString);
       return total + duration;
     }, 0);
   }
 
   getColor(a: Appointment) {
-    let color: string | undefined;
-    if (a.WorkTime.color?.length == 0) {
-      color = this.workTime.find(mapping => mapping.abreviation == a.WorkTime.abreviation)?.color;
-    } else {
-      color = a.WorkTime.color;
-    }
-    return color;
+    return "#" + this.workTime.find(wt => wt.idWorktimeCategory == a.categoryId)?.color;
   }
 
   updateDateHeader(): void {
     const currentYear = new Date().getFullYear();
     this.currentDate = currentYear;
   }
+
+  todate(date: string) {
+    return new Date(date)
+  }
 }
+ 
