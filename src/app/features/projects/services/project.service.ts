@@ -10,24 +10,27 @@ import {organisme} from '../models/organisme.model';
 })
 export class ProjectService {
 
-    private apiUrl = 'http://localhost:3000'; //attention changer quand vrai api
+    private apiUrl = 'http://api.technobel.pro:444/api'; // URL to web api
     constructor(private http: HttpClient) { }
 
-    getAllProjects(): Observable<Project[]> {
-        return this.http.get<Project[]>(`${this.apiUrl}/projects`);
-
-    }
-    getProjectById(id: number): Observable<Project> {
-        return this.http.get<Project[]>(`${this.apiUrl}/projects?id_project=${id}`).pipe(
-            map((projects) => projects[0]) // Récupère le premier élément du tableau
-        );
+    getProjectById(id: number): Observable<Project[]> {
+        return this.http.get<Project[]>(`${this.apiUrl}/Project/idproject/${id}`);
     }
     getProjectExpenses(id: number): Observable<any> {
-        return this.http.get<any[]>(`${this.apiUrl}/expenses?id_project=${id}`);
+        return this.http.get<any[]>(`${this.apiUrl}/Depense/projets/${id}`);
     }
     getProjectIncomes(id: number): Observable<any> {
-        return this.http.get<any[]>(`${this.apiUrl}/incomes?id_project=${id}`);
+        return this.http.get<any[]>(`${this.apiUrl}/Rentree/${id}`);
     }
+    getPrevisionalIncomes(id: number): Observable<any> {
+        return this.http.get<any[]>(`${this.apiUrl}/PrevisionRentree/projets/${id}`);
+    }
+
+
+    //getPrevisionalExpenses(id: number): Observable<any> {
+    //    return this.http.get<any[]>(`${this.apiUrl}/PrevisionRentree/projets/${id}`);
+    //}
+
 
 
 }
