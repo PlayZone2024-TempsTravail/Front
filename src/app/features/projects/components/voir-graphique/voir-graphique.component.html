@@ -1,0 +1,44 @@
+<div class="container">
+    <h4 class="title">Suivi à [mois Année]</h4>
+    <div class="content-wrapper">
+        <!-- Entrées Section -->
+        <div class="card">
+            <h5>Entrées</h5>
+            <div class="data-group">
+                <div>
+                    <button class="data-button">Prévision entrées</button>
+                    <p>8.652,00 €</p>
+                </div>
+                <div>
+                    <button class="data-button">Entrées réelles</button>
+                    <p>9.326,24 €</p>
+                </div>
+                <div>
+                    <button class="data-button">Variation</button>
+                    <p>+7.8%</p>
+                </div>
+            </div>
+            <p-chart type="line" [data]="chartData1" [options]="chartOptions"></p-chart>
+        </div>
+
+        <!-- Dépenses Section -->
+        <div class="card">
+            <h5>Dépenses</h5>
+            <div class="data-group">
+                <div>
+                    <button class="data-button">Prévision dépense</button>
+                    <p>8.652,00 €</p>
+                </div>
+                <div>
+                    <button class="data-button">Coût réel</button>
+                    <p>9.326,24 €</p>
+                </div>
+                <div>
+                    <button class="data-button">Variation</button>
+                    <p>+7.8%</p>
+                </div>
+            </div>
+            <p-chart type="line" [data]="chartData2" [options]="chartOptions"></p-chart>
+        </div>
+    </div>
+</div>

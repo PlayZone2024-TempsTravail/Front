@@ -21,11 +21,10 @@ export class AppointmentService {
   ) {}
 
   addAppointment(a: Appointment) {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.jwtToken}`);
-  
+
     const startTime = this.convertTimeToString(new Date(a.start));
     const endTime = this.convertTimeToString(new Date(a.end));
-  
+
     const startDate = this.mergeDateAndTime(a.date, startTime);
     const endDate = this.mergeDateAndTime(a.date, endTime);
 
@@ -35,7 +34,7 @@ export class AppointmentService {
       console.error('Impossible de récupérer "userId" dans le token JWT.');
       return throwError(() => new Error('Invalid token'));
     }
-  
+
     const body = {
       start: startDate.toISOString(),
       end: endDate.toISOString(),
@@ -44,40 +43,36 @@ export class AppointmentService {
       projectId: a.project_Id,
       userId: +userId,
     };
-  
-    return this.http.post(this.workTimeUrl, body, { headers }).pipe(
+
+    return this.http.post(this.workTimeUrl, body).pipe(
       catchError(error => {
         console.error('Erreur lors de l\'ajout du rendez-vous:', error);
-        return throwError(() => error);  
+        return throwError(() => error);
       })
     );
   }
 
   editAppointment(a: Appointment) {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.jwtToken}`);
     console.log(a)
-    return this.http.put(this.workTimeUrl + '/' + a.idWorktime, a, { headers });
+    return this.http.put(this.workTimeUrl + '/' + a.idWorktime, a);
     // TODO : FINIR QUAND STEVEN A FINI
   }
 
   deleteAppointment(a: Appointment): Observable<any> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.jwtToken}`);
-    return this.http.delete(`${this.workTimeUrl}/${a.idWorktime}`, { headers });
+    return this.http.delete(`${this.workTimeUrl}/${a.idWorktime}`);
   }
 
   getWorkTimeList(): Observable<WorkTime[]> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.jwtToken}`);
-    return this.http.get<WorkTime[]>(this.workTimeCategoryUrl, { headers });
+    return this.http.get<WorkTime[]>(this.workTimeCategoryUrl);
   }
 
   getAppointments(userId: string, startDate: string, endDate: string): Observable<Appointment[]> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.jwtToken}`);
     const params = {
       userId: userId,
       startDate: startDate,
       endDate: endDate
     };
-    return this.http.get<Appointment[]>(this.workTimeRangeUrl, { headers, params });
+    return this.http.get<Appointment[]>(this.workTimeRangeUrl, { params });
   }
 
   public convertTimeToString(date: Date): string {
@@ -87,7 +82,7 @@ export class AppointmentService {
   }
 
   public convertStringToDate(date: Date, time: string): Date {
-    const [hours, minutes] = time.split(':').map(Number); 
+    const [hours, minutes] = time.split(':').map(Number);
     const resultDate =  new Date(date.getFullYear(), date.getMonth(), date.getDate(), hours, minutes, 0, 0);
     return resultDate;
   }
@@ -97,14 +92,13 @@ export class AppointmentService {
   }
 
   getCompteurWorktimeCategory(userId: string): Observable<CompteurWorktimeCategory[]> {
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${this.authService.jwtToken}`);
     const url = `${this.compteurWorktimeCategoryUrl}/${userId}`;
 
-    return this.http.get<CompteurWorktimeCategory[]>(url, { headers }).pipe(
+    return this.http.get<CompteurWorktimeCategory[]>(url).pipe(
       catchError(error => {
         console.error('Erreur lors de la récupération des données CompteurWorktimeCategory:', error);
         return throwError(() => error);
       })
     );
   }
-} 
+}
