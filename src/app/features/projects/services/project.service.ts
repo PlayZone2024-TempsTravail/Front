@@ -14,7 +14,7 @@ export class ProjectService {
     constructor(private http: HttpClient) { }
 
     getAllProjects(): Observable<Project[]> {
-        return this.http.get<Project[]>(`${this.apiUrl}/projects`);
+        return this.http.get<Project[]>(`${this.apiUrl}/Project/GetAll`);
 
     }
 
@@ -23,7 +23,7 @@ export class ProjectService {
     }
 
     getProjectExpenses(id: number): Observable<any> {
-        return this.http.get<any[]>(`${this.apiUrl}/expenses?id_project=${id}`);
+        return this.http.get<any[]>(`${this.apiUrl}/Project/idproject/${id}`);
     }
 
     getProjectPrevisions(id: number): Observable<any[]> {
