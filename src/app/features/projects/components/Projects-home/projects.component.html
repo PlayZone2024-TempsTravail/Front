@@ -34,22 +34,26 @@
 <!--  bare de recherche non foncionelle -->
 
 <div class="search-filter-container">
-        <span class="p-input-icon-left">
-          <i class="pi pi-search"></i>
-          <input pInputText type="text" placeholder="Rechercher..."/>
-        </span>
-
+        <input
+            pInputText type="text"
+                 type="text"
+                 placeholder="Rechercher..."
+                 [(ngModel)]="searchQuery"
+                 (input)="searchProjects()"
+        />
     <p-dropdown
         [options]="[
           { label: 'Tous', value: null },
           { label: 'Actifs', value: 'Actifs' },
           { label: 'Inactifs', value: 'Inactifs' }
         ]"
+        placeholder="Filtrer"
+        (onChange)="filterprojects($event.value)"
     ></p-dropdown>
 
 </div>
 <div>
-    <p-table [value]="projects" [paginator]="true" [rows]="10" [tableStyle]="{'min-width':'50rem'}" #dt>
+    <p-table [value]="filtreProjects" [paginator]="true" [rows]="10" [tableStyle]="{'min-width':'50rem'}" #dt>
         <ng-template pTemplate="header">
             <tr>
                 <th></th>

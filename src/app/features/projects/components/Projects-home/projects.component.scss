@@ -31,8 +31,16 @@ button[disabled]{
 
 .search-filter-container{
    display: flex;
-    flex-direction:row-reverse;
+    flex-direction:row;
+    justify-content: flex-end;
     margin-bottom: 20px;
+    margin-right: 8px;
+}
+
+
+.search-filter-container input
+{
+    margin-right: 4px;
 }
 
 
