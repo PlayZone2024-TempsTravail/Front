@@ -25,6 +25,7 @@ import { WorkTime, Appointment } from '../../models/appointment.model';
 //PRIMENG
 import { DropdownModule } from 'primeng/dropdown';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { AuthService } from '../../../auth/services/auth.services';
 
 @Component({
   selector: 'app-appointment-dialog',
@@ -65,7 +66,8 @@ export class AppointmentDialogComponent implements OnInit {
       appointments: Appointment[],
     },
     private appointmentService: AppointmentService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private authService: AuthService
   ) {
     this.appointments = data.appointments;
   
@@ -75,14 +77,17 @@ export class AppointmentDialogComponent implements OnInit {
       date: [null, Validators.required],
       startTime: [null, Validators.required],
       endTime: [null, Validators.required],
-      checkedIsOnSite: [false] 
+      checkedIsOnSite: [] 
     }, { validators: this.timeRangeValidator });
   
     //console.log(data.appointment)
 
     this.appointmentForm.patchValue({
       ...data.appointment,
-      startTime: this.appointmentService.convertTimeToString(new Date(data.appointment.start)) || null,
+      startTime: data.appointment.idWorktime 
+        ? this.appointmentService.convertTimeToString(new Date(data.appointment.start)) 
+        : data.appointment.start,
+
       endTime: this.appointmentService.convertTimeToString(new Date(data.appointment.end)) || null,
     });
   }
@@ -121,23 +126,47 @@ export class AppointmentDialogComponent implements OnInit {
     }
   
     formData.isOnSite = !formData.checkedIsOnSite;
-  
+
+    const date = typeof formData.date === 'string' ? new Date(formData.date) : formData.date;
+    const startDate = this.appointmentService.convertStringToDate(date, formData.startTime);
+    const endDate = this.appointmentService.convertStringToDate(date, formData.endTime);
+
+    const userId = this.authService.getUserId();
+
+    if (userId === null) {
+      console.error('User ID is null. Cannot save appointment.');
+      return;
+    }
+
     const appointment: Appointment = {
-      ...formData,
-      start: this.appointmentService.convertStringToDate(formData.date, formData.startTime),
-      end: this.appointmentService.convertStringToDate(formData.date, formData.endTime),
+      idWorktime: formData.idWorktime,
+      categoryId: formData.categoryId,
+      start: startDate.toISOString(), 
+      end: endDate.toISOString(),
+      isOnSite: formData.isOnSite,
+      userId: userId,
+      projectId: 0,
+      date: date.toISOString()
     };
-  
+
+    console.log('Data sent to API:', appointment);
+
     if (appointment.idWorktime) {
       this.appointmentService.editAppointment(appointment).subscribe({
-        next: () => {
+        next: () => {          
           this.dialogRef.close();
+        },
+        error: (err) => {
+          console.error('Error editing appointment:', err);
         }
       });
     } else {
       this.appointmentService.addAppointment(appointment).subscribe({
         next: () => {
           this.dialogRef.close();
+        },
+        error: (err) => {
+          console.error('Error adding appointment:', err);
         }
       });
     }

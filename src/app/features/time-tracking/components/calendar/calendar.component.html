@@ -215,16 +215,27 @@
             <th>Utilisé</th>
             <th>Solde</th>
         </tr>
-        <tr *ngFor="let workTime of compteurWorktimeCategory">
+        <tr *ngFor="let workTime of CounterVA">
           <td class="category">{{ workTime.category }}</td>
-          <td class="nb_day">{{ workTime.counter }}</td>
-          <td class="nb_day_utilise">{{ workTime.max }}</td>
+          <td class="nb_day">{{ workTime.max }}</td>
+          <td class="nb_day_utilise">{{ workTime.counter }}</td>
           <td class="nb_day_reste">{{ workTime.difference }}</td>
+        </tr>
+    </table>
+    </div>
+
+    <div class="compteurs countProjet">
+      <table>
+        <tr>
+            <th>Projet</th>
+            <th>Heures</th>
+        </tr>
+        <tr *ngFor="let projet of ProjetList">
+          <td></td>
+          <td></td>
         </tr>
     </table>
     </div>
     <!--Autre truc a mettre-->
   </div>
-</div>
-
-
+</div> 

@@ -5,17 +5,14 @@ import {inject} from "@angular/core";
 
 export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
   const authService: AuthService = inject(AuthService);
-  let userToken: UserTokenDtoModel|undefined = authService.currentUser;
-  if (userToken) {
-    let token = userToken.token;
-    if (token) {
-      if (token !== '') {
-        let requestClone = req.clone({
-          headers: req.headers.append('Authorization','Bearer ' + token)
-        });
-        return next(requestClone);
-      }
-    }
+  const userToken: UserTokenDtoModel | undefined = authService.currentUser;
+
+  if (userToken && userToken.token) {
+    const clonedRequest = req.clone({
+      headers: req.headers.set('Authorization', `Bearer ${userToken.token}`)
+    });
+    return next(clonedRequest);
   }
+  
   return next(req);
 };
