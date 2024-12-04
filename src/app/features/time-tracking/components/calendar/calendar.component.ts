@@ -16,7 +16,7 @@ export enum CalendarView {
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
-})
+}) 
 
 export class CalendarComponent {
   viewDate: Date = new Date();

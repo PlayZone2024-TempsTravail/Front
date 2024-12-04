@@ -10,10 +10,15 @@ import { AuthService  } from '../../features/auth/services/auth.services';
 })
 export class AppointmentService {
   private appointmentsUrlJSON = ''; //http://localhost:3000/appointments
-  private workTimeCategoryUrl = 'http://api.technobel.pro:444/api/WorktimeCategory';
-  private workTimeUrl = 'http://api.technobel.pro:444/api/Worktime';
-  private workTimeRangeUrl = 'http://api.technobel.pro:444/api/Worktime/range';
-  private counterAbsenceUrl = 'http://api.technobel.pro:444/api/Counter/absence';
+  // private workTimeCategoryUrl = 'http://api.technobel.pro:444/api/WorktimeCategory';
+  // private workTimeUrl = 'http://api.technobel.pro:444/api/Worktime';
+  // private workTimeRangeUrl = 'http://api.technobel.pro:444/api/Worktime/range';
+  // private counterAbsenceUrl = 'http://api.technobel.pro:444/api/Counter/absence';
+
+  private workTimeCategoryUrl = 'http://api2.technobel.pro:444/api/WorktimeCategory';
+  private workTimeUrl = 'http://api2.technobel.pro:444/api/Worktime';
+  private workTimeRangeUrl = 'http://api2.technobel.pro:444/api/Worktime/range';
+  private counterAbsenceUrl = 'http://api2.technobel.pro:444/api/Counter/absence';
 
   constructor(
     private http: HttpClient,

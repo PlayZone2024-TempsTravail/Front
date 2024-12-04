@@ -108,7 +108,7 @@ export class AppointmentDialogComponent implements OnInit {
   }
 
   onNoClick(): void {
-    this.dialogRef.close();
+    this.dialogRef.close(); 
   }
 
   onSaveClick(): void {
