@@ -38,4 +38,10 @@ export interface Libelle {
     libelle: string,
 }
 
+export interface LibeleWithName {
+    idLibele: number,
+    idCategory: number,
+    name: string,
+}
+
 

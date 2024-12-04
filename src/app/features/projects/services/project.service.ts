@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {Depense, Project} from '../models/project.model';
+import {Depense, Project, LibeleWithName} from '../models/project.model';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -38,5 +39,25 @@ export class ProjectService {
 
     getExpensesByCategory(projectId: number): Observable<any[]> {
         return this.http.get<any[]>(`${this.apiUrl}/expenses/categories/${projectId}`);
+    }
+
+    createProject(projectData: Project): Observable<Project> {
+        return this.http.post<Project>(`${this.apiUrl}/Project`, projectData);
+    }
+
+    getLibeles(): Observable<LibeleWithName[]> {
+        return this.http.get<any[]>(`${this.apiUrl}/Libele`).pipe(
+            map((response) =>
+                response.map((libele) => ({
+                    idLibele: libele.idLibele, // Map API's idLibele to id_libele
+                    idCategory: libele.idCategory, // Map API's idCategory to libele
+                    name: libele.name,       // Map API's name to libele
+                }))
+            )
+        );
+    }
+
+    addPrevisionIncome(income: any): Observable<any> {
+        return this.http.post(`${this.apiUrl}/PrevisionRentree`, income);
     }
 }
