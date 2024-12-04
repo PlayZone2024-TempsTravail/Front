@@ -1,0 +1,51 @@
+.form-group {
+    margin-bottom: 1em;
+}
+
+.form-group-inline .form-group {
+    margin-bottom: 0;
+}
+
+.form-group-inline {
+    display: flex;
+    gap: 1em;
+}
+
+.form-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.column {
+    flex: 1;
+    min-width: 300px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group-inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5em;
+}
+
+input, dropdown {
+    width: 300px;
+}
+
+.date-changement {
+    margin-top: 1em;
+}
+
+
+

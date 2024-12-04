@@ -1,1 +1,63 @@
 /* You can add global styles to this file, and also import other style files */
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+
+body, html {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.button-back {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    margin-top: -50px;
+}
+
+:root {
+    --primary-color: #84c101
+}
+
+app-root {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+header {
+    width: 218px;
+    height: 100vh;
+    position: fixed;
+    background-color: var(--primary-color);
+}
+
+main {
+    background-color: var(--blanc);
+    margin-left: 230px;
+    padding: 1rem;
+    min-height: calc(100vh - 50px);
+    display: flex;
+    flex-direction: column;
+}
+
+html, body { height: 100%; }
+
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+.p-dialog-content {
+    overflow: visible !important;
+}
+
+.p-button {
+    background-color: var(--primary-color);
+    border: none;
+}
+
+.p-dialog-header-close {
+    background-color : var(--blanc);
+}
+
+

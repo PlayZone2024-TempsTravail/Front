@@ -1,0 +1,85 @@
+<div class="dialog-content">
+  <h5 mat-dialog-title *ngIf="!appointmentForm.value.idWorktime">Ajouter un horaire</h5>
+  <h5 mat-dialog-title *ngIf="appointmentForm.value.idWorktime">Modifier l'horaire</h5>
+  <div [formGroup]="appointmentForm">
+    <div mat-dialog-content>
+      <div class="dropdwon_appointment">
+        <p-dropdown
+          [options]="workTimeList"
+          formControlName="categoryId"
+          optionLabel="abreviation"
+          optionValue="idWorktimeCategory"
+          [filter]="true"
+          filterBy="abreviation"
+          styleClass="pd-style"
+          placeholder="Catégorie">
+        </p-dropdown>
+
+        <div *ngIf="appointmentForm.controls['categoryId'].value?.abreviation === 'VIEC'">
+          <p>test</p> <!-- TODO : Mettre un dropdown -->
+        </div>
+
+        <div>
+          <p class="error" *ngIf="!appointmentForm.controls['categoryId'].value && appointmentForm.touched">
+            Veuillez sélectionner un projet.
+          </p>
+        </div>
+      </div>
+
+      <mat-form-field class="form-field">
+        <mat-label>Date</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="date" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field class="form-field">
+        <mat-label>Heure de début</mat-label>
+        <input matInput formControlName="startTime" type="time" [step]="3600" />
+      </mat-form-field>
+
+      <mat-form-field class="form-field">
+        <mat-label>Heure de fin</mat-label>
+        <input matInput formControlName="endTime" type="time" [step]="3600" />
+      </mat-form-field>
+
+      <div *ngIf="appointmentForm.errors && appointmentForm.errors['timeRangeInvalid']" class="error">
+        L'heure de fin doit être définie après l'heure de début.
+      </div>
+
+      <div *ngIf="appointmentForm.errors && appointmentForm.errors['timeRangeConflict']" class="error">
+        Il est impossible d'avoir deux horaires qui se chevauchent sur la même case.
+      </div>
+    </div>
+    <div mat-dialog-actions align="end" >
+
+      <div class="surSite">
+        <label>Distanciel</label> 
+        <p-inputSwitch formControlName="checkedIsOnSite" />
+      </div>
+
+      <button
+        type="submit"
+        mat-flat-button
+        (click)="onSaveClick()"
+        [disabled]="!appointmentForm.valid || !appointmentForm.controls['categoryId'].value">
+        <span *ngIf="appointmentForm.value.idWorktime">Modifier l'horaire</span>
+        <span *ngIf="!appointmentForm.value.idWorktime">Ajouter un horaire</span>
+      </button>
+
+      <button
+        (click)="onDeleteClick()"
+        *ngIf="appointmentForm.value.idWorktime"
+        style="margin-left: 10px"
+        mat-stroked-button>
+        Supprimer
+      </button>
+      <button
+        style="margin-left: 10px"
+        mat-stroked-button
+        (click)="onNoClick()">
+        Fermer
+      </button>
+    </div>
+  </div>
+</div>

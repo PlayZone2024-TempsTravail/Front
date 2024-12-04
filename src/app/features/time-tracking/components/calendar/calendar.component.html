@@ -1,0 +1,241 @@
+<div class="container" cdkDropListGroup>
+  <div class="calendar-container">
+    <div class="calendar-header">
+      <div>
+        <h2
+          class="calendar-month"
+          *ngIf="currentView === 'month' || currentView === 'week'"
+        >
+          {{ viewDate | date : "MMMM" }}
+          <span>{{ viewDate | date : "y" }}</span>
+        </h2>
+        <h2 class="calendar-month" *ngIf="currentView === 'day'">
+          {{ viewDate | date : "d MMMM" }}
+          <span>{{ viewDate | date : "y" }}</span>
+        </h2>
+        <span class="calendar-dayname" *ngIf="currentView === 'day'">
+          {{ viewDate | date : "EEEE" }}
+        </span>
+      </div>
+      <mat-button-toggle-group
+        class="calendar-view-toggle"
+        name="currentView"
+        (change)="switchToView($event.value)"
+        aria-label="Calendar-View"
+      >
+        <mat-button-toggle [checked]="true" [value]="CalendarView.Month"
+          >Mois</mat-button-toggle
+        >
+        <mat-button-toggle [value]="CalendarView.Week"
+          >Semaine</mat-button-toggle
+        >
+        <mat-button-toggle [value]="CalendarView.Day"
+          >Jour</mat-button-toggle
+        >
+      </mat-button-toggle-group>
+      <div class="calendar-controls">
+        <button
+          mat-icon-button
+          (click)="previous()"
+        >
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+        <button
+          mat-stroked-button
+          (click)="viewToday()"
+        >
+          Aujourd'hui
+        </button>
+        <button
+          mat-icon-button
+          (click)="next()"
+        >
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+        <button
+          mat-flat-button
+          (click)="selectDate()"
+        >
+          Ajouter un horaire
+        </button>
+      </div>
+    </div>
+
+    <!-- Month @start -->
+    <table
+      width="100%"
+      cellspacing="0"
+      cellpadding="0"
+      class="calendar-view-month"
+      *ngIf="currentView === 'month'"
+    >
+      <thead>
+        <tr>
+          <th *ngFor="let day of weekDays">
+            {{ day }}
+          </th>
+        </tr>
+      </thead>
+      <tbody cdkDropListGroup>
+        <tr *ngFor="let week of weeks">
+          <td
+            *ngFor="let date of week"
+            [class.today]="isToday(date)"
+            [ngStyle]="{ opacity: isCurrentMonth(date) ? '1' : '0.5' }"
+          >
+            <div
+              (click)="selectDate(date)"
+              class="cell-overlay"
+              tabindex="0"
+            ></div>
+            <div class="date">
+              {{ date.getDate() }}
+            </div>
+            <div class="appointments">
+              <ng-container *ngFor="let appointment of appointments">
+                <div
+                  tabindex="0"
+                  *ngIf="isSameDate(appointment.date, date)"
+                  class="appointment"
+                  cdkDrag
+                  cdkDragHandle
+                  [cdkDragData]="appointment"
+                  [ngStyle]="{ 'background-color': getColor(appointment)}"
+                  (click)="editAppointment(appointment, $event)"
+                >
+                  <span>{{ appointment.workTime?.abreviation }} | {{ calculateDuration(appointmentService.convertTimeToString(todate(appointment.start)), appointmentService.convertTimeToString(todate(appointment.end))) }} heures</span>
+                </div>
+              </ng-container>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- Month @end -->
+
+    <!-- Week View -->
+    <table
+      width="100%"
+      cellspacing="0"
+      cellpadding="0"
+      class="calendar-view-week"
+      *ngIf="currentView === 'week'"
+    >
+      <thead>
+        <tr>
+          <th></th>
+          <th *ngFor="let day of weekDays; index as i">
+            {{ day }} {{ monthDays[i].getDate() }}
+          </th>
+        </tr>
+      </thead>
+      <tbody cdkDropListGroup>
+        <tr *ngFor="let timeSlot of timeSlots">
+          <td [width]="10" class="calendar-slot-cell">
+            <span>{{ timeSlot }}</span>
+          </td>
+          <td
+            *ngFor="let day of weekDays; index as i"
+          >
+            <div
+              (click)="selectDate(monthDays[i], timeSlot)"
+              class="cell-overlay"
+              tabindex="0"
+            ></div>
+            <div
+              tabindex="0"
+              *ngFor="
+                let appointment of getAppointmentsForDateTime(
+                  monthDays[i],
+                  timeSlot
+                )
+              "
+              class="appointment"
+              cdkDrag
+              cdkDragHandle
+              [cdkDragData]="appointment"
+              [ngStyle]="{ 'background-color': getColor(appointment)}"
+              (click)="editAppointment(appointment, $event)"
+            >
+            @if (todate(appointment.start).getHours() === getHourFromSlot(timeSlot)){
+              <span>{{ appointment.workTime?.abreviation }} | {{ calculateDuration(appointmentService.convertTimeToString(todate(appointment.start)), appointmentService.convertTimeToString(todate(appointment.end))) }} heures</span>
+            }
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Day View -->
+    <table
+      width="100%"
+      cellspacing="0"
+      cellpadding="0"
+      class="calendar-view-day"
+      *ngIf="currentView === 'day'"
+    >
+      <tbody cdkDropListGroup>
+        <tr *ngFor="let slot of timeSlots; track slot; let first = first">
+          <td [width]="10" class="calendar-slot-cell">
+            <span>{{ slot }}</span>
+          </td>
+          <td>
+            <div
+              (click)="selectDate(monthDays[0], slot)"
+              class="cell-overlay"
+              tabindex="0"
+            ></div>
+            <div
+              tabindex="0"
+              *ngFor="let appointment of getAppointmentsForDateTime(monthDays[0], slot); track appointment; 
+              let index = index
+              let first = first"
+              class="appointment"
+              cdkDrag
+              cdkDragHandle
+              [cdkDragData]="appointment"
+              [ngStyle]="{ 'background-color': getColor(appointment)}"
+              (click)="editAppointment(appointment, $event)"
+            >
+              @if (todate(appointment.start).getHours() === getHourFromSlot(slot)){
+                <span>{{ appointment.workTime?.abreviation }} | {{ calculateDuration(appointmentService.convertTimeToString(todate(appointment.start)), appointmentService.convertTimeToString(todate(appointment.end))) }} heures</span>
+              }            
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="container_info">
+    <div class="compteurs">
+      <table>
+        <tr>
+            <th></th>
+            <th id="dateHeader">02-01-{{ currentDate }}</th>
+            <th>Utilisé</th>
+            <th>Solde</th>
+        </tr>
+        <tr *ngFor="let workTime of CounterVA">
+          <td class="category">{{ workTime.category }}</td>
+          <td class="nb_day">{{ workTime.max }}</td>
+          <td class="nb_day_utilise">{{ workTime.counter }}</td>
+          <td class="nb_day_reste">{{ workTime.difference }}</td>
+        </tr>
+    </table>
+    </div>
+
+    <div class="compteurs countProjet">
+      <table>
+        <tr>
+            <th>Projet</th>
+            <th>Heures</th>
+        </tr>
+        <tr *ngFor="let projet of ProjetList">
+          <td></td>
+          <td></td>
+        </tr>
+    </table>
+    </div>
+    <!--Autre truc a mettre-->
+  </div>
+</div> 

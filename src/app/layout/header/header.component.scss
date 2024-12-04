@@ -1,0 +1,46 @@
+
+    :root {
+        --primary-color: #84c101
+    }
+    .sidebar {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #f4f4f4;
+        width: 200px;
+        height: 100vh;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+
+        .logo-container {
+            margin:3rem auto;
+            width: 80%;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            width: 80%;
+            margin: 1rem auto 4rem auto;
+
+            li {
+                margin: 2rem 0;
+
+                .nav-button {
+                    width: 100%;
+                    font-size: 16px;
+                    font-weight: bold;
+                    color: #fff;
+                    background-color: #84c101;
+                    border: none;
+                    border-radius: 5px;
+                    text-align: center;
+
+                    &:hover {
+                        background-color: #444;
+                    }
+                }
+            }
+        }
+    }
+
+

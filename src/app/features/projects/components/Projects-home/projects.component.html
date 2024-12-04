@@ -1,0 +1,104 @@
+    <!-- ici ce trouve les bouttons pour detail et autre ATTENTION peut etres changer les liens des boutons pour le chemin -->
+
+<div class="actions-header">
+    <div class="butt-project">
+        <button [routerLink]="['details', selectedProject]" class="p-button font-bold" [disabled]="isNotSelectButton" >
+        Voir détail
+    </button>
+        <button [routerLink]="['graphique', selectedProject]" class="p-button font-bold" [disabled]="isNotSelectButton" >
+        Voir graphique
+    </button>
+        <button [routerLink]="['encodage-couts-projet', selectedProject]" class="p-button font-bold" [disabled]="isNotSelectButton" >
+        Encoder coûts
+    </button>
+    </div>
+
+    <div class="butt-project-admin">
+        <button [routerLink]="['/projet/Créerrapport', selectedProject]" class="p-button font-bold" [disabled]="isNotSelectButton" >
+        Créer rapport
+    </button>
+        <button [routerLink]="['/projet/Encoderentrées', selectedProject]" class="p-button font-bold" [disabled]="isNotSelectButton" >
+        Encoder entrées
+    </button>
+        <button [routerLink]="['/projet/Créerprojet', selectedProject]" class="p-button font-bold" [disabled]="isNotSelectButton" >
+        Créer projet
+    </button>
+        <button [routerLink]="['/projet/Editer projet', selectedProject]" class="p-button font-bold" [disabled]="isNotSelectButton" >
+    Editer projet
+    </button>
+    </div>
+
+</div>
+
+<!--  bare de recherche non foncionelle -->
+
+<div class="search-filter-container">
+        <input
+            pInputText type="text"
+                 type="text"
+                 placeholder="Rechercher..."
+                 [(ngModel)]="searchQuery"
+                 (input)="searchProjects()"
+        />
+    <p-dropdown
+        [options]="[
+          { label: 'Tous', value: null },
+          { label: 'Actifs', value: 'Actifs' },
+          { label: 'Inactifs', value: 'Inactifs' }
+        ]"
+        placeholder="Filtrer"
+        (onChange)="filterprojects($event.value)"
+    ></p-dropdown>
+
+</div>
+<div>
+    <p-table [value]="filtreProjects" [paginator]="true" [rows]="10" [tableStyle]="{'min-width':'50rem'}" #dt>
+        <ng-template pTemplate="header">
+            <tr>
+                <th></th>
+                <th>N° du projet</th>
+                <th>Projet</th>
+                <th>Organisme</th>
+                <th>Chargé de mission</th>
+                <th>Prévision à ce jour</th>
+                <th>Dépenses à ce jour</th>
+                <th>Variation</th>
+                <th>Statut</th>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-project>
+            <tr>
+<!--                checkpoint pour selsctoner un project -->
+                <td>
+                    <div class="flex flex-column gap-3">
+                            <p-radioButton
+                                (onClick)="isNotSelectButton = false;"
+                                [inputId]="project.name"
+                                name="project"
+                                [value]="project.idProject"
+                                [(ngModel)]="selectedProject"
+                                />
+                            <label [for]="project.idProject" class="ml-2"  >
+                            </label>
+
+                    </div>
+                </td>
+                <td>{{project.idProject}}</td>
+                <td>{{project.name}}</td>
+                <td>{{project.organismeName}}</td>
+                <td>{{project.chargeDeProjetName}}</td>
+                <td>{{project.previsionDepenseActuelle}}</td>
+                <td>{{project.depenseReelActuelle}}</td>
+                <td>{{totalPourcent(project.previsionDepenseActuelle , project.depenseReelActuelle)}} %</td>
+                <td>
+                    <p-chip
+                        [label]="project.isActive ? 'Actif' : 'Inactif'">
+                    </p-chip>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+

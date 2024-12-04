@@ -1,0 +1,28 @@
+.dialog-content {
+  padding: 30px 30px 20px;
+  .form-field {
+    width: 100%;
+  }
+  .error {
+    color: red;
+    margin-top: -20px;
+    margin-bottom: 20px;
+  }
+}
+
+.pd-style {
+  width: 100% !important;
+  margin-bottom: 20px !important;
+}
+
+.surSite{
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+
+  & p-inputSwitch {
+    padding-top: 5px;
+  }
+}
