@@ -21,6 +21,8 @@ import {SharedModule} from '../../shared/shared.module';
 import { EncodageCoutsProjetComponent } from './components/encodage-couts-projet/encodage-couts-projet.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CalendarModule} from 'primeng/calendar';
+import { ProjectrapportComponent } from './components/project-rapport/projectrapport.component';
+import {CheckboxModule} from 'primeng/checkbox';
 
 
 @NgModule({
@@ -29,7 +31,8 @@ import {CalendarModule} from 'primeng/calendar';
       ProjectGraphComponent,
       ProjectDetailsComponent,
     ProjectsComponent,
-    EncodageCoutsProjetComponent
+    EncodageCoutsProjetComponent,
+    ProjectrapportComponent
   ],
     imports: [
         CommonModule,
@@ -51,6 +54,7 @@ import {CalendarModule} from 'primeng/calendar';
         SharedModule,
         ReactiveFormsModule,
         CalendarModule,
+        CheckboxModule,
     ],
     exports: [
         ProjectsComponent,

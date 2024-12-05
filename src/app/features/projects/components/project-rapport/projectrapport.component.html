@@ -1,0 +1,57 @@
+
+<a
+    type="button"
+    appBack>
+    <img src="/assets/back-button.svg" class="button-back" alt="Retour" width="62px" height="62px">
+</a>
+<p>Coucou les loulou !!!</p>
+
+<form action="[rapport]">
+
+
+    <p-calendar
+        [(ngModel)]="date_start"
+        [iconDisplay]="'input'"
+        (onSelect)="onDateStartChange($event)"
+        [showIcon]="true"
+        dateFormat="dd-mm-yy"
+        inputId="icondisplay" />
+
+    <p-calendar
+        [(ngModel)]="date_end"
+        [iconDisplay]="'input'"
+        [showIcon]="true"
+        dateFormat="dd-mm-yy"
+        inputId="icondisplay" />
+
+
+    <button class="p-button font-bold" *ngIf="true" (click)="send()">
+        Crée Rapport
+    </button>
+
+
+<div class="card flex justify-content-center">
+    <div class="flex flex-column gap-2">
+        <div *ngFor="let shortproject of shortProjects" class="field-checkbox">
+            <p-checkbox
+                [(ngModel)]="selectedProject"
+                [label]="shortproject.name"
+                name="group"
+                [value]="shortproject.idProject" />
+
+        </div>
+    </div>
+</div>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
