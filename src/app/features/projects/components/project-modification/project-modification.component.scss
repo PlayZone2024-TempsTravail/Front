@@ -1,0 +1,51 @@
+.modification-container {
+    .form-row {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+
+        input, select {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 0.5rem 1rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+
+            &:disabled {
+                background-color: #ccc;
+                cursor: not-allowed;
+            }
+        }
+    }
+
+    .delete-btn {
+        background-color: transparent;
+        border: none;
+        color: #dc3545;
+        font-size: 1.2rem;
+        cursor: pointer;
+        padding: 0.3rem;
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .delete-btn:hover {
+        transform: scale(1.2);
+        color: #ff0000;
+    }
+
+    p-table {
+        margin-top: 1rem;
+
+        th, td {
+            text-align: center;
+        }
+    }
+}

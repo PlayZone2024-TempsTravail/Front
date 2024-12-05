@@ -1,0 +1,57 @@
+<div class="modification-container">
+    <!-- Header -->
+    <h2>Modifier un Projet</h2>
+
+    <!-- Previsions Entrées -->
+    <div class="section">
+        <h3>Prévisions entrées</h3>
+        <form [formGroup]="previsionIncomesForm" (ngSubmit)="addPrevisionIncome()">
+            <div class="form-row">
+                <input type="date" formControlName="date" placeholder="Date" />
+                <input type="text" formControlName="motif" placeholder="Motif" />
+                <select formControlName="libeleId">
+                    <option *ngFor="let libele of incomeLibeles" [value]="libele.idLibele">
+                        {{ libele.name}}
+                    </option>
+                </select>
+                <input type="number" formControlName="montant" placeholder="Montant" />
+                <button type="submit" [disabled]="previsionIncomesForm.invalid">+</button>
+            </div>
+        </form>
+
+        <p-table [value]="previsionIncomes" [scrollable]="true" scrollDirection="both">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Date</th>
+                    <th>Motif</th>
+                    <th>Category</th>
+                    <th>Montant</th>
+                    <th>Cumul</th>
+                    <th></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-income>
+                <tr>
+                    <td>{{ income.date | date: 'dd/MM/yyyy' }}</td>
+                    <td>{{ income.motif }}</td>
+                    <td><select disabled>
+                        <option [selected]="libele.idLibele === income.libeleId" *ngFor="let libele of incomeLibeles" [value]="libele.idLibele">
+                            {{ libele.name}}
+                        </option>
+                    </select></td>
+                    <td>{{ income.montant | currency: 'EUR' }}</td>
+                    <td>{{ income.cumul | currency: 'EUR' }}</td>
+                    <td>
+                        <button
+                            class="delete-btn"
+                            (click)="deletePrevisionIncome(income.idPrevisionRentree)"
+                            title="Delete this entry"
+                        >
+                            🗑️
+                        </button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>

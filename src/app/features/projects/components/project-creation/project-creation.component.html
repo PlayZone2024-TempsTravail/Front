@@ -1,0 +1,76 @@
+<form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+    <div class="form-container">
+        <div class="form-group">
+            <label for="name">Nom projet</label>
+            <input id="name" formControlName="name" type="text" />
+            <div *ngIf="projectForm.get('name')?.invalid && projectForm.get('name')?.touched" class="error">
+                Nom du projet est requis.
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="chargeDeProjetId">Chargé de mission</label>
+            <p-dropdown
+                id="chargeDeProjetId"
+                formControlName="chargeDeProjetId"
+                [options]="chargeProjet"
+                optionLabel="name"
+                placeholder="Sélectionner un organisme"
+            ></p-dropdown>
+            <div *ngIf="projectForm.get('chargeDeProjetId')?.invalid && projectForm.get('chargeDeProjetId')?.touched" class="error">
+                Chargé de mission est requis.
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="organismeId">Organisme</label>
+            <p-dropdown
+                id="organismeId"
+                formControlName="organismeId"
+                [options]="organismes"
+                optionLabel="name"
+                placeholder="Sélectionner un organisme"
+                (onChange)="onOrganismeChange($event)"
+            ></p-dropdown>
+            <button type="button" (click)="showAddOrganismeForm = !showAddOrganismeForm">Ajouter un nouvel organisme</button>
+
+            <div *ngIf="showAddOrganismeForm">
+                <label for="newOrganismeName">Nom de l'organisme</label>
+                <input id="newOrganismeName" [(ngModel)]="newOrganismeName" type="text"/>
+                <button type="button" (click)="addOrganisme()">Ajouter</button>
+            </div>
+
+            <div *ngIf="projectForm.get('organismeId')?.invalid && projectForm.get('organismeId')?.touched" class="error">
+                Organisme est requis.
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="dateDebutProjet">Date début projet</label>
+            <input id="dateDebutProjet" formControlName="dateDebutProjet" type="date" />
+            <div *ngIf="projectForm.get('dateDebutProjet')?.invalid && projectForm.get('dateDebutProjet')?.touched" class="error">
+                Date de début est requis.
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="dateFinProjet">Date fin de projet</label>
+            <input id="dateFinProjet" formControlName="dateFinProjet" type="date" />
+            <div *ngIf="projectForm.get('dateFinProjet')?.invalid && projectForm.get('dateFinProjet')?.touched" class="error">
+                Date de fin est requis.
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="montantBudget">Dépenses autorisées</label>
+            <input id="montantBudget" formControlName="montantBudget" type="number" />
+            <div *ngIf="projectForm.get('montantBudget')?.invalid && projectForm.get('montantBudget')?.touched" class="error">
+                Dépenses autorisées sont requises.
+            </div>
+        </div>
+
+        <button type="submit" [disabled]="projectForm.invalid" class="submit-button">
+            Enregistrer
+        </button>
+    </div>
+</form>

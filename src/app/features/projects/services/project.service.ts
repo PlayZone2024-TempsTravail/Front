@@ -29,10 +29,6 @@ export class ProjectService {
         return this.http.get<any[]>(`${this.apiUrl}/Project/idproject/${id}`);
     }
 
-    getPrevisionalIncomes(id: number): Observable<any> {
-        return this.http.get<any[]>(`${this.apiUrl}/PrevisionRentree/projets/${id}`);
-    }
-
     //getPrevisionalExpenses(id: number): Observable<any> {
     //    return this.http.get<any[]>(`${this.apiUrl}/PrevisionRentree/projets/${id}`);
     //}
@@ -57,7 +53,25 @@ export class ProjectService {
         );
     }
 
+    getPrevisionalIncomes(id: number): Observable<any> {
+        return this.http.get<any[]>(`${this.apiUrl}/PrevisionRentree/${id}`);
+    }
+
     addPrevisionIncome(income: any): Observable<any> {
         return this.http.post(`${this.apiUrl}/PrevisionRentree`, income);
+    }
+
+    deletePrevisionIncome(id: number): Observable<any> {
+        return this.http.delete(`${this.apiUrl}/PrevisionRentree/${id}`);
+    }
+
+    getAllOrganismes(): Observable<any[]> {
+        return this.http.get<any[]>(`${this.apiUrl}/organisme`);
+    }
+    addOrganisme(organismeData: { name: string }): Observable<any> {
+        return this.http.post<any>(`${this.apiUrl}/organisme`, organismeData);
+    }
+    getAllChargeProjet(): Observable<any[]> {
+        return this.http.get<any[]>(`${this.apiUrl}/User`);
     }
 }
