@@ -25,16 +25,16 @@ export class ProjectDetailsComponent implements OnInit {
         // Fetch project details
         this.projectService.getProjectById(projectId).subscribe((project) => {
             this.project = project;
-/*
+
             // Fetch graph data
             this.projectService.getGraphData(projectId).subscribe((graphData) => {
                 this.chartData = this.prepareChartData(graphData);
-            });*/
-/*
+            });
+
             // Fetch expenses for table
             this.projectService.getExpensesByCategory(projectId).subscribe((categories) => {
                 this.expenseCategories = this.prepareExpenseCategories([]);
-            });*/
+            });
 
             // Calculate variation after loading project details
             this.calculateVariation();
@@ -66,7 +66,7 @@ export class ProjectDetailsComponent implements OnInit {
             this.variation = 0;
         }
     }
-/*
+
     // Prepare categories for table display
     prepareExpenseCategories(categories: any[]): any[] {
         return categories
@@ -76,18 +76,17 @@ export class ProjectDetailsComponent implements OnInit {
                 return { ...category, totals };
             });
     }
-    */
-/*
+
     // Calculate totals for a category
     calculateCategoryTotals(data: any[]): { [month: string]: number } {
         const totals: { [month: string]: number } = {};
         data.forEach((expense) => {
-            Object.entries(expense.data).forEach(([month, value]: [string, number]) => {
+            Object.entries(expense.data as { [key: string]: number }).forEach(([month, value]) => {
                 totals[month] = (totals[month] || 0) + value;
             });
         });
         return totals;
-    } */
+    }
 
     // Prepare data for the graph
     prepareChartData(graphData: any): any {
