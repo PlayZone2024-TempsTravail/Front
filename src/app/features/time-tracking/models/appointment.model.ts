@@ -28,4 +28,16 @@ export interface Appointment {
     max: number;
     difference: number;
   }
+
+  export interface Project {
+    projectId: number;
+    projectName: string;
+    heures: Date;
+  }
+
+  export interface ProjectList{
+    idProject: number;
+    isActive: boolean;
+    name: string;
+  }
   

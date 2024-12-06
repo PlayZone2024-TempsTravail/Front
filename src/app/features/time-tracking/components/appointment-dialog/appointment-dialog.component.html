@@ -12,16 +12,29 @@
           [filter]="true"
           filterBy="abreviation"
           styleClass="pd-style"
-          placeholder="Catégorie">
+          placeholder="Catégorie*">
         </p-dropdown>
 
-        <div *ngIf="appointmentForm.controls['categoryId'].value?.abreviation === 'VIEC'">
-          <p>test</p> <!-- TODO : Mettre un dropdown -->
-        </div>
+        @if (appointmentForm.controls['categoryId'].value === 7){
+            <p-dropdown
+            [options]="projectList"
+            formControlName="projectId"
+            optionLabel="name"
+            optionValue="idProject"
+            [filter]="true"
+            filterBy="name"
+            styleClass="pd-style"
+            placeholder="Project*">
+            </p-dropdown>
+
+            @if (!projectForm.controls['projectId'].value && projectForm.touched){
+              <p class="error">Veuillez sélectionner un projet.</p>
+            }
+        }
 
         <div>
           <p class="error" *ngIf="!appointmentForm.controls['categoryId'].value && appointmentForm.touched">
-            Veuillez sélectionner un projet.
+            Veuillez sélectionner un controle.
           </p>
         </div>
       </div>
@@ -62,7 +75,7 @@
         type="submit"
         mat-flat-button
         (click)="onSaveClick()"
-        [disabled]="!appointmentForm.valid || !appointmentForm.controls['categoryId'].value">
+        [disabled]="!appointmentForm.valid || !appointmentForm.controls['categoryId'].value || appointmentForm.controls['categoryId'].value === 7 && !appointmentForm.controls['projectId'].value">
         <span *ngIf="appointmentForm.value.idWorktime">Modifier l'horaire</span>
         <span *ngIf="!appointmentForm.value.idWorktime">Ajouter un horaire</span>
       </button>
@@ -75,7 +88,7 @@
         Supprimer
       </button>
       <button
-        style="margin-left: 10px"
+        style="margin-left: 10px; color: #000000;"
         mat-stroked-button
         (click)="onNoClick()">
         Fermer
