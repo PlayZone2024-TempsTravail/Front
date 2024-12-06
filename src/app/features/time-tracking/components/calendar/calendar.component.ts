@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AppointmentDialogComponent } from '../appointment-dialog/appointment-dialog.component';
 import { AppointmentService } from '../../../services/services-calendar.service';
-import { Appointment, WorkTime, CompteurWorktimeCategory } from '../../models/appointment.model';
+import { Appointment, WorkTime, CompteurWorktimeCategory, Project } from '../../models/appointment.model';
 import { AuthService } from '../../../auth/services/auth.services';
 import { forkJoin, Observable } from 'rxjs';
 
@@ -29,7 +29,7 @@ export class CalendarComponent {
   timeSlots: string[] = [];
   currentDate: number = new Date().getFullYear();
   CounterVA: any[] = [];
-  ProjetList: any[] = [];
+  ProjectList: any[] = [];
   public CalendarView = CalendarView;
 
   constructor(
@@ -38,6 +38,7 @@ export class CalendarComponent {
     private authService: AuthService
   ) {
     this.loadWorkTimeList();
+    this.loadProjetList();
     this.generateView(this.currentView, this.viewDate);
     this.generateTimeSlots();
     this.loadCompteurWorktimeCategory();
@@ -59,13 +60,11 @@ export class CalendarComponent {
     );
   }
 
-  private loadCompteurWorktimeCategory(): void {
+  public loadCompteurWorktimeCategory(): void {
     const userId = this.authService.getUserId();
-    //console.log('User ID:', userId); 
     if (userId) {
       this.appointmentService.getCompteurWorktimeCategory(userId.toString()).subscribe(
         (data: CompteurWorktimeCategory[]) => {
-          //console.log('CompteurWorktimeCategory Data:', data);
           this.CounterVA = data;
         },
         (error) => {
@@ -76,27 +75,36 @@ export class CalendarComponent {
   }
 
   private loadProjetList(): void {
-    
-  }
+    this.appointmentService.getProjet().subscribe(
+      (data: Project[]) => {
+        this.ProjectList = data;
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des données Project:', error);
+      }
+    );
+  }  
 
   loadAppointments(): void {
     const userId = this.authService.getUserId();
-    const startDate = '2024-12-01T00:00:00Z';
-    const endDate = '2024-12-31T23:59:59Z';
+    const { startDate, endDate } = this.getDateRange(this.currentView, this.viewDate);
+    this.loadProjetList();
 
-    this.appointmentService.getAppointments(userId!.toString(), startDate, endDate).subscribe({
+    this.appointmentService.getAppointments(userId!.toString(), startDate.toISOString(), endDate.toISOString()).subscribe({
       next: (appointments) => {
-        console.log(appointments);
-
         if (appointments && appointments.length > 0) {
-          this.appointments = appointments.map(appointment => ({
-            ...appointment,
-            date: new Date(appointment.start),
-            start: appointment.start,
-            end: appointment.end,
-            workTime: this.workTime.find(wt => wt.idWorktimeCategory == appointment.categoryId)
-          }));
-          //console.log('Rendez-vous chargés :', this.appointments);
+          this.appointments = appointments.map(appointment => {
+            const endDate = new Date(appointment.end);
+            endDate.setSeconds(endDate.getMinutes() + 1);
+
+            return {
+              ...appointment,
+              date: new Date(appointment.start),
+              start: appointment.start,
+              end: endDate.toISOString(),
+              workTime: this.workTime.find(wt => wt.idWorktimeCategory == appointment.categoryId)
+            };
+          });
         } else {
           console.error('Aucun rendez-vous trouvé');
         }
@@ -105,7 +113,45 @@ export class CalendarComponent {
         console.error('Erreur lors de la récupération des rendez-vous :', error);
       }
     });
+  }  
+
+  private getDateRange(view: CalendarView, date: Date): { startDate: Date, endDate: Date } {
+    switch (view) {
+      case CalendarView.Month:
+        return this.getMonthRange(date);
+      case CalendarView.Week:
+        return this.getWeekRange(date);
+      case CalendarView.Day:
+        return this.getDayRange(date);
+      default:
+        return this.getMonthRange(date);
+    }
   }
+  
+  private getMonthRange(date: Date): { startDate: Date, endDate: Date } {
+    const startDate = new Date(date.getFullYear(), date.getMonth(), 1);
+    startDate.setDate(startDate.getDate() - 15);
+    const endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    endDate.setDate(endDate.getDate() + 15);
+    return { startDate, endDate };
+  }
+  
+  private getWeekRange(date: Date): { startDate: Date, endDate: Date } {
+    const startDate = new Date(date);
+    startDate.setDate(date.getDate() - date.getDay() - 7);
+    const endDate = new Date(date);
+    endDate.setDate(date.getDate() + (6 - date.getDay()) + 7);
+    return { startDate, endDate };
+  }
+  
+  private getDayRange(date: Date): { startDate: Date, endDate: Date } {
+    const startDate = new Date(date);
+    startDate.setDate(date.getDate() - 1);
+    const endDate = new Date(date);
+    endDate.setDate(date.getDate() + 1);
+    return { startDate, endDate };
+  }
+  
 
   generateView(view: CalendarView, date: Date) {
     switch (view) {
@@ -121,7 +167,8 @@ export class CalendarComponent {
       default:
         this.generateMonthView(date);
     }
-  }
+    this.loadAppointments();
+  }  
 
   generateMonthView(date: Date) {
     const start = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -215,6 +262,7 @@ export class CalendarComponent {
       );
       this.generateDayView(this.viewDate);
     }
+    this.loadAppointments();
   }
 
   next() {
@@ -234,6 +282,7 @@ export class CalendarComponent {
       );
       this.generateDayView(this.viewDate);
     }
+    this.loadAppointments();
   }
 
   isToday(date: Date): boolean {
@@ -243,6 +292,7 @@ export class CalendarComponent {
       date.getMonth() === today.getMonth() &&
       date.getFullYear() === today.getFullYear()
     );
+    
   }
 
   isSameDate(date1: Date, date2: Date): boolean {
@@ -273,11 +323,10 @@ export class CalendarComponent {
         appointment,
         appointments: this.appointments
       },
-    });
-
-    //console.log('Opening dialog with appointment:', appointment);
+    }); 
 
     dialogRef.afterClosed().subscribe(() => {
+      this.loadCompteurWorktimeCategory()
       this.loadAppointments()
     });
   }
@@ -296,14 +345,18 @@ export class CalendarComponent {
 
   viewToday(): void {
     this.viewDate = new Date();
+    
     if (this.currentView === CalendarView.Month) {
       this.generateMonthView(this.viewDate);
+      this.loadAppointments();
     }
     if (this.currentView === CalendarView.Week) {
       this.generateWeekView(this.viewDate);
+      this.loadAppointments();
     }
     if (this.currentView === CalendarView.Day) {
       this.generateDayView(this.viewDate);
+      this.loadAppointments();
     }
   }
 
@@ -326,36 +379,11 @@ export class CalendarComponent {
     );
   }
 
-  // n'est jamais appelé !!!
-  isOverlapping(date: Date, start: string, end: string, appointmentToSkip?: Appointment): boolean {
-    const startDate = this.appointmentService.convertStringToDate(date, start);
-    const endDate = this.appointmentService.convertStringToDate(date, end);
-  
-    const tolerance = 1;
-  
-    return this.appointments.some((appointment) => {
-      if (appointmentToSkip && appointment.categoryId === appointmentToSkip.categoryId) {
-        return false;
-      }
-  
-      if (!this.isSameDate(appointment.date, date)) {
-        return false;
-      }
-  
-      return (
-        (startDate >= new Date(new Date(appointment.start).getTime() - tolerance * 60000) && startDate < new Date(new Date(appointment.end).getTime() + tolerance * 60000)) ||
-        (endDate > new Date(new Date(appointment.start).getTime()- tolerance * 60000) && endDate <= new Date(new Date(appointment.end).getTime() + tolerance * 60000)) ||
-        (startDate <= new Date(new Date(appointment.start).getTime() - tolerance * 60000) && endDate >= new Date(new Date(appointment.end).getTime() + tolerance * 60000))
-      );
-    });
-  }
-
   editAppointment(appointment: Appointment, event: Event) {
     this.openDialog(appointment);
   }
 
   calculateDuration(start: string, end: string): number {
-    //console.log(start);
     
     const [startHours, startMinutes] = start.split(':').map(Number);
     const [endHours, endMinutes] = end.split(':').map(Number);

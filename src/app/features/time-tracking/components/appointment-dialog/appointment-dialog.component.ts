@@ -1,6 +1,5 @@
-import { Component, Inject, ViewEncapsulation, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {
   AbstractControl,
   FormBuilder,
@@ -20,12 +19,13 @@ import { FormControl } from '@angular/forms';
 import { AppointmentService } from '../../../services/services-calendar.service';
 import { MAT_DATE_FORMATS, DateAdapter } from '@angular/material/core';
 import { CUSTOM_DATE_FORMATS, CustomDateAdapter } from '../../models/custom-date-adapter';
-import { WorkTime, Appointment } from '../../models/appointment.model';
+import { WorkTime, Appointment, Project, ProjectList } from '../../models/appointment.model';
 
 //PRIMENG
 import { DropdownModule } from 'primeng/dropdown';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { AuthService } from '../../../auth/services/auth.services';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-appointment-dialog',
@@ -33,7 +33,7 @@ import { AuthService } from '../../../auth/services/auth.services';
   templateUrl: './appointment-dialog.component.html',
   styleUrls: ['./appointment-dialog.component.scss'],
   standalone: true,
-  imports: [ 
+  imports: [
     CommonModule,
     FormsModule,
     MatFormFieldModule,
@@ -54,8 +54,11 @@ import { AuthService } from '../../../auth/services/auth.services';
 
 export class AppointmentDialogComponent implements OnInit {
   appointments: Appointment[] = [];
+  projects: Project[] = [];
   appointmentForm: FormGroup;
+  projectForm: FormGroup;
   workTimeList: WorkTime[] = [];
+  projectList: ProjectList[] = [];
   checkedIsOnSite: boolean = true;
 
   constructor(
@@ -69,32 +72,76 @@ export class AppointmentDialogComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService
   ) {
+
+    //console.log('Received appointment data:', data.appointment);
+
     this.appointments = data.appointments;
-  
+
+    this.projectForm = this.formBuilder.group({
+      projectId: [null],
+      projectName: [null],
+      heures: [null],
+    })
+
     this.appointmentForm = this.formBuilder.group({
       idWorktime: [],
       categoryId: [null, Validators.required],
       date: [null, Validators.required],
       startTime: [null, Validators.required],
       endTime: [null, Validators.required],
-      checkedIsOnSite: [] 
+      checkedIsOnSite: [],
+      projectId: [null]
     }, { validators: this.timeRangeValidator });
-  
-    //console.log(data.appointment)
 
     this.appointmentForm.patchValue({
       ...data.appointment,
-      startTime: data.appointment.idWorktime 
-        ? this.appointmentService.convertTimeToString(new Date(data.appointment.start)) 
+      startTime: data.appointment.idWorktime
+        ? this.appointmentService.convertTimeToString(new Date(data.appointment.start))
         : data.appointment.start,
 
       endTime: this.appointmentService.convertTimeToString(new Date(data.appointment.end)) || null,
     });
+    
+    if (data.appointment.projectId) {
+      this.appointmentService.getProjetList().subscribe(
+        (projects: ProjectList[]) => {
+          const project = projects.find(p => p.idProject === data.appointment.projectId);
+          if (project) {
+            this.projectForm.patchValue({
+              idProject: project.idProject,
+              isActive: project.isActive,
+              name: project.name
+            });
+
+          }
+        },
+        (error) => {
+          console.error('Erreur lors de la récupération des données Project:', error);
+        }
+      );
+    }
   }
 
   ngOnInit(): void {
     this.loadWorkTimeList();
+    this.loadProjetList();
+    
+
+    this.appointmentForm.get('categoryId')?.valueChanges.subscribe(value => {
+      this.appointmentForm.updateValueAndValidity();
+    });
   }
+
+  projectIdValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    const categoryId = control.get('categoryId')?.value;
+    const projectId = control.get('projectId')?.value;
+
+    if (categoryId === 7 && !projectId) {
+      return { projectIdRequired: true };
+    }
+  
+    return null;
+  };  
 
   private loadWorkTimeList(): void {
     this.appointmentService.getWorkTimeList().subscribe(
@@ -107,15 +154,27 @@ export class AppointmentDialogComponent implements OnInit {
     );
   }
 
+  private loadProjetList(): void {
+    this.appointmentService.getProjetList().subscribe(
+      (data: ProjectList[]) => {
+        this.projectList = data;
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des données Project:', error);
+      }
+    );
+  }  
+
   onNoClick(): void {
     this.dialogRef.close();
   }
 
   onSaveClick(): void {
+    
     if (!this.appointmentForm.valid) {
       return;
     }
-  
+
     const formData = this.appointmentForm.value;
     const selectedWorkTime = this.workTimeList.find(wt => wt.idWorktimeCategory === formData.workTime);
     if (selectedWorkTime) {
@@ -124,12 +183,14 @@ export class AppointmentDialogComponent implements OnInit {
         color: selectedWorkTime.color
       };
     }
-  
+
     formData.isOnSite = !formData.checkedIsOnSite;
 
     const date = typeof formData.date === 'string' ? new Date(formData.date) : formData.date;
     const startDate = this.appointmentService.convertStringToDate(date, formData.startTime);
     const endDate = this.appointmentService.convertStringToDate(date, formData.endTime);
+
+    endDate.setSeconds(endDate.getMilliseconds() - 1);
 
     const userId = this.authService.getUserId();
 
@@ -141,19 +202,17 @@ export class AppointmentDialogComponent implements OnInit {
     const appointment: Appointment = {
       idWorktime: formData.idWorktime,
       categoryId: formData.categoryId,
-      start: startDate.toISOString(), 
+      start: startDate.toISOString(),
       end: endDate.toISOString(),
       isOnSite: formData.isOnSite,
       userId: userId,
-      projectId: 0,
-      date: date.toISOString()
+      projectId: formData.projectId,
+      date: date.toISOString(),
     };
-
-    console.log('Data sent to API:', appointment);
-
+    
     if (appointment.idWorktime) {
       this.appointmentService.editAppointment(appointment).subscribe({
-        next: () => {          
+        next: () => {
           this.dialogRef.close();
         },
         error: (err) => {
@@ -189,44 +248,49 @@ export class AppointmentDialogComponent implements OnInit {
     const startTime = control.get('startTime')?.value;
     const endTime = control.get('endTime')?.value;
     const date = control.get('date')?.value;
-  
-    if (startTime && endTime) {
-  
-      const startDate = new Date(date);
-      startDate.setHours(startTime);
-  
-      const endDate = new Date(date);
-      endDate.setHours(endTime);
-  
-      if (startDate >= endDate) {
-        return { timeRangeInvalid: true };
-      }
-  
-      if (
-        this.appointments.some((appt) => {
-          if (appt.categoryId === this.appointmentForm?.value.category_Id) return false;
-          const apptStartDate = new Date(appt.date);
-          const apptEndDate = new Date(appt.date);
-  
-          const [apptStartHours, apptStartMinutes] = appt.start.split(':').map(Number);
-          const [apptEndHours, apptEndMinutes] = appt.end.split(':').map(Number);
-  
-          apptStartDate.setHours(apptStartHours, apptStartMinutes);
-          apptEndDate.setHours(apptEndHours, apptEndMinutes);
-  
-          const tolerance = 1; 
-          const startDateWithTolerance = new Date(startDate.getTime() + tolerance * 60000);
-          const endDateWithTolerance = new Date(endDate.getTime() - tolerance * 60000);
-  
-          return startDateWithTolerance < apptEndDate && endDateWithTolerance > apptStartDate;
-        })
-      ) {
-        return { timeRangeConflict: true };
-      }
+    const idWorktime = control.get('idWorktime')?.value;
+
+    if (startTime && endTime && date) {
+        const [startHour, startMinute] = startTime.split(':').map(Number);
+        const [endHour, endMinute] = endTime.split(':').map(Number);
+
+        const startDate = new Date(date);
+        startDate.setHours(startHour, startMinute);
+
+        const endDate = new Date(date);
+        endDate.setHours(endHour, endMinute);
+
+        // Application de la tolérance
+        const tolerance = 1; // tolérance en minutes
+        const startDateWithTolerance = new Date(startDate.getTime() + tolerance * 60000);
+        const endDateWithTolerance = new Date(endDate.getTime() - tolerance * 60000);
+
+        if (startDate >= endDate) {
+            return { timeRangeInvalid: true };
+        }
+
+        const hasOverlap = this.appointments.some((appt) => {
+            if (idWorktime && appt.idWorktime === idWorktime) {
+                return false;
+            }
+
+            const apptStart = new Date(appt.start);
+            const apptEnd = new Date(appt.end);
+
+            // Vérification avec tolérance
+            return (
+                startDateWithTolerance < apptEnd &&
+                endDateWithTolerance > apptStart
+            );
+        });
+
+        if (hasOverlap) {
+            return { timeRangeConflict: true };
+        }
     }
-  
+
     return null;
-  };
+};
 
   get workTimeControl(): FormControl {
     return this.appointmentForm.get('workTime') as FormControl;

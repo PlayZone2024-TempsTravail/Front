@@ -2,18 +2,21 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { Appointment, WorkTime, CompteurWorktimeCategory } from '../time-tracking/models/appointment.model';
+import { Appointment, WorkTime, CompteurWorktimeCategory, Project, ProjectList } from '../time-tracking/models/appointment.model';
 import { AuthService  } from '../../features/auth/services/auth.services';
+import { JwtPayload } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AppointmentService {
   private appointmentsUrlJSON = ''; //http://localhost:3000/appointments
-  private workTimeCategoryUrl = 'http://api2.technobel.pro:444/api/WorktimeCategory';
-  private workTimeUrl = 'http://api2.technobel.pro:444/api/Worktime';
-  private workTimeRangeUrl = 'http://api2.technobel.pro:444/api/Worktime/range';
-  private compteurWorktimeCategoryUrl = 'http://api2.technobel.pro:444/api/Counter/absence/';
+  private workTimeCategoryUrl = 'http://api.technobel.pro:444/api/WorktimeCategory';
+  private workTimeUrl = 'http://api.technobel.pro:444/api/Worktime';
+  private workTimeRangeUrl = 'http://api.technobel.pro:444/api/Worktime/range';
+  private compteurWorktimeCategoryUrl = 'http://api.technobel.pro:444/api/Counter/absence/';
+  private compteurProjectUrl = 'http://api.technobel.pro:444/api/Counter/projet/';
+  private ListProjectUrl = 'http://api.technobel.pro:444/api/Project/short/';
 
   constructor(
     private http: HttpClient,
@@ -40,7 +43,9 @@ export class AppointmentService {
       end: endDate.toISOString(),
       isOnSite: a.isOnSite,
       categoryId: a.categoryId,
-      projectId: a.projectId,
+      projectId: a.projectId == 0
+        ? null
+        : a.projectId,
       userId: +userId,
     };
 
@@ -53,8 +58,7 @@ export class AppointmentService {
   }
 
   editAppointment(a: Appointment) {
-    console.log("id worktime : " + a.idWorktime);
-    
+    //console.log("id worktime : " + a.idWorktime);
     return this.http.put(`${this.workTimeUrl}/${a.idWorktime}`, a);
   }
 
@@ -66,7 +70,13 @@ export class AppointmentService {
     return this.http.get<WorkTime[]>(this.workTimeCategoryUrl);
   }
 
-  //getProjetList(): Observable<>
+  getProjet(): Observable<Project[]> {
+    return this.http.get<Project[]>(`${this.compteurProjectUrl}/${this.authService.getUserId()}`);
+  } 
+  
+  getProjetList(): Observable<ProjectList[]> {
+    return this.http.get<ProjectList[]>(`${this.ListProjectUrl}/${this.authService.getUserId()}`);
+  }
 
   getAppointments(userId: string, startDate: string, endDate: string): Observable<Appointment[]> {
     const params = {

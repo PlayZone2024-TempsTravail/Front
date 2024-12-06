@@ -227,12 +227,12 @@
     <div class="compteurs countProjet">
       <table>
         <tr>
-            <th>Projet</th>
-            <th>Heures</th>
+            <th class="col-80" style="width: 80%;">Projet</th>
+            <th class="col-20">Heures</th>
         </tr>
-        <tr *ngFor="let projet of ProjetList">
-          <td></td>
-          <td></td>
+        <tr *ngFor="let projet of ProjectList">
+          <td class="col-80">{{ projet.projectName }}</td>
+          <td class="col-20">{{ projet.heures }}</td>
         </tr>
     </table>
     </div>
