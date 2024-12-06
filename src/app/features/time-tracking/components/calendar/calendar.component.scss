@@ -1,7 +1,8 @@
 :root {
-    --header-height: 42px;
-    --total-weeks: 6;
-  }
+  --header-height: 42px;
+  --total-weeks: 6;
+  --green-theme: #84C101;
+}
   .container {
     max-width: 1440px;
     margin: auto;
@@ -221,7 +222,6 @@
     padding: 15px;
     border-radius: 5px;
     width: 325px;
-    margin-top: 97px;
 
     table{
       border-spacing: 0px;
@@ -249,4 +249,28 @@
         }
       }
     }
+  }
+
+  .firstCount{
+    margin-top: 96px;
+  }
+
+  .calendar-dayname{
+    font-size: 24px;
+  }
+
+  .calendar-header{
+    padding-bottom: 62px !important;
+  }
+
+  .themeColorBackground{
+    background-color: var(--green-theme) !important;
+  }
+
+  .themeColorText{
+    color: #000000 !important;
+  }
+
+  .themeColorTextBlanc{
+    color: #ffffff;
   }

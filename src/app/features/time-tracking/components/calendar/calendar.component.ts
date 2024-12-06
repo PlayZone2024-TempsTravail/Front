@@ -1,10 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AppointmentDialogComponent } from '../appointment-dialog/appointment-dialog.component';
 import { AppointmentService } from '../../../services/services-calendar.service';
 import { Appointment, WorkTime, CompteurWorktimeCategory, Project } from '../../models/appointment.model';
 import { AuthService } from '../../../auth/services/auth.services';
-import { forkJoin, Observable } from 'rxjs';
 
 export enum CalendarView {
   Month = 'month',
@@ -16,6 +15,7 @@ export enum CalendarView {
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 }) 
 
 export class CalendarComponent {
