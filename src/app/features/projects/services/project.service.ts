@@ -36,7 +36,11 @@ export class ProjectService {
     //    return this.http.get<any[]>(`${this.apiUrl}/PrevisionRentree/projets/${id}`);
     //}
 
-    getExpensesByCategory(projectId: number): Observable<any[]> {
-        return this.http.get<any[]>(`${this.apiUrl}/expenses/categories/${projectId}`);
+    getExpensesByCategory(id: number): Observable<Project> {
+        return this.http.get<Project>(`${this.apiUrl}/Project/data/${id}`);
+    }
+
+    getGraphData(projectId: number): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/Project/graphique/depense/${projectId}`);
     }
 }

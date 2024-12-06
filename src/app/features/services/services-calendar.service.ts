@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { Appointment, WorkTime, CompteurWorktimeCategory } from '../time-tracking/models/appointment.model';
+import { Appointment, WorkTime, CompteurWorktimeCategory, Project, ProjectList } from '../time-tracking/models/appointment.model';
 import { AuthService  } from '../../features/auth/services/auth.services';
+import { JwtPayload } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,9 @@ export class AppointmentService {
   private workTimeCategoryUrl = 'http://api.technobel.pro:444/api/WorktimeCategory';
   private workTimeUrl = 'http://api.technobel.pro:444/api/Worktime';
   private workTimeRangeUrl = 'http://api.technobel.pro:444/api/Worktime/range';
-  private compteurWorktimeCategoryUrl = 'http://api.technobel.pro:444/api/CompteurWorktimeCategory';
+  private compteurWorktimeCategoryUrl = 'http://api.technobel.pro:444/api/Counter/absence/';
+  private compteurProjectUrl = 'http://api.technobel.pro:444/api/Counter/projet/';
+  private ListProjectUrl = 'http://api.technobel.pro:444/api/Project/short/';
 
   constructor(
     private http: HttpClient,
@@ -28,7 +31,7 @@ export class AppointmentService {
     const startDate = this.mergeDateAndTime(a.date, startTime);
     const endDate = this.mergeDateAndTime(a.date, endTime);
 
-    const userId = this.authService.getUserId(this.authService.jwtToken);
+    const userId = this.authService.getUserId();
 
     if (!userId) {
       console.error('Impossible de récupérer "userId" dans le token JWT.');
@@ -40,7 +43,9 @@ export class AppointmentService {
       end: endDate.toISOString(),
       isOnSite: a.isOnSite,
       categoryId: a.categoryId,
-      projectId: a.project_Id,
+      projectId: a.projectId == 0
+        ? null
+        : a.projectId,
       userId: +userId,
     };
 
@@ -53,9 +58,8 @@ export class AppointmentService {
   }
 
   editAppointment(a: Appointment) {
-    console.log(a)
-    return this.http.put(this.workTimeUrl + '/' + a.idWorktime, a);
-    // TODO : FINIR QUAND STEVEN A FINI
+    //console.log("id worktime : " + a.idWorktime);
+    return this.http.put(`${this.workTimeUrl}/${a.idWorktime}`, a);
   }
 
   deleteAppointment(a: Appointment): Observable<any> {
@@ -64,6 +68,14 @@ export class AppointmentService {
 
   getWorkTimeList(): Observable<WorkTime[]> {
     return this.http.get<WorkTime[]>(this.workTimeCategoryUrl);
+  }
+
+  getProjet(): Observable<Project[]> {
+    return this.http.get<Project[]>(`${this.compteurProjectUrl}/${this.authService.getUserId()}`);
+  } 
+  
+  getProjetList(): Observable<ProjectList[]> {
+    return this.http.get<ProjectList[]>(`${this.ListProjectUrl}/${this.authService.getUserId()}`);
   }
 
   getAppointments(userId: string, startDate: string, endDate: string): Observable<Appointment[]> {
@@ -81,9 +93,21 @@ export class AppointmentService {
     return `${hours}:${minutes}`;
   }
 
-  public convertStringToDate(date: Date, time: string): Date {
-    const [hours, minutes] = time.split(':').map(Number);
-    const resultDate =  new Date(date.getFullYear(), date.getMonth(), date.getDate(), hours, minutes, 0, 0);
+  public convertStringToDate(date: Date | string, time: string): Date {
+    // Si 'date' est une chaîne, convertir en objet Date
+    if (typeof date === 'string') {
+      date = new Date(date);
+    }
+  
+    // Vérifier si 'date' est un objet Date valide
+    if (!(date instanceof Date) || isNaN(date.getTime())) {
+      throw new Error("Invalid date object");
+    }
+  
+    const [hours, minutes] = time.split(':').map(Number); 
+    
+    // Créer un nouvel objet Date avec l'année, mois, jour et heure/mn de la date passée
+    const resultDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hours, minutes, 0, 0);
     return resultDate;
   }
 

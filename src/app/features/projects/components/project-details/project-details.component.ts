@@ -14,8 +14,7 @@ export class ProjectDetailsComponent implements OnInit {
     chartData: any; // Données du graphique
     chartOptions: any; // Options du graphique
     totalExpenses: { [month: string]: number } = {}; // Totals for each month
-    totalPrevisions = 0; // Total previsions
-    totalCost = 0; // Total cost (real expenses)
+    expenseCategories: any[] = [];
     variation = 0; // Variation percentage
 
     constructor(private route: ActivatedRoute, private projectService: ProjectService) {}
@@ -27,24 +26,19 @@ export class ProjectDetailsComponent implements OnInit {
         this.projectService.getProjectById(projectId).subscribe((project) => {
             this.project = project;
 
+            // Fetch graph data
+            this.projectService.getGraphData(projectId).subscribe((graphData) => {
+                this.chartData = this.prepareChartData(graphData);
+            });
+
+            // Fetch expenses for table
+            this.projectService.getExpensesByCategory(projectId).subscribe((categories) => {
+                this.expenseCategories = this.prepareExpenseCategories([]);
+            });
+
             // Calculate variation after loading project details
             this.calculateVariation();
-
-            // Fetch expenses and calculate totals
-            this.projectService.getProjectExpenses(projectId).subscribe((expenses) => {
-                this.expenses = this.groupExpensesByLabel(expenses);
-                this.calculateTotalExpenses();
-
-                // Generate chart data
-                this.generateChartData();
             });
-
-            // Fetch previsions
-            this.projectService.getProjectPrevisions(projectId).subscribe((previsions) => {
-                this.totalPrevisions = this.calculateTotalPrevisions(previsions);
-                this.calculateVariation();
-            });
-        });
 
         // Configure chart options
         this.chartOptions = {
@@ -64,47 +58,6 @@ export class ProjectDetailsComponent implements OnInit {
     // Exporter le rapport PDF
     // Placeholder
 
-    // Regrouper les dépenses par libellé et par mois
-    groupExpensesByLabel(expenses: any[]): any[] {
-        const grouped: { [key: string]: any } = {};
-
-        expenses.forEach((expense) => {
-            const month = new Date(expense.dateIntervention).toLocaleString('default', { month: 'short', year: 'numeric' });
-
-            if (!grouped[expense.libelle]) {
-                grouped[expense.libelle] = { libelle: expense.libelle, data: {} };
-            }
-
-            grouped[expense.libelle].data[month] = (grouped[expense.libelle].data[month] || 0) + expense.montant;
-        });
-
-        return Object.values(grouped);
-    }
-
-    // Calculate total expenses for each month
-    calculateTotalExpenses(): void {
-        const months = this.getMonthsRange();
-        this.totalExpenses = {};
-
-        months.forEach((month) => {
-            let total = 0;
-            this.expenses.forEach((expense) => {
-                total += expense.data[month] || 0;
-            });
-            this.totalExpenses[month] = total;
-        });
-    }
-
-    // Calculate total cost (real expenses)
-    calculateTotalCost(): number {
-        return Object.values(this.totalExpenses).reduce((sum, value) => sum + value, 0);
-    }
-
-    // Calculate total previsions
-    calculateTotalPrevisions(previsions: any[]): number {
-        return previsions.reduce((sum, prevision) => sum + prevision.montant, 0);
-    }
-
     // Calculate variation percentage
     calculateVariation(): void {
         if (this.project && this.project.previsionDepenseActuelle > 0) {
@@ -114,6 +67,51 @@ export class ProjectDetailsComponent implements OnInit {
         }
     }
 
+    // Prepare categories for table display
+    prepareExpenseCategories(categories: any[]): any[] {
+        return categories
+            .filter((category) => !category.isIncome) // Exclude income categories
+            .map((category) => {
+                const totals = this.calculateCategoryTotals(category.data);
+                return { ...category, totals };
+            });
+    }
+
+    // Calculate totals for a category
+    calculateCategoryTotals(data: any[]): { [month: string]: number } {
+        const totals: { [month: string]: number } = {};
+        data.forEach((expense) => {
+            Object.entries(expense.data as { [key: string]: number }).forEach(([month, value]) => {
+                totals[month] = (totals[month] || 0) + value;
+            });
+        });
+        return totals;
+    }
+
+    // Prepare data for the graph
+    prepareChartData(graphData: any): any {
+        return {
+            labels: graphData.date, // Array of dates from the API
+            datasets: [
+                {
+                    label: 'Dépenses Réelles',
+                    data: graphData.reel, // Array of actual expenses
+                    borderColor: '#FF5733',
+                    backgroundColor: 'rgba(255, 87, 51, 0.2)',
+                    fill: true,
+                    tension: 0.4,
+                },
+                {
+                    label: 'Prévisions Dépenses',
+                    data: graphData.prevision, // Array of predicted expenses
+                    borderColor: '#33C3FF',
+                    backgroundColor: 'rgba(51, 195, 255, 0.2)',
+                    fill: true,
+                    tension: 0.4,
+                },
+            ],
+        };
+    }
 
     // Générer une plage de mois dynamique
     getMonthsRange(): string[] {
@@ -128,53 +126,6 @@ export class ProjectDetailsComponent implements OnInit {
             months.push(start.toLocaleString('default', { month: 'short', year: 'numeric' }));
             start.setMonth(start.getMonth() + 1);
         }
-
         return months;
-    }
-
-    // Generate chart data
-    generateChartData(): void {
-        const months = this.getMonthsRange();
-
-        const realExpenses: number[] = [];
-        const predictedExpenses: number[] = [];
-        let cumulativeReal = 0;
-        let cumulativePredicted = 0;
-
-        months.forEach((month) => {
-            // Calculate real and predicted expenses
-            const monthExpenses = this.expenses.map((e) => e.data[month] || 0);
-            const totalReal = monthExpenses.reduce((sum, val) => sum + val, 0);
-            const predicted = Math.random() * 500; // Simulate a prediction for demonstration
-
-            cumulativeReal += totalReal;
-            cumulativePredicted += predicted;
-
-            realExpenses.push(cumulativeReal);
-            predictedExpenses.push(cumulativePredicted);
-        });
-
-        // Set chart data
-        this.chartData = {
-            labels: months,
-            datasets: [
-                {
-                    label: 'Dépenses Réelles',
-                    data: realExpenses,
-                    borderColor: '#FF5733',
-                    backgroundColor: 'rgba(255, 87, 51, 0.2)',
-                    fill: true,
-                    tension: 0.4,
-                },
-                {
-                    label: 'Prévisions Dépenses',
-                    data: predictedExpenses,
-                    borderColor: '#33C3FF',
-                    backgroundColor: 'rgba(51, 195, 255, 0.2)',
-                    fill: true,
-                    tension: 0.4,
-                },
-            ],
-        };
     }
 }
