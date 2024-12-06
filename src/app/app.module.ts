@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {LOCALE_ID, NgModule} from '@angular/core';
 import {ReactiveFormsModule} from '@angular/forms';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -31,6 +31,11 @@ import {DepenseService} from './features/projects/services/depense.service';
 import {ChartModule} from 'primeng/chart';
 import {jwtInterceptor} from './core/interceptor/jwt.interceptor';
 
+import localeFrBe from '@angular/common/locales/fr-BE';
+import { registerLocaleData } from '@angular/common';
+
+registerLocaleData(localeFrBe);
+
 @NgModule({
     declarations: [
         AppComponent,
@@ -62,6 +67,7 @@ import {jwtInterceptor} from './core/interceptor/jwt.interceptor';
         InputTextModule,
     ],
     providers: [
+        {provide: LOCALE_ID, useValue: 'fr-BE'},
         provideHttpClient(withInterceptors([jwtInterceptor])),
         DepenseService,
         provideAnimationsAsync() // Ajout de l'interceptors => provideHttpClient(withInterceptors([tokenInterceptor]))

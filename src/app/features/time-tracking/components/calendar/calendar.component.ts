@@ -20,7 +20,8 @@ export enum CalendarView {
 
 export class CalendarComponent {
   viewDate: Date = new Date();
-  weekDays: string[] = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+  weekDays: string[] = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
+  MonthDays: string[] = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
   monthDays: Date[] = [];
   appointments: Appointment[] = [];
   currentView: CalendarView = CalendarView.Month;
