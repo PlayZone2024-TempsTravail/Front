@@ -21,6 +21,7 @@ export class AppComponent {
     handleAuthAction(): void {
         if (this.isLoggedIn) {
             this.authService.logout(); 
+            this.router.navigate(['/login']);
         } else {
             this.router.navigate(['/login']);
         }
