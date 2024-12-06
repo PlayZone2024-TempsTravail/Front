@@ -24,11 +24,10 @@
         </div>
 
         <!-- Section du graphique -->
-        <div class="chart-container" *ngIf="expenses.length > 0">
+        <div class="chart-container" *ngIf="chartData">
             <h4>Dépenses : Réel / Prévision</h4>
-            <!-- <a [routerLink]="[graphique/:id]"><p-chart type="line" [data]="chartData" [options]="chartOptions" style="height: 50px; width: 50px;"></p-chart></a> -->
+            <a [routerLink]="['/projet/graphique', project.idProject]"> <p-chart type="line" [data]="chartData" [options]="chartOptions" style="height: 50px; width: 50px;"></p-chart> </a>
         </div>
-
     </div>
 
     <!-- Message de chargement -->
@@ -43,43 +42,43 @@
         </button>
     </div>
 
-    <p-table
-        *ngIf="expenses.length > 0"
-        [value]="expenses"
-        [scrollable]="true"
-        scrollDirection="both"
-        [tableStyle]="{ 'min-width': '80rem' }"
-    >
-        <!-- Header du tableau -->
-        <ng-template pTemplate="header">
-            <tr>
-                <th pFrozenColumn style="min-width:400px">Libellé</th>
-                <ng-container *ngFor="let month of getMonthsRange()">
-                    <th>{{ month }}</th>
-                </ng-container>
-            </tr>
-        </ng-template>
+    <ng-container *ngFor="let category of expenseCategories">
+        <h3>{{ category.name }}</h3>
+        <p-table
+            *ngIf="category.data.length > 0"
+            [value]="category.data"
+            [scrollable]="true"
+            scrollDirection="both"
+            [tableStyle]="{ 'min-width': '80rem' }"
+        >
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Libellé</th>
+                    <ng-container *ngFor="let month of getMonthsRange()">
+                        <th>{{ month }}</th>
+                    </ng-container>
+                </tr>
+            </ng-template>
 
-        <!-- Table Body -->
-        <ng-template pTemplate="body" let-expense>
-            <tr>
-                <td pFrozenColumn>{{ expense.libelle }}</td>
-                <ng-container *ngFor="let month of getMonthsRange()">
-                    <td>{{ expense.data[month] || 0 | currency: 'EUR' }}</td>
-                </ng-container>
-            </tr>
-        </ng-template>
+            <ng-template pTemplate="body" let-expense>
+                <tr>
+                    <td>{{ expense.libelle }}</td>
+                    <ng-container *ngFor="let month of getMonthsRange()">
+                        <td>{{ expense.data[month] || 0 | currency: 'EUR' }}</td>
+                    </ng-container>
+                </tr>
+            </ng-template>
 
-        <!-- Table Footer for Totals -->
-        <ng-template pTemplate="footer">
-            <tr>
-                <td pFrozenColumn><strong>Total</strong></td>
-                <ng-container *ngFor="let month of getMonthsRange()">
-                    <td><strong>{{ totalExpenses[month] || 0 | currency: 'EUR' }}</strong></td>
-                </ng-container>
-            </tr>
-        </ng-template>
-    </p-table>
+            <ng-template pTemplate="footer">
+                <tr>
+                    <td><strong>Total</strong></td>
+                    <ng-container *ngFor="let month of getMonthsRange()">
+                        <td><strong>{{ category.totals[month] || 0 | currency: 'EUR' }}</strong></td>
+                    </ng-container>
+                </tr>
+            </ng-template>
+        </p-table>
+    </ng-container>
 
     <!-- Message si aucune dépense n'est trouvée -->
     <p *ngIf="expenses.length === 0 && project">Aucune dépense trouvée pour ce projet.</p>
