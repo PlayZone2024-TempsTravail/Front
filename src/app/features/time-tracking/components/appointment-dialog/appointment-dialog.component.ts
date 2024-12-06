@@ -100,6 +100,8 @@ export class AppointmentDialogComponent implements OnInit {
         : data.appointment.start,
 
       endTime: this.appointmentService.convertTimeToString(new Date(data.appointment.end)) || null,
+
+      checkedIsOnSite: data.appointment.isOnSite === false,
     });
     
     if (data.appointment.projectId) {
