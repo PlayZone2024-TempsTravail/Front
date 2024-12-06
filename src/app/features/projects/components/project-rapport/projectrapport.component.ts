@@ -13,15 +13,23 @@ export class ProjectrapportComponent implements OnInit {
 
     // creation des varable du formulaire
 
-    date_start: Date | null = null;
-    date_end: Date | null = null;
+    date_start!: Date;
+    date_end!: Date;
     listLibeles: LebeleTree[] = [];
+    selectedListLibeles: LebeleTree[] = [];
 
 // creation du rapport  et du formulaire
+    extractedNumbers :number[] = [];
     rapport!: FormGroup;
-    rapportToDb : RapportToDb[] = []
+    rapportToDb: RapportToDb = {
+        date_start: new Date(),
+        date_end: new Date(),
+        projects: [],
+        libeles: []
+    };
+
     shortProjects: ShortProject[] = [];
-    selectedProject: string [] = [];
+    selectedProject: number [] = [];
 
 
     constructor(private fb: FormBuilder , private projectRapportService: ProjectRapportService) { }
@@ -46,23 +54,51 @@ export class ProjectrapportComponent implements OnInit {
     onDateStartChange(event: any) {
         this.date_start = event;
         if (this.date_start) {
-            const nextDay = new Date(this.date_start);
-            nextDay.setDate(nextDay.getMonth() + 1);
+            const nextDay = this.date_start;
+            nextDay.setDate(nextDay.getDay() + 1);
             this.date_end = nextDay;
         }
     }
 
+    newStarDate!: Date;
+    newEndDate!: Date;
 
 
-
-    send(){
+    send() {
         console.log("ok cool mec ")
         console.log(this.selectedProject)
         console.log(this.date_start)
+        console.log(this.date_end)
+        console.log(this.selectedListLibeles)
+        console.log("--------------------")
+//converstion des dated
+
+        this.rapportToDb.date_start = this.date_start
+        this.rapportToDb.date_end = this.date_end
+        this.rapportToDb.projects = this.selectedProject
+        this.extractedNumbers = this.convertLibelleTonumber(this.selectedListLibeles)
+        this.rapportToDb.libeles = this.extractedNumbers
+        console.log(this.rapportToDb)
+
+    }
+
+    convertLibelleTonumber(selectedListLibelles: LebeleTree[]):number[] {
+        const numbers: number[] = [];
+
+        selectedListLibelles.forEach(libelle => {
+            if (libelle.key.startsWith("l")) {
+
+                numbers.push(parseInt(libelle.key.split("-")[1]))
+
+
+            }
+        })
+
+
+        return numbers;
     }
 
 }
 
-//TODO creation du tree dans le html (voir primeng Checkbox)
 //TODO faire le form
 //TODO creation de l'ago pour envoyer au post le bon fichier json

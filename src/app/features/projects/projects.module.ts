@@ -23,6 +23,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CalendarModule} from 'primeng/calendar';
 import { ProjectrapportComponent } from './components/project-rapport/projectrapport.component';
 import {CheckboxModule} from 'primeng/checkbox';
+import {TreeModule} from 'primeng/tree';
 
 
 @NgModule({
@@ -55,6 +56,7 @@ import {CheckboxModule} from 'primeng/checkbox';
         ReactiveFormsModule,
         CalendarModule,
         CheckboxModule,
+        TreeModule,
     ],
     exports: [
         ProjectsComponent,
