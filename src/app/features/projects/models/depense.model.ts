@@ -1,36 +1,40 @@
+// Modèle DepenseDTO
 export interface DepenseDTO {
     idDepense: number;
     libeleId: number;
     projectId: number;
     organismeId: number;
     montant: number;
-    dateIntervention?: string; // date-time format
-    dateFacturation: string;  // date-time format
-    motif: string;           // nullable
+    dateIntervention?: string;
+    dateFacturation: string;
+    motif?: string;
 }
 
-export interface  CreateDepenseDTO {
-
+// Modèle CreateDepenseDTO pour la création d'une nouvelle dépense
+export interface CreateDepenseDTO {
+    libeleId: number;
+    projectId: number;
+    organismeId: number;
+    montant: number;
+    dateIntervention?: string;
+    dateFacturation: string;
+    motif?: string;
 }
 
+// Modèle OrganismeDTO
 export interface OrganismeDTO {
     idOrganisme: number;
     name: string;
 }
 
+// Modèle LibeleDTO
 export interface LibeleDTO {
     idLibele: number;
     idCategory: number;
     name?: string;
 }
 
-export interface CategoryDTO {
-    idCategory: number;
-    name: string;
-    isIncome: boolean;
-    estimationParCategorie: boolean;
-}
-
+// Modèle ProjectDTO
 export interface ProjectDTO {
     idProject: number;
     isActive: boolean;
@@ -46,4 +50,3 @@ export interface ProjectDTO {
     previsionDepenseActuelle: number;
     depenseReelActuelle: number;
 }
-

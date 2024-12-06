@@ -13,6 +13,7 @@ export class ProjectService {
 
     getAllProjects(): Observable<Project[]> {
         return this.http.get<Project[]>(`${this.apiUrl}/Project`);
+
     }
 
     getProjectById(id: number): Observable<Project> {
