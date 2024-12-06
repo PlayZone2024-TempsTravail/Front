@@ -18,17 +18,31 @@ export class AuthService {
     private readonly _http: HttpClient,
     private readonly _router: Router
   ) {
-    let jsonUser = localStorage.getItem('currentUser');
+    const jsonUser = localStorage.getItem('currentUser');
     if (jsonUser) {
-      this._currentUser$ = new BehaviorSubject<UserTokenDtoModel | undefined>(JSON.parse(jsonUser));
+      const userToken: UserTokenDtoModel = JSON.parse(jsonUser);
+      this._currentUser$ = new BehaviorSubject<UserTokenDtoModel | undefined>(userToken);
     } else {
       this._currentUser$ = new BehaviorSubject<UserTokenDtoModel | undefined>(undefined);
     }
   }
 
-  public jwtToken: string = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjEiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDI0LTEyLTA0VDA3OjU3OjQyLjQ4NTU5MTdaIiwibm9tIjoiSGFuc2UiLCJwcmVub20iOiJTdGV2ZW4iLCJlbWFpbCI6InN0ZXZlbkB0ZWNoLmJlIiwiUGVybWlzc2lvbnMiOlsiQUpPVVRFUl9QT0lOVEFHRSIsIkFKT1VURVJfUk9MRSIsIkFKT1VURVJfVVNFUiIsIkRFQlVHX1BFUk1JU1NJT04iLCJNT0RJRklFUl9QT0lOVEFHRSIsIk1PRElGSUVSX1JPTEUiLCJNT0RJRklFUl9VU0VSIiwiU1VQUFJJTUVSX1BPSU5UQUdFIiwiU1VQUFJJTUVSX1JPTEUiLCJTVVBQUklNRVJfVVNFUiIsIlZPSVJfQUxMX1BPSU5UQUdFUyIsIlZPSVJfUE9JTlRBR0UiLCJWT0lSX1JPTEVTIiwiVk9JUl9VU0VSUyJdLCJleHAiOjE3MzMyOTkwNjIsImlzcyI6IkFQSV9JRUMiLCJhdWQiOiJGUk9OVF9JRUMifQ.fUhl78I_8M_bRoNcTN_sMkcozbEs3eLDLTPptpQKDFc";
+  private authURL = 'http://api.technobel.pro:444/api/Auth';
 
-  decodeToken(token: string): JwtPayload | null {
+  // Nouvelle méthode pour récupérer le JWT depuis le localStorage
+  getJwtToken(): string | null {
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      const userToken: UserTokenDtoModel = JSON.parse(currentUser);
+      return userToken.token; // Assurez-vous que le modèle UserTokenDtoModel possède une propriété 'token'
+    }
+    return null;
+  }
+
+  decodeToken(): JwtPayload | null {
+    const token = this.getJwtToken();
+    if (!token) return null;
+
     try {
       return jwtDecode<JwtPayload>(token);
     } catch (error) {
@@ -37,41 +51,27 @@ export class AuthService {
     }
   }
 
-  getUserId(token: string): number | null {
-    const decoded = this.decodeToken(token);
-    return decoded ? decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]: null;
+  getUserId(): number | null {
+    const decoded = this.decodeToken();
+    return decoded ? decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"] : null;
   }
-
-  private authURL = 'http://api.technobel.pro:444/api/Auth';
 
   login(form: LoginFormModel): Observable<UserTokenDtoModel> {
-    // Décoder le token JWT
-    const decodedToken = this.decodeToken(this.jwtToken);
-    if (!decodedToken) {
-      throw new Error("Token JWT invalide");
-    }
-
-    const userToken: UserTokenDtoModel = {
-      token: this.jwtToken,
-      email: decodedToken.nom,
-      roles: decodedToken.Permissions
-    };
-
-    this._currentUser$.next(userToken);
-    localStorage.setItem("currentUser", JSON.stringify(userToken));
-
-    this._router.navigate(['/']);
-
-    return of(userToken);
+    return this._http.post<UserTokenDtoModel>(`${this.authURL}`, form).pipe(
+      tap(userToken => {
+        this._currentUser$.next(userToken);
+        localStorage.setItem('currentUser', JSON.stringify(userToken));
+        this._router.navigate(['/']);
+      })
+    );
   }
-
 
   logout() {
     this._currentUser$.next(undefined);
     localStorage.removeItem("currentUser");
     this._router.navigate(["/auth/login"]);
   }
-  
+
   get currentUser(): UserTokenDtoModel | undefined {
     return this._currentUser$.value;
   }
