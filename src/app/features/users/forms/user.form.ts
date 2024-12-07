@@ -6,8 +6,9 @@ export const UserCreateUpdateForm = {
     email: [null, [Validators.required, Validators.email]],
     password: [null],
     roles: [null, Validators.required],
-    montant: [null, Validators.required],
-    regime: [null, Validators.required],
-    date: [null, Validators.required],
+    // On ne met pas de required par défaut ici, on les activera en mode ajout dans le composant
+    montant: [null],
+    regime: [null],
+    date: [null],
     isActive: [true],
 };
