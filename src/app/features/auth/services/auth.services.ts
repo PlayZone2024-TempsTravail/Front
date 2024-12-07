@@ -27,7 +27,7 @@ export class AuthService {
     }
   }
 
-  private authURL = 'http://api.technobel.pro:444/api/Auth';
+  private authURL = 'http://api2.technobel.pro:444/api/Auth';
 
   // Nouvelle méthode pour récupérer le JWT depuis le localStorage
   getJwtToken(): string | null {

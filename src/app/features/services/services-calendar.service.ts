@@ -11,12 +11,12 @@ import { JwtPayload } from 'jwt-decode';
 })
 export class AppointmentService {
   private appointmentsUrlJSON = ''; //http://localhost:3000/appointments
-  private workTimeCategoryUrl = 'http://api.technobel.pro:444/api/WorktimeCategory';
-  private workTimeUrl = 'http://api.technobel.pro:444/api/Worktime';
-  private workTimeRangeUrl = 'http://api.technobel.pro:444/api/Worktime/range';
-  private compteurWorktimeCategoryUrl = 'http://api.technobel.pro:444/api/Counter/absence/';
-  private compteurProjectUrl = 'http://api.technobel.pro:444/api/Counter/projet/';
-  private ListProjectUrl = 'http://api.technobel.pro:444/api/Project/short/';
+  private workTimeCategoryUrl = 'http://api2.technobel.pro:444/api/WorktimeCategory';
+  private workTimeUrl = 'http://api2.technobel.pro:444/api/Worktime';
+  private workTimeRangeUrl = 'http://api2.technobel.pro:444/api/Worktime/range';
+  private compteurWorktimeCategoryUrl = 'http://api2.technobel.pro:444/api/Counter/absence/';
+  private compteurProjectUrl = 'http://api2.technobel.pro:444/api/Counter/projet/';
+  private ListProjectUrl = 'http://api2.technobel.pro:444/api/Project/short/';
 
   constructor(
     private http: HttpClient,
@@ -72,8 +72,8 @@ export class AppointmentService {
 
   getProjet(): Observable<Project[]> {
     return this.http.get<Project[]>(`${this.compteurProjectUrl}/${this.authService.getUserId()}`);
-  } 
-  
+  }
+
   getProjetList(): Observable<ProjectList[]> {
     return this.http.get<ProjectList[]>(`${this.ListProjectUrl}/${this.authService.getUserId()}`);
   }
@@ -98,14 +98,14 @@ export class AppointmentService {
     if (typeof date === 'string') {
       date = new Date(date);
     }
-  
+
     // Vérifier si 'date' est un objet Date valide
     if (!(date instanceof Date) || isNaN(date.getTime())) {
       throw new Error("Invalid date object");
     }
-  
-    const [hours, minutes] = time.split(':').map(Number); 
-    
+
+    const [hours, minutes] = time.split(':').map(Number);
+
     // Créer un nouvel objet Date avec l'année, mois, jour et heure/mn de la date passée
     const resultDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hours, minutes, 0, 0);
     return resultDate;

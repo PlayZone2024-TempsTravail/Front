@@ -1,16 +1,15 @@
-import {Component, OnInit} from '@angular/core';
-import {UserDTO, UserForm} from '../../models/user.dto.model';
-import {ActivatedRoute} from '@angular/router';
-import {UserService} from '../../services/user.service';
+import { Component, OnInit } from '@angular/core';
+import { UserDTO, UserForm } from '../../models/user.dto.model';
+import { UserService } from '../../services/user.service';
 
 @Component({
     selector: 'app-user-list',
     templateUrl: './user-list.component.html',
-    styleUrl: './user-list.component.scss'
+    styleUrls: ['./user-list.component.scss']
 })
 export class UserListComponent implements OnInit {
 
-    users: UserDTO[] = []; // Liste complète des utilisateurs
+    users: UserDTO[] = [];
     filteredUsers: UserDTO[] = [];
     selectedUser: UserDTO | null = null;
     displayForm: boolean = false;
@@ -23,78 +22,118 @@ export class UserListComponent implements OnInit {
     }
 
     loadUsers() {
-        // Récupère la liste des utilisateurs depuis le service
-        this.userService.getUsers().subscribe((users) => {
-            this.users = users;
-            this.sortUsers();
-            this.filteredUsers = [...this.users];
+        this.userService.getUsers().subscribe({
+            next: (users) => {
+                this.users = users;
+                this.sortUsers();
+                this.filteredUsers = [...this.users];
+            },
+            error: (err) => {
+                console.error("Erreur chargement utilisateurs:", err);
+            }
         });
     }
 
-    // Filtre les utilisateurs selon le champ de recherche
     sortUsers() {
-        // Trie les utilisateurs actifs en premier
         this.users.sort((a, b) => Number(b.isActive) - Number(a.isActive));
     }
 
-    // Ouvre la boîte de dialogue pour ajouter un utilisateur
     openAddUserForm() {
-        // Ouvre le formulaire pour ajouter un utilisateur
         this.selectedUser = null;
         this.displayForm = true;
     }
 
-    // Ouvre la boîte de dialogue pour modifier un utilisateur sélectionné
     openEditUserForm(user: UserDTO) {
-        console.log('Utilisateur sélectionné pour modification :', user);
         this.selectedUser = user;
         this.displayForm = true;
     }
 
-    // onFormSubmit(userForm: UserForm): void {
-    //     if (this.selectedUser) {
-    //         console.log('Mise à jour de l\'utilisateur avec ID :', this.selectedUser.id);
-    //         console.log('Données du formulaire :', userForm);
-    //
-    //         this.userService.updateUser(this.selectedUser.id, userForm).subscribe({
-    //             next: () => {
-    //                 this.displayForm = false;
-    //                 this.loadUsers();
-    //             },
-    //             error: (err) => {
-    //                 console.error('Erreur lors de la mise à jour de l\'utilisateur :', err);
-    //             }
-    //         });
-    //     } else {
-    //         // Ajout d'un nouvel utilisateur
-    //         this.userService.addUser(userForm).subscribe({
-    //             next: () => {
-    //                 this.displayForm = false;
-    //                 this.loadUsers();
-    //             },
-    //             error: (err) => {
-    //                 console.error('Erreur lors de l\'ajout de l\'utilisateur :', err);
-    //             }
-    //         });
-    //     }
-    // }
-
     onFormSubmit(userForm: UserForm): void {
         if (this.selectedUser) {
-            console.log('Mise à jour de l\'utilisateur avec ID :', this.selectedUser.idUser);
-            console.log('Données du formulaire :', userForm);
+            // Mode modification
+            this.userService.getUserById(this.selectedUser.idUser).subscribe({
+                next: (existingUser) => {
+                    const newRoles = userForm.roles;
+                    const addSalaireNeeded = userForm.date && userForm.montant !== undefined && userForm.regime !== undefined;
+                    const userFieldsChanged = (
+                        userForm.nom !== existingUser.nom ||
+                        userForm.prenom !== existingUser.prenom ||
+                        userForm.email !== existingUser.email ||
+                        (userForm.isActive !== undefined && userForm.isActive !== existingUser.isActive)
+                    );
 
-            this.userService.updateUser(this.selectedUser.idUser, userForm).subscribe({
-                next: () => {
-                    this.displayForm = false;
-                    this.loadUsers();
+                    // Mettre à jour les rôles
+                    this.userService.updateUserRoles(existingUser.idUser, newRoles).subscribe({
+                        next: () => {
+                            // Ajouter salaire si besoin
+                            if (addSalaireNeeded) {
+                                this.userService.addUserSalaire(existingUser.idUser, userForm.date!, userForm.regime!, userForm.montant!).subscribe({
+                                    next: () => {
+                                        // Re-fetch user pour être à jour
+                                        this.userService.getUserById(existingUser.idUser).subscribe({
+                                            next: (updatedUserAfterSalaire) => {
+                                                if (userFieldsChanged) {
+                                                    this.userService.updateUserFull(updatedUserAfterSalaire.idUser, userForm).subscribe({
+                                                        next: () => {
+                                                            this.displayForm = false;
+                                                            this.loadUsers();
+                                                        },
+                                                        error: (err) => {
+                                                            console.error("Erreur updateUserFull:", err);
+                                                        }
+                                                    });
+                                                } else {
+                                                    this.displayForm = false;
+                                                    this.loadUsers();
+                                                }
+                                            },
+                                            error: (err) => {
+                                                console.error("Erreur getUserById après addSalaire:", err);
+                                            }
+                                        });
+                                    },
+                                    error: (err) => {
+                                        console.error("Erreur lors de l'ajout du salaire :", err);
+                                    }
+                                });
+                            } else {
+                                // Pas de salaire à ajouter
+                                // Re-fetch user pour avoir les rôles à jour
+                                this.userService.getUserById(existingUser.idUser).subscribe({
+                                    next: (updatedUserAfterRoles) => {
+                                        if (userFieldsChanged) {
+                                            this.userService.updateUserFull(updatedUserAfterRoles.idUser, userForm).subscribe({
+                                                next: () => {
+                                                    this.displayForm = false;
+                                                    this.loadUsers();
+                                                },
+                                                error: (err) => {
+                                                    console.error("Erreur updateUserFull:", err);
+                                                }
+                                            });
+                                        } else {
+                                            this.displayForm = false;
+                                            this.loadUsers();
+                                        }
+                                    },
+                                    error: (err) => {
+                                        console.error("Erreur getUserById après updateUserRoles:", err);
+                                    }
+                                });
+                            }
+                        },
+                        error: (err) => {
+                            console.error("Erreur lors de la mise à jour des rôles :", err);
+                        }
+                    });
                 },
                 error: (err) => {
-                    console.error('Erreur lors de la mise à jour de l\'utilisateur :', err);
-                },
+                    console.error("Erreur getUserById:", err);
+                }
             });
+
         } else {
-            // Ajout d'un nouvel utilisateur
+            // Mode ajout
             this.userService.addUser(userForm).subscribe({
                 next: () => {
                     this.displayForm = false;
@@ -102,30 +141,29 @@ export class UserListComponent implements OnInit {
                 },
                 error: (err) => {
                     console.error('Erreur lors de l\'ajout de l\'utilisateur :', err);
+                    if (err.error) {
+                        console.error('Détails de l\'erreur :', err.error);
+                    }
                 },
             });
         }
     }
 
-
-
-
-    // Désactive un utilisateur ( pas de suppression)
-    deactivateUser(user: UserDTO) {
-        // Désactive un utilisateur en mettant 'isActive' à false
-        this.userService.deactivateUser(user.idUser).subscribe(() => {
-            this.loadUsers();
-        });
-    }
-
-    // Filtre les utilisateurs en fonction du filtre sélectionné
     filterUsers(filter: string) {
-        // Filtre les utilisateurs en fonction du filtre sélectionné
         switch (filter) {
-            case 'Employé':
             case 'Admin':
                 this.filteredUsers = this.users.filter((u) =>
                     u.userRoles.some((role) => role.roleName === filter)
+                );
+                break;
+            case 'Employé':
+                this.filteredUsers = this.users.filter((u) =>
+                    u.userRoles.some((role) => role.roleName === 'Employe')
+                );
+                break;
+            case 'Chargés de projet':
+                this.filteredUsers = this.users.filter((u) =>
+                    u.userRoles.some((role) => role.roleName === 'Chargés de projet')
                 );
                 break;
             case 'Actifs':
@@ -139,18 +177,13 @@ export class UserListComponent implements OnInit {
         }
     }
 
-    // Recherche intelligente parmi les utilisateurs
     searchUsers() {
-        // Recherche intelligente parmi les utilisateurs
         this.filteredUsers = this.users.filter((u) =>
             `${u.nom} ${u.prenom} ${u.email}`.toLowerCase().includes(this.searchQuery.toLowerCase())
         );
     }
 
-    // Permet l'ouverture/fermeture de la pop up de formulaire
     onDialogHide() {
-        // Réinitialiser le formulaire et l'utilisateur sélectionné lorsque le dialogue est fermé
-        this.selectedUser = null;
         this.displayForm = false;
     }
 }

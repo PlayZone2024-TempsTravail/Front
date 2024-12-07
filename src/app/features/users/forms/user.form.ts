@@ -4,9 +4,10 @@ export const UserCreateUpdateForm = {
     nom: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
     prenom: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
     email: [null, [Validators.required, Validators.email]],
+    password: [null],
     roles: [null, Validators.required],
-    salaire: [null, Validators.required, Validators.min(0)],
-    regime: [null, Validators.required, Validators.min(0), Validators.min(100)],
+    montant: [null, Validators.required],
+    regime: [null, Validators.required],
     date: [null, Validators.required],
     isActive: [true],
-}
+};
