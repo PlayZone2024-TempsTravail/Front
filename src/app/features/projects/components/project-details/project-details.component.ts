@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from '../../services/project.service';
-import { Project } from '../../models/project.model';
+import {Project, Category, LibelleExpenses, InOut} from '../../models/project.model';
 
 @Component({
     selector: 'app-project-details',
@@ -9,12 +9,11 @@ import { Project } from '../../models/project.model';
     styleUrls: ['./project-details.component.scss'],
 })
 export class ProjectDetailsComponent implements OnInit {
-    project: Project | null = null; // Détails du projet
-    expenses: any[] = []; // Dépenses par libellé
-    chartData: any; // Données du graphique
-    chartOptions: any; // Options du graphique
-    totalExpenses: { [month: string]: number } = {}; // Totals for each month
-    expenseCategories: any[] = [];
+    project: Project | null = null; // Project details
+    expenseCategories: Category[] = []; // Processed categories with expense data
+    overallTotals: { [month: string]: number } = {}; // Overall totals for all categories
+    chartData: any; // Data for the graph
+    chartOptions: any; // Options for the graph
     variation = 0; // Variation percentage
 
     constructor(private route: ActivatedRoute, private projectService: ProjectService) {}
@@ -31,14 +30,15 @@ export class ProjectDetailsComponent implements OnInit {
                 this.chartData = this.prepareChartData(graphData);
             });
 
-            // Fetch expenses for table
-            this.projectService.getExpensesByCategory(projectId).subscribe((categories) => {
-                this.expenseCategories = this.prepareExpenseCategories([]);
+            // Fetch expense data
+            this.projectService.getExpensesByCategory(projectId).subscribe((categories: Category[]) => {
+                this.expenseCategories = this.prepareExpenseCategories(categories);
+                this.overallTotals = this.calculateOverallTotals();
             });
 
-            // Calculate variation after loading project details
+            // Calculate variation
             this.calculateVariation();
-            });
+        });
 
         // Configure chart options
         this.chartOptions = {
@@ -55,9 +55,6 @@ export class ProjectDetailsComponent implements OnInit {
         };
     }
 
-    // Exporter le rapport PDF
-    // Placeholder
-
     // Calculate variation percentage
     calculateVariation(): void {
         if (this.project && this.project.previsionDepenseActuelle > 0) {
@@ -68,24 +65,64 @@ export class ProjectDetailsComponent implements OnInit {
     }
 
     // Prepare categories for table display
-    prepareExpenseCategories(categories: any[]): any[] {
+    prepareExpenseCategories(categories: Category[]): Category[] {
         return categories
-            .filter((category) => !category.isIncome) // Exclude income categories
             .map((category) => {
-                const totals = this.calculateCategoryTotals(category.data);
-                return { ...category, totals };
+                const libelleData =
+                    category.libelles?.map((libelle: LibelleExpenses) => ({
+                        libelle: libelle.name,
+                        data: this.mapMonthlyData(libelle.inOuts || []),
+                    })) || [];
+
+                const totals = this.calculateCategoryTotals(libelleData);
+
+                return { ...category, data: libelleData, totals: totals || {} }; // Ensure totals is an object
             });
     }
 
+    // Map inOuts data to monthly totals
+    mapMonthlyData(inOuts: InOut[]): { [month: string]: number } {
+        const monthlyData: { [month: string]: number } = {};
+        inOuts.forEach((entry) => {
+            // Parse the MM-YYYY format
+            const [monthStr, yearStr] = entry.date.split('-');
+            const year = parseInt(yearStr, 10);
+            const monthIndex = parseInt(monthStr, 10) - 1; // zero-based month index
+
+            // Create a valid Date object (e.g., December 2024)
+            const dateObj = new Date(year, monthIndex, 1);
+
+            // Convert to a standard key format (e.g., "Dec 2024")
+            const monthKey = dateObj.toLocaleString('default', { month: 'numeric', year: 'numeric' });
+
+            // Aggregate the amount
+            monthlyData[monthKey] = (monthlyData[monthKey] || 0) + entry.montant;
+        });
+        return monthlyData;
+    }
+
     // Calculate totals for a category
-    calculateCategoryTotals(data: any[]): { [month: string]: number } {
+    calculateCategoryTotals(data: { libelle: string; data: { [month: string]: number } }[]): { [month: string]: number } {
         const totals: { [month: string]: number } = {};
         data.forEach((expense) => {
-            Object.entries(expense.data as { [key: string]: number }).forEach(([month, value]) => {
+            Object.entries(expense.data).forEach(([month, value]) => {
                 totals[month] = (totals[month] || 0) + value;
             });
         });
         return totals;
+    }
+
+    // Calculate overall totals across all categories
+    calculateOverallTotals(): { [month: string]: number } {
+        const overallTotals: { [month: string]: number } = {};
+        this.expenseCategories.forEach((category) => {
+            if (category.totals) {
+                Object.entries(category.totals).forEach(([month, value]) => {
+                    overallTotals[month] = (overallTotals[month] || 0) + value;
+                });
+            }
+        });
+        return overallTotals;
     }
 
     // Prepare data for the graph
@@ -113,7 +150,7 @@ export class ProjectDetailsComponent implements OnInit {
         };
     }
 
-    // Générer une plage de mois dynamique
+    // Generate a dynamic range of months
     getMonthsRange(): string[] {
         if (!this.project) return [];
 
@@ -123,7 +160,7 @@ export class ProjectDetailsComponent implements OnInit {
 
         const months = [];
         while (start <= end) {
-            months.push(start.toLocaleString('default', { month: 'short', year: 'numeric' }));
+            months.push(start.toLocaleString('default', { month: 'numeric', year: 'numeric' }));
             start.setMonth(start.getMonth() + 1);
         }
         return months;
