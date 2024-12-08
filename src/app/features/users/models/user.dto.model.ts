@@ -25,7 +25,7 @@ export interface Role {
 // UserSalaire représente un salaire d'utilisateur.
 export interface UserSalaire {
     userId: number;
-    date: string; // Format ISO 8601
+    date: Date; // Format ISO 8601
     regime: number;
     montant: number;
 }
@@ -39,6 +39,6 @@ export interface UserForm {
     roles: number[]; // Liste des roleId sélectionnés
     montant: number;
     regime: number;
-    date: string;
+    date: Date;
     isActive?: boolean;
 }

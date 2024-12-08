@@ -39,7 +39,7 @@ export class UserService {
             nom: userForm.nom,
             prenom: userForm.prenom,
             email: userForm.email,
-            password: userForm.password || 'password', // Mot de passe par défaut si non fourni
+            password: userForm.password || 'password', // Mot de passe par défaut si non fourni (pour les tests)
             isActive: userForm.isActive !== undefined ? userForm.isActive : true,  // Actif par défaut
         };
 
@@ -51,7 +51,7 @@ export class UserService {
 
                 const userSalaire = {  // Création de l'objet salaire
                     userId: createdUser.idUser,
-                    date: userForm.date,
+                    date: new Date(userForm.date),
                     regime: userForm.regime,
                     montant: userForm.montant,
                 };
@@ -119,7 +119,7 @@ export class UserService {
      * @param montant - Montant du salaire.
      * @returns Observable<any> - Un observable de la requête HTTP.
      */
-    addUserSalaire(userId: number, date: string, regime: number, montant: number): Observable<any> {
+    addUserSalaire(userId: number, date: Date, regime: number, montant: number): Observable<any> {
         return this._http.post(`${this.apiUrl}/UserSalaire`, { userId, date, regime, montant });
     }
 

@@ -5,7 +5,7 @@ export interface RentreeDTO {
     idProject: number;
     idOrganisme: number;
     montant: number;
-    dateFacturation: string;
+    dateFacturation: Date;
     motif?: string;
 }
 
@@ -15,7 +15,7 @@ export interface RentreeCreateFormDTO {
     idProject: number;
     idOrganisme: number;
     montant: number;
-    dateFacturation: string;
+    dateFacturation: Date;
     motif?: string;
 }
 
@@ -25,6 +25,6 @@ export interface RentreeUpdateFormDTO {
     idProject: number;
     idOrganisme: number;
     montant: number;
-    dateFacturation: string;
+    dateFacturation: Date;
     motif?: string;
 }

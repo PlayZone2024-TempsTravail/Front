@@ -26,8 +26,15 @@ export class DepenseService {
      * @returns Observable<DepenseDTO> - Un observable avec la dépense ajoutée.
      */
     addDepense(depense: CreateDepenseDTO): Observable<DepenseDTO> {
-        return this._http.post<DepenseDTO>(`${this.apiUrl}/Depense`, depense);
+        const depensePayload = {
+            ...depense,
+            dateIntervention: depense.dateIntervention ? new Date(depense.dateIntervention) : null,
+            dateFacturation: new Date(depense.dateFacturation),
+        };
+
+        return this._http.post<DepenseDTO>(`${this.apiUrl}/Depense`, depensePayload);
     }
+
 
     /**
      * Récupère la liste des libellés disponibles pour les dépenses.

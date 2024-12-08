@@ -90,6 +90,7 @@ export class UserFormComponent implements OnInit, OnChanges {
 
     // Métjhode pour ouvrir la fenêtre d'historique des salaires
     openHistory() {
+        this.historique.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()); // trier l'historique sur la date (décroissant)
         this.displayHistoryDialog = true;
     }
 

@@ -48,7 +48,9 @@ export class EncodageRentreeProjetComponent implements OnInit {
      */
     loadRentrees(): void {
         this.rentreeService.getRentreesByProjectId(this.projectId).subscribe((rentrees) => {
-            this.rentrees = rentrees;
+            this.rentrees = rentrees.sort(
+                (a, b) => new Date(b.dateFacturation).getTime() - new Date(a.dateFacturation).getTime() // Tri par date décroissante
+            );
         });
     }
 

@@ -28,7 +28,12 @@ export class RentreeService {
      * @returns Observable<RentreeDTO> - La rentrée ajoutée.
      */
     addRentree(rentree: RentreeCreateFormDTO): Observable<RentreeDTO> {
-        return this._http.post<RentreeDTO>(`${this.apiUrl}/Rentree`, rentree);
+        const rentreePayload = {
+            ...rentree,
+            dateFacturation: new Date(rentree.dateFacturation),
+        };
+
+        return this._http.post<RentreeDTO>(`${this.apiUrl}/Rentree`, rentreePayload);
     }
 
     /**

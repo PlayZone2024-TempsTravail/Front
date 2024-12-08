@@ -50,7 +50,9 @@ export class EncodageCoutsProjetComponent implements OnInit {
      */
     loadDepenses(): void {
         this.depenseService.getDepensesByProjectId(this.projectId).subscribe((depenses) => {
-            this.depenses = depenses; // Mise à jour des dépenses dans le tableau
+            this.depenses = depenses.sort(
+                (a, b) => new Date(b.dateFacturation).getTime() - new Date(a.dateFacturation).getTime() // Tri par date de facturation décroissante
+            );
         });
     }
 

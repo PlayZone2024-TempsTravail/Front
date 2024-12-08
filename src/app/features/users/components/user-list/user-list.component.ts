@@ -43,12 +43,17 @@ export class UserListComponent implements OnInit {
 
 
     /**
-     * Trie la liste d'utilisateurs en plaçant en premier les utilisateurs actifs.
+     * Trie la liste d'utilisateurs en plaçant en premier les utilisateurs actifs PUIS par ordre croissant sur le nom
      *
      * @returns void
      */
     sortUsers(): void {
-        this.users.sort((a, b) => Number(b.isActive) - Number(a.isActive));
+        this.users.sort((a, b) => {
+            if (a.isActive === b.isActive) {
+                return a.nom.localeCompare(b.nom); // Trie alphabétique si le statut est identique
+            }
+            return b.isActive ? 1 : -1; // Actifs en premier
+        });
     }
 
     /**
