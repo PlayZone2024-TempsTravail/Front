@@ -15,28 +15,28 @@ import {DepenseCreateForm} from '../../forms/depense.form';
 })
 export class EncodageCoutsProjetComponent implements OnInit {
 
-    depenses: DepenseDTO[] = [];
-    libeles: LibeleDTO[] = [];
-    organismes: OrganismeDTO[] = [];
-    depenseForm: FormGroup; // formulaire de création de dépense
-    displayForm: boolean = false;
-    projectId!: number;
+    depenses: DepenseDTO[] = []; // Liste des dépenses du projet
+    libeles: LibeleDTO[] = []; // Liste des libellés pour le formulaire
+    organismes: OrganismeDTO[] = []; // Liste des organismes pour le formulaire
+    depenseForm: FormGroup; // Formulaire d'ajout de dépense
+    displayForm: boolean = false; // Contrôle de l'affichage du formulaire
+    projectId!: number; // ID du projet actif
 
     constructor(
         private depenseService: DepenseService,
         private fb: FormBuilder,
         private route: ActivatedRoute // pour récupérer les paramètres de la route
     ) {
-            this.depenseForm = this.fb.group({...DepenseCreateForm});
+            this.depenseForm = this.fb.group({...DepenseCreateForm}); // Initialisation du formulaire
         }
 
     ngOnInit(): void {
         // Récupération de l'id du projet dans les paramètres de la route
         this.route.paramMap.subscribe(params => {
-            const id = params.get('id');
+            const id = params.get('id'); // récupère l'id du projet depuis la route
             if (id) {
                 this.projectId = +id; // +id pour convertir l'id en nombre
-                this.loadDepenses();
+                this.loadDepenses(); // charge les dépenses du projet
             } else {
                 console.error('Aucun projectId fourni dans les paramètres de la route.');
             }
@@ -45,70 +45,88 @@ export class EncodageCoutsProjetComponent implements OnInit {
         this.loadOrganismes(); // chargement des organismes dans le dropdown
     }
 
-    // Récupération des dépenses du projet
+    /**
+     * Charge les dépenses liées au projet.
+     */
     loadDepenses(): void {
         this.depenseService.getDepensesByProjectId(this.projectId).subscribe((depenses) => {
-            this.depenses = depenses;
+            this.depenses = depenses; // Mise à jour des dépenses dans le tableau
         });
     }
 
-    // Récupération des libellés
+    /**
+     * Charge les libellés pour le formulaire.
+     */
     loadLibeles() {
         this.depenseService.getLibeles().subscribe((libeles) => {
             this.libeles = libeles;
         });
     }
 
-    // Récupération des organismes
+    /**
+     * Charge les organismes pour le formulaire.
+     */
     loadOrganismes() {
         this.depenseService.getOrganismes().subscribe((organismes) => {
             this.organismes = organismes;
         });
     }
 
-    // Ouverture du formulaire de création de dépense
+    /**
+     * Ouvre le formulaire d'ajout d'une dépense.
+     */
     openAddDepenseForm() {
         this.depenseForm.reset();
         this.displayForm = true;
     }
 
-    // Récupération du nom des libellés  par rapport à leur id fourni
+    /**
+     * Récupère le nom du libellé en fonction de son ID.
+     * @param idLibele - ID du libellé.
+     * @returns string - Nom du libellé.
+     */
     getLibeleName(idLibele: number): string {
         const libele = this.libeles.find((l) => l.idLibele === idLibele);
         return libele ? libele.name || '' : '';
     }
 
-    // Récupération du nom des organismes par rapport à leur id fourni
+    /**
+     * Récupère le nom de l'organisme en fonction de son ID.
+     * @param idOrganisme - ID de l'organisme.
+     * @returns string - Nom de l'organisme.
+     */
     getOrganismeName(idOrganisme: number): string {
         const organisme = this.organismes.find((o) => o.idOrganisme === idOrganisme);
         return organisme ? organisme.name || '' : '';
     }
 
-    // Soumission du formulaire de création de dépense
+    /**
+     * Soumet le formulaire d'ajout d'une dépense.
+     * Crée une dépense à partir des données du formulaire et l'ajoute au projet.
+     */
     submitDepense() {
         if (this.depenseForm.invalid) {
-            this.depenseForm.markAllAsTouched();
+            this.depenseForm.markAllAsTouched(); // Marque tous les champs comme touchés pour afficher les erreurs
             return;
         }
 
         // Récupération des valeurs du formulaire
         const formValue = this.depenseForm.value;
-        // Création de l'objet de dépense à envoyer au serveur
-        const newDepense: CreateDepenseDTO = {
+
+        const newDepense: CreateDepenseDTO = { // Création de l'objet de dépense à envoyer au serveur
             projectId: this.projectId,
             libeleId: formValue.libeleId,
             organismeId: formValue.organismeId,
             montant: formValue.montant,
             dateIntervention: formValue.dateIntervention ? formValue.dateIntervention.toISOString() : null, // conversion de la date en string
             dateFacturation: formValue.dateFacturation ? formValue.dateFacturation.toISOString() : null, // conversion de la date en string
-            motif: formValue.motif,
+            motif: formValue.motif, // motif facultatif
         };
 
-        // Appel du service pour créer la dépense
-        this.depenseService.addDepense(newDepense).subscribe((depense) => {
-            this.depenses.push(depense); // ajout de la dépense à la liste
+        this.depenseService.addDepense(newDepense).subscribe((depense) => { // Appelle le service pour ajouter la dépense
+            this.depenses.push(depense); // Ajoute la dépense dans la liste locale
             this.displayForm = false;
-            this.depenseForm.reset(); // réinitialisation du formulaire
+            this.depenseForm.reset(); // Réinitialise le formulaire
         });
     }
 }

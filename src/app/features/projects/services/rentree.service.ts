@@ -1,32 +1,34 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {CreateDepenseDTO, DepenseDTO, LibeleDTO, OrganismeDTO, ProjectDTO} from '../models/depense.model';
 import { Observable } from 'rxjs';
+import { RentreeDTO, RentreeCreateFormDTO } from '../models/rentree.model';
+import {LibeleDTO, OrganismeDTO} from '../models/depense.model';
+
 
 @Injectable({
     providedIn: 'root',
 })
-export class DepenseService {
+export class RentreeService {
     private apiUrl = 'http://api2.technobel.pro:444/api';
 
     constructor(private _http: HttpClient) {}
 
     /**
-     * Récupère toutes les dépenses liées à un projet spécifique.
-     * @param projectId - ID du projet concerné.
-     * @returns Observable<DepenseDTO[]> - Un observable contenant la liste des dépenses.
+     * Récupère les rentrées d'un projet par son ID.
+     * @param projectId - ID du projet.
+     * @returns Observable<RentreeDTO[]> - Liste des rentrées associées au projet.
      */
-    getDepensesByProjectId(projectId: number): Observable<DepenseDTO[]> {
-        return this._http.get<DepenseDTO[]>(`${this.apiUrl}/Depense/projets/${projectId}`);
+    getRentreesByProjectId(projectId: number): Observable<RentreeDTO[]> {
+        return this._http.get<RentreeDTO[]>(`${this.apiUrl}/Rentree/projets/${projectId}`);
     }
 
     /**
-     * Ajoute une nouvelle dépense au projet.
-     * @param depense - Objet contenant les informations de la dépense.
-     * @returns Observable<DepenseDTO> - Un observable avec la dépense ajoutée.
+     * Ajoute une nouvelle rentrée pour un projet.
+     * @param rentree - Objet contenant les informations de la rentrée.
+     * @returns Observable<RentreeDTO> - La rentrée ajoutée.
      */
-    addDepense(depense: CreateDepenseDTO): Observable<DepenseDTO> {
-        return this._http.post<DepenseDTO>(`${this.apiUrl}/Depense`, depense);
+    addRentree(rentree: RentreeCreateFormDTO): Observable<RentreeDTO> {
+        return this._http.post<RentreeDTO>(`${this.apiUrl}/Rentree`, rentree);
     }
 
     /**
