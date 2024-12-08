@@ -1,0 +1,67 @@
+<p-toast position="bottom-right" key="update" />
+
+<div class="rolepermission-list-container">
+    <div class="header">
+        <div >
+            <button pButton label="Nouveau Role" class="add-btn" icon="pi pi-plus" (click)="openAddDialog()"></button>
+            <button pButton label="Supprmier Role" class="add-btn" icon="pi pi-minus" (click)="openDeleteDialog()"></button>
+        </div>
+        <div>
+            <button pButton label="Sauvegarder les modifications" class="add-btn" icon="pi pi-save" (click)="saveModification()"></button>
+            <input class="search-btn"
+                   pInputText
+                   type="text"
+                   placeholder="Rechercher..."
+                   [(ngModel)]="searchQuery"
+                   (input)="searchPermissions()"
+            />
+
+        </div>
+    </div>
+
+    <p-table [value]="filteredPermissions">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Permission</th>
+                <ng-container *ngFor="let role of rolesLabel; trackBy: trackRole">
+                    <th>{{ role.name }}</th>
+                </ng-container>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-permission>
+            <tr>
+                <td>{{permission.description}}</td>
+                <ng-container *ngFor="let role of rolesLabel; trackBy: trackRole">
+                    <td>
+                        <p-checkbox
+                            [(ngModel)]="checkboxStates[role.idRole + '-' + permission.id]"
+                            [binary]="true"
+                            (onChange)="onCheckBoxClick($event, role.idRole, permission.id)"
+                        ></p-checkbox>
+                    </td>
+                </ng-container>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog  header="Nouveau Role"
+           [(visible)]="dialogNewVisible"
+           [modal]="true"
+           [closable]="true"
+           [resizable]="false">
+    <app-new-role-form
+        (formSubmit)="onAddFormSubmit($event)"
+    ></app-new-role-form>
+</p-dialog>
+
+<p-dialog  header="Supprimer Role"
+           [(visible)]="dialogDeleteVisible"
+           [modal]="true"
+           [closable]="true"
+           [resizable]="false">
+    <app-remove-role-form
+        (formSubmit)="onDeleteFormSubmit($event)"
+        [roles]="rolesLabel"
+    ></app-remove-role-form>
+</p-dialog>
