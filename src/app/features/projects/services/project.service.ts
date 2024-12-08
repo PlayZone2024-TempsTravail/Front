@@ -53,16 +53,32 @@ export class ProjectService {
         );
     }
 
+    getCategories(): Observable<any[]> {
+        return this.http.get<any[]>(`${this.apiUrl}/Category`);
+    }
+
     getPrevisionalIncomes(id: number): Observable<any> {
         return this.http.get<any[]>(`${this.apiUrl}/PrevisionRentree/${id}`);
+    }
+
+    getPrevisionalExpenses(id: number): Observable<any[]> {
+        return this.http.get<any[]>(`${this.apiUrl}/PrevisionBudgetCategory/project/${id}`);
     }
 
     addPrevisionIncome(income: any): Observable<any> {
         return this.http.post(`${this.apiUrl}/PrevisionRentree`, income);
     }
 
+    addPrevisionExpense(expense: any): Observable<any> {
+        return this.http.post(`${this.apiUrl}/PrevisionBudgetCategory`, expense);
+    }
+
     deletePrevisionIncome(id: number): Observable<any> {
         return this.http.delete(`${this.apiUrl}/PrevisionRentree/${id}`);
+    }
+
+    deletePrevisionExpense(id: number): Observable<any> {
+        return this.http.delete(`${this.apiUrl}/PrevisionBudgetCategory/${id}`);
     }
 
     getAllOrganismes(): Observable<any[]> {

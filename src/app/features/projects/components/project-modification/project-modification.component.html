@@ -4,15 +4,13 @@
 
     <!-- Previsions Entrées -->
     <div class="section">
-        <h3>Prévisions entrées</h3>
+        <h3>Prévisions Entrées</h3>
         <form [formGroup]="previsionIncomesForm" (ngSubmit)="addPrevisionIncome()">
             <div class="form-row">
                 <input type="date" formControlName="date" placeholder="Date" />
                 <input type="text" formControlName="motif" placeholder="Motif" />
                 <select formControlName="libeleId">
-                    <option *ngFor="let libele of incomeLibeles" [value]="libele.idLibele">
-                        {{ libele.name}}
-                    </option>
+                    <option *ngFor="let libele of incomeLibeles" [value]="libele.idLibele">{{ libele.name }}</option>
                 </select>
                 <input type="number" formControlName="montant" placeholder="Montant" />
                 <button type="submit" [disabled]="previsionIncomesForm.invalid">+</button>
@@ -24,7 +22,7 @@
                 <tr>
                     <th>Date</th>
                     <th>Motif</th>
-                    <th>Category</th>
+                    <th>Libellé</th>
                     <th>Montant</th>
                     <th>Cumul</th>
                     <th></th>
@@ -39,9 +37,65 @@
                     <td>{{ income.cumul | currency: 'EUR' }}</td>
                     <td>
                         <button
-                            class="delete-btn"
-                            (click)="deletePrevisionIncome(income.idPrevisionRentree)"
-                            title="Delete this entry"
+                                class="delete-btn"
+                                (click)="deletePrevisionIncome(income.idPrevisionRentree)"
+                                title="Delete this entry"
+                        >
+                            🗑️
+                        </button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+    <!-- Previsions Sorties -->
+    <div class="section">
+        <h3>Prévisions Sorties</h3>
+        <form [formGroup]="previsionExpensesForm" (ngSubmit)="addPrevisionExpense()">
+            <div class="form-row">
+                <input type="date" formControlName="date" placeholder="Date" />
+                <input type="text" formControlName="motif" placeholder="Motif" />
+                <select formControlName="categoryId" (change)="onCategoryChange($event)">
+                    <option *ngFor="let category of expenseCategories" [value]="category.idCategory">
+                        {{ category.name }}
+                    </option>
+                </select>
+                <select formControlName="libeleId">
+                    <option *ngFor="let libele of filteredExpenseLibeles" [value]="libele.idLibele">
+                        {{ libele.name }}
+                    </option>
+                </select>
+                <input type="number" formControlName="montant" placeholder="Montant" />
+                <button type="submit" [disabled]="previsionExpensesForm.invalid">+</button>
+            </div>
+        </form>
+
+        <p-table [value]="previsionExpenses" [scrollable]="true" scrollDirection="both">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Date</th>
+                    <th>Motif</th>
+                    <th>Catégorie</th>
+                    <th>Libellé</th>
+                    <th>Montant</th>
+                    <th>Cumul</th>
+                    <th></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-expense>
+                <tr>
+                    <td>{{ expense.date | date: 'dd/MM/yyyy' }}</td>
+                    <td>{{ expense.motif }}</td>
+                    <td>{{ expense.categoryName }}</td>
+                    <td>{{ expense.libeleName }}</td>
+                    <td>{{ expense.montant | currency: 'EUR' }}</td>
+                    <td>{{ expense.cumul | currency: 'EUR' }}</td>
+                    <td>
+                        <button
+                                class="delete-btn"
+                                (click)="deletePrevisionExpense(expense.idPrevisionBudgetCategory)"
+                                title="Delete this entry"
                         >
                             🗑️
                         </button>
