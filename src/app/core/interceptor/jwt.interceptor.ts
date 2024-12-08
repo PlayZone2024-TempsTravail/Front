@@ -16,7 +16,7 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(clonedRequest).pipe(
     catchError(err => {
-      if (err.status === 401 || err.status === 403) {
+      if (err.status === 401) {
         authService.logout();
       }
       return throwError(() => err);
