@@ -34,11 +34,7 @@
                 <tr>
                     <td>{{ income.date | date: 'dd/MM/yyyy' }}</td>
                     <td>{{ income.motif }}</td>
-                    <td><select disabled>
-                        <option [selected]="libele.idLibele === income.libeleId" *ngFor="let libele of incomeLibeles" [value]="libele.idLibele">
-                            {{ libele.name}}
-                        </option>
-                    </select></td>
+                    <td>{{ income.libeleName }}</td>
                     <td>{{ income.montant | currency: 'EUR' }}</td>
                     <td>{{ income.cumul | currency: 'EUR' }}</td>
                     <td>
