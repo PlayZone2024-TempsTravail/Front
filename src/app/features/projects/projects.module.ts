@@ -25,6 +25,11 @@ import { ProjectrapportComponent } from './components/project-rapport/projectrap
 import {CheckboxModule} from 'primeng/checkbox';
 import {TreeModule} from 'primeng/tree';
 import { EncodageRentreeProjetComponent } from './components/encodage-rentree-projet/encodage-rentree-projet.component';
+import { ProjectCreationComponent } from './components/project-creation/project-creation.component';
+import {InputNumberModule} from 'primeng/inputnumber';
+import { ColorPickerModule } from 'primeng/colorpicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 
 @NgModule({
@@ -35,7 +40,8 @@ import { EncodageRentreeProjetComponent } from './components/encodage-rentree-pr
     ProjectsComponent,
     EncodageCoutsProjetComponent,
     EncodageRentreeProjetComponent,
-    ProjectrapportComponent
+    ProjectrapportComponent,
+    ProjectCreationComponent
   ],
     imports: [
         CommonModule,
@@ -59,6 +65,10 @@ import { EncodageRentreeProjetComponent } from './components/encodage-rentree-pr
         CalendarModule,
         CheckboxModule,
         TreeModule,
+        InputNumberModule,
+        ColorPickerModule,
+        MatFormFieldModule,
+        MatInputModule
     ],
     exports: [
         ProjectsComponent,

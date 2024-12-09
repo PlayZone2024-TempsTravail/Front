@@ -58,4 +58,8 @@ export interface Category {
     data?: { libelle: string; data: { [month: string]: number } }[]; // Transformed data
 }
 
+export interface Organisme {
+    idOrganisme: number,
+    name: string,
+}
 

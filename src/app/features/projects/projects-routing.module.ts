@@ -9,6 +9,7 @@ import {CalendarComponent} from '../time-tracking/components/calendar/calendar.c
 import {unauthenticatedGuard} from '../../shared/guards/authenticated.guard';
 import {EncodageRentreeProjetComponent} from './components/encodage-rentree-projet/encodage-rentree-projet.component';
 import {ProjectrapportComponent} from './components/project-rapport/projectrapport.component';
+import {ProjectCreationComponent} from './components/project-creation/project-creation.component';
 
 const routes: Routes = [
     { path: '',
@@ -30,7 +31,11 @@ const routes: Routes = [
         component: ProjectDetailsComponent,
     },
     {path:'graphique/:id', component : ProjectGraphComponent,}, //Route pour voir le graphique
-    {path:'rapport',component : ProjectrapportComponent}//Route pour crée le rapport
+    {path:'rapport',component : ProjectrapportComponent},//Route pour crée le rapport
+    {
+        path: 'create-project',
+        component: ProjectCreationComponent,
+    },
 
 ];
 
