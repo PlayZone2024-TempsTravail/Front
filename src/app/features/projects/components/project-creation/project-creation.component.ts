@@ -4,6 +4,7 @@ import {ProjectCreationForm} from '../../forms/project-creation.form';
 import {ProjectService} from '../../services/project.service';
 import {Organisme} from '../../models/project.model';
 import {UserInMisson} from '../../models/userProject.model';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-project-creation',
@@ -17,14 +18,17 @@ export class ProjectCreationComponent implements OnInit {
     usersInMission: UserInMisson[] = [];
     showAddOrganismeForm = false;
     newOrganismeName: string = '';
+    isLoading: boolean = false;
 
 
     constructor(
         private formService: ProjectCreationForm,
-        private projectService: ProjectService
+        private projectService: ProjectService,
+        private router: Router
     ) {
         this.projectForm = this.formService.createForm();
     }
+
 
     ngOnInit(): void {
         this.loadOrganismes();
@@ -89,6 +93,14 @@ export class ProjectCreationComponent implements OnInit {
                 next: (response) => {
                     console.log('Projet créé avec succès :', response);
                     alert('Projet créé avec succès !');
+
+                    if (response && response.idProject) {
+                        const projectId = response.idProject;
+                        alert('Projet créé avec succès !');
+                       this.router.navigate([`modifier-projet/${response.idProject}`]);
+                    } else {
+                        alert('Erreur lors de la création du projet.');
+                    }
                     this.projectForm.reset();
                 },
                 error: (error) => {
