@@ -7,7 +7,7 @@ import { UserSalaire, UserRole, UserDTO, UserForm, Role } from '../models/user.d
     providedIn: 'root',
 })
 export class UserService {
-    private apiUrl = 'http://api2.technobel.pro:444/api';
+    private apiUrl = 'http://api.technobel.pro:444/api';
 
     constructor(private _http: HttpClient) {}
 

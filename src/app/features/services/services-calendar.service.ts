@@ -11,12 +11,12 @@ import { JwtPayload } from 'jwt-decode';
 })
 export class AppointmentService {
   private appointmentsUrlJSON = ''; //http://localhost:3000/appointments
-  private workTimeCategoryUrl = 'http://api2.technobel.pro:444/api/WorktimeCategory';
-  private workTimeUrl = 'http://api2.technobel.pro:444/api/Worktime';
-  private workTimeRangeUrl = 'http://api2.technobel.pro:444/api/Worktime/range';
-  private compteurWorktimeCategoryUrl = 'http://api2.technobel.pro:444/api/Counter/absence/';
-  private compteurProjectUrl = 'http://api2.technobel.pro:444/api/Counter/projet/';
-  private ListProjectUrl = 'http://api2.technobel.pro:444/api/Project/short/';
+  private workTimeCategoryUrl = 'http://api.technobel.pro:444/api/WorktimeCategory';
+  private workTimeUrl = 'http://api.technobel.pro:444/api/Worktime';
+  private workTimeRangeUrl = 'http://api.technobel.pro:444/api/Worktime/range';
+  private compteurWorktimeCategoryUrl = 'http://api.technobel.pro:444/api/Counter/absence/';
+  private compteurProjectUrl = 'http://api.technobel.pro:444/api/Counter/projet/';
+  private ListProjectUrl = 'http://api.technobel.pro:444/api/Project/short/';
 
   constructor(
     private http: HttpClient,
