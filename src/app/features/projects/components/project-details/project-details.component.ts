@@ -165,6 +165,4 @@ export class ProjectDetailsComponent implements OnInit {
         }
         return months;
     }
-
-    protected readonly Object = Object;
 }
