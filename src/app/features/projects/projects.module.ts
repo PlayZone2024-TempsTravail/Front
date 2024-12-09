@@ -24,6 +24,7 @@ import {CalendarModule} from 'primeng/calendar';
 import { ProjectrapportComponent } from './components/project-rapport/projectrapport.component';
 import {CheckboxModule} from 'primeng/checkbox';
 import {TreeModule} from 'primeng/tree';
+import { EncodageRentreeProjetComponent } from './components/encodage-rentree-projet/encodage-rentree-projet.component';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import {TreeModule} from 'primeng/tree';
       ProjectDetailsComponent,
     ProjectsComponent,
     EncodageCoutsProjetComponent,
+    EncodageRentreeProjetComponent,
     ProjectrapportComponent
   ],
     imports: [

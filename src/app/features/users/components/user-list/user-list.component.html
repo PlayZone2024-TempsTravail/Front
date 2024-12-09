@@ -1,31 +1,22 @@
 <div class="user-list-container">
     <div class="header">
-        <div >
+        <div>
             <button pButton label="Ajouter" class="add-btn" icon="pi pi-plus" (click)="openAddUserForm()"></button>
         </div>
         <div>
-            <input class="search-btn"
-                pInputText
-                type="text"
-                placeholder="Rechercher..."
-                [(ngModel)]="searchQuery"
-                (input)="searchUsers()"
-            />
-            <p-dropdown
-                [options]="[
-          { label: 'Tous', value: null },
-          { label: 'Employés', value: 'Employé' },
-          { label: 'Admins', value: 'Admin' },
-          { label: 'Actifs', value: 'Actifs' },
-          { label: 'Inactifs', value: 'Inactifs' }
-        ]"
-                placeholder="Filtrer"
-                (onChange)="filterUsers($event.value)"
-            ></p-dropdown>
+            <input class="search-btn" pInputText type="text" placeholder="Rechercher..." [(ngModel)]="searchQuery" (input)="searchUsers()" />
+            <p-dropdown [options]="[
+                { label: 'Tous', value: null },
+                { label: 'Admins', value: 'Admin' },
+                { label: 'Chargés de projet', value: 'Chargés de projet' },
+                { label: 'Employés', value: 'Employé' },
+                { label: 'Actifs', value: 'Actifs' },
+                { label: 'Inactifs', value: 'Inactifs' }
+            ]"
+                        placeholder="Filtrer" (onChange)="filterUsers($event.value)"></p-dropdown>
         </div>
     </div>
 
-    <!-- Tableau des utilisateurs -->
     <p-table [value]="filteredUsers" [paginator]="true" [rows]="8" [tableStyle]="{ 'min-width': '50rem' }">
         <ng-template pTemplate="header">
             <tr>
@@ -44,21 +35,18 @@
                 <td>{{ user.email }}</td>
                 <td class="roles">
                     <ng-container *ngFor="let role of user.userRoles">
-                        <p-chip label="{{ role.roleName }}"></p-chip>
+                        <p-chip [label]="role.roleName"></p-chip>
                     </ng-container>
                 </td>
-
                 <td>
-                    <p-chip
-                        [label]="user.isActive ? 'Actif' : 'Inactif'">
-                    </p-chip>
+                    <p-chip [label]="user.isActive ? 'Actif' : 'Inactif'"></p-chip>
                 </td>
                 <td>
                     <button class="modify-btn"
-                        pButton
-                        icon="pi pi-pencil"
+                            pButton
+                            icon="pi pi-pencil"
                             label="Modifier"
-                        (click)="openEditUserForm(user)"
+                            (click)="openEditUserForm(user)"
                     ></button>
                 </td>
             </tr>
@@ -66,14 +54,13 @@
     </p-table>
 </div>
 
-<!-- Dialogue pour le formulaire d'ajout/modification -->
-<p-dialog  header="{{ selectedUser ? 'Modifier Utilisateur' : 'Ajouter Utilisateur' }}"
-           [(visible)]="displayForm"
-           [modal]="true"
-           [closable]="true"
-           [resizable]="false"
-           (onHide)="onDialogHide()"
->
+<p-dialog header="{{ selectedUser ? 'Modifier Utilisateur' : 'Ajouter Utilisateur' }}"
+          [(visible)]="displayForm"
+          [modal]="true"
+          [closable]="true"
+          [resizable]="false"
+          (onHide)="onDialogHide()">
+
     <app-user-form
         [userData]="selectedUser"
         (formSubmit)="onFormSubmit($event)"

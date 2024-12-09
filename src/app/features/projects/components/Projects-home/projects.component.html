@@ -11,7 +11,7 @@
         <button [routerLink]="['encodagecouts', selectedProject]" class="p-button font-bold" [disabled]="isNotSelectButton" >
         Encoder coûts
     </button>
-        <button [routerLink]="['/projet/encoderentrées', selectedProject]" class="p-button font-bold" [disabled]="isNotSelectButton" >
+        <button [routerLink]="['/projet/encodagerentrees', selectedProject]" class="p-button font-bold" [disabled]="isNotSelectButton" >
         Encoder entrées
     </button>
         <button [routerLink]="['/projet/editerprojet', selectedProject]" class="p-button font-bold" [disabled]="isNotSelectButton" >
@@ -23,9 +23,10 @@
         <button [routerLink]="['rapport']" class="p-button font-bold">
         Créer rapport
     </button>
+
         <button [routerLink]="['/projet/creerprojet', selectedProject]" class="p-button font-bold" >
-        Créer projet
-    </button>
+            Créer projet
+        </button>
     </div>
 
 </div>
