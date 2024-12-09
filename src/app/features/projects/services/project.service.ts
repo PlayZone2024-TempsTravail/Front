@@ -43,4 +43,16 @@ export class ProjectService {
     getGraphData(projectId: number): Observable<any> {
         return this.http.get<any>(`${this.apiUrl}/Project/graphique/depense/${projectId}`);
     }
+    createProject(projectData: Project): Observable<Project> {
+        return this.http.post<Project>(`${this.apiUrl}/project`, projectData);
+    }
+    addOrganisme(organismeData: { name: string }): Observable<any> {
+        return this.http.post<any>(`${this.apiUrl}/organisme`, organismeData);
+    }
+    getActiveUsers(): Observable<any[]> {
+        return this.http.get<any[]>(`${this.apiUrl}/user`);
+    }
+    getAllOrganismes(): Observable<any[]> {
+        return this.http.get<any[]>(`${this.apiUrl}/organisme`);
+    }
 }
