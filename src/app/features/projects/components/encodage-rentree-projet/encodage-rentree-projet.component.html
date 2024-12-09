@@ -44,7 +44,7 @@
                     <div>
                         <div class="p-field">
                             <label for="libeleId">Nature</label>
-                            <p-dropdown id="libeleId" [options]="libeles" optionLabel="name" optionValue="idLibele"
+                            <p-dropdown id="libeleId" [options]="libeles" optionLabel="libeleName" optionValue="idLibele"
                                         formControlName="libeleId" placeholder="Sélectionner un libellé"></p-dropdown>
                             <small *ngIf="rentreeForm.get('libeleId')?.invalid && rentreeForm.get('libeleId')?.touched"
                                    class="p-error">Le libellé est obligatoire.</small>
@@ -55,8 +55,6 @@
                             <p-dropdown id="organismeId" [options]="organismes" optionLabel="name"
                                         optionValue="idOrganisme" formControlName="organismeId"
                                         placeholder="Sélectionner un organisme"></p-dropdown>
-                            <small *ngIf="rentreeForm.get('organismeId')?.invalid && rentreeForm.get('organismeId')?.touched"
-                                   class="p-error">L'organisme est obligatoire.</small>
                         </div>
 
                         <div class="p-field">

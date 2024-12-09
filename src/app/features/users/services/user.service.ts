@@ -138,12 +138,18 @@ export class UserService {
      */
     getRoleNameById(roleId: number): string {
         const roles = [
-            { idRole: 1, name: 'Employe' },
-            { idRole: 2, name: 'Charge de Projet' },
-            { idRole: 3, name: 'Admin' },
+            { idRole: 1, name: 'Employe', isRemovable: true, isVisible: true },
+            { idRole: 2, name: 'Chargés de projet', isRemovable: true, isVisible: false },
+            { idRole: 3, name: 'Admin', isRemovable: false, isVisible: true },
         ];
         const role = roles.find(r => r.idRole === roleId);
         return role ? role.name : '';
+    }
+
+    getVisibleRoles(): Observable<Role[]> {
+        return this.getRoles().pipe(
+            map(roles => roles.filter(role => role.isVisible))
+        );
     }
 
     /**

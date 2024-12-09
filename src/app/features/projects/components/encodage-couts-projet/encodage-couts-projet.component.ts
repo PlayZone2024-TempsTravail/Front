@@ -89,7 +89,7 @@ export class EncodageCoutsProjetComponent implements OnInit {
      */
     getLibeleName(idLibele: number): string {
         const libele = this.libeles.find((l) => l.idLibele === idLibele);
-        return libele ? libele.name || '' : '';
+        return libele && libele.libeleName ? libele.libeleName : '';
     }
 
     /**
@@ -120,8 +120,8 @@ export class EncodageCoutsProjetComponent implements OnInit {
             libeleId: formValue.libeleId,
             organismeId: formValue.organismeId,
             montant: formValue.montant,
-            dateIntervention: formValue.dateIntervention ? formValue.dateIntervention.toISOString() : null, // conversion de la date en string
-            dateFacturation: formValue.dateFacturation ? formValue.dateFacturation.toISOString() : null, // conversion de la date en string
+            dateIntervention: formValue.dateIntervention ? formValue.dateIntervention.toISOString() : null,
+            dateFacturation: formValue.dateFacturation ? formValue.dateFacturation.toISOString() : null,
             motif: formValue.motif, // motif facultatif
         };
 

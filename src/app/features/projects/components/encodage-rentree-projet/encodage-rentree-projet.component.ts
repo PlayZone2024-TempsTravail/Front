@@ -3,7 +3,6 @@ import {RentreeCreateFormDTO, RentreeDTO} from '../../models/rentree.model';
 import {LibeleDTO, OrganismeDTO} from '../../models/depense.model';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {RentreeService} from '../../services/rentree.service';
-import {DepenseService} from '../../services/depense.service';
 import {ActivatedRoute} from '@angular/router';
 import {RentreeCreateForm} from '../../forms/rentree.form';
 
@@ -22,7 +21,6 @@ export class EncodageRentreeProjetComponent implements OnInit {
 
     constructor(
         private rentreeService: RentreeService,
-        private depenseService: DepenseService,
         private fb: FormBuilder,
         private route: ActivatedRoute
     ) {
@@ -47,10 +45,15 @@ export class EncodageRentreeProjetComponent implements OnInit {
      * Charge les rentrées liées au projet.
      */
     loadRentrees(): void {
-        this.rentreeService.getRentreesByProjectId(this.projectId).subscribe((rentrees) => {
-            this.rentrees = rentrees.sort(
-                (a, b) => new Date(b.dateFacturation).getTime() - new Date(a.dateFacturation).getTime() // Tri par date décroissante
-            );
+        this.rentreeService.getRentreesByProjectId(this.projectId).subscribe({
+            next: (rentrees) => {
+                this.rentrees = rentrees.sort(
+                    (a, b) => new Date(b.dateFacturation).getTime() - new Date(a.dateFacturation).getTime()
+                );
+            },
+            error: (err) => {
+                console.error("Erreur chargement rentrées:", err);
+            }
         });
     }
 
@@ -58,8 +61,13 @@ export class EncodageRentreeProjetComponent implements OnInit {
      * Charge les libellés pour le formulaire.
      */
     loadLibeles() {
-        this.rentreeService.getLibeles().subscribe((libeles) => {
-            this.libeles = libeles;
+        this.rentreeService.getLibeles().subscribe({
+            next: (libeles) => {
+                this.libeles = libeles;
+            },
+            error: (err) => {
+                console.error("Erreur chargement libelés:", err);
+            }
         });
     }
 
@@ -67,10 +75,16 @@ export class EncodageRentreeProjetComponent implements OnInit {
      * Charge les organismes pour le formulaire.
      */
     loadOrganismes() {
-        this.rentreeService.getOrganismes().subscribe((organismes) => {
-            this.organismes = organismes;
+        this.rentreeService.getOrganismes().subscribe({
+            next: (organismes) => {
+                this.organismes = organismes;
+            },
+            error: (err) => {
+                console.error("Erreur chargement organismes:", err);
+            }
         });
     }
+
 
     /**
      * Ouvre le formulaire d'ajout d'une rentrée.
@@ -87,7 +101,7 @@ export class EncodageRentreeProjetComponent implements OnInit {
      */
     getLibeleName(idLibele: number): string {
         const libele = this.libeles.find((l) => l.idLibele === idLibele);
-        return libele ? libele.name || '' : '';
+        return libele && libele.libeleName ? libele.libeleName : '';
     }
 
     /**
@@ -119,10 +133,17 @@ export class EncodageRentreeProjetComponent implements OnInit {
             motif: formValue.motif,
         };
 
-        this.rentreeService.addRentree(newRentree).subscribe((rentree) => {
-            this.rentrees.push(rentree);
-            this.displayForm = false;
-            this.rentreeForm.reset();
+        console.log('newRentree à envoyer:', newRentree);
+
+        this.rentreeService.addRentree(newRentree).subscribe({
+            next: (rentree) => {
+                this.rentrees.push(rentree);
+                this.displayForm = false;
+                this.rentreeForm.reset();
+            },
+            error: (err) => {
+                console.error("Erreur lors de l'ajout de la rentrée:", err);
+            }
         });
     }
 }

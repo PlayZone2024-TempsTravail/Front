@@ -20,12 +20,14 @@ export interface UserRole {
 export interface Role {
     idRole: number;
     name: string;
+    isRemovable: boolean;
+    isVisible: boolean;
 }
 
 // UserSalaire représente un salaire d'utilisateur.
 export interface UserSalaire {
     userId: number;
-    date: Date; // Format ISO 8601
+    date: Date;
     regime: number;
     montant: number;
 }

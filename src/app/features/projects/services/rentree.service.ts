@@ -19,7 +19,7 @@ export class RentreeService {
      * @returns Observable<RentreeDTO[]> - Liste des rentrées associées au projet.
      */
     getRentreesByProjectId(projectId: number): Observable<RentreeDTO[]> {
-        return this._http.get<RentreeDTO[]>(`${this.apiUrl}/Rentree/projets/${projectId}`);
+        return this._http.get<RentreeDTO[]>(`${this.apiUrl}/Rentree/projet/${projectId}`);
     }
 
     /**
@@ -30,7 +30,7 @@ export class RentreeService {
     addRentree(rentree: RentreeCreateFormDTO): Observable<RentreeDTO> {
         const rentreePayload = {
             ...rentree,
-            dateFacturation: new Date(rentree.dateFacturation),
+            dateFacturation: rentree.dateFacturation ? new Date(rentree.dateFacturation) : null,
         };
 
         return this._http.post<RentreeDTO>(`${this.apiUrl}/Rentree`, rentreePayload);
