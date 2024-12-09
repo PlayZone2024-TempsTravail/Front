@@ -37,7 +37,7 @@ export class ProjectService {
     //}
 
     getExpensesByCategory(id: number): Observable<any> {
-        return this.http.get<Project>(`${this.apiUrl}/Project/data/${id}`);
+        return this.http.get<Project>(`${this.apiUrl}/Project/data/output/${id}`);
     }
 
     getGraphData(projectId: number): Observable<any> {
