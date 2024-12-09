@@ -12,6 +12,8 @@ import {ToastModule} from 'primeng/toast';
 import {DialogModule} from 'primeng/dialog';
 import {DropdownModule} from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import {UserListComponent} from '../users/components/user-list/user-list.component';
+import {UserFormComponent} from '../users/components/user-form/user-form.component';
 import {ProjectGraphComponent} from './components/voir-graphique/voir-graphique.component';
 import {ChartModule} from 'primeng/chart';
 import { ProjectDetailsComponent } from './components/project-details/project-details.component';
@@ -19,6 +21,9 @@ import {SharedModule} from '../../shared/shared.module';
 import { EncodageCoutsProjetComponent } from './components/encodage-couts-projet/encodage-couts-projet.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CalendarModule} from 'primeng/calendar';
+import { ProjectrapportComponent } from './components/project-rapport/projectrapport.component';
+import {CheckboxModule} from 'primeng/checkbox';
+import {TreeModule} from 'primeng/tree';
 import { EncodageRentreeProjetComponent } from './components/encodage-rentree-projet/encodage-rentree-projet.component';
 
 
@@ -29,7 +34,8 @@ import { EncodageRentreeProjetComponent } from './components/encodage-rentree-pr
       ProjectDetailsComponent,
     ProjectsComponent,
     EncodageCoutsProjetComponent,
-    EncodageRentreeProjetComponent
+    EncodageRentreeProjetComponent,
+    ProjectrapportComponent
   ],
     imports: [
         CommonModule,
@@ -51,6 +57,8 @@ import { EncodageRentreeProjetComponent } from './components/encodage-rentree-pr
         SharedModule,
         ReactiveFormsModule,
         CalendarModule,
+        CheckboxModule,
+        TreeModule,
     ],
     exports: [
         ProjectsComponent,

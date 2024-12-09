@@ -1,0 +1,76 @@
+
+<a
+    type="button"
+    appBack>
+    <img src="/assets/back-button.svg" class="button-back" alt="Retour" width="62px" height="62px">
+</a>
+
+
+
+
+
+<div class="projets-libeles">
+    <div class="selection-project">
+            <h5>Selection projet(s)</h5>
+        <div class="projectlist" >
+            <div *ngFor="let shortproject of shortProjects" class="field-checkbox">
+                <p-checkbox
+                  [(ngModel)]="selectedProject"
+                  [label]="shortproject.name"
+                  name="group"
+                  [value]="shortproject.idProject" />
+            </div>
+        </div>
+    </div>
+    <div class="field-treecheckbox">
+        <h5>Selection libelle(s)</h5>
+        <p-tree
+            [value]="listLibeles"
+            selectionMode="checkbox"
+            class="w-full md:w-30rem"
+            [(selection)]="selectedListLibeles" />
+    </div>
+
+
+</div>
+
+<div class="date-selection">
+    <div class = "date-start">
+        <h5 class="titre-date"> Date de Début </h5>        <p-calendar
+            [(ngModel)]="date_start"
+            [iconDisplay]="'input'"
+            (onSelect)="onDateStartChange($event)"
+            [showIcon]="true"
+            dateFormat="dd-mm-yy"
+            inputId="icondisplay"/>
+    </div>
+
+    <div class="date-end">
+        <h5 class="titre-date"> Date de fin </h5>
+        <p-calendar
+            [(ngModel)]="date_end"
+            [iconDisplay]="'input'"
+            [showIcon]="true"
+            dateFormat="dd-mm-yy"
+            inputId="icondisplay" />
+
+    </div>
+
+</div>
+
+<button class="p-button font-bold" *ngIf="true" (click)="send()">
+    Crée Rapport
+</button>
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,16 +1,14 @@
-<a
-    type="button"
-    appBack>
+<a type="button" appBack>
     <img src="/assets/back-button.svg" class="button-back" alt="Retour" width="62px" height="62px">
 </a>
 <div class="project-detail">
     <!-- Section des détails du projet -->
     <h2>Détails du Projet</h2>
 
-    <div class ="project-container" *ngIf="project; else loading">
+    <div class="project-container" *ngIf="project; else loading">
         <div class="project-info">
             <p><strong>Nom du Projet :</strong> {{ project.name }}</p>
-            <p><strong>Organisme :</strong> {{ project.organismeName}}</p>
+            <p><strong>Organisme :</strong> {{ project.organismeName }}</p>
             <p><strong>Budget :</strong> {{ project.montantBudget | currency: 'EUR' }}</p>
             <p><strong>Date de Début :</strong> {{ project.dateDebutProjet | date: 'mediumDate' }}</p>
             <p><strong>Date de Fin :</strong> {{ project.dateFinProjet | date: 'mediumDate' }}</p>
@@ -26,7 +24,14 @@
         <!-- Section du graphique -->
         <div class="chart-container" *ngIf="chartData">
             <h4>Dépenses : Réel / Prévision</h4>
-            <a [routerLink]="['/projet/graphique', project.idProject]"> <p-chart type="line" [data]="chartData" [options]="chartOptions" style="height: 50px; width: 50px;"></p-chart> </a>
+            <a [routerLink]="['/projet/graphique', project.idProject]">
+                <p-chart
+                    type="line"
+                    [data]="chartData"
+                    [options]="chartOptions"
+                    style="height: 50px; width: 50px;"
+                ></p-chart>
+            </a>
         </div>
     </div>
 
@@ -37,49 +42,76 @@
 
     <!-- Section tableau des dépenses -->
     <div class="export-pdf-button-container">
-    <h2>Dépenses par Libellé</h2>
-        <button pButton type="button" label="Exporter PDF" icon="pi pi-download" class="p-button-success">
-        </button>
+        <h2>Dépenses par Libellé</h2>
+        <button pButton type="button" label="Exporter PDF" icon="pi pi-download" class="p-button-success"></button>
     </div>
 
-    <ng-container *ngFor="let category of expenseCategories">
-        <h3>{{ category.name }}</h3>
+    <div class="expense-category" *ngFor="let category of expenseCategories">
+        <h3 class="table-title">{{ category.name }}</h3>
+            <div class="p-table-wrapper">
+            <p-table
+                *ngIf="category.data && category.data.length > 0"
+                [value]="category.data"
+                [scrollable]="true"
+                scrollDirection="both"
+                [tableStyle]="{ 'min-width': '80rem' }"
+            >
+                <ng-template pTemplate="header">
+                    <tr>
+                        <td pFrozenColumn style="width: 350px; min-width: 350px;"></td>
+                        <ng-container *ngFor="let month of getMonthsRange()">
+                            <th style="width: 100px; min-width: 100px;">{{ month }}</th>
+                        </ng-container>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-expense>
+                    <tr>
+                        <td pFrozenColumn>{{ expense.libelle }}</td>
+                        <ng-container *ngFor="let month of getMonthsRange()">
+                            <td>{{ expense.data[month] || 0 | currency: 'EUR' }}</td>
+                        </ng-container>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="footer">
+                    <tr>
+                        <td pFrozenColumn><strong>Total</strong></td>
+                        <ng-container *ngFor="let month of getMonthsRange()">
+                            <td><strong>{{ (category.totals?.[month] || 0) | currency: 'EUR' }}</strong></td>
+                        </ng-container>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+
+    <!-- Overall Totals -->
+    <h3 class="table-title">Total</h3>
+    <div class="p-table-wrapper">
         <p-table
-            *ngIf="category.data.length > 0"
-            [value]="category.data"
+            [value]="[overallTotals]"
             [scrollable]="true"
-            scrollDirection="both"
+            scrollHeight="150px"
             [tableStyle]="{ 'min-width': '80rem' }"
         >
             <ng-template pTemplate="header">
                 <tr>
-                    <th>Libellé</th>
+                    <td pFrozenColumn style="width: 350px; min-width: 350px;"></td>
                     <ng-container *ngFor="let month of getMonthsRange()">
-                        <th>{{ month }}</th>
+                        <th style="width: 100px; min-width: 100px;">{{ month }}</th>
                     </ng-container>
                 </tr>
             </ng-template>
 
-            <ng-template pTemplate="body" let-expense>
+            <ng-template pTemplate="body" let-total>
                 <tr>
-                    <td>{{ expense.libelle }}</td>
+                    <td pFrozenColumn>Total</td>
                     <ng-container *ngFor="let month of getMonthsRange()">
-                        <td>{{ expense.data[month] || 0 | currency: 'EUR' }}</td>
-                    </ng-container>
-                </tr>
-            </ng-template>
-
-            <ng-template pTemplate="footer">
-                <tr>
-                    <td><strong>Total</strong></td>
-                    <ng-container *ngFor="let month of getMonthsRange()">
-                        <td><strong>{{ category.totals[month] || 0 | currency: 'EUR' }}</strong></td>
+                        <td>{{ total[month] || 0 | currency: 'EUR' }}</td>
                     </ng-container>
                 </tr>
             </ng-template>
         </p-table>
-    </ng-container>
-
-    <!-- Message si aucune dépense n'est trouvée -->
-    <p *ngIf="expenses.length === 0 && project">Aucune dépense trouvée pour ce projet.</p>
+    </div>
 </div>

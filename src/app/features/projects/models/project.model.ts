@@ -38,4 +38,24 @@ export interface Libelle {
     libelle: string,
 }
 
+// PAS TOUCHE
+
+export interface InOut {
+    date: string; // e.g., "12-2024"
+    montant: number;
+}
+
+export interface LibelleExpenses {
+    name: string; // e.g., "Experts/Intervenants externes"
+    inOuts: InOut[];
+}
+
+export interface Category {
+    name: string; // e.g., "Renumeration"
+    isIncome: boolean;
+    libelles: LibelleExpenses[]; // Updated to reference LibelleExpenses
+    totals?: { [month: string]: number }; // Optional for transformed totals
+    data?: { libelle: string; data: { [month: string]: number } }[]; // Transformed data
+}
+
 
