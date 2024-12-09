@@ -28,13 +28,12 @@ export class ProjectService {
         return this.http.get<any[]>(`${this.apiUrl}/Project/idproject/${id}`);
     }
 
-    getPrevisionalIncomes(id: number): Observable<any> {
-        return this.http.get<any[]>(`${this.apiUrl}/PrevisionRentree/projets/${id}`);
+    getGraphDataIncomes(projectId: number): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/Project/graphique/rentree/${projectId}`);
     }
-
-    //getPrevisionalExpenses(id: number): Observable<any> {
-    //    return this.http.get<any[]>(`${this.apiUrl}/PrevisionRentree/projets/${id}`);
-    //}
+    getGraphDataExpenses(projectId: number): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/Project/graphique/depense/${projectId}`);
+    }
 
     getExpensesByCategory(id: number): Observable<any> {
         return this.http.get<Project>(`${this.apiUrl}/Project/data/output/${id}`);
