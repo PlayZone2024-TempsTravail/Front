@@ -14,7 +14,10 @@ export class ProjectDetailsComponent implements OnInit {
     overallTotals: { [month: string]: number } = {}; // Overall totals for all categories
     chartData: any; // Data for the graph
     chartOptions: any; // Options for the graph
-    variation = 0; // Variation percentage
+    lastPrevisionExpense: number = 0;
+    lastRealExpense: number = 0;
+    variationExpense: number = 0;
+
 
     constructor(private route: ActivatedRoute, private projectService: ProjectService) {}
 
@@ -28,6 +31,9 @@ export class ProjectDetailsComponent implements OnInit {
             // Fetch graph data
             this.projectService.getGraphData(projectId).subscribe((graphData) => {
                 this.chartData = this.prepareChartData(graphData);
+                this.lastPrevisionExpense = this.getLastValue(graphData.prevision);
+                this.lastRealExpense = this.getLastValue(graphData.reel);
+                this.variationExpense = this.calculateVariation(this.lastPrevisionExpense, this.lastRealExpense);
             });
 
             // Fetch expense data
@@ -35,9 +41,6 @@ export class ProjectDetailsComponent implements OnInit {
                 this.expenseCategories = this.prepareExpenseCategories(categories);
                 this.overallTotals = this.calculateOverallTotals();
             });
-
-            // Calculate variation
-            this.calculateVariation();
         });
 
         // Configure chart options
@@ -56,12 +59,11 @@ export class ProjectDetailsComponent implements OnInit {
     }
 
     // Calculate variation percentage
-    calculateVariation(): void {
-        if (this.project && this.project.previsionDepenseActuelle > 0) {
-            this.variation = ((this.project.depenseReelActuelle - this.project.previsionDepenseActuelle) / this.project.previsionDepenseActuelle) * 100;
-        } else {
-            this.variation = 0;
+    private calculateVariation(real: number, prevision: number): number {
+        if (prevision === 0) {
+            return 0; // Évite la division par zéro
         }
+        return ((real - prevision) / prevision) * 100;
     }
 
     // Prepare categories for table display
@@ -164,5 +166,9 @@ export class ProjectDetailsComponent implements OnInit {
             start.setMonth(start.getMonth() + 1);
         }
         return months;
+    }
+
+    private getLastValue(data: number[]): number {
+        return data.length > 0 ? data[data.length - 1] : 0;
     }
 }

@@ -16,9 +16,9 @@
         </div>
 
         <div class="project-info-2">
-            <h5><strong>Prévision :</strong> {{ project.previsionDepenseActuelle | currency: 'EUR' }}</h5>
-            <h5><strong>Coût :</strong> {{ project.depenseReelActuelle | currency: 'EUR' }}</h5>
-            <h5><strong>Variation :</strong> {{ variation | number: '1.1-2' }} %</h5>
+            <h5><strong>Prévision :</strong> {{ lastPrevisionExpense | currency: 'EUR' }}</h5>
+            <h5><strong>Coût :</strong> {{ lastRealExpense | currency: 'EUR' }}</h5>
+            <h5><strong>Variation :</strong> {{ variationExpense | number: '1.1-2' }} %</h5>
         </div>
 
         <!-- Section du graphique -->
