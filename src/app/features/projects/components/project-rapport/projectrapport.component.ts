@@ -65,13 +65,7 @@ export class ProjectrapportComponent implements OnInit {
 
 
     send() {
-        console.log("ok cool mec ")
-        console.log(this.selectedProject)
-        console.log(this.date_start)
-        console.log(this.date_end)
-        console.log(this.selectedListLibeles)
-        console.log("--------------------")
-//converstion des dated
+        //converstion des dated
 
         this.rapportToDb.date_start = this.date_start
         this.rapportToDb.date_end = this.date_end
@@ -98,7 +92,6 @@ export class ProjectrapportComponent implements OnInit {
         return numbers;
     }
 
+
 }
 
-//TODO faire le form
-//TODO creation de l'ago pour envoyer au post le bon fichier json
