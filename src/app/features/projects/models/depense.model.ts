@@ -5,8 +5,8 @@ export interface DepenseDTO {
     projectId: number;
     organismeId: number;
     montant: number;
-    dateIntervention?: string;
-    dateFacturation: string;
+    dateIntervention?: Date;
+    dateFacturation: Date;
     motif?: string;
 }
 
@@ -16,8 +16,8 @@ export interface CreateDepenseDTO {
     projectId: number;
     organismeId: number;
     montant: number;
-    dateIntervention?: string;
-    dateFacturation: string;
+    dateIntervention?: Date;
+    dateFacturation: Date;
     motif?: string;
 }
 
@@ -43,8 +43,8 @@ export interface ProjectDTO {
     organismeName?: string;
     color?: string;
     montantBudget: number;
-    dateDebutProjet: string;
-    dateFinProjet: string;
+    dateDebutProjet: Date;
+    dateFinProjet: Date;
     chargeDeProjetId: number;
     chargeDeProjetName?: string;
     previsionDepenseActuelle: number;

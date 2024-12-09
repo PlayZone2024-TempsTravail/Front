@@ -11,22 +11,43 @@ export class DepenseService {
 
     constructor(private _http: HttpClient) {}
 
-    // Récupération des dépenses d'un projet
+    /**
+     * Récupère toutes les dépenses liées à un projet spécifique.
+     * @param projectId - ID du projet concerné.
+     * @returns Observable<DepenseDTO[]> - Un observable contenant la liste des dépenses.
+     */
     getDepensesByProjectId(projectId: number): Observable<DepenseDTO[]> {
         return this._http.get<DepenseDTO[]>(`${this.apiUrl}/Depense/projets/${projectId}`);
     }
 
-    // Ajout d'une dépense
+    /**
+     * Ajoute une nouvelle dépense au projet.
+     * @param depense - Objet contenant les informations de la dépense.
+     * @returns Observable<DepenseDTO> - Un observable avec la dépense ajoutée.
+     */
     addDepense(depense: CreateDepenseDTO): Observable<DepenseDTO> {
-        return this._http.post<DepenseDTO>(`${this.apiUrl}/Depense`, depense);
+        const depensePayload = {
+            ...depense,
+            dateIntervention: depense.dateIntervention ? new Date(depense.dateIntervention) : null,
+            dateFacturation: new Date(depense.dateFacturation),
+        };
+
+        return this._http.post<DepenseDTO>(`${this.apiUrl}/Depense`, depensePayload);
     }
 
-    // Récupération des libellés
+
+    /**
+     * Récupère la liste des libellés disponibles pour les dépenses.
+     * @returns Observable<LibeleDTO[]> - Un observable contenant les libellés.
+     */
     getLibeles(): Observable<LibeleDTO[]> {
         return this._http.get<LibeleDTO[]>(`${this.apiUrl}/Libele`);
     }
 
-    // Récupération des organismes
+    /**
+     * Récupère la liste des organismes liés aux projets.
+     * @returns Observable<OrganismeDTO[]> - Un observable contenant les organismes.
+     */
     getOrganismes(): Observable<OrganismeDTO[]> {
         return this._http.get<OrganismeDTO[]>(`${this.apiUrl}/Organisme`);
     }

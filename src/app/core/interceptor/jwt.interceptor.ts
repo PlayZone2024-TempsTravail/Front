@@ -14,12 +14,12 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
       })
     : req;
 
-  return next(clonedRequest).pipe(
-    catchError(err => {
-      if (err.status === 401) {
-        authService.logout();
-      }
-      return throwError(() => err);
-    })
-  );
+    return next(clonedRequest).pipe(
+        catchError(err => {
+            if (err.status === 401) {
+                authService.logout();
+            }
+            return throwError(() => err);
+        })
+    );
 };
