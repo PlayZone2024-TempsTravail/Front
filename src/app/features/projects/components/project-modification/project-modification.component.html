@@ -8,7 +8,7 @@
         <form [formGroup]="previsionIncomesForm" (ngSubmit)="addPrevisionIncome()">
             <div class="form-row">
                 <input type="date" formControlName="date" placeholder="Date" />
-                <input type="text" formControlName="motif" placeholder="Motif" />
+                <input type="text" formControlName="motif" placeholder="Motif" maxlength="255"/>
                 <select formControlName="libeleId">
                     <option *ngFor="let libele of incomeLibeles" [value]="libele.idLibele">{{ libele.name }}</option>
                 </select>
@@ -55,7 +55,7 @@
         <form [formGroup]="previsionExpensesForm" (ngSubmit)="addPrevisionExpense()">
             <div class="form-row">
                 <input type="date" formControlName="date" placeholder="Date" />
-                <input type="text" formControlName="motif" placeholder="Motif" />
+                <input type="text" formControlName="motif" placeholder="Motif" maxlength="255"/>
                 <select formControlName="categoryId" (change)="onCategoryChange($event)">
                     <option *ngFor="let category of expenseCategories" [value]="category.idCategory">
                         {{ category.name }}
