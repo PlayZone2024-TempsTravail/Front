@@ -13,6 +13,7 @@ import {RentreeCreateForm} from '../../forms/rentree.form';
 })
 export class EncodageRentreeProjetComponent implements OnInit {
     rentrees: RentreeDTO[] = [];
+    selectedRentree: RentreeDTO | null = null;
     libeles: LibeleDTO[] = [];
     organismes: OrganismeDTO[] = [];
     rentreeForm: FormGroup;
@@ -94,6 +95,23 @@ export class EncodageRentreeProjetComponent implements OnInit {
         this.displayForm = true;
     }
 
+    openEditRentreeForm(rentree: RentreeDTO) {
+        this.selectedRentree = rentree;
+        this.rentreeForm.patchValue({
+            idLibele: rentree.idLibele,
+            idOrganisme: rentree.idOrganisme,
+            montant: rentree.montant,
+            dateFacturation: rentree.dateFacturation ? new Date(rentree.dateFacturation) : null,
+            motif: rentree.motif ?? null
+        });
+        this.displayForm = true;
+    }
+
+    onDialogHide() {
+        this.displayForm = false;
+        this.selectedRentree = null;
+    }
+
     /**
      * Récupère le nom du libellé en fonction de son ID.
      * @param idLibele - ID du libellé.
@@ -133,17 +151,33 @@ export class EncodageRentreeProjetComponent implements OnInit {
             motif: formValue.motif,
         };
 
-        console.log('newRentree à envoyer:', newRentree);
-
-        this.rentreeService.addRentree(newRentree).subscribe({
-            next: (rentree) => {
-                this.rentrees.push(rentree);
-                this.displayForm = false;
-                this.rentreeForm.reset();
-            },
-            error: (err) => {
-                console.error("Erreur lors de l'ajout de la rentrée:", err);
-            }
-        });
+        if (this.selectedRentree) {
+            // Mode modification
+            this.rentreeService.updateRentree(this.selectedRentree.idRentree, newRentree).subscribe({
+                next: (updatedRentree) => {
+                    // Recharger la liste depuis le serveur
+                    this.loadRentrees();
+                    this.displayForm = false;
+                    this.rentreeForm.reset();
+                    this.selectedRentree = null;
+                },
+                error: (err) => {
+                    console.error("Erreur lors de la modification de la rentrée:", err.error.errors);
+                }
+            });
+        } else {
+            // Mode ajout
+            this.rentreeService.addRentree(newRentree).subscribe({
+                next: (rentree) => {
+                    this.displayForm = false;
+                    this.rentreeForm.reset();
+                    this.selectedRentree = null;
+                    this.loadRentrees(); // Recharger pour voir la nouvelle rentrée
+                },
+                error: (err) => {
+                    console.error("Erreur lors de l'ajout de la rentrée:", err);
+                }
+            });
+        }
     }
 }

@@ -21,6 +21,16 @@ export interface CreateDepenseDTO {
     motif?: string;
 }
 
+export interface UpdateDepenseDTO {
+    libeleId: number;
+    projectId: number;
+    organismeId?: number;
+    montant: number;
+    dateIntervention?: Date | null;
+    dateFacturation: Date | null;
+    motif?: string;
+}
+
 // Modèle OrganismeDTO
 export interface OrganismeDTO {
     idOrganisme: number;

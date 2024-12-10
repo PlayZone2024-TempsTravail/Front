@@ -1,6 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {CreateDepenseDTO, DepenseDTO, LibeleDTO, OrganismeDTO, ProjectDTO} from '../models/depense.model';
+import {
+    CreateDepenseDTO,
+    DepenseDTO,
+    LibeleDTO,
+    OrganismeDTO,
+    ProjectDTO,
+    UpdateDepenseDTO
+} from '../models/depense.model';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -28,12 +35,31 @@ export class DepenseService {
     addDepense(depense: CreateDepenseDTO): Observable<DepenseDTO> {
         const depensePayload = {
             ...depense,
+            organismeId: depense.organismeId ? depense.organismeId : 0, // null pas accepté donc on fout à 0
             dateIntervention: depense.dateIntervention ? new Date(depense.dateIntervention) : null,
             dateFacturation: new Date(depense.dateFacturation),
         };
 
         return this._http.post<DepenseDTO>(`${this.apiUrl}/Depense`, depensePayload);
     }
+
+    updateDepense(depenseId: number, depense: CreateDepenseDTO): Observable<DepenseDTO> {
+        // On construit le payload avec idDepense et les champs nécessaires
+        const depensePayload: UpdateDepenseDTO = {
+            libeleId: depense.libeleId,
+            projectId: depense.projectId,
+            organismeId: depense.organismeId ? depense.organismeId : 0,
+            montant: depense.montant,
+            dateIntervention: depense.dateIntervention ? new Date(depense.dateIntervention) : null,
+            dateFacturation: depense.dateFacturation ? new Date(depense.dateFacturation) : null,
+            motif: depense.motif,
+        };
+
+        // Appel sans l'ID dans l'URL
+        return this._http.put<DepenseDTO>(`${this.apiUrl}/Depense?id=${depenseId}`, depensePayload);
+
+    }
+
 
 
     /**

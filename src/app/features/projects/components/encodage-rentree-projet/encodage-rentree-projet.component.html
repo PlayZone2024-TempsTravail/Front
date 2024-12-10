@@ -24,6 +24,7 @@
                 <th>Motif</th>
                 <th>Montant</th>
                 <th>Date Facturation</th>
+                <th>Action</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-rentree>
@@ -33,12 +34,21 @@
                 <td>{{ rentree.motif }}</td>
                 <td>{{ rentree.montant | currency:'EUR' }}</td>
                 <td>{{ rentree.dateFacturation | date:'dd/MM/yyyy' }}</td>
+                <td>
+                    <button pButton icon="pi pi-pencil" label="Modifier" (click)="openEditRentreeForm(rentree)"></button>
+                </td>
             </tr>
         </ng-template>
     </p-table>
 
-    <p-dialog header="Ajouter une rentrée" [(visible)]="displayForm" [modal]="true" [closable]="true" [resizable]="false">
-        <form [formGroup]="rentreeForm" (ngSubmit)="submitRentree()">
+    <p-dialog header="{{ selectedRentree ? 'Modifier une rentrée' : 'Ajouter une rentrée' }}"
+              [(visible)]="displayForm"
+              [modal]="true"
+              [closable]="true"
+              [resizable]="false"
+              (onHide)="onDialogHide()">
+
+    <form [formGroup]="rentreeForm" (ngSubmit)="submitRentree()">
             <div class="p-fluid">
                 <div class="form-container">
                     <div>

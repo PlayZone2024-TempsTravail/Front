@@ -5,7 +5,7 @@ import { Validators } from '@angular/forms';
  */
 export const RentreeCreateForm = {
     idLibele: [null, Validators.required], // Libellé requis
-    idOrganisme: [null, Validators.required], // Organisme requis
+    idOrganisme: [null], // Organisme requis
     montant: [null, [Validators.required, Validators.min(0)]], // Montant requis et doit être >= 0
     dateFacturation: [null, Validators.required], // Date de facturation requise
     motif: [null], // Motif facultatif

@@ -15,6 +15,7 @@ import {DepenseCreateForm} from '../../forms/depense.form';
 })
 export class EncodageCoutsProjetComponent implements OnInit {
 
+    selectedDepense: DepenseDTO | null = null; // Dépense sélectionnée pour modification
     depenses: DepenseDTO[] = []; // Liste des dépenses du projet
     libeles: LibeleDTO[] = []; // Liste des libellés pour le formulaire
     organismes: OrganismeDTO[] = []; // Liste des organismes pour le formulaire
@@ -78,9 +79,25 @@ export class EncodageCoutsProjetComponent implements OnInit {
      * Ouvre le formulaire d'ajout d'une dépense.
      */
     openAddDepenseForm() {
+        this.selectedDepense = null;
         this.depenseForm.reset();
         this.displayForm = true;
     }
+
+    openEditDepenseForm(depense: DepenseDTO) {
+        this.selectedDepense = depense;
+        // Préremplir le formulaire avec les données de la dépense sélectionnée
+        this.depenseForm.patchValue({
+            libeleId: depense.libeleId,
+            organismeId: depense.organismeId ?? null,
+            motif: depense.motif ?? null,
+            montant: depense.montant,
+            dateIntervention: depense.dateIntervention ? new Date(depense.dateIntervention) : null,
+            dateFacturation: new Date(depense.dateFacturation),
+        });
+        this.displayForm = true;
+    }
+
 
     /**
      * Récupère le nom du libellé en fonction de son ID.
@@ -125,10 +142,39 @@ export class EncodageCoutsProjetComponent implements OnInit {
             motif: formValue.motif, // motif facultatif
         };
 
-        this.depenseService.addDepense(newDepense).subscribe((depense) => { // Appelle le service pour ajouter la dépense
-            this.depenses.push(depense); // Ajoute la dépense dans la liste locale
-            this.displayForm = false;
-            this.depenseForm.reset(); // Réinitialise le formulaire
-        });
+        if (this.selectedDepense) {
+            // Mode Modification
+            const depenseId = this.selectedDepense.idDepense;
+            // On suppose un DTO similaire à CreateDepenseDTO, sinon créez-en un pour update.
+
+            this.depenseService.updateDepense(depenseId, newDepense).subscribe({
+                next: (updatedDepense) => {
+                    // Mettre à jour la dépense dans la liste locale
+                    const index = this.depenses.findIndex(d => d.idDepense === depenseId);
+                    if (index !== -1) {
+                        this.depenses[index] = updatedDepense;
+                    }
+                    this.displayForm = false;
+                    this.depenseForm.reset();
+                    this.selectedDepense = null;
+                    this.loadDepenses(); // Rechargement de la liste depuis l'API
+                },
+                error: (err) => {
+                    console.log('Données du formulaire soumises :', newDepense);
+                    console.error('Erreur lors de la modification de la dépense:', err.error.errors);
+                }
+            });
+        }
+
+        else {
+            // Mode Ajout
+            this.depenseService.addDepense(newDepense).subscribe((depense) => { // Appelle le service pour ajouter la dépense
+                // this.depenses.push(depense); // Ajoute la dépense dans la liste locale
+                this.displayForm = false;
+                this.selectedDepense = null; // Annule la sélection de dépense actuelle
+                this.depenseForm.reset(); // Réinitialise le formulaire
+                this.loadDepenses(); // Rechargement de la liste depuis l'API
+            });
+        }
     }
 }

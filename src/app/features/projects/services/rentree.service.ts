@@ -36,6 +36,8 @@ export class RentreeService {
         return this._http.post<RentreeDTO>(`${this.apiUrl}/Rentree`, rentreePayload);
     }
 
+
+
     /**
      * Récupère la liste des libellés disponibles pour les dépenses.
      * @returns Observable<LibeleDTO[]> - Un observable contenant les libellés.
@@ -50,5 +52,13 @@ export class RentreeService {
      */
     getOrganismes(): Observable<OrganismeDTO[]> {
         return this._http.get<OrganismeDTO[]>(`${this.apiUrl}/Organisme`);
+    }
+
+    updateRentree(rentreeId: number, rentree: RentreeCreateFormDTO): Observable<RentreeDTO> {
+        const rentreePayload = {
+            ...rentree,
+            dateFacturation: rentree.dateFacturation ? new Date(rentree.dateFacturation) : null
+        };
+        return this._http.put<RentreeDTO>(`${this.apiUrl}/Rentree/${rentreeId}`, rentreePayload);
     }
 }

@@ -26,6 +26,7 @@
                 <th>Montant</th>
                 <th>Date Facturation</th>
                 <th>Date Intervention</th>
+                <th>Action</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-depense>
@@ -36,13 +37,16 @@
                 <td>{{ depense.montant | currency:'EUR' }}</td>
                 <td>{{ depense.dateFacturation | date:'dd/MM/yyyy' }}</td>
                 <td>{{ depense.dateIntervention | date:'dd/MM/yyyy' }}</td>
+                <td>
+                    <button pButton icon="pi pi-pencil" label="Modifier" class="modify-btn" (click)="openEditDepenseForm(depense)"></button>
+                </td>
             </tr>
         </ng-template>
     </p-table>
 
     <!-- Dialogue pour le formulaire d'ajout de dépense -->
     <p-dialog
-        header="Ajouter une dépense"
+        header="{{ selectedDepense ? 'Modifier une dépense' : 'Ajouter une dépense' }}"
         [(visible)]="displayForm"
         [modal]="true"
         [closable]="true"
@@ -111,7 +115,7 @@
                 </div>
 
                 <div class="p-field ajout">
-                    <button pButton type="submit" label="Ajouter"></button>
+                    <button pButton type="submit" [label]="selectedDepense ? 'Modifier' : 'Ajouter'"></button>
                 </div>
             </div>
         </form>
