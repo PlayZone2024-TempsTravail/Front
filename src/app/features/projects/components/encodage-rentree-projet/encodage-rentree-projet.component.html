@@ -1,17 +1,16 @@
 <a
     type="button"
     appBack>
-    <img src="/assets/back-button.svg" class="button-back" alt="Retour" width="62px" height="62px">
+    <img src="/assets/back-button.svg" class="button-back" alt="Retour" width="50px" height="50px">
 </a>
 
 <div class="rentree-list-container">
     <div class="header">
-        <div *ngIf="rentrees.length > 0">
+        @if (rentrees.length > 0) {
             <h2>Rentrées du projet {{ projectId }}</h2>
-        </div>
-        <div *ngIf="rentrees.length === 0">
+        } @else {
             <p>Aucune rentrée trouvée pour le projet {{ projectId }}.</p>
-        </div>
+        }
 
         <button pButton label="Ajouter une rentrée" icon="pi pi-plus" (click)="openAddRentreeForm()"></button>
     </div>
@@ -62,8 +61,9 @@
                                         placeholder="Sélectionner un libellé">
                             </p-dropdown>
 
-                            <small *ngIf="rentreeForm.get('libeleId')?.invalid && rentreeForm.get('libeleId')?.touched"
-                                   class="p-error">Le libellé est obligatoire.</small>
+                            @if (rentreeForm.get('libeleId')?.invalid && rentreeForm.get('libeleId')?.touched) {
+                                <small class="p-error">Le libellé est obligatoire.</small>
+                            }
                         </div>
 
                         <div class="p-field">
@@ -87,16 +87,18 @@
                         <div class="p-field">
                             <label for="montant">Montant</label>
                             <input id="montant" type="number" pInputText formControlName="montant" />
-                            <small *ngIf="rentreeForm.get('montant')?.invalid && rentreeForm.get('montant')?.touched"
-                                   class="p-error">Le montant doit être supérieur ou égal à 0.</small>
+                            @if (rentreeForm.get('montant')?.invalid && rentreeForm.get('montant')?.touched) {
+                                <small class="p-error">Le montant doit être supérieur ou égal à 0.</small>
+                            }
                         </div>
 
                         <div class="p-field">
                             <label for="dateFacturation">Date Facturation</label>
                             <p-calendar id="dateFacturation" formControlName="dateFacturation" [iconDisplay]="'input'"
                                         [showIcon]="true"></p-calendar>
-                            <small *ngIf="rentreeForm.get('dateFacturation')?.invalid && rentreeForm.get('dateFacturation')?.touched"
-                                   class="p-error">La date de facturation est obligatoire.</small>
+                            @if (rentreeForm.get('dateFacturation')?.invalid && rentreeForm.get('dateFacturation')?.touched) {
+                                <small class="p-error">La date de facturation est obligatoire.</small>
+                            }
                         </div>
                     </div>
                 </div>

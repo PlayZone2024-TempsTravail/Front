@@ -11,15 +11,26 @@ import {RentreeCreateForm} from '../../forms/rentree.form';
   templateUrl: './encodage-rentree-projet.component.html',
   styleUrl: './encodage-rentree-projet.component.scss'
 })
-export class EncodageRentreeProjetComponent implements OnInit {
-    rentrees: RentreeDTO[] = [];
-    selectedRentree: RentreeDTO | null = null;
-    libeles: LibeleDTO[] = [];
-    organismes: OrganismeDTO[] = [];
-    rentreeForm: FormGroup;
-    displayForm: boolean = false;
-    projectId!: number;
 
+/**
+ * Composant gérant l'encodage des rentrées (entrées financières) d'un projet.
+ * Permet d'ajouter et de modifier des rentrées.
+ */
+export class EncodageRentreeProjetComponent implements OnInit {
+    rentrees: RentreeDTO[] = []; // Liste des rentrées du projet
+    selectedRentree: RentreeDTO | null = null; // Rentrée sélectionnée pour modification
+    libeles: LibeleDTO[] = []; // Liste des libellés pour le formulaire
+    organismes: OrganismeDTO[] = []; // Liste des organismes pour le formulaire
+    rentreeForm: FormGroup; // Formulaire d'ajout/modification de rentrée
+    displayForm: boolean = false; // Contrôle de l'affichage du formulaire
+    projectId!: number; // ID du projet, récupéré depuis la route
+
+    /**
+     * Constructeur du composant EncodageRentreeProjetComponent
+     * @param rentreeService Service permettant la gestion des rentrées
+     * @param fb FormBuilder pour construire le FormGroup
+     * @param route ActivatedRoute pour accéder aux paramètres de l'URL
+     */
     constructor(
         private rentreeService: RentreeService,
         private fb: FormBuilder,
@@ -28,26 +39,33 @@ export class EncodageRentreeProjetComponent implements OnInit {
         this.rentreeForm = this.fb.group({...RentreeCreateForm});
     }
 
+    /**
+     * Méthode OnInit du composant.
+     * Récupère l'id du projet, puis charge les rentrées, libellés et organismes.
+     * @returns void
+     */
     ngOnInit(): void {
         this.route.paramMap.subscribe(params => {
-            const id = params.get('id');
+            const id = params.get('id'); // Récupère l'ID du projet
             if (id) {
-                this.projectId = +id;
-                this.loadRentrees();
+                this.projectId = +id; // Convertit en number
+                this.loadRentrees(); // Charge les rentrées
             } else {
                 console.error('Aucun projectId fourni dans les paramètres de la route.');
             }
         });
-        this.loadLibeles();
-        this.loadOrganismes();
+        this.loadLibeles(); // Charge les libellés
+        this.loadOrganismes(); // Charge les organismes
     }
 
     /**
      * Charge les rentrées liées au projet.
+     * @returns void
      */
     loadRentrees(): void {
         this.rentreeService.getRentreesByProjectId(this.projectId).subscribe({
             next: (rentrees) => {
+                // Trie les rentrées par dateFacturation décroissante
                 this.rentrees = rentrees.sort(
                     (a, b) => new Date(b.dateFacturation).getTime() - new Date(a.dateFacturation).getTime()
                 );
@@ -60,11 +78,12 @@ export class EncodageRentreeProjetComponent implements OnInit {
 
     /**
      * Charge les libellés pour le formulaire.
+     * @returns void
      */
-    loadLibeles() {
+    loadLibeles(): void {
         this.rentreeService.getLibeles().subscribe({
             next: (libeles) => {
-                this.libeles = libeles;
+                this.libeles = libeles; // Stocke les libellés
             },
             error: (err) => {
                 console.error("Erreur chargement libelés:", err);
@@ -74,11 +93,12 @@ export class EncodageRentreeProjetComponent implements OnInit {
 
     /**
      * Charge les organismes pour le formulaire.
+     * @returns void
      */
-    loadOrganismes() {
+    loadOrganismes(): void {
         this.rentreeService.getOrganismes().subscribe({
             next: (organismes) => {
-                this.organismes = organismes;
+                this.organismes = organismes; // Stocke les organismes
             },
             error: (err) => {
                 console.error("Erreur chargement organismes:", err);
@@ -86,17 +106,24 @@ export class EncodageRentreeProjetComponent implements OnInit {
         });
     }
 
-
     /**
      * Ouvre le formulaire d'ajout d'une rentrée.
+     * @returns void
      */
-    openAddRentreeForm() {
-        this.rentreeForm.reset();
-        this.displayForm = true;
+    openAddRentreeForm(): void {
+        this.rentreeForm.reset(); // Reset le formulaire
+        this.displayForm = true; // Affiche le dialog
     }
 
-    openEditRentreeForm(rentree: RentreeDTO) {
-        this.selectedRentree = rentree;
+    /**
+     * Ouvre le formulaire pour modifier une rentrée existante.
+     * Préremplit le formulaire avec les données de la rentrée.
+     * @param rentree La rentrée à modifier
+     * @returns void
+     */
+    openEditRentreeForm(rentree: RentreeDTO): void {
+        this.selectedRentree = rentree; // Mode édition
+        // Préremplit le formulaire
         this.rentreeForm.patchValue({
             idLibele: rentree.idLibele,
             idOrganisme: rentree.idOrganisme,
@@ -104,13 +131,19 @@ export class EncodageRentreeProjetComponent implements OnInit {
             dateFacturation: rentree.dateFacturation ? new Date(rentree.dateFacturation) : null,
             motif: rentree.motif ?? null
         });
-        this.displayForm = true;
+        this.displayForm = true; // Affiche le dialog
     }
 
-    onDialogHide() {
+    /**
+     * Méthode appelée à la fermeture du dialog.
+     * Réinitialise displayForm et selectedRentree
+     * @returns void
+     */
+    onDialogHide(): void {
         this.displayForm = false;
         this.selectedRentree = null;
     }
+
 
     /**
      * Récupère le nom du libellé en fonction de son ID.
@@ -133,15 +166,18 @@ export class EncodageRentreeProjetComponent implements OnInit {
     }
 
     /**
-     * Soumet le formulaire d'ajout d'une rentrée.
+     * Soumet le formulaire pour ajouter ou modifier une rentrée.
+     * @returns void
      */
     submitRentree() {
         if (this.rentreeForm.invalid) {
-            this.rentreeForm.markAllAsTouched();
+            this.rentreeForm.markAllAsTouched(); // Marque tous les champs comme touchés, affichant les erreurs
             return;
         }
-
+        // Récupération des valeurs du formulaire
         const formValue = this.rentreeForm.value;
+
+        // Prépare l'objet à envoyer à l'API
         const newRentree: RentreeCreateFormDTO = {
             idLibele: formValue.idLibele,
             idProject: this.projectId,
@@ -151,6 +187,7 @@ export class EncodageRentreeProjetComponent implements OnInit {
             motif: formValue.motif,
         };
 
+        // Mode Modification
         if (this.selectedRentree) {
             // Mode modification
             this.rentreeService.updateRentree(this.selectedRentree.idRentree, newRentree).subscribe({
@@ -175,7 +212,7 @@ export class EncodageRentreeProjetComponent implements OnInit {
                     this.loadRentrees(); // Recharger pour voir la nouvelle rentrée
                 },
                 error: (err) => {
-                    console.error("Erreur lors de l'ajout de la rentrée:", err);
+                    console.error("Erreur lors de l'ajout de la rentrée:", err.error.errors);
                 }
             });
         }

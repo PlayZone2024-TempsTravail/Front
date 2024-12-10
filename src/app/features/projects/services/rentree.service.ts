@@ -54,6 +54,11 @@ export class RentreeService {
         return this._http.get<OrganismeDTO[]>(`${this.apiUrl}/Organisme`);
     }
 
+    /**
+     * Met à jour une rentrée par son ID.
+     * @param rentreeId
+     * @param rentree
+     */
     updateRentree(rentreeId: number, rentree: RentreeCreateFormDTO): Observable<RentreeDTO> {
         const rentreePayload = {
             ...rentree,

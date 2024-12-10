@@ -43,6 +43,11 @@ export class DepenseService {
         return this._http.post<DepenseDTO>(`${this.apiUrl}/Depense`, depensePayload);
     }
 
+    /**
+     * Modifie une dépense liée à un projet.
+     * @param depenseId
+     * @param depense
+     */
     updateDepense(depenseId: number, depense: CreateDepenseDTO): Observable<DepenseDTO> {
         // On construit le payload avec idDepense et les champs nécessaires
         const depensePayload: UpdateDepenseDTO = {
