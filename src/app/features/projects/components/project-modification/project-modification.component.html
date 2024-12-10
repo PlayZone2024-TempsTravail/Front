@@ -7,7 +7,7 @@
         <h3>Prévisions Entrées</h3>
         <form [formGroup]="previsionIncomesForm" (ngSubmit)="addPrevisionIncome()">
             <div class="form-row">
-                <input type="date" formControlName="date" placeholder="Date" />
+                <input type="date" formControlName="date" placeholder="Date"/>
                 <input type="text" formControlName="motif" placeholder="Motif" maxlength="255"/>
                 <select formControlName="idCategory" (change)="onIncomeCategoryChange($event)">
                     <option *ngFor="let category of incomeCategories" [value]="category.idCategory">
@@ -19,7 +19,7 @@
                         {{ libele.libeleName }}
                     </option>
                 </select>
-                <input type="number" formControlName="montant" placeholder="Montant" />
+                <input type="number" formControlName="montant" placeholder="Montant"/>
                 <button type="submit" [disabled]="previsionIncomesForm.invalid">+</button>
             </div>
         </form>
@@ -46,9 +46,9 @@
                     <td>{{ income.cumul | currency: 'EUR' }}</td>
                     <td>
                         <button
-                                class="delete-btn"
-                                (click)="deletePrevisionIncome(income.idPrevisionRentree)"
-                                title="Delete this entry"
+                            class="delete-btn"
+                            (click)="deletePrevisionIncome(income.idPrevisionRentree)"
+                            title="Delete this entry"
                         >
                             🗑️
                         </button>
@@ -63,7 +63,7 @@
         <h3>Prévisions Sorties</h3>
         <form [formGroup]="previsionExpensesForm" (ngSubmit)="addPrevisionExpense()">
             <div class="form-row">
-                <input type="date" formControlName="date" placeholder="Date" />
+                <input type="date" formControlName="date" placeholder="Date"/>
                 <input type="text" formControlName="motif" placeholder="Motif" maxlength="255"/>
                 <select formControlName="idCategory" (change)="onExpenseCategoryChange($event)">
                     <option *ngFor="let category of expenseCategories" [value]="category.idCategory">
@@ -75,7 +75,7 @@
                         {{ libele.libeleName }}
                     </option>
                 </select>
-                <input type="number" formControlName="montant" placeholder="Montant" />
+                <input type="number" formControlName="montant" placeholder="Montant"/>
                 <button type="submit" [disabled]="previsionExpensesForm.invalid">+</button>
             </div>
         </form>
@@ -100,9 +100,9 @@
                     <td>{{ expense.cumul | currency: 'EUR' }}</td>
                     <td>
                         <button
-                                class="delete-btn"
-                                (click)="deletePrevisionExpense(expense.idPrevisionBudgetCategory)"
-                                title="Delete this entry"
+                            class="delete-btn"
+                            (click)="deletePrevisionExpense(expense.idPrevisionBudgetCategory)"
+                            title="Delete this entry"
                         >
                             🗑️
                         </button>
@@ -110,5 +110,35 @@
                 </tr>
             </ng-template>
         </p-table>
+    </div>
+
+    <!-- Table Frais Generaux -->
+    <div class="tableFrais">
+        <h3>Frais généraux totaux</h3>
+        <form [formGroup]="FraisGenerauxForm">
+            <table class="p-datatable p-component">
+                <thead>
+                <tr>
+                    <th>Libellé</th>
+                    <th>Valeur</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let libele of libeleValues; let i = index" [formGroupName]="i">
+                    <td>{{ libele.get('name')?.value }}</td>
+                    <td>
+                        <input
+                            formControlName="value"
+                            mode="decimal"
+                            (ngModelChange)="CalcultotalFraisGeneraux()">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+        <div class="summary">
+            <h4>Total des frais généraux : {{ totalFraisGeneraux | number:'1.2-2' }} €</h4>
+        </div>
+        <button pButton type="button" label="Soumettre" (click)="submitForm()"></button>
     </div>
 </div>

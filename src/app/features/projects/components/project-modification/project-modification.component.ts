@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { ProjectService } from '../../services/project.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { LibeleWithName } from '../../models/project.model';
-import { ActivatedRoute } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {ProjectService} from '../../services/project.service';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {LibeleWithName} from '../../models/project.model';
+import {ActivatedRoute} from '@angular/router';
 import {log} from "@angular-devkit/build-angular/src/builders/ssr-dev-server";
 
 @Component({
@@ -13,6 +13,7 @@ import {log} from "@angular-devkit/build-angular/src/builders/ssr-dev-server";
 export class ProjectModificationComponent implements OnInit {
     previsionIncomesForm: FormGroup;
     previsionExpensesForm: FormGroup;
+    FraisGenerauxForm: FormGroup;
     previsionIncomes: any[] = [];
     previsionExpenses: any[] = [];
     incomeLibeles: LibeleWithName[] = [];
@@ -22,13 +23,17 @@ export class ProjectModificationComponent implements OnInit {
     filteredIncomeLibeles: LibeleWithName[] = [];
     filteredExpenseLibeles: LibeleWithName[] = [];
     projectId!: number; // Store the dynamic project ID
+    libelesFraisGeneraux: any[] = [];
+    filteredLibeles: any[] = [];
+    totalFraisGeneraux: number = 0;
+    libeleValues: any[] = [];
 
     constructor(private fb: FormBuilder, private projectService: ProjectService, private route: ActivatedRoute) {
         this.previsionIncomesForm = this.fb.group({
             date: ['', Validators.required],
             motif: ['', Validators.required],
             idCategory: ['', Validators.required],
-            idLibele: [{ value: '', disabled: true }, Validators.required], // Disabled until category is selected
+            idLibele: [{value: '', disabled: true}, Validators.required], // Disabled until category is selected
             montant: [0, [Validators.required, Validators.min(1)]],
         });
 
@@ -36,8 +41,11 @@ export class ProjectModificationComponent implements OnInit {
             date: ['', Validators.required],
             motif: ['', Validators.required],
             idCategory: ['', Validators.required],
-            idLibele: [{ value: '', disabled: true }, Validators.required], // Disabled until category is selected
+            idLibele: [{value: '', disabled: true}, Validators.required], // Disabled until category is selected
             montant: [0, [Validators.required, Validators.min(1)]],
+        });
+        this.FraisGenerauxForm = this.fb.group({
+            libeleValues: this.fb.array([]),
         });
     }
 
@@ -54,6 +62,7 @@ export class ProjectModificationComponent implements OnInit {
         this.loadIncomeCategories();
         this.loadIncomesPrevisions();
         this.loadExpensesPrevisions();
+        this.initFraisGenerauxForm();
     }
 
     // Load Libeles (only for idCategory 1)
@@ -104,6 +113,31 @@ export class ProjectModificationComponent implements OnInit {
             this.loadIncomesPrevisions(); // Reload the list after adding
             this.previsionIncomesForm.reset();
         });
+    }
+
+    initFraisGenerauxForm(): void {
+        this.projectService.getLibeles().subscribe((libeles) => {
+            this.libelesFraisGeneraux = libeles.filter((libele) => libele.idCategory === 4);
+        });
+    }
+
+    CalcultotalFraisGeneraux() {
+        const libeleValues = this.FraisGenerauxForm.get('libeleValues') ;
+
+        this.totalFraisGeneraux = libeleValues!.value.reduce(
+            (sum: number, libele: any) => sum + Number(libele.value), 0);
+    }
+
+    get libeleValueArray() {
+        return this.FraisGenerauxForm.get('libeleValues') ;
+    }
+
+    submitForm() {
+        console.log('Form Values:', this.FraisGenerauxForm.value.libeleValues);
+        console.log('Total des frais généraux:', this.totalFraisGeneraux);
+
+        //TODO
+        // Post vers API prevision LIBELE
     }
 
     // Add new expense
@@ -171,7 +205,7 @@ export class ProjectModificationComponent implements OnInit {
         let cumul = 0;
         return entries.map((entry) => {
             cumul += entry.montant;
-            return { ...entry, cumul };
+            return {...entry, cumul};
         });
     }
 }
