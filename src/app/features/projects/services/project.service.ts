@@ -68,7 +68,7 @@ export class ProjectService {
     }
 
     getPrevisionalExpensesByLibele(id: number): Observable<any[]> {
-        return this.http.get<any[]>(`${this.apiUrl}/PrevisionBudgetCategory/project/${id}`);
+        return this.http.get<any[]>(`${this.apiUrl}/PrevisionBudgetLibele/project/${id}`);
     }
 
     addPrevisionIncome(income: any): Observable<any> {

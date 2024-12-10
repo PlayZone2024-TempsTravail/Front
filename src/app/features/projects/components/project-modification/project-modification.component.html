@@ -86,6 +86,7 @@
                     <th>Date</th>
                     <th>Motif</th>
                     <th>Catégorie</th>
+                    <th>Libelles</th>
                     <th>Montant</th>
                     <th>Cumul</th>
                     <th></th>
@@ -96,12 +97,13 @@
                     <td>{{ expense.date | date: 'dd/MM/yyyy' }}</td>
                     <td>{{ expense.motif }}</td>
                     <td>{{ expense.categoryName }}</td>
+                    <td>{{ !expense.estimationParCategorie ? expense.libeleName : '' }}</td>
                     <td>{{ expense.montant | currency: 'EUR' }}</td>
                     <td>{{ expense.cumul | currency: 'EUR' }}</td>
                     <td>
                         <button
                                 class="delete-btn"
-                                (click)="deletePrevisionExpense(expense.idPrevisionBudgetCategory)"
+                                (click)="deletePrevisionExpense(expense.idPrevisionBudgetCategory || expense.idPrevisionBudgetLibele)"
                                 title="Delete this entry"
                         >
                             🗑️
