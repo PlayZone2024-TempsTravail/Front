@@ -7,7 +7,7 @@ import { UserSalaire, UserRole, UserDTO, UserForm, Role } from '../models/user.d
     providedIn: 'root',
 })
 export class UserService {
-    private apiUrl = 'http://api.technobel.pro:444/api';
+    private apiUrl = 'http://api2.technobel.pro:444/api';
 
     constructor(private _http: HttpClient) {}
 
@@ -40,9 +40,10 @@ export class UserService {
             prenom: userForm.prenom,
             email: userForm.email,
             password: userForm.password || 'password', // Mot de passe par défaut si non fourni (pour les tests)
-            isActive: userForm.isActive !== undefined ? userForm.isActive : true,  // Actif par défaut
+            isActive: userForm.isActive !== null ? userForm.isActive : true,  // Actif par défaut
         };
 
+        console.log(newUser)
         return this._http.post<UserDTO>(`${this.apiUrl}/User`, newUser).pipe(
             switchMap((createdUser) => {  // Une fois l'utilisateur créé, on ajoute ses rôles et salaire
                 const rolesReq = userForm.roles.map((roleId) =>

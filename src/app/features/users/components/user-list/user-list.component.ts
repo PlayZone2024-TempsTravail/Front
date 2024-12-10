@@ -186,7 +186,7 @@ export class UserListComponent implements OnInit {
                 error: (err) => {
                     console.error('Erreur lors de l\'ajout de l\'utilisateur :', err); // Gère les erreurs lors de l'ajout
                     if (err.error) {
-                        console.error('Détails de l\'erreur :', err.error); // Affiche des détails supplémentaires sur l'erreur si disponibles
+                        console.error('Détails de l\'erreur :', err.error.errors); // Affiche des détails supplémentaires sur l'erreur si disponibles
                     }
                 },
             });
