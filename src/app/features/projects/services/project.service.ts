@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
 })
 export class ProjectService {
 
-    private apiUrl = 'http://api.technobel.pro:444/api'; //attention changer quand vrai api
+    private apiUrl = 'http://api2.technobel.pro:444/api'; //attention changer quand vrai api
     constructor(private http: HttpClient) { }
 
     getAllProjects(): Observable<Project[]> {
@@ -63,7 +63,11 @@ export class ProjectService {
         return this.http.get<any[]>(`${this.apiUrl}/PrevisionRentree/${id}`);
     }
 
-    getPrevisionalExpenses(id: number): Observable<any[]> {
+    getPrevisionalExpensesByCategory(id: number): Observable<any[]> {
+        return this.http.get<any[]>(`${this.apiUrl}/PrevisionBudgetCategory/project/${id}`);
+    }
+
+    getPrevisionalExpensesByLibele(id: number): Observable<any[]> {
         return this.http.get<any[]>(`${this.apiUrl}/PrevisionBudgetCategory/project/${id}`);
     }
 
@@ -71,16 +75,24 @@ export class ProjectService {
         return this.http.post(`${this.apiUrl}/PrevisionRentree`, income);
     }
 
-    addPrevisionExpense(expense: any): Observable<any> {
+    addPrevisionExpenseByCategory(expense: any): Observable<any> {
         return this.http.post(`${this.apiUrl}/PrevisionBudgetCategory`, expense);
+    }
+
+    addPrevisionExpenseByLibele(expense: any): Observable<any> {
+        return this.http.post(`${this.apiUrl}/PrevisionBudgetLibele`, expense);
     }
 
     deletePrevisionIncome(id: number): Observable<any> {
         return this.http.delete(`${this.apiUrl}/PrevisionRentree/${id}`);
     }
 
-    deletePrevisionExpense(id: number): Observable<any> {
+    deletePrevisionExpenseByCategory(id: number): Observable<any> {
         return this.http.delete(`${this.apiUrl}/PrevisionBudgetCategory/${id}`);
+    }
+
+    deletePrevisionExpenseByLibele(id: number): Observable<any> {
+        return this.http.delete(`${this.apiUrl}/PrevisionBudgetLibele/${id}`);
     }
 
     getAllOrganismes(): Observable<any[]> {

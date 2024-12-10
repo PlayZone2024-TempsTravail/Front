@@ -56,7 +56,7 @@ export class ProjectModificationComponent implements OnInit {
         this.loadExpensesPrevisions();
     }
 
-    // Load Libeles (only for idCategory 1)
+    // Load Libeles (only for isIncome = true)
     loadIncomeLibeles(): void {
         this.projectService.getLibeles().subscribe((libeles) => {
             this.incomeLibeles = libeles.filter((libele) => libele.isIncome);
@@ -90,9 +90,11 @@ export class ProjectModificationComponent implements OnInit {
 
     // Load Previsions Dépenses
     loadExpensesPrevisions(): void {
-        this.projectService.getPrevisionalExpenses(this.projectId).subscribe((data) => {
-            this.previsionExpenses = this.calculateCumul(data);
-            this.previsionExpenses = this.previsionExpenses.filter((expense) => (expense.isIncome === false))
+        this.projectService.getPrevisionalExpensesByCategory(this.projectId).subscribe((data) => {
+            // Filter out entries where isIncome === true first
+            const filteredExpenses = data.filter((expense) => expense.isIncome === false);
+            // Then calculate the cumulative amounts
+            this.previsionExpenses = this.calculateCumul(filteredExpenses);
         });
     }
 
@@ -100,6 +102,8 @@ export class ProjectModificationComponent implements OnInit {
     addPrevisionIncome(): void {
         const newIncome = this.previsionIncomesForm.value;
         newIncome.projectId = this.projectId; // Use dynamic project ID
+        newIncome.organismeId = null;
+        newIncome.libeleId = newIncome.idLibele; // Ensure the correct key is used
         this.projectService.addPrevisionIncome(newIncome).subscribe(() => {
             this.loadIncomesPrevisions(); // Reload the list after adding
             this.previsionIncomesForm.reset();
@@ -110,7 +114,8 @@ export class ProjectModificationComponent implements OnInit {
     addPrevisionExpense(): void {
         const newExpense = this.previsionExpensesForm.value;
         newExpense.projectId = this.projectId; // Use dynamic project ID
-        this.projectService.addPrevisionExpense(newExpense).subscribe(() => {
+        newExpense.categoryId = newExpense.idCategory; // Ensure the correct key is used
+        this.projectService.addPrevisionExpenseByCategory(newExpense).subscribe(() => {
             this.loadExpensesPrevisions(); // Reload the list after adding
             this.previsionExpensesForm.reset();
         });
@@ -156,7 +161,7 @@ export class ProjectModificationComponent implements OnInit {
     // Delete a prevision expense
     deletePrevisionExpense(id: number): void {
         if (confirm('Are you sure you want to delete this entry?')) {
-            this.projectService.deletePrevisionExpense(id).subscribe(() => {
+            this.projectService.deletePrevisionExpenseByCategory(id).subscribe(() => {
                 console.log('Expense deleted successfully');
                 this.loadExpensesPrevisions(); // Reload the list after deleting
             });
