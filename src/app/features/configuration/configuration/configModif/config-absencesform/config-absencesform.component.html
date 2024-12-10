@@ -1,0 +1,55 @@
+<a
+    type="button"
+    appBack>
+    <img src="/assets/back-button.svg" class="button-back" alt="Retour" width="62px" height="62px">
+</a>
+
+<h3>Nomenclature absences</h3>
+
+<h4>Absences</h4>
+
+
+<div>
+    <p-table [value]="configAbsences" [paginator]="true" [rows]="4" [tableStyle]="{'min-width':'50rem'}" #dt>
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Abreviation</th>
+                <th>Nom</th>
+                <th>Statut</th>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-configAbsence>
+            <tr>
+                <td>{{configAbsence.abreviation}}</td>
+                <td>{{configAbsence.name}}</td>
+                <td>
+                    <p-chip
+                        [label]="configAbsence.isActive ? 'Actif': 'Inactif'">
+
+                    </p-chip>
+                </td>
+
+
+            </tr>
+
+        </ng-template>
+
+
+    </p-table>
+
+</div>
+
+<div>
+
+    <p-floatLabel>
+        <input pInputText id="abreviation" [(ngModel)]="Newabreviation" />
+        <label for="abreviation">Abréviation</label>
+    </p-floatLabel>
+    <p-floatLabel>
+        <input pInputText id="name" [(ngModel)]="NewName" />
+        <label for="name">Non du nouveau champ</label>
+    </p-floatLabel>
+
+
+</div>

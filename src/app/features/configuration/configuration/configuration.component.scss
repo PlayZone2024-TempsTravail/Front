@@ -13,8 +13,6 @@ h6{
     display: flex;
     justify-content: center;
     align-items: center;
-
-
     margin: 5px;
 }
 
@@ -22,6 +20,8 @@ input{
     border-color:rgba(195, 195, 195, 0.5);
     border-radius: 5px;
     text-align: center;
+    height: 30px;
+    color: grey;
 }
 
 p-button{
@@ -49,5 +49,5 @@ p-button{
 }
 .p-button-editer{
     margin:10px;
-    
+
 }

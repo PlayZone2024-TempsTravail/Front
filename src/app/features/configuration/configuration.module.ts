@@ -12,11 +12,15 @@ import {FloatLabelModule} from 'primeng/floatlabel';
 import {SharedModule} from '../../shared/shared.module';
 import {DividerModule} from 'primeng/divider';
 import {InputNumberModule} from 'primeng/inputnumber';
+import {ToastModule} from "primeng/toast";
+import { MessageService } from 'primeng/api';
+import { ConfigAbsencesformComponent } from './configuration/configModif/config-absencesform/config-absencesform.component';
 
 
 @NgModule({
   declarations: [
-    ConfigurationComponent
+    ConfigurationComponent,
+    ConfigAbsencesformComponent
   ],
     imports: [
         CommonModule,
@@ -29,7 +33,9 @@ import {InputNumberModule} from 'primeng/inputnumber';
         FloatLabelModule,
         SharedModule,
         DividerModule,
-        InputNumberModule
-    ]
+        InputNumberModule,
+        ToastModule
+    ],
+    providers: [MessageService]
 })
 export class ConfigurationModule { }
