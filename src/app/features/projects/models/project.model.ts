@@ -39,9 +39,11 @@ export interface Libelle {
 }
 
 export interface LibeleWithName {
+    isIncome: boolean,
     idLibele: number,
     idCategory: number,
-    name: string,
+    libeleName: string,
+    categoryName: string,
 }
 
 

@@ -45,9 +45,11 @@ export class ProjectService {
         return this.http.get<any[]>(`${this.apiUrl}/Libele`).pipe(
             map((response) =>
                 response.map((libele) => ({
-                    idLibele: libele.idLibele, // Map API's idLibele to id_libele
-                    idCategory: libele.idCategory, // Map API's idCategory to libele
-                    name: libele.name,       // Map API's name to libele
+                    isIncome: libele.isIncome,
+                    idLibele: libele.idLibele,
+                    idCategory: libele.idCategory,
+                    libeleName: libele.libeleName,
+                    categoryName : libele.categoryName,
                 }))
             )
         );

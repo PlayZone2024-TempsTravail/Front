@@ -3,6 +3,7 @@ import { ProjectService } from '../../services/project.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LibeleWithName } from '../../models/project.model';
 import { ActivatedRoute } from '@angular/router';
+import {log} from "@angular-devkit/build-angular/src/builders/ssr-dev-server";
 
 @Component({
     selector: 'app-project-modification',
@@ -17,6 +18,8 @@ export class ProjectModificationComponent implements OnInit {
     incomeLibeles: LibeleWithName[] = [];
     expenseLibeles: LibeleWithName[] = [];
     expenseCategories: any[] = [];
+    incomeCategories: any[] = [];
+    filteredIncomeLibeles: LibeleWithName[] = [];
     filteredExpenseLibeles: LibeleWithName[] = [];
     projectId!: number; // Store the dynamic project ID
 
@@ -24,15 +27,16 @@ export class ProjectModificationComponent implements OnInit {
         this.previsionIncomesForm = this.fb.group({
             date: ['', Validators.required],
             motif: ['', Validators.required],
-            libeleId: ['', Validators.required],
+            idCategory: ['', Validators.required],
+            idLibele: [{ value: '', disabled: true }, Validators.required], // Disabled until category is selected
             montant: [0, [Validators.required, Validators.min(1)]],
         });
 
         this.previsionExpensesForm = this.fb.group({
             date: ['', Validators.required],
             motif: ['', Validators.required],
-            categoryId: ['', Validators.required],
-            libeleId: [{ value: '', disabled: true }, Validators.required], // Disabled until category is selected
+            idCategory: ['', Validators.required],
+            idLibele: [{ value: '', disabled: true }, Validators.required], // Disabled until category is selected
             montant: [0, [Validators.required, Validators.min(1)]],
         });
     }
@@ -47,6 +51,7 @@ export class ProjectModificationComponent implements OnInit {
         this.loadIncomeLibeles();
         this.loadExpenseLibeles();
         this.loadExpenseCategories();
+        this.loadIncomeCategories();
         this.loadIncomesPrevisions();
         this.loadExpensesPrevisions();
     }
@@ -54,19 +59,25 @@ export class ProjectModificationComponent implements OnInit {
     // Load Libeles (only for idCategory 1)
     loadIncomeLibeles(): void {
         this.projectService.getLibeles().subscribe((libeles) => {
-            this.incomeLibeles = libeles.filter((libele) => libele.idCategory === 1);
+            this.incomeLibeles = libeles.filter((libele) => libele.isIncome);
         });
     }
 
     loadExpenseLibeles(): void {
         this.projectService.getLibeles().subscribe((libeles) => {
-            this.expenseLibeles = libeles.filter((libele) => libele.idCategory !== 1);
+            this.expenseLibeles = libeles.filter((libele) => !libele.isIncome);
         });
     }
 
     loadExpenseCategories(): void {
         this.projectService.getCategories().subscribe((categories) => {
             this.expenseCategories = categories.filter((category) => !category.isIncome);
+        });
+    }
+
+    loadIncomeCategories(): void {
+        this.projectService.getCategories().subscribe((categories) => {
+            this.incomeCategories = categories.filter((category) => category.isIncome);
         });
     }
 
@@ -81,6 +92,7 @@ export class ProjectModificationComponent implements OnInit {
     loadExpensesPrevisions(): void {
         this.projectService.getPrevisionalExpenses(this.projectId).subscribe((data) => {
             this.previsionExpenses = this.calculateCumul(data);
+            this.previsionExpenses = this.previsionExpenses.filter((expense) => (expense.isIncome === false))
         });
     }
 
@@ -104,17 +116,30 @@ export class ProjectModificationComponent implements OnInit {
         });
     }
 
-    // Filter Libeles based on selected category
-    onCategoryChange(event: Event): void {
+    // Filter Expenses Libeles based on selected category
+    onExpenseCategoryChange(event: Event): void {
         const target = event.target as HTMLSelectElement;
-        const categoryId = Number(target.value);
-
-        if (isNaN(categoryId)) {
-            this.filteredExpenseLibeles = [];
-            this.previsionExpensesForm.get('libeleId')?.disable();
+        const idCategory = Number(target.value);
+        if (!isNaN(idCategory)) {
+            this.filteredExpenseLibeles = this.expenseLibeles.filter((libele) => libele.idCategory === idCategory);
+            this.previsionExpensesForm.get('idLibele')?.enable();
         } else {
-            this.filteredExpenseLibeles = this.expenseLibeles.filter((libele) => libele.idCategory === categoryId);
-            this.previsionExpensesForm.get('libeleId')?.enable();
+            this.filteredExpenseLibeles = [];
+            this.previsionExpensesForm.get('idLibele')?.disable();
+        }
+    }
+
+    // Filter Income Libeles based on selected category
+    onIncomeCategoryChange(event: Event): void {
+        const target = event.target as HTMLSelectElement;
+        const idCategory = Number(target.value);
+        if (!isNaN(idCategory)) {
+            console.log(this.incomeLibeles)
+            this.filteredIncomeLibeles = this.incomeLibeles.filter((libele) => libele.idCategory === idCategory);
+            this.previsionIncomesForm.get('idLibele')?.enable();
+        } else {
+            this.filteredIncomeLibeles = [];
+            this.previsionIncomesForm.get('idLibele')?.disable();
         }
     }
 

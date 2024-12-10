@@ -9,8 +9,15 @@
             <div class="form-row">
                 <input type="date" formControlName="date" placeholder="Date" />
                 <input type="text" formControlName="motif" placeholder="Motif" maxlength="255"/>
-                <select formControlName="libeleId">
-                    <option *ngFor="let libele of incomeLibeles" [value]="libele.idLibele">{{ libele.name }}</option>
+                <select formControlName="idCategory" (change)="onIncomeCategoryChange($event)">
+                    <option *ngFor="let category of incomeCategories" [value]="category.idCategory">
+                        {{ category.name }}
+                    </option>
+                </select>
+                <select formControlName="idLibele" [disabled]="!filteredIncomeLibeles.length">
+                    <option *ngFor="let libele of filteredIncomeLibeles" [value]="libele.idLibele">
+                        {{ libele.libeleName }}
+                    </option>
                 </select>
                 <input type="number" formControlName="montant" placeholder="Montant" />
                 <button type="submit" [disabled]="previsionIncomesForm.invalid">+</button>
@@ -22,6 +29,7 @@
                 <tr>
                     <th>Date</th>
                     <th>Motif</th>
+                    <th>Catégorie</th>
                     <th>Libellé</th>
                     <th>Montant</th>
                     <th>Cumul</th>
@@ -32,6 +40,7 @@
                 <tr>
                     <td>{{ income.date | date: 'dd/MM/yyyy' }}</td>
                     <td>{{ income.motif }}</td>
+                    <td>{{ income.categoryName }}</td>
                     <td>{{ income.libeleName }}</td>
                     <td>{{ income.montant | currency: 'EUR' }}</td>
                     <td>{{ income.cumul | currency: 'EUR' }}</td>
@@ -56,14 +65,14 @@
             <div class="form-row">
                 <input type="date" formControlName="date" placeholder="Date" />
                 <input type="text" formControlName="motif" placeholder="Motif" maxlength="255"/>
-                <select formControlName="categoryId" (change)="onCategoryChange($event)">
+                <select formControlName="idCategory" (change)="onExpenseCategoryChange($event)">
                     <option *ngFor="let category of expenseCategories" [value]="category.idCategory">
                         {{ category.name }}
                     </option>
                 </select>
-                <select formControlName="libeleId">
+                <select formControlName="idLibele" [disabled]="!filteredExpenseLibeles.length">
                     <option *ngFor="let libele of filteredExpenseLibeles" [value]="libele.idLibele">
-                        {{ libele.name }}
+                        {{ libele.libeleName }}
                     </option>
                 </select>
                 <input type="number" formControlName="montant" placeholder="Montant" />
@@ -77,7 +86,6 @@
                     <th>Date</th>
                     <th>Motif</th>
                     <th>Catégorie</th>
-                    <th>Libellé</th>
                     <th>Montant</th>
                     <th>Cumul</th>
                     <th></th>
@@ -88,7 +96,6 @@
                     <td>{{ expense.date | date: 'dd/MM/yyyy' }}</td>
                     <td>{{ expense.motif }}</td>
                     <td>{{ expense.categoryName }}</td>
-                    <td>{{ expense.libeleName }}</td>
                     <td>{{ expense.montant | currency: 'EUR' }}</td>
                     <td>{{ expense.cumul | currency: 'EUR' }}</td>
                     <td>
