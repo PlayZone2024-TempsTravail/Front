@@ -115,7 +115,7 @@
     <!-- Table Frais Generaux -->
     <div class="tableFrais">
         <h3>Frais généraux totaux</h3>
-        <form [formGroup]="FraisGenerauxForm">
+        <form [formGroup]="fraisGenerauxForm">
             <table class="p-datatable p-component">
                 <thead>
                 <tr>
@@ -123,22 +123,30 @@
                     <th>Valeur</th>
                 </tr>
                 </thead>
-                <tbody>
-                <tr *ngFor="let libele of libeleValues; let i = index" [formGroupName]="i">
-                    <td>{{ libele.get('name')?.value }}</td>
+                <tbody formArrayName="libeleValues">
+                <tr *ngFor="let libele of libelesFraisGeneraux; let i = index">
+                    <td>{{ libele.libeleName }}</td>
                     <td>
                         <input
-                            formControlName="value"
-                            mode="decimal"
-                            (ngModelChange)="CalcultotalFraisGeneraux()">
+                            type="number"
+                            [formControlName]="i"
+                            (input)="calculateTotalFraisGeneraux()"
+                            placeholder="0.00"
+                        />
                     </td>
                 </tr>
                 </tbody>
             </table>
         </form>
         <div class="summary">
-            <h4>Total des frais généraux : {{ totalFraisGeneraux | number:'1.2-2' }} €</h4>
+            <h4>Total des frais généraux : {{ totalFraisGeneraux | number: '1.2-2' }} €</h4>
         </div>
-        <button pButton type="button" label="Soumettre" (click)="submitForm()"></button>
+        <button
+            pButton
+            type="button"
+            label="Soumettre"
+            (click)="submitFraisGeneraux()"
+            [disabled]="!isAnyFraisGenerauxFilled()"
+        ></button>
     </div>
 </div>

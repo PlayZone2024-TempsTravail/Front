@@ -75,6 +75,10 @@ export class ProjectService {
         return this.http.post(`${this.apiUrl}/PrevisionBudgetCategory`, expense);
     }
 
+    addPrevisionExpenseByCategory(expense: any): Observable<any> {
+        return this.http.post(`${this.apiUrl}/PrevisionBudgetCategory`, expense);
+    }
+
     deletePrevisionIncome(id: number): Observable<any> {
         return this.http.delete(`${this.apiUrl}/PrevisionRentree/${id}`);
     }
