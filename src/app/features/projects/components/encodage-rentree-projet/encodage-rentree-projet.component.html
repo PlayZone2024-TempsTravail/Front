@@ -43,18 +43,28 @@
                 <div class="form-container">
                     <div>
                         <div class="p-field">
-                            <label for="libeleId">Nature</label>
-                            <p-dropdown id="libeleId" [options]="libeles" optionLabel="libeleName" optionValue="idLibele"
-                                        formControlName="libeleId" placeholder="Sélectionner un libellé"></p-dropdown>
+                            <label for="idLibele">Nature</label>
+                            <p-dropdown id="idLibele"
+                                        [options]="libeles"
+                                        optionLabel="libeleName"
+                                        optionValue="idLibele"
+                                        formControlName="idLibele"
+                                        placeholder="Sélectionner un libellé">
+                            </p-dropdown>
+
                             <small *ngIf="rentreeForm.get('libeleId')?.invalid && rentreeForm.get('libeleId')?.touched"
                                    class="p-error">Le libellé est obligatoire.</small>
                         </div>
 
                         <div class="p-field">
-                            <label for="organismeId">Organisme</label>
-                            <p-dropdown id="organismeId" [options]="organismes" optionLabel="name"
-                                        optionValue="idOrganisme" formControlName="organismeId"
-                                        placeholder="Sélectionner un organisme"></p-dropdown>
+                            <label for="idOrganisme">Organisme</label>
+                            <p-dropdown id="idOrganisme"
+                                        [options]="organismes"
+                                        optionLabel="name"
+                                        optionValue="idOrganisme"
+                                        formControlName="idOrganisme"
+                                        placeholder="Sélectionner un organisme">
+                            </p-dropdown>
                         </div>
 
                         <div class="p-field">

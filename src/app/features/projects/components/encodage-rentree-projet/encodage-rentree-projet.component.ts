@@ -125,9 +125,9 @@ export class EncodageRentreeProjetComponent implements OnInit {
 
         const formValue = this.rentreeForm.value;
         const newRentree: RentreeCreateFormDTO = {
-            idLibele: formValue.libeleId,
+            idLibele: formValue.idLibele,
             idProject: this.projectId,
-            idOrganisme: formValue.organismeId,
+            idOrganisme: formValue.idOrganisme,
             montant: formValue.montant,
             dateFacturation: formValue.dateFacturation ? formValue.dateFacturation.toISOString() : null,
             motif: formValue.motif,

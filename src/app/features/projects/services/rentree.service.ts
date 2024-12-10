@@ -9,7 +9,7 @@ import {LibeleDTO, OrganismeDTO} from '../models/depense.model';
     providedIn: 'root',
 })
 export class RentreeService {
-    private apiUrl = 'http://api.technobel.pro:444/api';
+    private apiUrl = 'http://api2.technobel.pro:444/api';
 
     constructor(private _http: HttpClient) {}
 

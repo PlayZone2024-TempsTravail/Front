@@ -8,7 +8,7 @@ import {LebeleTree, ShortProject} from '../models/projectRapport.model';
 })
 export class ProjectRapportService {
 
-    private apiUrl = 'http://api.technobel.pro:444/api'  ; //attention changer quand vrai api'http://api.technobel.pro:444/api'
+    private apiUrl = 'http://api2.technobel.pro:444/api'  ; //attention changer quand vrai api'http://api.technobel.pro:444/api'
     constructor(private _http: HttpClient) { }
 
     getShortProject(): Observable<ShortProject[]> {
