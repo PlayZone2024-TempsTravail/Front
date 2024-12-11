@@ -78,6 +78,7 @@ export class EncodageCoutsProjetComponent implements OnInit {
     loadLibeles(): void {
         // Appel du service pour récupérer les libellés
         this.depenseService.getLibeles().subscribe((libeles) => {
+            // TODO: filtrer les libellés pour ne récupérer que ceux qui sont des dépenses
             this.libeles = libeles; // Stocke les libellés dans la propriété libeles
         });
     }
