@@ -1,7 +1,9 @@
 .compteurs-container {
+    margin-top: 1.5rem;
     th {
         text-align: center;
     }
+
     .ajout-compteur {
         margin: 1rem 0;
         button {
@@ -21,5 +23,13 @@
 
     button {
         margin: 0 1rem;
+    }
+}
+
+.ajout-modif-form {
+    margin-top: 2.5rem;
+    .ajout {
+        margin-top: 2rem;
+        margin-bottom: 0;
     }
 }

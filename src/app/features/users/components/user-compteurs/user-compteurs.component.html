@@ -16,23 +16,14 @@
                 <td>{{ getCategoryName(compteur.worktimeCategoryId) }}</td>
                 <td>{{ compteur.quantity }}</td>
                 <td>
-                    <button pButton icon="pi pi-pencil"  (click)="openEditCompteurForm(compteur)"></button>
                     <button pButton icon="pi pi-times" class="p-button-danger"  (click)="deleteCompteur(compteur)"></button>
                 </td>
             </tr>
         </ng-template>
     </p-table>
 
-    <div class="ajout-compteur">
-        <button pButton icon="pi pi-plus" label="Ajouter un compteur" (click)="openAddCompteurForm()"></button>
-    </div>
-
-    <!-- Formulaire d'ajout/modif -->
-    <p-dialog header="{{ editingCompteur ? 'Modifier Compteur' : 'Ajouter Compteur' }}"
-              [(visible)]="displayForm"
-              [modal]="true"
-              [closable]="true"
-              [resizable]="false">
+    <!-- Formulaire d'ajout/modif de compteur pour l'utilisateur sélectionné -->
+    <div class="ajout-modif-form">
         <form [formGroup]="compteurForm" (ngSubmit)="submitCompteur()">
             <div class="p-fluid">
                 <div class="p-field">
@@ -43,23 +34,23 @@
                                 formControlName="worktimeCategoryId"
                                 placeholder="Sélectionner une catégorie">
                     </p-dropdown>
-                    @if(compteurForm.get('worktimeCategoryId')?.invalid && compteurForm.get('worktimeCategoryId')?.touched) {
+                    @if (compteurForm.get('worktimeCategoryId')?.invalid && compteurForm.get('worktimeCategoryId')?.touched) {
                         <small class="p-error">La catégorie est requise.</small>
-                    }   </div>
+                    }
+                </div>
 
                 <div class="p-field">
                     <label>Quantité</label>
                     <input type="number" pInputText formControlName="quantity"/>
-                    @if(compteurForm.get('quantity')?.invalid && compteurForm.get('quantity')?.touched) {
+                    @if (compteurForm.get('quantity')?.invalid && compteurForm.get('quantity')?.touched) {
                         <small class="p-error">La quantité est requise et supérieure à 0.</small>
                     }
                 </div>
 
                 <div class="p-field ajout">
-                    <button pButton type="submit" [label]="editingCompteur ? 'Modifier' : 'Ajouter'"></button>
+                    <button pButton type="submit" label="Soumettre"></button>
                 </div>
             </div>
         </form>
-    </p-dialog>
-
+    </div>
 </div>

@@ -20,8 +20,6 @@ export class UserCompteursComponent implements OnInit {
 
     compteurs: CompteurWorktimeCategoryDTO[] = []; // Liste des compteurs de l'user
     categories: WorktimeCategoryDTO[] = []; // Liste des catégories de compteurs
-    displayForm: boolean = false; // Affiche le formulaire d'ajout/modif de compteur
-    editingCompteur: CompteurWorktimeCategoryDTO | null = null; // Le compteur en cours d'édition
     compteurForm: FormGroup; // Form pour ajouter/modifier un compteur
 
     /**
@@ -39,12 +37,8 @@ export class UserCompteursComponent implements OnInit {
 
     ngOnInit(): void {
         this.loadCompteurs(); // Charge les compteurs de l'user
-        this.compteurService.getWorktimeCategories().subscribe((categories) => { // pour récupérer le label  : abréviation + nom
-            this.categories = categories.map(category => ({
-                ...category,
-                displayLabel: `${category.abreviation} - ${category.name}`
-            }));
-        });
+        this.loadCategories(); // Charge les catégories de compteurs
+
     }
 
     /**
@@ -69,7 +63,12 @@ export class UserCompteursComponent implements OnInit {
     loadCategories(): void {
         this.compteurService.getWorktimeCategories().subscribe({
             next: (categories) => {
-                this.categories = categories;
+                this.categories = categories
+                    .map(category => ({
+                        ...category,
+                        displayLabel: `${category.abreviation} - ${category.name}`
+                    }))
+                    .sort((a, b) => a.idWorktimeCategory - b.idWorktimeCategory); // Tri par idWorktimeCategory
             },
             error: (err) => {
                 console.error("Erreur chargement catégories de worktime:", err.error.errors);
@@ -89,29 +88,6 @@ export class UserCompteursComponent implements OnInit {
     }
 
     /**
-     * Ouvre le formulaire pour ajouter un nouveau compteur pour cet utilisateur.
-     * @returns void
-     */
-    openAddCompteurForm(): void {
-        this.editingCompteur = null; // On n'est pas en mode édition
-        this.compteurForm.reset({ worktimeCategoryId: null, quantity: 0 }); // Réinitialise le form
-        this.displayForm = true;
-    }
-
-    /**
-     * Ouvre le formulaire pour modifier un compteur.
-     * @param compteur
-     */
-    openEditCompteurForm(compteur: CompteurWorktimeCategoryDTO): void {
-        this.editingCompteur = compteur; // On est en mode édition
-        this.compteurForm.setValue({ // Préremplit le form avec les valeurs du compteur
-            worktimeCategoryId: compteur.worktimeCategoryId,
-            quantity: compteur.quantity
-        });
-        this.displayForm = true;
-    }
-
-    /**
      * Soumet le formulaire d'ajout/modification de compteur.
      * Si on est en mode édition, on met à jour le compteur, sinon on ajoute un nouveau compteur.
      * @returns void
@@ -123,24 +99,22 @@ export class UserCompteursComponent implements OnInit {
         }
 
         const formValue = this.compteurForm.value;
+        // Cherche dans la liste des compteurs de l'user s'il y a déjà un compteur existant pour cette catégorie
+        const existingCompteur = this.compteurs.find(c => c.worktimeCategoryId === formValue.worktimeCategoryId);
 
-        if (this.editingCompteur) {
-            // Mode modification
+        if (existingCompteur) { // Si la catégorie existe déjà dans la liste des compteurs pour cet user : modification
             this.compteurService.updateCompteur(this.userId, { // Met à jour le compteur via le compteurService
                 worktimeCategoryId: formValue.worktimeCategoryId,
                 quantity: formValue.quantity
             }).subscribe({
                 next: () => {
-                    this.displayForm = false;
-                    this.editingCompteur = null;
                     this.loadCompteurs();
                 },
                 error: (err) => {
                     console.error("Erreur modification compteur:", err.error.errors);
                 }
             });
-        } else {
-            // Mode ajout
+        } else { // Si la catégorie n'existe pas dans la liste des compteurs pour cet user : ajout de cette catégorie
             const newCompteur = {
                 userId: this.userId,
                 worktimeCategoryId: formValue.worktimeCategoryId,
@@ -148,7 +122,6 @@ export class UserCompteursComponent implements OnInit {
             };
             this.compteurService.addCompteur(newCompteur).subscribe({ // Ajoute le compteur via le compteurService
                 next: () => {
-                    this.displayForm = false;
                     this.loadCompteurs();
                 },
                 error: (err) => {
