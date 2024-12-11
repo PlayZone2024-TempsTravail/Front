@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {Depense, Project, LibeleWithName} from '../models/project.model';
+import {Project, LibeleWithName} from '../models/project.model';
 import { map } from 'rxjs/operators';
 
 @Injectable({
