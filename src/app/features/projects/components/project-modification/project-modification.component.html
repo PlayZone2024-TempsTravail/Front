@@ -7,7 +7,7 @@
         <h3>Prévisions Entrées</h3>
         <form [formGroup]="previsionIncomesForm" (ngSubmit)="addPrevisionIncome()">
             <div class="form-row">
-                <input type="date" formControlName="date" placeholder="Date"/>
+                <input type="date" formControlName="date" placeholder="Date" />
                 <input type="text" formControlName="motif" placeholder="Motif" maxlength="255"/>
                 <select formControlName="idCategory" (change)="onIncomeCategoryChange($event)">
                     <option *ngFor="let category of incomeCategories" [value]="category.idCategory">
@@ -19,7 +19,7 @@
                         {{ libele.libeleName }}
                     </option>
                 </select>
-                <input type="number" formControlName="montant" placeholder="Montant"/>
+                <input type="number" formControlName="montant" placeholder="Montant" />
                 <button type="submit" [disabled]="previsionIncomesForm.invalid">+</button>
             </div>
         </form>
@@ -46,9 +46,9 @@
                     <td>{{ income.cumul | currency: 'EUR' }}</td>
                     <td>
                         <button
-                            class="delete-btn"
-                            (click)="deletePrevisionIncome(income.idPrevisionRentree)"
-                            title="Delete this entry"
+                                class="delete-btn"
+                                (click)="deletePrevisionIncome(income.idPrevisionRentree)"
+                                title="Delete this entry"
                         >
                             🗑️
                         </button>
@@ -63,7 +63,7 @@
         <h3>Prévisions Sorties</h3>
         <form [formGroup]="previsionExpensesForm" (ngSubmit)="addPrevisionExpense()">
             <div class="form-row">
-                <input type="date" formControlName="date" placeholder="Date"/>
+                <input type="date" formControlName="date" placeholder="Date" />
                 <input type="text" formControlName="motif" placeholder="Motif" maxlength="255"/>
                 <select formControlName="idCategory" (change)="onExpenseCategoryChange($event)">
                     <option *ngFor="let category of expenseCategories" [value]="category.idCategory">
@@ -75,7 +75,7 @@
                         {{ libele.libeleName }}
                     </option>
                 </select>
-                <input type="number" formControlName="montant" placeholder="Montant"/>
+                <input type="number" formControlName="montant" placeholder="Montant" />
                 <button type="submit" [disabled]="previsionExpensesForm.invalid">+</button>
             </div>
         </form>
@@ -86,6 +86,7 @@
                     <th>Date</th>
                     <th>Motif</th>
                     <th>Catégorie</th>
+                    <th>Libellés</th>
                     <th>Montant</th>
                     <th>Cumul</th>
                     <th></th>
@@ -96,13 +97,14 @@
                     <td>{{ expense.date | date: 'dd/MM/yyyy' }}</td>
                     <td>{{ expense.motif }}</td>
                     <td>{{ expense.categoryName }}</td>
+                    <td>{{ !expense.estimationParCategorie ? expense.libeleName : '' }}</td>
                     <td>{{ expense.montant | currency: 'EUR' }}</td>
                     <td>{{ expense.cumul | currency: 'EUR' }}</td>
                     <td>
                         <button
-                            class="delete-btn"
-                            (click)="deletePrevisionExpense(expense.idPrevisionBudgetCategory)"
-                            title="Delete this entry"
+                                class="delete-btn"
+                                (click)="deletePrevisionExpense(expense.idPrevisionBudgetCategory || expense.idPrevisionBudgetLibele)"
+                                title="Delete this entry"
                         >
                             🗑️
                         </button>

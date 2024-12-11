@@ -46,4 +46,10 @@ export interface LibeleWithName {
     categoryName: string,
 }
 
+export interface Category {
+    idCategory: number,
+    name: string,
+    isIncome: boolean,
+    estimationParCategorie: boolean,
+}
 
