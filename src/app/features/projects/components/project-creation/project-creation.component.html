@@ -93,7 +93,7 @@
             <!-- Dépenses autorisées -->
             <div class="form-group">
                 <label for="montantBudget">Dépenses autorisées</label>
-                <p-inputNumber id="montantBudget" formControlName="montantBudget" [min]="0"
+                <p-inputNumber mode="decimal" [minFractionDigits]="2" id="montantBudget" formControlName="montantBudget" [min]="0.1"
                                placeholder="Entrez le montant"></p-inputNumber>
                 <div *ngIf="projectForm.get('montantBudget')?.invalid && projectForm.get('montantBudget')?.touched"
                      class="error">
