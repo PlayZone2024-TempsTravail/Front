@@ -18,13 +18,15 @@ import {FloatLabelModule} from 'primeng/floatlabel';
 import {CalendarModule} from 'primeng/calendar';
 import {MultiSelectModule} from 'primeng/multiselect';
 import { RemoveRoleFormComponent } from './components/remove-role-form/remove-role-form.component';
+import { EditRoleFormComponent } from './components/edit-role-form/edit-role-form.component';
 
 
 @NgModule({
     declarations: [
         ShowPermissionsComponent,
         NewRoleFormComponent,
-        RemoveRoleFormComponent
+        RemoveRoleFormComponent,
+        EditRoleFormComponent
     ],
     imports: [
         CommonModule,

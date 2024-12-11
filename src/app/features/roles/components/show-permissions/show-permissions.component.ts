@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core'
 import {Permission} from '../../models/permission.model'
 import {RolesService} from '../../services/roles.service'
-import {Role, RoleAddForm, RoleDeleteForm} from '../../models/role.model'
+import {Role, RoleAddForm, RoleDeleteForm, RoleEditForm} from '../../models/role.model'
 import {RolePermission, RolePermissionUpdate} from '../../models/rolepermission.model';
 import {CheckboxChangeEvent} from 'primeng/checkbox';
 import {MessageService} from 'primeng/api';
@@ -23,6 +23,7 @@ export class ShowPermissionsComponent implements OnInit{
     modification: RolePermissionUpdate = new RolePermissionUpdate()
 
     dialogNewVisible: boolean = false
+    dialogEditVisible: boolean = false
     dialogDeleteVisible: boolean = false
 
     constructor(
@@ -50,6 +51,10 @@ export class ShowPermissionsComponent implements OnInit{
                 this.checkboxStates[key] = this.getAssoc(role.idRole, permission.id)
             });
         });
+    }
+
+    getRemovableLabel(): Role[] {
+        return this.rolesLabel.filter(role => role.isRemovable)
     }
 
     getAssoc(role: number, permission: string): boolean {
@@ -137,6 +142,10 @@ export class ShowPermissionsComponent implements OnInit{
         this.dialogNewVisible = true
     }
 
+    openEditDialog() {
+        this.dialogEditVisible = true
+    }
+
     openDeleteDialog() {
         this.dialogDeleteVisible = true
     }
@@ -146,6 +155,19 @@ export class ShowPermissionsComponent implements OnInit{
             this._rolesService.newRole(rad).subscribe((role) => {
                 this.rolesLabel.push(role)
                 this.dialogNewVisible = false
+            })
+        }
+    }
+
+    onEditFormSubmit(ref: RoleEditForm) {
+        if (ref.idRole > 0 && ref.name !== '') {
+            this._rolesService.editRole(ref).subscribe(_ => {
+                this.rolesLabel.forEach(r => {
+                    if (r.idRole === ref.idRole) {
+                        r.name = ref.name
+                    }
+                })
+                this.dialogEditVisible = false
             })
         }
     }

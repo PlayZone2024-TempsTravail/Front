@@ -4,7 +4,8 @@
     <div class="header">
         <div >
             <button pButton label="Nouveau Role" class="add-btn" icon="pi pi-plus" (click)="openAddDialog()"></button>
-            <button pButton label="Supprimer Role" class="add-btn" icon="pi pi-minus" (click)="openDeleteDialog()"></button>
+            <button pButton label="Editer Role" class="add-btn" icon="pi pi-pen-to-square" (click)="openEditDialog()"></button>
+            <button pButton label="Supprimer Role" class="add-btn" icon="pi pi-minus" (click)="openDeleteDialog()" [disabled]="getRemovableLabel().length == 0"></button>
         </div>
         <div>
             <button pButton label="Sauvegarder les modifications" class="add-btn" icon="pi pi-save" (click)="saveModification()"></button>
@@ -55,13 +56,25 @@
     ></app-new-role-form>
 </p-dialog>
 
-<p-dialog  header="Supprimer Role"
+<p-dialog  header="Editer un Role"
+           [(visible)]="dialogEditVisible"
+           [modal]="true"
+           [closable]="true"
+           [resizable]="false">
+    <app-edit-role-form
+        (formSubmit)="onEditFormSubmit($event)"
+        [roles]="rolesLabel"
+    ></app-edit-role-form>
+
+</p-dialog>
+
+<p-dialog  header="Supprimer un Role"
            [(visible)]="dialogDeleteVisible"
            [modal]="true"
            [closable]="true"
            [resizable]="false">
     <app-remove-role-form
         (formSubmit)="onDeleteFormSubmit($event)"
-        [roles]="rolesLabel"
+        [roles]="getRemovableLabel()"
     ></app-remove-role-form>
 </p-dialog>

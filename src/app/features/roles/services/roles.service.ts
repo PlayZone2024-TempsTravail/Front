@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Permission} from '../models/permission.model';
-import {Role, RoleAddForm} from '../models/role.model';
+import {Role, RoleAddForm, RoleEditForm} from '../models/role.model';
 import {RolePermission, RolePermissionUpdate} from '../models/rolepermission.model';
 
 @Injectable({
@@ -31,6 +31,10 @@ export class RolesService {
 
     newRole(role: RoleAddForm): Observable<Role> {
         return this._http.post<Role>(`${this.apiUrl}/Role`, role);
+    }
+
+    editRole(role: RoleEditForm): Observable<Role> {
+        return this._http.put<Role>(`${this.apiUrl}/Role`, role);
     }
 
     deleteRole(idRole: number): Observable<any> {
