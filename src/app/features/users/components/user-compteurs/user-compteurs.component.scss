@@ -1,0 +1,25 @@
+.compteurs-container {
+    th {
+        text-align: center;
+    }
+    .ajout-compteur {
+        margin: 1rem 0;
+        button {
+            margin-top: 2rem;
+        }
+    }
+
+    .p-field {
+        margin-bottom: 1rem;
+    }
+
+    .ajout {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.5em;
+    }
+
+    button {
+        margin: 0 1rem;
+    }
+}
