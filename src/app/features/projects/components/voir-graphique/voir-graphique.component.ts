@@ -36,7 +36,7 @@ export class ProjectGraphComponent implements OnInit {
                 this.chartDataExpenses = this.expensesGraph(graphDataExpenses);
                 this.lastPrevisionExpense = this.getLastValue(graphDataExpenses.prevision);
                 this.lastRealExpense = this.getLastValue(graphDataExpenses.reel);
-                this.variationExpenses = this.calculateVariation(this.lastPrevisionExpense, this.lastRealExpense);
+                this.variationExpenses = this.calculateVariation(this.lastRealExpense, this.lastPrevisionExpense);
             });
 
             this.projectService.getGraphDataIncomes(projectId).subscribe((graphDataIncomes) => {
@@ -86,7 +86,7 @@ export class ProjectGraphComponent implements OnInit {
             labels: graphDataIncomes.date, // ensure this matches your data structure
             datasets: [
                 {
-                    label: 'Incomes Réelles',
+                    label: 'Rentrées Réelles',
                     data: graphDataIncomes.reel, // ensure this matches your data structure
                     borderColor: '#FF5733',
                     backgroundColor: 'rgba(255, 87, 51, 0.2)',
@@ -94,7 +94,7 @@ export class ProjectGraphComponent implements OnInit {
                     tension: 0.4,
                 },
                 {
-                    label: 'Prévisions Incomes',
+                    label: 'Prévisions Rentrées',
                     data: graphDataIncomes.prevision,
                     borderColor: '#33C3FF',
                     backgroundColor: 'rgba(51, 195, 255, 0.2)',
