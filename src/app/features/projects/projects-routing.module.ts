@@ -9,6 +9,8 @@ import { ProjectCreationComponent } from './components/project-creation/project-
 import {CalendarComponent} from '../time-tracking/components/calendar/calendar.component';
 import {unauthenticatedGuard} from '../../shared/guards/authenticated.guard';
 import {ProjectModificationComponent} from './components/project-modification/project-modification.component';
+import {EncodageRentreeProjetComponent} from './components/encodage-rentree-projet/encodage-rentree-projet.component';
+import {ProjectrapportComponent} from './components/project-rapport/projectrapport.component';
 
 const routes: Routes = [
     { path: '',
@@ -18,12 +20,24 @@ const routes: Routes = [
         },
     },
     {
-        path: 'encodage-couts-projet/:id',
+        path: 'encodagecouts/:id',
         component: EncodageCoutsProjetComponent,
     },
     {
-        path: 'details/:id', // Route pour voir les détails d'un projet spécifique
+        path: 'encodagerentrees/:id',
+        component: EncodageRentreeProjetComponent,
+    },
+    {
+        path: 'details/:id',
         component: ProjectDetailsComponent,
+    },
+    {
+        path:'graphique/:id',
+        component : ProjectGraphComponent,
+    },
+    {
+        path:'rapport',
+        component : ProjectrapportComponent
     },
     {
         path: 'create-project',
@@ -33,10 +47,6 @@ const routes: Routes = [
         path: 'modifier-projet/:id',
         component: ProjectModificationComponent,
     },
-    {
-        path:'graphique/:id',
-        component : ProjectGraphComponent,
-    } //Route pour voir le graphique
 ];
 
 @NgModule({

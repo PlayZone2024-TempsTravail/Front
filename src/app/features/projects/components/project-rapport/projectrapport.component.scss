@@ -1,0 +1,47 @@
+.date-selection{
+    display:flex;
+    flex-direction: row;
+}
+.date-start{
+
+    margin-right:10px;
+
+}
+
+.titre-date{
+    text-align:center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.projets-libeles{
+    display:flex;
+    flex-direction:row;
+    justify-content: space-evenly;
+
+}
+
+.projectlist{
+
+    border:0.5px solid;
+    border-color: rgba(195, 195, 195, 0.5);
+    border-radius: 5px;
+    padding: 10px;
+    color: rgb(75, 85, 99);
+    .field-checkbox{
+        padding: 10px;
+    }
+
+}
+field-checkbox{
+    text-color:"#9a9a9a;";
+}
+
+button{
+    display:flex;
+
+    margin-top: 10px;
+}
+
+
+

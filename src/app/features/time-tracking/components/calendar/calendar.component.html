@@ -41,6 +41,7 @@
           <mat-icon>chevron_left</mat-icon>
         </button>
         <button
+          class="themeColorText"
           mat-stroked-button
           (click)="viewToday()"
         >
@@ -53,6 +54,7 @@
           <mat-icon>chevron_right</mat-icon>
         </button>
         <button
+          class="themeColorBackground"
           mat-flat-button
           (click)="selectDate()"
         >
@@ -71,7 +73,7 @@
     >
       <thead>
         <tr>
-          <th *ngFor="let day of weekDays">
+          <th *ngFor="let day of MonthDays">
             {{ day }}
           </th>
         </tr>
@@ -207,24 +209,36 @@
     </table>
   </div>
   <div class="container_info">
-    <div class="compteurs">
+    <div class="compteurs firstCount">
       <table>
         <tr>
-            <th></th>
-            <th id="dateHeader">02-01-{{ currentDate }}</th>
-            <th>Utilisé</th>
-            <th>Solde</th>
+          <th></th>
+          <th id="dateHeader">02-01-{{ currentDate }}</th>
+          <th>Utilisé</th>
+          <th>Solde</th>
         </tr>
-        <tr *ngFor="let workTime of compteurWorktimeCategory">
+        <tr *ngFor="let workTime of CounterVA">
           <td class="category">{{ workTime.category }}</td>
-          <td class="nb_day">{{ workTime.counter }}</td>
-          <td class="nb_day_utilise">{{ workTime.max }}</td>
-          <td class="nb_day_reste">{{ workTime.difference }}</td>
+          <!-- Vérification si `workTime.max` est 0 -->
+          <td *ngIf="workTime.max !== 0" class="nb_day">{{ workTime.max }}</td>
+          <td *ngIf="workTime.max === 0" class="nb_day" colspan="3">{{ workTime.counter }}</td>
+          <td *ngIf="workTime.max !== 0" class="nb_day_utilise">{{ workTime.counter }}</td>
+          <td *ngIf="workTime.max !== 0" class="nb_day_reste">{{ workTime.difference }}</td>
         </tr>
-    </table>
+      </table>
     </div>
-    <!--Autre truc a mettre-->
+  
+    <div class="compteurs countProjet">
+      <table>
+        <tr>
+          <th class="col-80" style="width: 80%;">Projet</th>
+          <th class="col-20">Heures</th>
+        </tr>
+        <tr *ngFor="let projet of ProjectList">
+          <td class="col-80">{{ projet.projectName }}</td>
+          <td class="col-20">{{ projet.heures }}</td>
+        </tr>
+      </table>
+    </div>
   </div>
 </div>
-
-

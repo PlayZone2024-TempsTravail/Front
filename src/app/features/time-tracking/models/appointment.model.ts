@@ -5,8 +5,8 @@ export interface Appointment {
     end: string;
     isOnSite: boolean;
     categoryId: number;
-    project_Id?: number;
-    user_Id: number;
+    projectId?: number;
+    userId: number;
     date: Date;
   }
   
@@ -27,5 +27,17 @@ export interface Appointment {
     counter: number;
     max: number;
     difference: number;
+  }
+
+  export interface Project {
+    projectId: number;
+    projectName: string;
+    heures: Date;
+  }
+
+  export interface ProjectList{
+    idProject: number;
+    isActive: boolean;
+    name: string;
   }
   

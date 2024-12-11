@@ -1,76 +1,127 @@
+<a type="button" appBack>
+    <img src="/assets/back-button.svg" class="button-back" alt="Retour" width="62px" height="62px">
+</a>
 <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
-    <div class="form-container">
-        <div class="form-group">
-            <label for="name">Nom projet</label>
-            <input id="name" formControlName="name" type="text" />
-            <div *ngIf="projectForm.get('name')?.invalid && projectForm.get('name')?.touched" class="error">
-                Nom du projet est requis.
+    <div class="body">
+        <div class="form-container">
+            <!-- Nom du projet -->
+            <div class="form-group">
+                <label>Nom projet</label>
+                <input type="text" pInputText formControlName="name" placeholder="Entrez le nom du projet"/>
+                <div *ngIf="projectForm.get('name')?.invalid && projectForm.get('name')?.touched" class="error">
+                    Nom du projet est requis.
+                </div>
             </div>
+
+            <!-- Chargé de mission -->
+            <div class="form-group">
+                <label for="chargeDeProjetId">Chargé de mission</label>
+                <p-dropdown
+                    id="chargeDeProjetId"
+                    formControlName="chargerDeProjetId"
+                    [options]="usersInMission"
+                    optionLabel="label"
+                    optionValue="idUser"
+                    placeholder="Sélectionner un chargé de mission"
+                ></p-dropdown>
+                <div
+                    *ngIf="projectForm.get('chargerDeProjetId')?.invalid && projectForm.get('chargerDeProjetId')?.touched"
+                    class="error">
+                    Chargé de mission est requis.
+                </div>
+            </div>
+
+            <!-- Organisme -->
+            <div class="form-group">
+                <label for="organismeId">Organisme</label>
+                <p-dropdown
+                    id="organismeId"
+                    formControlName="organismeId"
+                    [options]="organisme"
+                    optionLabel="name"
+                    optionValue="idOrganisme"
+                    placeholder="Sélectionner un organisme"
+                    (onChange)="onOrganismeChange($event)"
+                ></p-dropdown>
+                <button type="button" (click)="showAddOrganismeForm = !showAddOrganismeForm">+</button>
+                <div *ngIf="showAddOrganismeForm">
+                    <label class="labelNewOrga" for="newOrganismeName">Nom de l'organisme</label>
+                    <input id="newOrganismeName" (change)="onNameChange($event)" type="text"/>
+                    <button type="button" (click)="addOrganisme()">Ajouter</button>
+                </div>
+
+                <div *ngIf="projectForm.get('organismeId')?.invalid && projectForm.get('organismeId')?.touched"
+                     class="error">
+                    Organisme est requis.
+                </div>
+            </div>
+
+            <!-- Date début projet -->
+            <div class="form-group">
+                <label for="dateDebutProjet">Date début projet</label>
+                <p-calendar
+                    id="dateDebutProjet"
+                    formControlName="dateDebutProjet"
+                    [iconDisplay]="'input'"
+                    [showIcon]="true"
+                    dateFormat="dd-mm-yy"
+                    inputId="dateDebutProjet">
+                </p-calendar>
+                <div *ngIf="projectForm.get('dateDebutProjet')?.invalid && projectForm.get('dateDebutProjet')?.touched"
+                     class="error">
+                    La date de début est requise.
+                </div>
+            </div>
+
+            <!-- Date fin projet -->
+            <div class="form-group">
+                <label for="dateFinProjet">Date fin projet</label>
+                <p-calendar
+                    id="dateFinProjet"
+                    formControlName="dateFinProjet"
+                    [iconDisplay]="'input'"
+                    [showIcon]="true"
+                    dateFormat="dd-mm-yy"
+                    inputId="dateFinProjet">
+                </p-calendar>
+                <div *ngIf="projectForm.get('dateFinProjet')?.invalid && projectForm.get('dateFinProjet')?.touched"
+                     class="error">
+                    La date de fin est requise.
+                </div>
+            </div>
+
+            <!-- Dépenses autorisées -->
+            <div class="form-group">
+                <label for="montantBudget">Dépenses autorisées</label>
+                <p-inputNumber id="montantBudget" formControlName="montantBudget" [min]="0"
+                               placeholder="Entrez le montant"></p-inputNumber>
+                <div *ngIf="projectForm.get('montantBudget')?.invalid && projectForm.get('montantBudget')?.touched"
+                     class="error">
+                    Dépenses autorisées sont requises.
+                </div>
+            </div>
+
+            <!-- choix couleur -->
+            <div class="form-group">
+                <label for="style1">
+                    <div>
+                        Choisir une couleur:
+                    </div>
+                    <input
+                        type="color"
+                        (change)="onColorChange($event)"
+                        formControlName="color"
+                        id="style1"
+                        [value]="projectForm.get('color')?.value || '#ffffff'">
+                </label>
+                <div *ngIf="projectForm.get('color')?.invalid && projectForm.get('color')?.touched" class="error">
+                    La couleur est requise.
+                </div>
+            </div>
+            <!-- pour finaliser le formulaire -->
+            <button type="submit" [disabled]="projectForm.invalid" class="submit-button">
+                Enregistrer
+            </button>
         </div>
-
-        <div class="form-group">
-            <label for="chargeDeProjetId">Chargé de mission</label>
-            <p-dropdown
-                id="chargeDeProjetId"
-                formControlName="chargeDeProjetId"
-                [options]="chargeProjet"
-                optionLabel="name"
-                placeholder="Sélectionner un organisme"
-            ></p-dropdown>
-            <div *ngIf="projectForm.get('chargeDeProjetId')?.invalid && projectForm.get('chargeDeProjetId')?.touched" class="error">
-                Chargé de mission est requis.
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="organismeId">Organisme</label>
-            <p-dropdown
-                id="organismeId"
-                formControlName="organismeId"
-                [options]="organismes"
-                optionLabel="name"
-                placeholder="Sélectionner un organisme"
-                (onChange)="onOrganismeChange($event)"
-            ></p-dropdown>
-            <button type="button" (click)="showAddOrganismeForm = !showAddOrganismeForm">Ajouter un nouvel organisme</button>
-
-            <div *ngIf="showAddOrganismeForm">
-                <label for="newOrganismeName">Nom de l'organisme</label>
-                <input id="newOrganismeName" [(ngModel)]="newOrganismeName" type="text"/>
-                <button type="button" (click)="addOrganisme()">Ajouter</button>
-            </div>
-
-            <div *ngIf="projectForm.get('organismeId')?.invalid && projectForm.get('organismeId')?.touched" class="error">
-                Organisme est requis.
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="dateDebutProjet">Date début projet</label>
-            <input id="dateDebutProjet" formControlName="dateDebutProjet" type="date" />
-            <div *ngIf="projectForm.get('dateDebutProjet')?.invalid && projectForm.get('dateDebutProjet')?.touched" class="error">
-                Date de début est requis.
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="dateFinProjet">Date fin de projet</label>
-            <input id="dateFinProjet" formControlName="dateFinProjet" type="date" />
-            <div *ngIf="projectForm.get('dateFinProjet')?.invalid && projectForm.get('dateFinProjet')?.touched" class="error">
-                Date de fin est requis.
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="montantBudget">Dépenses autorisées</label>
-            <input id="montantBudget" formControlName="montantBudget" type="number" />
-            <div *ngIf="projectForm.get('montantBudget')?.invalid && projectForm.get('montantBudget')?.touched" class="error">
-                Dépenses autorisées sont requises.
-            </div>
-        </div>
-
-        <button type="submit" [disabled]="projectForm.invalid" class="submit-button">
-            Enregistrer
-        </button>
     </div>
 </form>

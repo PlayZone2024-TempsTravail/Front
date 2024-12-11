@@ -13,7 +13,7 @@ export class ProjectService {
     constructor(private http: HttpClient) { }
 
     getAllProjects(): Observable<Project[]> {
-        return this.http.get<Project[]>(`${this.apiUrl}/Project/GetAll`);
+        return this.http.get<Project[]>(`${this.apiUrl}/Project`);
 
     }
 
@@ -29,12 +29,28 @@ export class ProjectService {
         return this.http.get<any[]>(`${this.apiUrl}/Project/idproject/${id}`);
     }
 
-    //getPrevisionalExpenses(id: number): Observable<any> {
-    //    return this.http.get<any[]>(`${this.apiUrl}/PrevisionRentree/projets/${id}`);
-    //}
+    getGraphDataIncomes(projectId: number): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/Project/graphique/rentree/${projectId}`);
+    }
+    getGraphDataExpenses(projectId: number): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/Project/graphique/depense/${projectId}`);
+    }
 
-    getExpensesByCategory(projectId: number): Observable<any[]> {
-        return this.http.get<any[]>(`${this.apiUrl}/expenses/categories/${projectId}`);
+    getExpensesByCategory(id: number): Observable<any> {
+        return this.http.get<Project>(`${this.apiUrl}/Project/data/output/${id}`);
+    }
+    getGraphData(projectId: number): Observable<any> {
+        return this.http.get<any>(`${this.apiUrl}/Project/graphique/depense/${projectId}`);
+    }
+
+    addOrganisme(organismeData: { name: string }): Observable<any> {
+        return this.http.post<any>(`${this.apiUrl}/organisme`, organismeData);
+    }
+    getActiveUsers(): Observable<any[]> {
+        return this.http.get<any[]>(`${this.apiUrl}/user`);
+    }
+    getAllOrganismes(): Observable<any[]> {
+        return this.http.get<any[]>(`${this.apiUrl}/organisme`);
     }
 
     createProject(projectData: Project): Observable<Project> {
@@ -59,7 +75,7 @@ export class ProjectService {
         return this.http.get<any[]>(`${this.apiUrl}/Category`);
     }
 
-    getPrevisionalIncomes(id: number): Observable<any> {
+    getAllPrevisionalIncomes(id: number): Observable<any> {
         return this.http.get<any[]>(`${this.apiUrl}/PrevisionRentree/${id}`);
     }
 
@@ -95,12 +111,6 @@ export class ProjectService {
         return this.http.delete(`${this.apiUrl}/PrevisionBudgetLibele/${id}`);
     }
 
-    getAllOrganismes(): Observable<any[]> {
-        return this.http.get<any[]>(`${this.apiUrl}/organisme`);
-    }
-    addOrganisme(organismeData: { name: string }): Observable<any> {
-        return this.http.post<any>(`${this.apiUrl}/organisme`, organismeData);
-    }
     getAllChargeProjet(): Observable<any[]> {
         return this.http.get<any[]>(`${this.apiUrl}/User`);
     }
