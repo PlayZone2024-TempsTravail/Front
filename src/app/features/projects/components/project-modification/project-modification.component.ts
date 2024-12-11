@@ -106,7 +106,7 @@ export class ProjectModificationComponent implements OnInit {
 
     // Charger Previsions Entrées
     loadIncomesPrevisions(): void {
-        this.projectService.getPrevisionalIncomes(this.projectId).subscribe((data) => {
+        this.projectService.getAllPrevisionalIncomes(this.projectId).subscribe((data) => {
             this.previsionIncomes = this.calculateCumul(data);
         });
     }
