@@ -1,4 +1,94 @@
-{
-    height : 200px !important;
+th{
 
+    text-align: center;
+}
+
+td{
+    text-align: center;
+
+}
+
+
+
+#abreviation{
+    height : 50px;
+    width : 225px;
+    text-align: justify;
+    margin: 10px;
+    border-radius: 10px;
+  border-color:#E5E7EB;
+}
+
+#name{
+    height : 50px;
+    width : 225px;
+    margin: 10px;
+    border-radius: 10px;
+    border-color:#E5E7EB;
+}
+
+.input-ajout{
+    display : flex;
+    justify-content: flex-start;
+    align-items: center;
+
+
+}
+
+.Ajout{
+    padding : 10px;
+    border : 2px solid #E5E7EB;
+    border-radius: 15px;
+}
+
+.button-send{
+    display : flex;
+    justify-content: flex-end;
+    margin : 10px;
+}
+
+#style1 {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+#style1::-webkit-color-swatch {
+    border-radius: 10px;
+    border: none;
+}
+#style1::-moz-color-swatch {
+    border-radius: 10px;
+    border: none;
+}
+
+
+#style2 {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 50px;
+    height: 50px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+#style2::-webkit-color-swatch {
+    border-radius: 10px;
+    border: none;
+}
+#style2::-moz-color-swatch {
+    border-radius: 10px;
+    border: none;
+}
+
+
+
+.color-modif{
+    border-radius: 3px;
+    color : #000000;
 }

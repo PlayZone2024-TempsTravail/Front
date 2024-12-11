@@ -9,13 +9,15 @@
 <h4>Absences</h4>
 
 
-<div>
+<div class="tableau">
     <p-table [value]="configAbsences" [paginator]="true" [rows]="4" [tableStyle]="{'min-width':'50rem'}" #dt>
         <ng-template pTemplate="header">
             <tr>
                 <th>Abreviation</th>
                 <th>Nom</th>
                 <th>Statut</th>
+                <th>Couleur</th>
+                <th>Action</th>
             </tr>
         </ng-template>
 
@@ -29,8 +31,15 @@
 
                     </p-chip>
                 </td>
+                    <td>
+                        <div [style.background-color]="seeColor(configAbsence.color)" class="color-modif" >
+                            #{{configAbsence.color.toLowerCase()}}
+                        </div>
+                    </td>
 
-
+                <td>
+                    <p-button (click)="showDialog(configAbsence.name, configAbsence.abreviation ,configAbsence.color ,configAbsence.idWorktimeCategory )" label="Modifier" icon="pi pi-pencil" />
+                </td>
             </tr>
 
         </ng-template>
@@ -40,8 +49,10 @@
 
 </div>
 
-<div>
+<div class="Ajout" >
 
+    <h4>Ajout d'absence</h4>
+<div class="input-ajout" >
     <p-floatLabel>
         <input pInputText id="abreviation" [(ngModel)]="Newabreviation" />
         <label for="abreviation">Abréviation</label>
@@ -51,5 +62,37 @@
         <label for="name">Non du nouveau champ</label>
     </p-floatLabel>
 
+    <div class="container">
+        <input type="color" id="style1" [(ngModel)]="Newcolor"/>
+        <label for="style1"></label>
+    </div>
 
+</div>
+    <p-button label="Enregistrer" (click)="sendNewAbsences(NewName , Newabreviation ,Newcolor )" class="button-send"/>
+
+</div>
+
+
+<div class="card flex justify-center">
+    <p-dialog header="Modification d'absences" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
+        <span class="p-text-secondary block mb-8">.</span>
+        <div class="flex items-center gap-4 mb-4">
+            <label for="Abreviationpopup" class="font-semibold w-24">Abreviation</label>
+            <input pInputText id="Abreviationpopup" class="flex-auto" [(ngModel)]="abreviationModif"  />
+        </div>
+        <div class="flex items-center gap-4 mb-8">
+            <label for="namemodif" class="font-semibold w-24">Nom</label>
+            <input pInputText id="namemodif" class="flex-auto" [(ngModel)]="nameModif"  />
+        </div>
+
+        <div class="flex items-center gap-4 mb-8">
+            <input type="color" id="style2" [(ngModel)]="colorModif" />
+            <label for="style2"></label>
+        </div>
+
+        <div class="flex justify-end gap-2">
+            <p-button label="Cancel" severity="secondary" (click)="visible = false" />
+            <p-button label="Save" (click)="visible = false" (onClick)="modifAbsence(nameModif,abreviationModif,colorModif)"/>
+        </div>
+    </p-dialog>
 </div>

@@ -3,4 +3,13 @@ export interface ConfigurationAbsence {
     isActive: boolean;
     abreviation: string;
     name: string;
+    color: string;
 }
+
+export interface ConfigurationAbsenceWithOutId {
+    isActive: boolean;
+    abreviation: string;
+    name: string;
+    color: string;
+}
+

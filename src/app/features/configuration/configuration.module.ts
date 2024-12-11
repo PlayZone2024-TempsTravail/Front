@@ -15,6 +15,7 @@ import {InputNumberModule} from 'primeng/inputnumber';
 import {ToastModule} from "primeng/toast";
 import { MessageService } from 'primeng/api';
 import { ConfigAbsencesformComponent } from './configuration/configModif/config-absencesform/config-absencesform.component';
+import {DialogModule} from 'primeng/dialog';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { ConfigAbsencesformComponent } from './configuration/configModif/config-
         SharedModule,
         DividerModule,
         InputNumberModule,
-        ToastModule
+        ToastModule,
+        DialogModule
     ],
     providers: [MessageService]
 })
