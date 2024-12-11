@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
 })
 export class ProjectService {
 
-    private apiUrl = 'http://api2.technobel.pro:444/api'; //attention changer quand vrai api
+    private apiUrl = 'http://api.technobel.pro:444/api'; //attention changer quand vrai api
     constructor(private http: HttpClient) { }
 
     getAllProjects(): Observable<Project[]> {

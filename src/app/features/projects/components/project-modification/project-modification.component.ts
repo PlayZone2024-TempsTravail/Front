@@ -74,7 +74,7 @@ export class ProjectModificationComponent implements OnInit {
     // Charger Categories Depenses
     loadExpenseCategories(): void {
         this.projectService.getCategories().subscribe((categories) => {
-            this.expenseCategories = categories.filter((category) => !category.isIncome);
+            this.expenseCategories = categories.filter((category) => !category.isIncome && category.idCategory !== 4);
         });
     }
 
