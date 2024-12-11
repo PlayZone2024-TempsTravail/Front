@@ -17,9 +17,11 @@ import {RentreeCreateForm} from '../../forms/rentree.form';
  * Permet d'ajouter et de modifier des rentrées.
  */
 export class EncodageRentreeProjetComponent implements OnInit {
-    rentrees: RentreeDTO[] = []; // Liste des rentrées du projet
     selectedRentree: RentreeDTO | null = null; // Rentrée sélectionnée pour modification
-    libeles: LibeleDTO[] = []; // Liste des libellés pour le formulaire
+    rentrees: RentreeDTO[] = []; // Liste des rentrées du projet
+    categories: { idCategory: number, categoryName: string }[] = [];
+    libeles: LibeleDTO[] = [];
+    filteredLibeles: LibeleDTO[] = [];
     organismes: OrganismeDTO[] = []; // Liste des organismes pour le formulaire
     rentreeForm: FormGroup; // Formulaire d'ajout/modification de rentrée
     displayForm: boolean = false; // Contrôle de l'affichage du formulaire
@@ -71,7 +73,7 @@ export class EncodageRentreeProjetComponent implements OnInit {
                 );
             },
             error: (err) => {
-                console.error("Erreur chargement rentrées:", err);
+                console.error("Erreur chargement rentrées:", err.error.errors);
             }
         });
     }
@@ -83,12 +85,26 @@ export class EncodageRentreeProjetComponent implements OnInit {
     loadLibeles(): void {
         this.rentreeService.getLibeles().subscribe({
             next: (libeles) => {
-                this.libeles = libeles; // Stocke les libellés
+                this.libeles = libeles;
+                this.categories = [...new Map(libeles
+                    .filter(item => item.isIncome) // Filtrer les catégories de rentrées
+                    .map(item => [item.idCategory, { idCategory: item.idCategory, categoryName: item.categoryName || 'catégorie inconnue' }])
+                ).values()];
             },
             error: (err) => {
-                console.error("Erreur chargement libelés:", err);
+                console.error("Erreur chargement libellés:", err.error.errors);
             }
         });
+    }
+
+    /**
+     * Méthode appelée lors du changement de catégorie dans le formulaire afin de filtrer les libelés par rapport à la catégorie sélectionnée.
+     * @returns void
+     */
+    onCategoryChange(): void {
+        const selectedCategoryId = this.rentreeForm.get('categoryId')?.value;
+        this.filteredLibeles = this.libeles.filter(libele => libele.idCategory === selectedCategoryId && libele.isIncome);
+        this.rentreeForm.get('idLibele')?.setValue(null); // Reset idLibele when category changes
     }
 
     /**

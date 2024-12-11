@@ -36,8 +36,6 @@ export class RentreeService {
         return this._http.post<RentreeDTO>(`${this.apiUrl}/Rentree`, rentreePayload);
     }
 
-
-
     /**
      * Récupère la liste des libellés disponibles pour les dépenses.
      * @returns Observable<LibeleDTO[]> - Un observable contenant les libellés.

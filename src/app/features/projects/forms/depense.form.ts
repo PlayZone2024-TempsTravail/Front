@@ -1,6 +1,7 @@
 import {Validators} from '@angular/forms';
 
 export const DepenseCreateForm = {
+    categoryId: [null, Validators.required],
     libeleId: [null, Validators.required],
     organismeId: [null],
     motif: [null],

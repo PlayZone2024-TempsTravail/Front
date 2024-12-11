@@ -9,9 +9,9 @@ import {ActivatedRoute} from '@angular/router';
 import {DepenseCreateForm} from '../../forms/depense.form';
 
 @Component({
-  selector: 'app-encodage-couts-projet',
-  templateUrl: './encodage-couts-projet.component.html',
-  styleUrl: './encodage-couts-projet.component.scss'
+    selector: 'app-encodage-couts-projet',
+    templateUrl: './encodage-couts-projet.component.html',
+    styleUrl: './encodage-couts-projet.component.scss'
 })
 
 /**
@@ -19,10 +19,11 @@ import {DepenseCreateForm} from '../../forms/depense.form';
  * Permet d'ajouter et de modifier des dépenses liées à un projet.
  */
 export class EncodageCoutsProjetComponent implements OnInit {
-
     selectedDepense: DepenseDTO | null = null; // Dépense sélectionnée pour une éventuelle modification
     depenses: DepenseDTO[] = []; // Liste des dépenses du projet
+    categories: { idCategory: number, categoryName: string }[] = [];
     libeles: LibeleDTO[] = []; // Liste des libellés disponibles pour sélectionner la "nature" de la dépense
+    filteredLibeles: LibeleDTO[] = [];
     organismes: OrganismeDTO[] = []; // Liste des organismes disponibles
     depenseForm: FormGroup; // Formulaire d'ajout ou de modification de dépense
     displayForm: boolean = false; // Indique si le formulaire (dialog) est affiché
@@ -39,8 +40,8 @@ export class EncodageCoutsProjetComponent implements OnInit {
         private fb: FormBuilder,
         private route: ActivatedRoute
     ) {
-            this.depenseForm = this.fb.group({...DepenseCreateForm});
-        }
+        this.depenseForm = this.fb.group({...DepenseCreateForm});
+    }
 
     ngOnInit(): void {
         // Abonnement aux changements des paramètres de la route afin d'obtenir l'id du projet
@@ -76,11 +77,31 @@ export class EncodageCoutsProjetComponent implements OnInit {
      * @returns void
      */
     loadLibeles(): void {
-        // Appel du service pour récupérer les libellés
-        this.depenseService.getLibeles().subscribe((libeles) => {
-            // TODO: filtrer les libellés pour ne récupérer que ceux qui sont des dépenses
-            this.libeles = libeles; // Stocke les libellés dans la propriété libeles
+        this.depenseService.getLibeles().subscribe({
+            next: (libeles) => {
+                this.libeles = libeles;
+                this.categories = [...new Map(libeles
+                    .filter(item => !item.isIncome) // Filtrer les catégories de dépenses
+                    .map(item => [item.idCategory, {
+                        idCategory: item.idCategory,
+                        categoryName: item.categoryName || 'catégorie inconnue'
+                    }])
+                ).values()];
+            },
+            error: (err) => {
+                console.error("Erreur chargement libellés:", err.error.errors);
+            }
         });
+    }
+
+    /**
+     * Méthode appelée lors du changement de catégorie dans le formulaire afin de filtrer les libelés par rapport à la catégorie sélectionnée.
+     * @returns void
+     */
+    onCategoryChange(): void {
+        const selectedCategoryId = this.depenseForm.get('categoryId')?.value;
+        this.filteredLibeles = this.libeles.filter(libele => libele.idCategory === selectedCategoryId && !libele.isIncome);
+        this.depenseForm.get('libeleId')?.setValue(null); // Reset libeleId when category changes
     }
 
     /**
@@ -149,7 +170,7 @@ export class EncodageCoutsProjetComponent implements OnInit {
      * Soumet le formulaire d'ajout d'une dépense.
      * Crée une dépense à partir des données du formulaire et l'ajoute au projet.
      */
-    submitDepense() : void {
+    submitDepense(): void {
         if (this.depenseForm.invalid) {
             this.depenseForm.markAllAsTouched(); // Marque tous les champs comme touchés, affichant les erreurs
             return;
@@ -190,8 +211,7 @@ export class EncodageCoutsProjetComponent implements OnInit {
                     console.error('Erreur lors de la modification de la dépense:', err.error.errors);
                 }
             });
-        }
-        else {
+        } else {
             // Mode Ajout
             // Appelle le service pour ajouter la dépense
             this.depenseService.addDepense(newDepense).subscribe((depense) => {

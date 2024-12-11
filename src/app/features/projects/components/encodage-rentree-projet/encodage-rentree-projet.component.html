@@ -52,18 +52,26 @@
                 <div class="form-container">
                     <div>
                         <div class="p-field">
-                            <label for="idLibele">Nature</label>
-                            <p-dropdown id="idLibele"
-                                        [options]="libeles"
+                            <label>Catégorie</label>
+                            <p-dropdown [options]="categories"
+                                        optionLabel="categoryName"
+                                        optionValue="idCategory"
+                                        formControlName="categoryId"
+                                        (onChange)="onCategoryChange()"
+                                        placeholder="Sélectionner une catégorie">
+                            </p-dropdown>
+                            <small *ngIf="rentreeForm.get('categoryId')?.invalid && rentreeForm.get('categoryId')?.touched" class="p-error">La catégorie est requise.</small>
+                        </div>
+
+                        <div class="p-field">
+                            <label>Libellé</label>
+                            <p-dropdown [options]="filteredLibeles"
                                         optionLabel="libeleName"
                                         optionValue="idLibele"
                                         formControlName="idLibele"
                                         placeholder="Sélectionner un libellé">
                             </p-dropdown>
-
-                            @if (rentreeForm.get('libeleId')?.invalid && rentreeForm.get('libeleId')?.touched) {
-                                <small class="p-error">Le libellé est obligatoire.</small>
-                            }
+                            <small *ngIf="rentreeForm.get('idLibele')?.invalid && rentreeForm.get('idLibele')?.touched" class="p-error">Le libellé est requis.</small>
                         </div>
 
                         <div class="p-field">

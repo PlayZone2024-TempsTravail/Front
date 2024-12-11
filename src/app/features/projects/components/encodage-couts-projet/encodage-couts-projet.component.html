@@ -56,19 +56,27 @@
                 <div class="form-container">
                     <div>
                         <div class="p-field">
-                            <label for="libeleId">Nature</label>
-                            <p-dropdown
-                                id="libeleId"
-                                [options]="libeles"
-                                optionLabel="libeleName"
-                                optionValue="idLibele"
-                                formControlName="libeleId"
-                                placeholder="Sélectionner un libellé"
-                            ></p-dropdown>
-                            @if (depenseForm.get('libeleId')?.invalid && depenseForm.get('libeleId')?.touched) {
-                                <small class="p-error">La nature du cout est requise.</small>
-                            }
-                           </div>
+                            <label>Catégorie</label>
+                            <p-dropdown [options]="categories"
+                                        optionLabel="categoryName"
+                                        optionValue="idCategory"
+                                        formControlName="categoryId"
+                                        (onChange)="onCategoryChange()"
+                                        placeholder="Sélectionner une catégorie">
+                            </p-dropdown>
+                            <small *ngIf="depenseForm.get('categoryId')?.invalid && depenseForm.get('categoryId')?.touched" class="p-error">La catégorie est requise.</small>
+                        </div>
+
+                        <div class="p-field">
+                            <label>Libellé</label>
+                            <p-dropdown [options]="filteredLibeles"
+                                        optionLabel="libeleName"
+                                        optionValue="idLibele"
+                                        formControlName="libeleId"
+                                        placeholder="Sélectionner un libellé">
+                            </p-dropdown>
+                            <small *ngIf="depenseForm.get('libeleId')?.invalid && depenseForm.get('libeleId')?.touched" class="p-error">Le libellé est requis.</small>
+                        </div>
 
                         <div class="p-field">
                             <label for="organismeId">Organisme</label>
