@@ -35,9 +35,8 @@ export class UserFormComponent implements OnInit, OnChanges {
     */
 
     ngOnInit(): void {
-        this.userService.getRoles().subscribe({
-            next: (roles) => { this.roles = roles; },
-            error: (err) => { console.error("Erreur getRoles:", err); }
+        this.userService.getVisibleRoles().subscribe((roles) => {
+            this.roles = roles;
         });
     }
 

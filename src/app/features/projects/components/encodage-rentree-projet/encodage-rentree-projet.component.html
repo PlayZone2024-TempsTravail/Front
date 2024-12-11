@@ -1,17 +1,16 @@
 <a
     type="button"
     appBack>
-    <img src="/assets/back-button.svg" class="button-back" alt="Retour" width="62px" height="62px">
+    <img src="/assets/back-button.svg" class="button-back" alt="Retour" width="50px" height="50px">
 </a>
 
 <div class="rentree-list-container">
     <div class="header">
-        <div *ngIf="rentrees.length > 0">
+        @if (rentrees.length > 0) {
             <h2>Rentrées du projet {{ projectId }}</h2>
-        </div>
-        <div *ngIf="rentrees.length === 0">
+        } @else {
             <p>Aucune rentrée trouvée pour le projet {{ projectId }}.</p>
-        </div>
+        }
 
         <button pButton label="Ajouter une rentrée" icon="pi pi-plus" (click)="openAddRentreeForm()"></button>
     </div>
@@ -24,6 +23,7 @@
                 <th>Motif</th>
                 <th>Montant</th>
                 <th>Date Facturation</th>
+                <th>Action</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-rentree>
@@ -33,30 +33,56 @@
                 <td>{{ rentree.motif }}</td>
                 <td>{{ rentree.montant | currency:'EUR' }}</td>
                 <td>{{ rentree.dateFacturation | date:'dd/MM/yyyy' }}</td>
+                <td>
+                    <button pButton icon="pi pi-pencil" label="Modifier" (click)="openEditRentreeForm(rentree)"></button>
+                </td>
             </tr>
         </ng-template>
     </p-table>
 
-    <p-dialog header="Ajouter une rentrée" [(visible)]="displayForm" [modal]="true" [closable]="true" [resizable]="false">
-        <form [formGroup]="rentreeForm" (ngSubmit)="submitRentree()">
+    <p-dialog header="{{ selectedRentree ? 'Modifier une rentrée' : 'Ajouter une rentrée' }}"
+              [(visible)]="displayForm"
+              [modal]="true"
+              [closable]="true"
+              [resizable]="false"
+              (onHide)="onDialogHide()">
+
+    <form [formGroup]="rentreeForm" (ngSubmit)="submitRentree()">
             <div class="p-fluid">
                 <div class="form-container">
                     <div>
                         <div class="p-field">
-                            <label for="libeleId">Nature</label>
-                            <p-dropdown id="libeleId" [options]="libeles" optionLabel="name" optionValue="idLibele"
-                                        formControlName="libeleId" placeholder="Sélectionner un libellé"></p-dropdown>
-                            <small *ngIf="rentreeForm.get('libeleId')?.invalid && rentreeForm.get('libeleId')?.touched"
-                                   class="p-error">Le libellé est obligatoire.</small>
+                            <label>Catégorie</label>
+                            <p-dropdown [options]="categories"
+                                        optionLabel="categoryName"
+                                        optionValue="idCategory"
+                                        formControlName="categoryId"
+                                        (onChange)="onCategoryChange()"
+                                        placeholder="Sélectionner une catégorie">
+                            </p-dropdown>
+                            <small *ngIf="rentreeForm.get('categoryId')?.invalid && rentreeForm.get('categoryId')?.touched" class="p-error">La catégorie est requise.</small>
                         </div>
 
                         <div class="p-field">
-                            <label for="organismeId">Organisme</label>
-                            <p-dropdown id="organismeId" [options]="organismes" optionLabel="name"
-                                        optionValue="idOrganisme" formControlName="organismeId"
-                                        placeholder="Sélectionner un organisme"></p-dropdown>
-                            <small *ngIf="rentreeForm.get('organismeId')?.invalid && rentreeForm.get('organismeId')?.touched"
-                                   class="p-error">L'organisme est obligatoire.</small>
+                            <label>Libellé</label>
+                            <p-dropdown [options]="filteredLibeles"
+                                        optionLabel="libeleName"
+                                        optionValue="idLibele"
+                                        formControlName="idLibele"
+                                        placeholder="Sélectionner un libellé">
+                            </p-dropdown>
+                            <small *ngIf="rentreeForm.get('idLibele')?.invalid && rentreeForm.get('idLibele')?.touched" class="p-error">Le libellé est requis.</small>
+                        </div>
+
+                        <div class="p-field">
+                            <label for="idOrganisme">Organisme</label>
+                            <p-dropdown id="idOrganisme"
+                                        [options]="organismes"
+                                        optionLabel="name"
+                                        optionValue="idOrganisme"
+                                        formControlName="idOrganisme"
+                                        placeholder="Sélectionner un organisme">
+                            </p-dropdown>
                         </div>
 
                         <div class="p-field">
@@ -69,16 +95,18 @@
                         <div class="p-field">
                             <label for="montant">Montant</label>
                             <input id="montant" type="number" pInputText formControlName="montant" />
-                            <small *ngIf="rentreeForm.get('montant')?.invalid && rentreeForm.get('montant')?.touched"
-                                   class="p-error">Le montant doit être supérieur ou égal à 0.</small>
+                            @if (rentreeForm.get('montant')?.invalid && rentreeForm.get('montant')?.touched) {
+                                <small class="p-error">Le montant doit être supérieur ou égal à 0.</small>
+                            }
                         </div>
 
                         <div class="p-field">
                             <label for="dateFacturation">Date Facturation</label>
                             <p-calendar id="dateFacturation" formControlName="dateFacturation" [iconDisplay]="'input'"
                                         [showIcon]="true"></p-calendar>
-                            <small *ngIf="rentreeForm.get('dateFacturation')?.invalid && rentreeForm.get('dateFacturation')?.touched"
-                                   class="p-error">La date de facturation est obligatoire.</small>
+                            @if (rentreeForm.get('dateFacturation')?.invalid && rentreeForm.get('dateFacturation')?.touched) {
+                                <small class="p-error">La date de facturation est obligatoire.</small>
+                            }
                         </div>
                     </div>
                 </div>

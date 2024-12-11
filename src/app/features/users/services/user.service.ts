@@ -40,9 +40,10 @@ export class UserService {
             prenom: userForm.prenom,
             email: userForm.email,
             password: userForm.password || 'password', // Mot de passe par défaut si non fourni (pour les tests)
-            isActive: userForm.isActive !== undefined ? userForm.isActive : true,  // Actif par défaut
+            isActive: userForm.isActive !== null ? userForm.isActive : true,  // Actif par défaut
         };
 
+        console.log(newUser)
         return this._http.post<UserDTO>(`${this.apiUrl}/User`, newUser).pipe(
             switchMap((createdUser) => {  // Une fois l'utilisateur créé, on ajoute ses rôles et salaire
                 const rolesReq = userForm.roles.map((roleId) =>
@@ -138,12 +139,18 @@ export class UserService {
      */
     getRoleNameById(roleId: number): string {
         const roles = [
-            { idRole: 1, name: 'Employe' },
-            { idRole: 2, name: 'Charge de Projet' },
-            { idRole: 3, name: 'Admin' },
+            { idRole: 1, name: 'Employe', isRemovable: true, isVisible: true },
+            { idRole: 2, name: 'Chargés de projet', isRemovable: true, isVisible: false },
+            { idRole: 3, name: 'Admin', isRemovable: false, isVisible: true },
         ];
         const role = roles.find(r => r.idRole === roleId);
         return role ? role.name : '';
+    }
+
+    getVisibleRoles(): Observable<Role[]> {
+        return this.getRoles().pipe(
+            map(roles => roles.filter(role => role.isVisible))
+        );
     }
 
     /**

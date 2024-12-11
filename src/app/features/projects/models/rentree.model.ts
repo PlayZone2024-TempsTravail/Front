@@ -28,3 +28,36 @@ export interface RentreeUpdateFormDTO {
     dateFacturation: Date;
     motif?: string;
 }
+
+
+// Modèle OrganismeDTO
+export interface OrganismeDTO {
+    idOrganisme: number;
+    name: string;
+}
+
+// Modèle LibeleDTO
+export interface LibeleDTO {
+    isIncome: boolean;
+    idCategory: number;
+    categoryName?: string;
+    idLibele: number;
+    libeleName?: string;
+}
+
+// Modèle ProjectDTO
+export interface ProjectDTO {
+    idProject: number;
+    isActive: boolean;
+    name?: string;
+    organismeId: number;
+    organismeName?: string;
+    color?: string;
+    montantBudget: number;
+    dateDebutProjet: Date;
+    dateFinProjet: Date;
+    chargeDeProjetId: number;
+    chargeDeProjetName?: string;
+    previsionDepenseActuelle: number;
+    depenseReelActuelle: number;
+}
