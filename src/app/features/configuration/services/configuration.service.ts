@@ -35,8 +35,8 @@ export class ConfigurationService {
       return this.http.post<ConfigurationAbsenceWithOutId>(`${this.apiUrl}/WorktimeCategory`,data)
     }
 
-    putWorktimeCategory(data :ConfigurationAbsenceWithOutId){
-      return this.http.put<ConfigurationAbsenceWithOutId>(`${this.apiUrl}/Configuration`,data)
+    putWorktimeCategory(data :ConfigurationAbsenceWithOutId , id:number){
+      return this.http.put<ConfigurationAbsenceWithOutId>(`${this.apiUrl}/Configuration/${id}`,data)
     }
 
 }

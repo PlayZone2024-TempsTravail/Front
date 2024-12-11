@@ -36,6 +36,7 @@ export class ConfigAbsencesformComponent implements OnInit {
         color: "" ,
 
     };
+    idcheck:number = 0;
 
     constructor(private configurationServices:ConfigurationService ) { }
 
@@ -47,11 +48,12 @@ export class ConfigAbsencesformComponent implements OnInit {
 
     }
 
-    showDialog(name: string , abreviation:string , color:string): void {
+    showDialog(name: string , abreviation:string , color:string , id:number): void {
         this.visible = true;
         this.abreviationModif = abreviation;
         this.nameModif = name;
         this.colorModif = "#" + color.toLowerCase().substring(0, color.length - 2);
+        this.idcheck = id;
         console.log(this.colorModif);
 
     }
@@ -77,16 +79,15 @@ export class ConfigAbsencesformComponent implements OnInit {
 
     }
 
-    modifAbsence(name:string , abreviation:string , color:string){
+    modifAbsence(name:string , abreviation:string , color:string ){
         let newcolor= color.slice(1).toUpperCase();
         let newAbreviation = abreviation.toUpperCase();
-
         this.AbsenceModif.color = newcolor + "FF";
         this.AbsenceModif.abreviation = newAbreviation;
         this.AbsenceModif.name = name;
-        console.log(this.AbsenceModif);
+        console.log(this.AbsenceModif ,this.idcheck );
 
-        this.configurationServices.putWorktimeCategory(this.newAbsence).subscribe(() => {
+        this.configurationServices.putWorktimeCategory(this.newAbsence,this.idcheck).subscribe(() => {
              console.log('enregistré !')
         })
     }
