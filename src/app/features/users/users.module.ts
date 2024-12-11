@@ -15,12 +15,14 @@ import {DialogModule} from 'primeng/dialog';
 import {DropdownModule} from 'primeng/dropdown';
 import {MultiSelectModule} from 'primeng/multiselect';
 import {CalendarModule} from 'primeng/calendar';
+import { UserCompteursComponent } from './components/user-compteurs/user-compteurs.component';
 
 
 @NgModule({
   declarations: [
     UserListComponent,
     UserFormComponent,
+    UserCompteursComponent,
   ],
     imports: [
         CommonModule,

@@ -1,0 +1,56 @@
+<!-- Template du composant user-compteurs: affiche la liste des compteurs et un bouton pour ajouter/modifier/supprimer -->
+
+<div class="compteurs-container">
+
+    <!-- Tableau des compteurs -->
+    <p-table [value]="compteurs">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Catégorie de compteur</th>
+                <th>Quantité</th>
+                <th>Action</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-compteur>
+            <tr>
+                <td>{{ getCategoryName(compteur.worktimeCategoryId) }}</td>
+                <td>{{ compteur.quantity }}</td>
+                <td>
+                    <button pButton icon="pi pi-times" class="p-button-danger"  (click)="deleteCompteur(compteur)"></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+    <!-- Formulaire d'ajout/modif de compteur pour l'utilisateur sélectionné -->
+    <div class="ajout-modif-form">
+        <form [formGroup]="compteurForm" (ngSubmit)="submitCompteur()">
+            <div class="p-fluid">
+                <div class="p-field">
+                    <label>Catégorie</label>
+                    <p-dropdown [options]="categories"
+                                optionLabel="displayLabel"
+                                optionValue="idWorktimeCategory"
+                                formControlName="worktimeCategoryId"
+                                placeholder="Sélectionner une catégorie">
+                    </p-dropdown>
+                    @if (compteurForm.get('worktimeCategoryId')?.invalid && compteurForm.get('worktimeCategoryId')?.touched) {
+                        <small class="p-error">La catégorie est requise.</small>
+                    }
+                </div>
+
+                <div class="p-field">
+                    <label>Quantité</label>
+                    <input type="number" pInputText formControlName="quantity"/>
+                    @if (compteurForm.get('quantity')?.invalid && compteurForm.get('quantity')?.touched) {
+                        <small class="p-error">La quantité est requise et supérieure à 0.</small>
+                    }
+                </div>
+
+                <div class="p-field ajout">
+                    <button pButton type="submit" label="Soumettre"></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

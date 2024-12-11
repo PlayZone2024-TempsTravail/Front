@@ -4,26 +4,36 @@
             <div class="form-group">
                 <label for="prenom">Prénom</label>
                 <input id="prenom" type="text" pInputText formControlName="prenom" />
-                <small *ngIf="userForm.get('prenom')?.invalid && userForm.get('prenom')?.touched" class="p-error">Le prénom est requis.</small>
+                @if(userForm.get('prenom')?.invalid && userForm.get('prenom')?.touched) {
+                    <small class="p-error">Le prénom est requis.</small>
+                }
             </div>
 
             <div class="form-group">
                 <label for="nom">Nom</label>
                 <input id="nom" type="text" pInputText formControlName="nom" />
-                <small *ngIf="userForm.get('nom')?.invalid && userForm.get('nom')?.touched" class="p-error">Le nom est requis.</small>
+                @if(userForm.get('nom')?.invalid && userForm.get('nom')?.touched) {
+                    <small class="p-error">Le nom est requis.</small>
+                }
             </div>
 
             <div class="form-group">
                 <label for="email">Email</label>
                 <input id="email" type="email" pInputText formControlName="email" />
-                <small *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched" class="p-error">Un email valide est requis.</small>
+                @if(userForm.get('email')?.invalid && userForm.get('email')?.touched) {
+                    <small class="p-error">Un email valide est requis.</small>
+                }
             </div>
 
-            <div class="form-group" *ngIf="!userData">
+            @if(!userData) {
+                <div class="form-group">
                 <label for="password">Mot de passe</label>
                 <input id="password" type="password" pInputText formControlName="password" />
-                <small *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched" class="p-error">Le mot de passe est requis.</small>
+                @if(userForm.get('password')?.invalid && userForm.get('password')?.touched) {
+                    <small class="p-error">Le mot de passe est requis.</small>
+                }
             </div>
+            }
 
             <div class="form-group">
                 <label>Rôles</label>
@@ -35,7 +45,9 @@
                     [display]="'chip'"
                     placeholder="Sélectionner les rôles"
                 ></p-multiSelect>
-                <small *ngIf="userForm.get('roles')?.invalid && userForm.get('roles')?.touched" class="p-error">Au moins un rôle est requis.</small>
+                @if(userForm.get('roles')?.invalid && userForm.get('roles')?.touched) {
+                    <small class="p-error">Au moins un rôle est requis.</small>
+                }
             </div>
         </div>
 
@@ -44,12 +56,16 @@
                 <div class="form-group">
                     <label for="montant">Salaire</label>
                     <input id="montant" type="number" pInputText formControlName="montant" />
-                    <small *ngIf="userForm.get('montant')?.invalid && userForm.get('montant')?.touched" class="p-error">Le salaire est requis.</small>
-                </div>
+                    @if(userForm.get('montant')?.invalid && userForm.get('montant')?.touched) {
+                        <small class="p-error">Le salaire est requis.</small>
+                    }
+                 </div>
                 <div class="form-group">
                     <label for="regime">Régime de Travail</label>
                     <input id="regime" type="number" pInputText formControlName="regime" />
-                    <small *ngIf="userForm.get('regime')?.invalid && userForm.get('regime')?.touched" class="p-error">Le régime est requis.</small>
+                    @if(userForm.get('regime')?.invalid && userForm.get('regime')?.touched) {
+                        <small class="p-error">Le régime est requis.</small>
+                    }
                 </div>
             </div>
 
@@ -60,20 +76,28 @@
                             [showIcon]="true"
                             inputId="icondisplay">
                 </p-calendar>
-                <small *ngIf="userForm.get('date')?.invalid && userForm.get('date')?.touched" class="p-error">La date est requise.</small>
+                @if(userForm.get('date')?.invalid && userForm.get('date')?.touched) {
+                    <small class="p-error">La date est requise.</small>
+                }
             </div>
 
-            <div class="form-group" *ngIf="userData">
+            @if(userData) {
+                <div class="form-group">
                 <label>Statut</label>
                 <p-dropdown [options]="statusOptions" formControlName="isActive" placeholder="Sélectionner le statut"></p-dropdown>
             </div>
+            }
         </div>
     </div>
 
     <div class="form-actions">
-        <button pButton type="submit" label="Ajouter" *ngIf="!userData"></button>
-        <button pButton type="submit" label="Modifier" *ngIf="userData"></button>
-        <button pButton type="button" label="Historique" *ngIf="userData" (click)="openHistory()"></button>
+        @if(!userData) {
+            <button pButton type="submit" label="Ajouter"></button>
+        }
+        @if(userData) {
+            <button pButton type="submit" label="Modifier"></button>
+            <button pButton type="button" label="Historique" (click)="openHistory()"></button>
+        }
     </div>
 </form>
 
