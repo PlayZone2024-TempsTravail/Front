@@ -86,7 +86,7 @@
                     <th>Date</th>
                     <th>Motif</th>
                     <th>Catégorie</th>
-                    <th>Libelles</th>
+                    <th>Libellés</th>
                     <th>Montant</th>
                     <th>Cumul</th>
                     <th></th>
@@ -112,5 +112,43 @@
                 </tr>
             </ng-template>
         </p-table>
+    </div>
+
+    <!-- Table Frais Generaux -->
+    <div class="tableFrais">
+        <h3>Frais généraux totaux</h3>
+        <form [formGroup]="fraisGenerauxForm">
+            <table class="p-datatable p-component">
+                <thead>
+                <tr>
+                    <th>Libellé</th>
+                    <th>Valeur</th>
+                </tr>
+                </thead>
+                <tbody formArrayName="libeleValues">
+                <tr *ngFor="let libele of libelesFraisGeneraux; let i = index">
+                    <td>{{ libele.libeleName }}</td>
+                    <td>
+                        <input
+                            type="number"
+                            [formControlName]="i"
+                            (input)="calculateTotalFraisGeneraux()"
+                            placeholder="0.00"
+                        />
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+        <div class="summary">
+            <h4>Total des frais généraux : {{ totalFraisGeneraux | number: '1.2-2' }} €</h4>
+        </div>
+        <button
+            pButton
+            type="button"
+            label="Soumettre"
+            (click)="submitFraisGeneraux()"
+            [disabled]="!isAnyFraisGenerauxFilled()"
+        ></button>
     </div>
 </div>

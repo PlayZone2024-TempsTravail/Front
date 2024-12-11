@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectService } from '../../services/project.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {Category, LibeleWithName} from '../../models/project.model';
+import {Category, LibeleWithName, Project} from '../../models/project.model';
 import { ActivatedRoute } from '@angular/router';
 import { forkJoin } from 'rxjs';
+import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+
+
+import {log} from "@angular-devkit/build-angular/src/builders/ssr-dev-server";
 
 @Component({
     selector: 'app-project-modification',
@@ -23,6 +26,10 @@ export class ProjectModificationComponent implements OnInit {
     filteredExpenseLibeles: LibeleWithName[] = [];
     projectId!: number; // Store the dynamic project ID
     isEstimationByCategory: boolean = false;
+    projectDetails!: Project
+    libelesFraisGeneraux: LibeleWithName[] = [];
+    totalFraisGeneraux: number = 0;
+    fraisGenerauxForm: FormGroup;
 
     constructor(private fb: FormBuilder, private projectService: ProjectService, private route: ActivatedRoute) {
         this.previsionIncomesForm = this.fb.group({
@@ -40,6 +47,10 @@ export class ProjectModificationComponent implements OnInit {
             idLibele: [{ value: '', disabled: true }, Validators.required], // Disabled until category is selected
             montant: [0, [Validators.required, Validators.min(1)]],
         });
+
+        this.fraisGenerauxForm = this.fb.group({
+            libeleValues: this.fb.array([]),
+        });
     }
 
     ngOnInit() {
@@ -49,12 +60,20 @@ export class ProjectModificationComponent implements OnInit {
             console.error('No project ID provided in the route');
             return;
         }
+        this.loadProjectDetails();
         this.loadIncomeLibeles();
         this.loadExpenseLibeles();
         this.loadExpenseCategories();
         this.loadIncomeCategories();
         this.loadIncomesPrevisions();
         this.loadExpensesPrevisions();
+        this.initFraisGenerauxForm();
+    }
+
+    loadProjectDetails(): void {
+        this.projectService.getProjectById(this.projectId).subscribe((details) => {
+            this.projectDetails = details;
+        });
     }
 
     // Charger Libelles Entrees
@@ -85,7 +104,7 @@ export class ProjectModificationComponent implements OnInit {
         });
     }
 
-    // Charger Previsions Entrees
+    // Charger Previsions Entrées
     loadIncomesPrevisions(): void {
         this.projectService.getPrevisionalIncomes(this.projectId).subscribe((data) => {
             this.previsionIncomes = this.calculateCumul(data);
@@ -144,6 +163,80 @@ export class ProjectModificationComponent implements OnInit {
         });
     }
 
+    initFraisGenerauxForm(): void {
+        this.projectService.getLibeles().subscribe((libeles) => {
+            this.libelesFraisGeneraux = libeles.filter(
+                (libele) => libele.idCategory === 4
+            ); // Assuming idCategory 4 corresponds to "Frais Generaux"
+            const controls = this.libelesFraisGeneraux.map(() =>
+                this.fb.control(0, [Validators.required, Validators.min(0)])
+            );
+            this.fraisGenerauxForm.setControl('libeleValues', this.fb.array(controls));
+        });
+    }
+
+    calculateTotalFraisGeneraux(): void {
+        const libeleValues = this.fraisGenerauxForm.get('libeleValues') as FormArray;
+        this.totalFraisGeneraux = libeleValues.controls.reduce(
+            (sum, control) => sum + Number(control.value || 0),
+            0
+        );
+    }
+
+    submitFraisGeneraux(): void {
+        const startDate = new Date(this.projectDetails.dateDebutProjet);
+        const endDate = new Date(this.projectDetails.dateFinProjet);
+        const totalMonths = this.calculateProjectDurationMonths(startDate, endDate);
+        const monthlyAmount = this.totalFraisGeneraux / totalMonths;
+
+        // Generate all entries for the project's duration
+        const fraisGenerauxExpenses = [];
+        for (let date = new Date(startDate); date <= endDate; date.setMonth(date.getMonth() + 1)) {
+            fraisGenerauxExpenses.push({
+                date: new Date(date).toISOString(), // Use the 1st of each month
+                motif: 'Tranche mensuelle frais généraux',
+                categoryId: 4, // Assuming idCategory 4 corresponds to "Frais Generaux"
+                montant: monthlyAmount,
+                projectId: this.projectId,
+            });
+        }
+
+        // Submit each entry to the backend
+        let completedRequests = 0;
+        fraisGenerauxExpenses.forEach((expense) => {
+            this.projectService.addPrevisionExpenseByCategory(expense).subscribe({
+                next: () => {
+                    completedRequests++;
+                    console.log('Expense added:', expense);
+
+                    // Reload data once all requests are complete
+                    if (completedRequests === fraisGenerauxExpenses.length) {
+                        this.loadExpensesPrevisions();
+                        console.log('All frais généraux expenses submitted successfully.');
+                    }
+                },
+                error: (err) => console.error('Error adding frais généraux expense:', err),
+            });
+        });
+
+        this.loadExpensesPrevisions();
+        this.previsionExpensesForm.reset();
+    }
+
+    isAnyFraisGenerauxFilled(): boolean {
+        return this.fraisGenerauxForm.value.libeleValues.some(
+            (value: number) => value && value > 0
+        );
+    }
+
+    calculateProjectDurationMonths(startDate: Date, endDate: Date): number {
+        const start = new Date(startDate.getFullYear(), startDate.getMonth(), 1); // Start of the month
+        const end = new Date(endDate.getFullYear(), endDate.getMonth(), 1); // End of the month
+        const months = (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth() + 1);
+        return Math.max(months, 1); // Ensure at least 1 month
+    }
+
+    // Add new expense
     // Ajouter une depense
     addPrevisionExpense(): void {
         const newExpense = this.previsionExpensesForm.value;
@@ -223,6 +316,7 @@ export class ProjectModificationComponent implements OnInit {
         const target = event.target as HTMLSelectElement;
         const idCategory = Number(target.value);
         if (!isNaN(idCategory)) {
+            console.log(this.incomeLibeles)
             this.filteredIncomeLibeles = this.incomeLibeles.filter((libele) => libele.idCategory === idCategory);
             this.previsionIncomesForm.get('idLibele')?.enable();
         } else {
@@ -283,7 +377,7 @@ export class ProjectModificationComponent implements OnInit {
         let cumul = 0;
         return entries.map((entry) => {
             cumul += entry.montant;
-            return { ...entry, cumul };
+            return {...entry, cumul};
         });
     }
 }
