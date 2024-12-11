@@ -1,0 +1,154 @@
+<div class="modification-container">
+    <!-- Header -->
+    <h2>Modifier un Projet</h2>
+
+    <!-- Previsions Entrées -->
+    <div class="section">
+        <h3>Prévisions Entrées</h3>
+        <form [formGroup]="previsionIncomesForm" (ngSubmit)="addPrevisionIncome()">
+            <div class="form-row">
+                <input type="date" formControlName="date" placeholder="Date" />
+                <input type="text" formControlName="motif" placeholder="Motif" maxlength="255"/>
+                <select formControlName="idCategory" (change)="onIncomeCategoryChange($event)">
+                    <option *ngFor="let category of incomeCategories" [value]="category.idCategory">
+                        {{ category.name }}
+                    </option>
+                </select>
+                <select formControlName="idLibele" [disabled]="!filteredIncomeLibeles.length">
+                    <option *ngFor="let libele of filteredIncomeLibeles" [value]="libele.idLibele">
+                        {{ libele.libeleName }}
+                    </option>
+                </select>
+                <input type="number" formControlName="montant" placeholder="Montant" />
+                <button type="submit" [disabled]="previsionIncomesForm.invalid">+</button>
+            </div>
+        </form>
+
+        <p-table [value]="previsionIncomes" [scrollable]="true" scrollDirection="both">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Date</th>
+                    <th>Motif</th>
+                    <th>Catégorie</th>
+                    <th>Libellé</th>
+                    <th>Montant</th>
+                    <th>Cumul</th>
+                    <th></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-income>
+                <tr>
+                    <td>{{ income.date | date: 'dd/MM/yyyy' }}</td>
+                    <td>{{ income.motif }}</td>
+                    <td>{{ income.categoryName }}</td>
+                    <td>{{ income.libeleName }}</td>
+                    <td>{{ income.montant | currency: 'EUR' }}</td>
+                    <td>{{ income.cumul | currency: 'EUR' }}</td>
+                    <td>
+                        <button
+                                class="delete-btn"
+                                (click)="deletePrevisionIncome(income.idPrevisionRentree)"
+                                title="Delete this entry"
+                        >
+                            🗑️
+                        </button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+    <!-- Previsions Sorties -->
+    <div class="section">
+        <h3>Prévisions Sorties</h3>
+        <form [formGroup]="previsionExpensesForm" (ngSubmit)="addPrevisionExpense()">
+            <div class="form-row">
+                <input type="date" formControlName="date" placeholder="Date" />
+                <input type="text" formControlName="motif" placeholder="Motif" maxlength="255"/>
+                <select formControlName="idCategory" (change)="onExpenseCategoryChange($event)">
+                    <option *ngFor="let category of expenseCategories" [value]="category.idCategory">
+                        {{ category.name }}
+                    </option>
+                </select>
+                <select formControlName="idLibele" [disabled]="!filteredExpenseLibeles.length">
+                    <option *ngFor="let libele of filteredExpenseLibeles" [value]="libele.idLibele">
+                        {{ libele.libeleName }}
+                    </option>
+                </select>
+                <input type="number" formControlName="montant" placeholder="Montant" />
+                <button type="submit" [disabled]="previsionExpensesForm.invalid">+</button>
+            </div>
+        </form>
+
+        <p-table [value]="previsionExpenses" [scrollable]="true" scrollDirection="both">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Date</th>
+                    <th>Motif</th>
+                    <th>Catégorie</th>
+                    <th>Libellés</th>
+                    <th>Montant</th>
+                    <th>Cumul</th>
+                    <th></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-expense>
+                <tr>
+                    <td>{{ expense.date | date: 'dd/MM/yyyy' }}</td>
+                    <td>{{ expense.motif }}</td>
+                    <td>{{ expense.categoryName }}</td>
+                    <td>{{ !expense.estimationParCategorie ? expense.libeleName : '' }}</td>
+                    <td>{{ expense.montant | currency: 'EUR' }}</td>
+                    <td>{{ expense.cumul | currency: 'EUR' }}</td>
+                    <td>
+                        <button
+                                class="delete-btn"
+                                (click)="deletePrevisionExpense(expense.idPrevisionBudgetCategory || expense.idPrevisionBudgetLibele)"
+                                title="Delete this entry"
+                        >
+                            🗑️
+                        </button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+
+    <!-- Table Frais Generaux -->
+    <div class="tableFrais">
+        <h3>Frais généraux totaux</h3>
+        <form [formGroup]="fraisGenerauxForm">
+            <table class="p-datatable p-component">
+                <thead>
+                <tr>
+                    <th>Libellé</th>
+                    <th>Valeur</th>
+                </tr>
+                </thead>
+                <tbody formArrayName="libeleValues">
+                <tr *ngFor="let libele of libelesFraisGeneraux; let i = index">
+                    <td>{{ libele.libeleName }}</td>
+                    <td>
+                        <input
+                            type="number"
+                            [formControlName]="i"
+                            (input)="calculateTotalFraisGeneraux()"
+                            placeholder="0.00"
+                        />
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+        <div class="summary">
+            <h4>Total des frais généraux : {{ totalFraisGeneraux | number: '1.2-2' }} €</h4>
+        </div>
+        <button
+            pButton
+            type="button"
+            label="Soumettre"
+            (click)="submitFraisGeneraux()"
+            [disabled]="!isAnyFraisGenerauxFilled()"
+        ></button>
+    </div>
+</div>

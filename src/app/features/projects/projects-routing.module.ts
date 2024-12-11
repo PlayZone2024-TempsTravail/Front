@@ -5,11 +5,12 @@ import {projectResolverResolver} from './resolvers/project-resolver.resolver';
 import {ProjectGraphComponent} from './components/voir-graphique/voir-graphique.component';
 import { ProjectDetailsComponent } from './components/project-details/project-details.component';
 import {EncodageCoutsProjetComponent} from './components/encodage-couts-projet/encodage-couts-projet.component';
+import { ProjectCreationComponent } from './components/project-creation/project-creation.component';
 import {CalendarComponent} from '../time-tracking/components/calendar/calendar.component';
 import {unauthenticatedGuard} from '../../shared/guards/authenticated.guard';
+import {ProjectModificationComponent} from './components/project-modification/project-modification.component';
 import {EncodageRentreeProjetComponent} from './components/encodage-rentree-projet/encodage-rentree-projet.component';
 import {ProjectrapportComponent} from './components/project-rapport/projectrapport.component';
-import {ProjectCreationComponent} from './components/project-creation/project-creation.component';
 
 const routes: Routes = [
     { path: '',
@@ -27,16 +28,25 @@ const routes: Routes = [
         component: EncodageRentreeProjetComponent,
     },
     {
-        path: 'details/:id', // Route pour voir les détails d'un projet spécifique
+        path: 'details/:id',
         component: ProjectDetailsComponent,
     },
-    {path:'graphique/:id', component : ProjectGraphComponent,}, //Route pour voir le graphique
-    {path:'rapport',component : ProjectrapportComponent},//Route pour crée le rapport
+    {
+        path:'graphique/:id',
+        component : ProjectGraphComponent,
+    },
+    {
+        path:'rapport',
+        component : ProjectrapportComponent
+    },
     {
         path: 'create-project',
         component: ProjectCreationComponent,
     },
-
+    {
+        path: 'modifier-projet/:id',
+        component: ProjectModificationComponent,
+    },
 ];
 
 @NgModule({

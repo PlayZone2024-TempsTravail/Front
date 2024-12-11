@@ -30,6 +30,7 @@ import {InputNumberModule} from 'primeng/inputnumber';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { ProjectModificationComponent } from './components/project-modification/project-modification.component';
 
 
 @NgModule({
@@ -37,11 +38,14 @@ import { MatInputModule } from '@angular/material/input';
       ProjectsComponent,
       ProjectGraphComponent,
       ProjectDetailsComponent,
-    ProjectsComponent,
-    EncodageCoutsProjetComponent,
-    EncodageRentreeProjetComponent,
-    ProjectrapportComponent,
-    ProjectCreationComponent
+      ProjectsComponent,
+      EncodageCoutsProjetComponent,
+      ProjectCreationComponent,
+      ProjectModificationComponent,
+      EncodageCoutsProjetComponent,
+      EncodageRentreeProjetComponent,
+      ProjectrapportComponent,
+      ProjectCreationComponent
   ],
     imports: [
         CommonModule,

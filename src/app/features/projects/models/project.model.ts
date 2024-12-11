@@ -62,4 +62,18 @@ export interface Organisme {
     idOrganisme: number,
     name: string,
 }
+export interface LibeleWithName {
+    isIncome: boolean,
+    idLibele: number,
+    idCategory: number,
+    libeleName: string,
+    categoryName: string,
+}
+
+export interface Category {
+    idCategory: number,
+    name: string,
+    isIncome: boolean,
+    estimationParCategorie: boolean,
+}
 
