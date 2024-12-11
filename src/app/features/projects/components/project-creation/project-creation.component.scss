@@ -4,10 +4,8 @@
 .form-group p-inputNumber {
     width: 46%;
     height: 45px;
-    padding: 10px;
     font-size: 14px;
     border-radius: 5px;
-    box-sizing: border-box;
     color: #555;
 }
 
@@ -35,10 +33,11 @@ label {
 
 
 button {
-    background-color: #45a049;
+    background-color: #84c101;
     color: white;
     border: none;
     padding: 10px 20px;
+    margin-left : 10px;
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
@@ -47,17 +46,16 @@ button {
 }
 
 button:hover {
-    background-color: #006f8b;
+    background-color: #76b901;
 }
 
 button:disabled {
-    background-color: #c8e6c9;
+    background-color: #ccc;
     cursor: not-allowed;
 }
 
 
 button[type="submit"] {
-    margin-top: 20px;
     width: 25%;
 }
 
@@ -66,6 +64,7 @@ button[type="submit"] {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
+    margin-top: 15px;
     width: 60px;
     height: 60px;
     background-color: transparent;

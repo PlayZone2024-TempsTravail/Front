@@ -106,7 +106,7 @@
 
             <ng-template pTemplate="body" let-total>
                 <tr>
-                    <td pFrozenColumn>Total</td>
+                    <td pFrozenColumn> <strong>Total</strong></td>
                     <ng-container *ngFor="let month of getMonthsRange()">
                         <td>{{ total[month] || 0 | currency: 'EUR' }}</td>
                     </ng-container>
