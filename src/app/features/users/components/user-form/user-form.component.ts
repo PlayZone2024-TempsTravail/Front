@@ -13,6 +13,7 @@ import { UserCreateUpdateForm } from '../../forms/user.form';
 export class UserFormComponent implements OnInit, OnChanges {
     @Input() userData: UserDTO | null = null;
     @Output() formSubmit = new EventEmitter<UserForm>();
+    @Output() closeFormRequest = new EventEmitter<void>();
 
     userForm: FormGroup;
     roles: Role[] = [];
@@ -88,25 +89,36 @@ export class UserFormComponent implements OnInit, OnChanges {
         }
     }
 
-    // Métjhode pour ouvrir la fenêtre d'historique des salaires
+    /**
+     * Ouvre la fenêtre d'historique des salaires.
+     */
     openHistory() {
         this.historique.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()); // trier l'historique sur la date (décroissant)
         this.displayHistoryDialog = true;
     }
 
-
-    resetPassword(userId: number) {
-        this._http.put(`/api/User/resetpassword/${userId}`, {}).subscribe({
+    /**
+     * Réinitialise le mot de passe de l'utilisateur.
+     * Elle appelle le service utilisateur pour réinitialiser le mot de passe de l'utilisateur.
+     * @param userId - L'ID de l'utilisateur dont le mot de passe doit être réinitialisé.
+     * @returns void
+     */
+    resetPassword(userId: number): void {
+        this.userService.resetUserPassword(userId).subscribe({
             next: (response) => {
                 console.log('Le mail de réinitialisation a bien été envoyé', response);
+                this.closeFormRequest.emit(); // ferme la pop-up
             },
             error: (error) => {
-                console.error('Erreur d\'envoi du mail de réinitialisation', error.error.errors);
+                const errMsg = error?.error?.errors ?? error.message ?? 'Erreur inconnue';
+                console.error('Erreur d\'envoi du mail de réinitialisation', errMsg);
             }
         });
     }
 
-    // Métjhode pour fermer la fenêtre d'historique des salaires
+    /**
+     * Ferme la fenêtre d'historique des salaires.
+     */
     closeHistory() {
         this.displayHistoryDialog = false;
     }
