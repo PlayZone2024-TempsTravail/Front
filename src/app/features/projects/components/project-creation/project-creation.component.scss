@@ -1,28 +1,28 @@
 .form-group input[type="text"],
 .form-group p-dropdown,
 .form-group p-calendar,
-.form-group p-inputNumber {
+.form-group p-inputNumber
+{
     width: 46%;
     height: 45px;
-    font-size: 14px;
+    font-size: 16px;
     border-radius: 5px;
     color: #555;
 }
 
-
 .form-container {
-    padding: 20px;
-    border-radius: 8px;
+    flex: 0 0 40%;
+    padding: 15px;
     background-color: #f8f8f8;
+    border-radius: 8px;
     box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
-    width: 50%;
     display: flex;
     flex-direction: column;
-    align-items: stretch;
-    gap: 20px;
-    margin-bottom: 10px;
+    gap: 15px; /* Reduced spacing */
+    max-height: 80vh; /* Ensure it fits within the viewport */
+    overflow: scroll;
+    overflow-x: hidden;
 }
-
 
 label {
     font-weight: 600;
@@ -56,7 +56,7 @@ button:disabled {
 
 
 button[type="submit"] {
-    width: 25%;
+    padding: 10px 20px;
 }
 
 
@@ -93,4 +93,23 @@ button[type="submit"] {
 
 #montantBudget{
     height: 65px;
+}
+
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px;
+}
+
+.logo-container {
+    flex: 0 0 58%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    max-width: 50%;
+    height: auto;
 }
