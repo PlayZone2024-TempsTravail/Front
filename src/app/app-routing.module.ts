@@ -6,7 +6,8 @@ import {authenticatedGuard, unauthenticatedGuard} from './shared/guards/authenti
 import {LoginComponent} from './features/auth/pages/login/login.component';
 
 const routes: Routes = [
-    { path: '', redirectTo: '/pointage', pathMatch: 'full' },
+    { path: '', redirectTo: 'home', pathMatch: 'full' },
+    { path: 'home', loadChildren: () => import('./features/home/home.module').then(m => m.HomeModule), canActivate: [unauthenticatedGuard] },
     { path: 'pointage', loadChildren: () => import('./features/time-tracking/time-tracking.module').then(m => m.TimeTrackingModule), canActivate: [unauthenticatedGuard]},
     { path: 'projet', loadChildren: () => import('./features/projects/projects.module').then(m => m.ProjectsModule), canActivate: [unauthenticatedGuard] },
     { path: 'equipe', loadChildren: () => import('./features/users/users.module').then(m => m.UsersModule), canActivate: [unauthenticatedGuard] },

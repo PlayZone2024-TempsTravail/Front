@@ -6,7 +6,6 @@ import { HeaderComponent } from './layout/header/header.component';
 import { AuthModule } from './features/auth/auth.module';
 import { TimeTrackingModule } from './features/time-tracking/time-tracking.module';
 import { TimeTrackingRoutingModule } from './features/time-tracking/time-tracking-routing.module';
-import { HomeComponent } from './features/home/components/home.component';
 
 import { HttpClientModule, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { ChipModule } from 'primeng/chip';
@@ -28,8 +27,10 @@ import { DropdownModule } from 'primeng/dropdown';
 import { DepenseService } from './features/projects/services/depense.service';
 import { ChartModule } from 'primeng/chart';
 import { jwtInterceptor } from './core/interceptor/jwt.interceptor';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
 
-// DATE 
+
+// DATE
 import { registerLocaleData } from '@angular/common';
 import localeFrBe from '@angular/common/locales/fr-BE';
 
@@ -39,7 +40,6 @@ registerLocaleData(localeFrBe);
     declarations: [
         AppComponent,
         HeaderComponent,
-        HomeComponent,
         FooterComponent,
     ],
     imports: [
@@ -64,6 +64,10 @@ registerLocaleData(localeFrBe);
         BrowserAnimationsModule,
         ButtonModule,
         InputTextModule,
+        FloatLabelModule,
+        DropdownModule,
+        ScrollPanelModule,
+
     ],
     providers: [
         {provide: LOCALE_ID, useValue: 'fr-BE'},
