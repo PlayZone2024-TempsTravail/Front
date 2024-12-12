@@ -14,6 +14,7 @@ const routes: Routes = [
     { path: 'projet', loadChildren: () => import('./features/projects/projects.module').then(m => m.ProjectsModule), canActivate: [unauthenticatedGuard] },
     { path: 'equipe', loadChildren: () => import('./features/users/users.module').then(m => m.UsersModule), canActivate: [unauthenticatedGuard] },
     { path: 'configuration', loadChildren: () => import('./features/configuration/configuration.module').then(m => m.ConfigurationModule), canActivate: [unauthenticatedGuard] },
+    { path: 'roles', loadChildren: () => import('./features/roles/roles.module').then(m => m.RolesModule), canActivate: [unauthenticatedGuard] },
     { path: 'login', component: LoginComponent, canActivate: [authenticatedGuard] },
 ];
 
