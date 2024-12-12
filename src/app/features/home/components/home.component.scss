@@ -1,3 +1,4 @@
+
 .container{
     display : flex;
 
@@ -11,6 +12,7 @@
     align-items: center;
     z-index: 1;
     padding: 10px;
+    font-family: 'Tw Cen MT Std', sans-serif;
 }
 .header-notif{
     display: flex;
@@ -18,6 +20,7 @@
     height: 20px;
     background-color: var(--primary-color);
     z-index: 0;
+
 }
 .header2{
     display: flex;
@@ -53,6 +56,7 @@ p-ScrollPanel{
     width: 100%;
     font-size: 22px;
     flex-direction: column;
+    font-family: 'Tw Cen MT Std', sans-serif;
 }
 .notif-item {
     align-items: center;

@@ -1,8 +1,5 @@
 import {Component} from '@angular/core';
-import {JwtPayload} from '../../auth/models/token.model';
-import {jwtDecode} from 'jwt-decode';
 import { AuthService } from '../../auth/services/auth.services';
-import { UserTokenDtoModel } from '../../auth/models/user.token.dto.model';
 
 
 @Component({

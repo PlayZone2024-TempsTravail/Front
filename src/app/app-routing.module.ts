@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CalendarComponent } from './features/time-tracking/components/calendar/calendar.component';
 import {EncodageCoutsProjetComponent} from './features/projects/components/encodage-couts-projet/encodage-couts-projet.component';
 import {authenticatedGuard, unauthenticatedGuard} from './shared/guards/authenticated.guard';
 import {LoginComponent} from './features/auth/pages/login/login.component';
