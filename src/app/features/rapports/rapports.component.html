@@ -1,0 +1,41 @@
+<div class="Rapport-H-Project">
+    <h5>Rapport heures par projet</h5>
+
+    <form [formGroup]="form">
+    <p-calendar
+        id="rapport-project-start"
+        formControlName="dateDebutProjet"
+        [showIcon]="true"
+        dateFormat="dd-mm-yy"
+    ></p-calendar>
+
+    <p-calendar
+        id="rapport-project-end"
+        formControlName="dateFinProjet"
+        [showIcon]="true"
+        dateFormat="dd-mm-yy"
+    ></p-calendar>
+
+    <div class="rapport-button">
+        <p-button
+            label="Rapport"
+            id="rapport-button"
+            (click)="generateRapportTimes()"
+        ></p-button>
+    </div>
+    </form>
+</div>
+
+
+
+<div class="Rapport-counter">
+    <h5>Liste actuelle des VA, VAEX, JF et RC restant à prendre</h5>
+
+    <div class="rapport-button">
+        <p-button
+            label="Rapport"
+            id="conteur-button"
+            (click)="fetchRapportCounter()"
+        ></p-button>
+    </div>
+</div>
