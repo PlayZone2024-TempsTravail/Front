@@ -106,7 +106,7 @@ export class UserFormComponent implements OnInit, OnChanges {
         });
     }
 
-    // Métjhode pour fermer la fenêtre d'historique des salaires
+    // Méthode pour fermer la fenêtre d'historique des salaires
     closeHistory() {
         this.displayHistoryDialog = false;
     }
