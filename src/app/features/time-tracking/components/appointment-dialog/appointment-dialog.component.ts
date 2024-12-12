@@ -1,4 +1,3 @@
-
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {
   AbstractControl,
@@ -19,9 +18,9 @@ import { FormControl } from '@angular/forms';
 import { AppointmentService } from '../../../services/services-calendar.service';
 import { MAT_DATE_FORMATS, DateAdapter } from '@angular/material/core';
 import { CUSTOM_DATE_FORMATS, CustomDateAdapter } from '../../models/custom-date-adapter';
-import { WorkTime, Appointment, Project, ProjectList } from '../../models/appointment.model';
+import { WorkTime, Appointment, Project, ProjectList, UserList } from '../../models/appointment.model';
 
-//PRIMENG
+// PRIMENG
 import { DropdownModule } from 'primeng/dropdown';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { AuthService } from '../../../auth/services/auth.services';
@@ -42,7 +41,7 @@ import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
     MatDatepickerModule,
     ReactiveFormsModule,
 
-    //PRIMENG
+    // PRIMENG
     DropdownModule,
     InputSwitchModule
   ],
@@ -51,7 +50,6 @@ import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
     { provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMATS },
   ],
 })
-
 export class AppointmentDialogComponent implements OnInit {
   appointments: Appointment[] = [];
   projects: Project[] = [];
@@ -60,6 +58,7 @@ export class AppointmentDialogComponent implements OnInit {
   workTimeList: WorkTime[] = [];
   projectList: ProjectList[] = [];
   checkedIsOnSite: boolean = true;
+  selectedUserId? : number;
 
   constructor(
     public dialogRef: MatDialogRef<AppointmentDialogComponent>,
@@ -67,21 +66,20 @@ export class AppointmentDialogComponent implements OnInit {
     public data: {
       appointment: any,
       appointments: Appointment[],
+      selectedUserId? : number
     },
     private appointmentService: AppointmentService,
     private formBuilder: FormBuilder,
     private authService: AuthService
   ) {
-
-    //console.log('Received appointment data:', data.appointment);
-
     this.appointments = data.appointments;
+    this.selectedUserId = data.selectedUserId;
 
     this.projectForm = this.formBuilder.group({
       projectId: [null],
       projectName: [null],
       heures: [null],
-    })
+    });
 
     this.appointmentForm = this.formBuilder.group({
       idWorktime: [],
@@ -98,12 +96,10 @@ export class AppointmentDialogComponent implements OnInit {
       startTime: data.appointment.idWorktime
         ? this.appointmentService.convertTimeToString(new Date(data.appointment.start))
         : data.appointment.start,
-
       endTime: this.appointmentService.convertTimeToString(new Date(data.appointment.end)) || null,
-
       checkedIsOnSite: data.appointment.isOnSite === false,
     });
-    
+
     if (data.appointment.projectId) {
       this.appointmentService.getProjetList().subscribe(
         (projects: ProjectList[]) => {
@@ -114,7 +110,6 @@ export class AppointmentDialogComponent implements OnInit {
               isActive: project.isActive,
               name: project.name
             });
-
           }
         },
         (error) => {
@@ -127,7 +122,6 @@ export class AppointmentDialogComponent implements OnInit {
   ngOnInit(): void {
     this.loadWorkTimeList();
     this.loadProjetList();
-    
 
     this.appointmentForm.get('categoryId')?.valueChanges.subscribe(value => {
       this.appointmentForm.updateValueAndValidity();
@@ -141,9 +135,9 @@ export class AppointmentDialogComponent implements OnInit {
     if (categoryId === 7 && !projectId) {
       return { projectIdRequired: true };
     }
-  
+
     return null;
-  };  
+  };
 
   private loadWorkTimeList(): void {
     this.appointmentService.getWorkTimeList().subscribe(
@@ -165,14 +159,13 @@ export class AppointmentDialogComponent implements OnInit {
         console.error('Erreur lors de la récupération des données Project:', error);
       }
     );
-  }  
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
   onSaveClick(): void {
-    
     if (!this.appointmentForm.valid) {
       return;
     }
@@ -194,12 +187,8 @@ export class AppointmentDialogComponent implements OnInit {
 
     endDate.setSeconds(endDate.getMilliseconds() - 1);
 
-    const userId = this.authService.getUserId();
-
-    if (userId === null) {
-      console.error('User ID is null. Cannot save appointment.');
-      return;
-    }
+    console.log("TEST : ", this.selectedUserId);
+    
 
     const appointment: Appointment = {
       idWorktime: formData.idWorktime,
@@ -207,11 +196,11 @@ export class AppointmentDialogComponent implements OnInit {
       start: startDate.toISOString(),
       end: endDate.toISOString(),
       isOnSite: formData.isOnSite,
-      userId: userId,
+      userId: this.selectedUserId ?? this.authService.getUserId() ?? 0,
       projectId: formData.projectId,
       date: date.toISOString(),
     };
-    
+
     if (appointment.idWorktime) {
       this.appointmentService.editAppointment(appointment).subscribe({
         next: () => {
@@ -262,8 +251,7 @@ export class AppointmentDialogComponent implements OnInit {
         const endDate = new Date(date);
         endDate.setHours(endHour, endMinute);
 
-        // Application de la tolérance
-        const tolerance = 1; // tolérance en minutes
+        const tolerance = 1;
         const startDateWithTolerance = new Date(startDate.getTime() + tolerance * 60000);
         const endDateWithTolerance = new Date(endDate.getTime() - tolerance * 60000);
 
@@ -279,7 +267,6 @@ export class AppointmentDialogComponent implements OnInit {
             const apptStart = new Date(appt.start);
             const apptEnd = new Date(appt.end);
 
-            // Vérification avec tolérance
             return (
                 startDateWithTolerance < apptEnd &&
                 endDateWithTolerance > apptStart
@@ -292,7 +279,7 @@ export class AppointmentDialogComponent implements OnInit {
     }
 
     return null;
-};
+  };
 
   get workTimeControl(): FormControl {
     return this.appointmentForm.get('workTime') as FormControl;

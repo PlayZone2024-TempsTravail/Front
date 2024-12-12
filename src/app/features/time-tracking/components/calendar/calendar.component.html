@@ -210,6 +210,27 @@
   </div>
   <div class="container_info">
     <div class="compteurs firstCount">
+      @if (this.authService.getRoleUser()?.includes("ALL_CONSULTER_POINTAGES")) {
+        <button 
+          pButton 
+          pRipple 
+          label="Générer rapport" 
+          class="p-button-success"
+          style="width: 110%;">
+        </button>
+
+        <p-dropdown
+          [options]="UserList"
+          [(ngModel)]="selectedUser"
+          optionLabel="nom"
+          [filter]="true"
+          filterBy="nom,prenom"
+          styleClass="pd-style"
+          placeholder="Utilisateur"
+          (onChange)="onUserSelected($event)">
+        </p-dropdown>
+      }
+      
       <table>
         <tr>
           <th></th>
@@ -217,6 +238,7 @@
           <th>Utilisé</th>
           <th>Solde</th>
         </tr>
+
         <tr *ngFor="let workTime of CounterVA">
           <td class="category">{{ workTime.category }}</td>
           <!-- Vérification si `workTime.max` est 0 -->
