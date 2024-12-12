@@ -29,9 +29,11 @@ import { DepenseService } from './features/projects/services/depense.service';
 import { ChartModule } from 'primeng/chart';
 import { jwtInterceptor } from './core/interceptor/jwt.interceptor';
 
-// DATE 
+// DATE
 import { registerLocaleData } from '@angular/common';
 import localeFrBe from '@angular/common/locales/fr-BE';
+import { RapportsComponent } from './features/rapports/rapports.component';
+import {CalendarModule} from 'primeng/calendar';
 
 registerLocaleData(localeFrBe);
 
@@ -64,6 +66,7 @@ registerLocaleData(localeFrBe);
         BrowserAnimationsModule,
         ButtonModule,
         InputTextModule,
+        CalendarModule,
     ],
     providers: [
         {provide: LOCALE_ID, useValue: 'fr-BE'},

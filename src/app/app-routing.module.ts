@@ -16,6 +16,7 @@ const routes: Routes = [
     { path: 'configuration', loadChildren: () => import('./features/configuration/configuration.module').then(m => m.ConfigurationModule), canActivate: [unauthenticatedGuard] },
     { path: 'roles', loadChildren: () => import('./features/roles/roles.module').then(m => m.RolesModule), canActivate: [unauthenticatedGuard] },
     { path: 'login', component: LoginComponent, canActivate: [authenticatedGuard] },
+    { path: 'rapport', loadChildren:() => import('./features/rapports/rapports.module').then(m => m.RapportsModule), canActivate: [unauthenticatedGuard] }
 ];
 
 

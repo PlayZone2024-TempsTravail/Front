@@ -17,6 +17,7 @@ export class AppointmentService {
   private compteurWorktimeCategoryUrl = 'http://api.technobel.pro:444/api/Counter/absence/';
   private compteurProjectUrl = 'http://api.technobel.pro:444/api/Counter/projet/';
   private ListProjectUrl = 'http://api.technobel.pro:444/api/Project/short/';
+  private rapportUrl = 'http://api.technobel.pro:444/api/Rapport/';
 
   constructor(
     private http: HttpClient,
@@ -125,4 +126,12 @@ export class AppointmentService {
       })
     );
   }
+
+    createRapportTimes(data: any): Observable<any> {
+        return this.http.post(`${this.rapportUrl}times`, data ,{ responseType: 'blob'});
+    }
+
+    getRapportCounter(): Observable<any> {
+        return this.http.get(`${this.rapportUrl}counter`, { responseType: 'blob'});
+    }
 }
