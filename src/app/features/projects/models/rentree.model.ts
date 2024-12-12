@@ -12,6 +12,7 @@ export interface RentreeDTO {
 // Modèle RentreeCreateFormDTO pour la création d'une nouvelle rentrée
 export interface RentreeCreateFormDTO {
     idLibele: number;
+    categoryId: number;
     idProject: number;
     idOrganisme: number;
     montant: number;
@@ -22,6 +23,7 @@ export interface RentreeCreateFormDTO {
 // Modèle RentreeUpdateFormDTO pour la mise à jour d'une rentrée existante
 export interface RentreeUpdateFormDTO {
     idLibele: number;
+    categoryId: number;
     idProject: number;
     idOrganisme: number;
     montant: number;

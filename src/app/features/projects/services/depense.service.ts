@@ -52,13 +52,15 @@ export class DepenseService {
         // On construit le payload avec idDepense et les champs nécessaires
         const depensePayload: UpdateDepenseDTO = {
             libeleId: depense.libeleId,
+            categoryId: depense.categoryId,
             projectId: depense.projectId,
-            organismeId: depense.organismeId ? depense.organismeId : 0,
+            organismeId: depense.organismeId,
             montant: depense.montant,
             dateIntervention: depense.dateIntervention ? new Date(depense.dateIntervention) : null,
             dateFacturation: depense.dateFacturation ? new Date(depense.dateFacturation) : null,
             motif: depense.motif,
         };
+        console.log(depense.organismeId);
 
         // Appel sans l'ID dans l'URL
         return this._http.put<DepenseDTO>(`${this.apiUrl}/Depense?id=${depenseId}`, depensePayload);

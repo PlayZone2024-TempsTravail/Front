@@ -84,7 +84,7 @@ export class EncodageCoutsProjetComponent implements OnInit {
                     .filter(item => !item.isIncome) // Filtrer les catégories de dépenses
                     .map(item => [item.idCategory, {
                         idCategory: item.idCategory,
-                        categoryName: item.categoryName || 'catégorie inconnue'
+                        categoryName: item.categoryName || 'catégorie inconnue' // Si pas de nom de catégorie, on met un nom par défaut
                     }])
                 ).values()];
             },
@@ -100,7 +100,7 @@ export class EncodageCoutsProjetComponent implements OnInit {
      */
     onCategoryChange(): void {
         const selectedCategoryId = this.depenseForm.get('categoryId')?.value;
-        this.filteredLibeles = this.libeles.filter(libele => libele.idCategory === selectedCategoryId && !libele.isIncome);
+        this.filteredLibeles = this.libeles.filter(libele => libele.idCategory === selectedCategoryId && !libele.isIncome); // Filtrer les libellés par catégorie
         this.depenseForm.get('libeleId')?.setValue(null); // Reset libeleId when category changes
     }
 
@@ -135,14 +135,18 @@ export class EncodageCoutsProjetComponent implements OnInit {
     openEditDepenseForm(depense: DepenseDTO): void {
         this.selectedDepense = depense; // Stocke la dépense dans selectedDepense => mode édition
         // Préremplit le formulaire avec les infos de la dépense
+        const categoryId = this.libeles.find(l => l.idLibele === depense.libeleId)?.idCategory;
         this.depenseForm.patchValue({
+            categoryId: categoryId,
             libeleId: depense.libeleId,
-            organismeId: depense.organismeId ?? null,
+            organismeId: depense.organismeId,
             motif: depense.motif ?? null,
             montant: depense.montant,
             dateIntervention: depense.dateIntervention ? new Date(depense.dateIntervention) : null,
             dateFacturation: new Date(depense.dateFacturation),
         });
+        this.onCategoryChange(); // Charger les libellés pour la catégorie sélectionnée
+        this.depenseForm.get('libeleId')?.setValue(depense.libeleId); // Assure que le libellé est bien sélectionné
         this.displayForm = true; // Affiche le formulaire
     }
 
@@ -163,6 +167,7 @@ export class EncodageCoutsProjetComponent implements OnInit {
      */
     getOrganismeName(idOrganisme: number): string {
         const organisme = this.organismes.find((o) => o.idOrganisme === idOrganisme);
+        console.log('Organisme ID:', idOrganisme);
         return organisme ? organisme.name || '' : '';
     }
 
@@ -182,6 +187,7 @@ export class EncodageCoutsProjetComponent implements OnInit {
         // Prépare l'objet à envoyer à l'API
         const newDepense: CreateDepenseDTO = {
             projectId: this.projectId,
+            categoryId: formValue.categoryId,
             libeleId: formValue.libeleId,
             organismeId: formValue.organismeId,
             montant: formValue.montant,
