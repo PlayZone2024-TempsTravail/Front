@@ -38,6 +38,7 @@ export class UserCompteursComponent implements OnInit {
     ngOnInit(): void {
         this.loadCompteurs(); // Charge les compteurs de l'user
         this.loadCategories(); // Charge les catégories de compteurs
+        this.compteurForm.get('worktimeCategoryId')?.setValue(1); // Définit la catégorie par défaut à 1 dans le dropdown
 
     }
 
@@ -49,6 +50,7 @@ export class UserCompteursComponent implements OnInit {
         this.compteurService.getCompteursByUserId(this.userId).subscribe({
             next: (data) => {
                 this.compteurs = data;
+                this.compteurs = data.sort((a, b) => a.worktimeCategoryId - b.worktimeCategoryId);
             },
             error: (err) => {
                 console.error("Erreur chargement compteurs:", err.error.errors);
@@ -69,6 +71,7 @@ export class UserCompteursComponent implements OnInit {
                         displayLabel: `${category.abreviation} - ${category.name}`
                     }))
                     .sort((a, b) => a.idWorktimeCategory - b.idWorktimeCategory); // Tri par idWorktimeCategory
+
             },
             error: (err) => {
                 console.error("Erreur chargement catégories de worktime:", err.error.errors);
@@ -83,8 +86,8 @@ export class UserCompteursComponent implements OnInit {
     getCategoryName(id: number): string {
         const cat = this.categories.find(c => c.idWorktimeCategory === id);
         // pour retrouver l'abréviation de la catégorie
-
         return cat ? cat.abreviation + ' - ' + cat.name : '';
+
     }
 
     /**

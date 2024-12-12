@@ -13,8 +13,9 @@ export interface DepenseDTO {
 // Modèle CreateDepenseDTO pour la création d'une nouvelle dépense
 export interface CreateDepenseDTO {
     libeleId: number;
+    categoryId: number;
     projectId: number;
-    organismeId?: number;
+    organismeId: number;
     montant: number;
     dateIntervention?: Date;
     dateFacturation: Date;
@@ -23,6 +24,7 @@ export interface CreateDepenseDTO {
 
 export interface UpdateDepenseDTO {
     libeleId: number;
+    categoryId: number;
     projectId: number;
     organismeId?: number;
     montant: number;
