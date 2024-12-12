@@ -7,7 +7,7 @@ import { UserSalaire, UserRole, UserDTO, UserForm, Role } from '../models/user.d
     providedIn: 'root',
 })
 export class UserService {
-    private apiUrl = 'http://api.technobel.pro:444/api';
+    public apiUrl = 'http://api.technobel.pro:444/api';
 
     constructor(private _http: HttpClient) {}
 
@@ -73,6 +73,41 @@ export class UserService {
      */
     addUserRole(userId: number, roleId: number): Observable<any> {
         return this._http.post(`${this.apiUrl}/UserRole`, { userId, roleId });
+    }
+
+    /**
+     * Met à jour un utilisateur existant avec toutes ses données.
+     * Cela inclut les champs de base (nom, email, etc.), ainsi que les rôles et salaires associés.
+     * @param userId - ID de l'utilisateur à mettre à jour.
+     * @param userForm - Données du formulaire utilisateur.
+     * @returns Observable<UserDTO> - Un observable avec les données de l'utilisateur mis à jour.
+     */
+    updateUserFull(userId: number, userForm: UserForm): Observable<UserDTO> {
+        return this.getUserById(userId).pipe( // Récupère les données de l'utilisateur existant
+            switchMap(existingUser => {
+                const updatedUser: UserDTO = {
+                    idUser: existingUser.idUser, // conserve les données existantes pour les champs non modifiés
+                    nom: userForm.nom ?? existingUser.nom,
+                    prenom: userForm.prenom ?? existingUser.prenom,
+                    email: userForm.email ?? existingUser.email,
+                    isActive: userForm.isActive ?? existingUser.isActive,
+                    userRoles: existingUser.userRoles.map(r => ({ // idem pur les infos des rôles
+                        roleId: r.roleId,
+                        userId: r.userId,
+                        roleName: r.roleName || this.getRoleNameById(r.roleId)
+                    })),
+                    userSalaires: existingUser.userSalaires.map(s => ({ // idem pour les infos des salaires
+                        idUserSalaire: s.userId,
+                        userId: s.userId,
+                        date: s.date,
+                        regime: s.regime,
+                        montant: s.montant
+                    }))
+                };
+
+                return this._http.put<UserDTO>(`${this.apiUrl}/User/${userId}`, updatedUser);
+            })
+        );
     }
 
     /**
@@ -147,45 +182,20 @@ export class UserService {
         return role ? role.name : '';
     }
 
+    /**
+     * Méthode pour réinitialiser le mot de passe d'un utilisateur.
+     * @param userId ID de l'utilisateur
+     */
+    resetUserPassword(userId: number): Observable<any> {
+        return this._http.put(`${this.apiUrl}/User/resetpassword/${userId}`, {});
+    }
+
+    /**
+     * Récupère la liste des rôles visibles.
+     */
     getVisibleRoles(): Observable<Role[]> {
         return this.getRoles().pipe(
             map(roles => roles.filter(role => role.isVisible))
-        );
-    }
-
-
-    /**
-     * Met à jour un utilisateur existant avec toutes ses données.
-     * Cela inclut les champs de base (nom, email, etc.), ainsi que les rôles et salaires associés.
-     * @param userId - ID de l'utilisateur à mettre à jour.
-     * @param userForm - Données du formulaire utilisateur.
-     * @returns Observable<UserDTO> - Un observable avec les données de l'utilisateur mis à jour.
-     */
-    updateUserFull(userId: number, userForm: UserForm): Observable<UserDTO> {
-        return this.getUserById(userId).pipe( // Récupère les données de l'utilisateur existant
-            switchMap(existingUser => {
-                const updatedUser: UserDTO = {
-                    idUser: existingUser.idUser, // conserve les données existantes pour les champs non modifiés
-                    nom: userForm.nom ?? existingUser.nom,
-                    prenom: userForm.prenom ?? existingUser.prenom,
-                    email: userForm.email ?? existingUser.email,
-                    isActive: userForm.isActive ?? existingUser.isActive,
-                    userRoles: existingUser.userRoles.map(r => ({ // idem pur les infos des rôles
-                        roleId: r.roleId,
-                        userId: r.userId,
-                        roleName: r.roleName || this.getRoleNameById(r.roleId)
-                    })),
-                    userSalaires: existingUser.userSalaires.map(s => ({ // idem pour les infos des salaires
-                        idUserSalaire: s.userId,
-                        userId: s.userId,
-                        date: s.date,
-                        regime: s.regime,
-                        montant: s.montant
-                    }))
-                };
-
-                return this._http.put<UserDTO>(`${this.apiUrl}/User/${userId}`, updatedUser);
-            })
         );
     }
 }
