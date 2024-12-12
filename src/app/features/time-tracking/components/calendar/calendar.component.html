@@ -189,7 +189,7 @@
             ></div>
             <div
               tabindex="0"
-              *ngFor="let appointment of getAppointmentsForDateTime(monthDays[0], slot); track appointment; 
+              *ngFor="let appointment of getAppointmentsForDateTime(monthDays[0], slot); track appointment;
               let index = index
               let first = first"
               class="appointment"
@@ -201,7 +201,7 @@
             >
               @if (todate(appointment.start).getHours() === getHourFromSlot(slot)){
                 <span>{{ appointment.workTime?.abreviation }} | {{ calculateDuration(appointmentService.convertTimeToString(todate(appointment.start)), appointmentService.convertTimeToString(todate(appointment.end))) }} heures</span>
-              }            
+              }
             </div>
           </td>
         </tr>
@@ -211,12 +211,14 @@
   <div class="container_info">
     <div class="compteurs firstCount">
       @if (this.authService.getRoleUser()?.includes("ALL_CONSULTER_POINTAGES")) {
-        <button 
-          pButton 
-          pRipple 
-          label="Générer rapport" 
+        <button
+          pButton
+          pRipple
+          label="Générer rapport"
           class="p-button-success"
-          style="width: 110%;">
+          style="width: 110%;"
+          [routerLink]="['/rapport']"
+        >
         </button>
 
         <p-dropdown
@@ -230,7 +232,7 @@
           (onChange)="onUserSelected($event)">
         </p-dropdown>
       }
-      
+
       <table>
         <tr>
           <th></th>
@@ -249,7 +251,7 @@
         </tr>
       </table>
     </div>
-  
+
     <div class="compteurs countProjet">
       <table>
         <tr>
