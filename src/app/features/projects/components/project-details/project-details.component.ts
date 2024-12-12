@@ -33,7 +33,7 @@ export class ProjectDetailsComponent implements OnInit {
                 this.chartData = this.prepareChartData(graphData);
                 this.lastPrevisionExpense = this.getLastValue(graphData.prevision);
                 this.lastRealExpense = this.getLastValue(graphData.reel);
-                this.variationExpense = this.calculateVariation(this.lastPrevisionExpense, this.lastRealExpense);
+                this.variationExpense = this.calculateVariation(this.lastRealExpense, this.lastPrevisionExpense);
             });
 
             // Fetch expense data

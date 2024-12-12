@@ -43,7 +43,6 @@
     <!-- Section tableau des dépenses -->
     <div class="export-pdf-button-container">
         <h2>Dépenses par Libellé</h2>
-        <button pButton type="button" label="Exporter PDF" icon="pi pi-download" class="p-button-success"></button>
     </div>
 
     <div class="expense-category" *ngFor="let category of expenseCategories">
@@ -106,7 +105,7 @@
 
             <ng-template pTemplate="body" let-total>
                 <tr>
-                    <td pFrozenColumn>Total</td>
+                    <td pFrozenColumn> <strong>Total</strong></td>
                     <ng-container *ngFor="let month of getMonthsRange()">
                         <td>{{ total[month] || 0 | currency: 'EUR' }}</td>
                     </ng-container>

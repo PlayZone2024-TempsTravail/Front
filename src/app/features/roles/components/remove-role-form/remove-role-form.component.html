@@ -1,0 +1,17 @@
+<form [formGroup]="roleRemoveForm" (ngSubmit)="submit()">
+    <div class="form-grid">
+        <div class="form-group">
+            <label>Role</label>
+            <p-dropdown
+                [options]="roles"
+                optionLabel="name"
+                formControlName="role"
+                placeholder="Sélectionner le role"
+            ></p-dropdown>
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <button pButton type="submit" label="Supprimer"></button>
+    </div>
+</form>

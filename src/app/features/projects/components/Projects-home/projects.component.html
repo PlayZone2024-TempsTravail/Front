@@ -6,7 +6,7 @@
         Voir détail
     </button>
         <button [routerLink]="['graphique', selectedProject]" class="p-button font-bold" [disabled]="isNotSelectButton" >
-        Voir graphique
+        Voir graphiques
     </button>
         <button [routerLink]="['encodagecouts', selectedProject]" class="p-button font-bold" [disabled]="isNotSelectButton" >
         Encoder coûts
@@ -14,7 +14,7 @@
         <button [routerLink]="['/projet/encodagerentrees', selectedProject]" class="p-button font-bold" [disabled]="isNotSelectButton" >
         Encoder entrées
     </button>
-        <button [routerLink]="['/projet/editerprojet', selectedProject]" class="p-button font-bold" [disabled]="isNotSelectButton" >
+        <button [routerLink]="['/projet/modifier-projet', selectedProject]" class="p-button font-bold" [disabled]="isNotSelectButton" >
     Editer projet
     </button>
     </div>
@@ -24,7 +24,7 @@
         Créer rapport
     </button>
 
-        <button [routerLink]="['/projet/create-project', selectedProject]" class="p-button font-bold" >
+        <button [routerLink]="['/projet/create-project']" class="p-button font-bold" >
             Créer projet
         </button>
     </div>
@@ -89,8 +89,8 @@
                 <td>{{project.name}}</td>
                 <td>{{project.organismeName}}</td>
                 <td>{{project.chargeDeProjetName}}</td>
-                <td>{{project.previsionDepenseActuelle}}</td>
-                <td>{{project.depenseReelActuelle}}</td>
+                <td>{{roundprevisonDepence(project.previsionDepenseActuelle)}}</td>
+                <td>{{roundprevisonDepence(project.depenseReelActuelle)}}</td>
                 <td>{{totalPourcent(project.previsionDepenseActuelle , project.depenseReelActuelle)}} %</td>
                 <td>
                     <p-chip

@@ -28,11 +28,12 @@ import { DepenseService } from './features/projects/services/depense.service';
 import { ChartModule } from 'primeng/chart';
 import { jwtInterceptor } from './core/interceptor/jwt.interceptor';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
-
-
 // DATE
 import { registerLocaleData } from '@angular/common';
 import localeFrBe from '@angular/common/locales/fr-BE';
+import { RapportsComponent } from './features/rapports/rapports.component';
+import {CalendarModule} from 'primeng/calendar';
+import { CalendarComponent } from './features/time-tracking/components/calendar/calendar.component';
 
 registerLocaleData(localeFrBe);
 
@@ -67,7 +68,7 @@ registerLocaleData(localeFrBe);
         FloatLabelModule,
         DropdownModule,
         ScrollPanelModule,
-
+        CalendarModule,
     ],
     providers: [
         {provide: LOCALE_ID, useValue: 'fr-BE'},

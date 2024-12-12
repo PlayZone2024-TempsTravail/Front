@@ -82,6 +82,7 @@ export class ProjectCreationComponent implements OnInit {
             const projectData = this.projectForm.value;
 
             // Retirer le # de la couleur avant d'envoyer à l'API
+
             const colorWithHash = projectData.color;
             const colorWithoutHash = colorWithHash ? colorWithHash.slice(1).toUpperCase() : null;
 
@@ -91,13 +92,11 @@ export class ProjectCreationComponent implements OnInit {
             // Envoyer les données à l'API
             this.projectService.createProject(projectData).subscribe({
                 next: (response) => {
-                    console.log('Projet créé avec succès :', response);
-                    alert('Projet créé avec succès !');
 
                     if (response && response.idProject) {
                         const projectId = response.idProject;
                         alert('Projet créé avec succès !');
-                       this.router.navigate([`modifier-projet/${response.idProject}`]);
+                       this.router.navigate([`projet/modifier-projet/${response.idProject}`]);
                     } else {
                         alert('Erreur lors de la création du projet.');
                     }

@@ -14,6 +14,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { AppointmentDialogComponent } from './components/appointment-dialog/appointment-dialog.component';
 import { MatNativeDateModule } from '@angular/material/core';
+import { DropdownModule } from 'primeng/dropdown';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
+import { RippleModule } from 'primeng/ripple';
 
 const routes: Routes = [{ path: '', component: CalendarComponent }];
 
@@ -31,7 +35,11 @@ const routes: Routes = [{ path: '', component: CalendarComponent }];
     AppointmentDialogComponent,
     MatNativeDateModule,
     RouterModule.forChild(routes),
-
+    FormsModule,
+    DropdownModule,
+    ReactiveFormsModule,
+    ButtonModule,
+    RippleModule
   ]
 })
 export class TimeTrackingModule { }

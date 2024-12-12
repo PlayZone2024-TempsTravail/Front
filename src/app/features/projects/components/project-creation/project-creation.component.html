@@ -2,12 +2,13 @@
     <img src="/assets/back-button.svg" class="button-back" alt="Retour" width="62px" height="62px">
 </a>
 <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
-    <div class="body">
+    <div class="body flex-container">
+        <!-- Form Container -->
         <div class="form-container">
             <!-- Nom du projet -->
             <div class="form-group">
                 <label>Nom projet</label>
-                <input type="text" pInputText formControlName="name" placeholder="Entrez le nom du projet"/>
+                <input type="text" pInputText formControlName="name" placeholder="Entrez le nom du projet" />
                 <div *ngIf="projectForm.get('name')?.invalid && projectForm.get('name')?.touched" class="error">
                     Nom du projet est requis.
                 </div>
@@ -24,9 +25,7 @@
                     optionValue="idUser"
                     placeholder="Sélectionner un chargé de mission"
                 ></p-dropdown>
-                <div
-                    *ngIf="projectForm.get('chargerDeProjetId')?.invalid && projectForm.get('chargerDeProjetId')?.touched"
-                    class="error">
+                <div *ngIf="projectForm.get('chargerDeProjetId')?.invalid && projectForm.get('chargerDeProjetId')?.touched" class="error">
                     Chargé de mission est requis.
                 </div>
             </div>
@@ -46,12 +45,10 @@
                 <button type="button" (click)="showAddOrganismeForm = !showAddOrganismeForm">+</button>
                 <div *ngIf="showAddOrganismeForm">
                     <label class="labelNewOrga" for="newOrganismeName">Nom de l'organisme</label>
-                    <input id="newOrganismeName" (change)="onNameChange($event)" type="text"/>
+                    <input id="newOrganismeName" (change)="onNameChange($event)" type="text" />
                     <button type="button" (click)="addOrganisme()">Ajouter</button>
                 </div>
-
-                <div *ngIf="projectForm.get('organismeId')?.invalid && projectForm.get('organismeId')?.touched"
-                     class="error">
+                <div *ngIf="projectForm.get('organismeId')?.invalid && projectForm.get('organismeId')?.touched" class="error">
                     Organisme est requis.
                 </div>
             </div>
@@ -65,10 +62,9 @@
                     [iconDisplay]="'input'"
                     [showIcon]="true"
                     dateFormat="dd-mm-yy"
-                    inputId="dateDebutProjet">
-                </p-calendar>
-                <div *ngIf="projectForm.get('dateDebutProjet')?.invalid && projectForm.get('dateDebutProjet')?.touched"
-                     class="error">
+                    inputId="dateDebutProjet"
+                ></p-calendar>
+                <div *ngIf="projectForm.get('dateDebutProjet')?.invalid && projectForm.get('dateDebutProjet')?.touched" class="error">
                     La date de début est requise.
                 </div>
             </div>
@@ -82,10 +78,9 @@
                     [iconDisplay]="'input'"
                     [showIcon]="true"
                     dateFormat="dd-mm-yy"
-                    inputId="dateFinProjet">
-                </p-calendar>
-                <div *ngIf="projectForm.get('dateFinProjet')?.invalid && projectForm.get('dateFinProjet')?.touched"
-                     class="error">
+                    inputId="dateFinProjet"
+                ></p-calendar>
+                <div *ngIf="projectForm.get('dateFinProjet')?.invalid && projectForm.get('dateFinProjet')?.touched" class="error">
                     La date de fin est requise.
                 </div>
             </div>
@@ -93,35 +88,37 @@
             <!-- Dépenses autorisées -->
             <div class="form-group">
                 <label for="montantBudget">Dépenses autorisées</label>
-                <p-inputNumber id="montantBudget" formControlName="montantBudget" [min]="0"
-                               placeholder="Entrez le montant"></p-inputNumber>
-                <div *ngIf="projectForm.get('montantBudget')?.invalid && projectForm.get('montantBudget')?.touched"
-                     class="error">
+                <p-inputNumber mode="decimal" [minFractionDigits]="2" id="montantBudget" formControlName="montantBudget" [min]="0.1" placeholder="Entrez le montant"></p-inputNumber>
+                <div *ngIf="projectForm.get('montantBudget')?.invalid && projectForm.get('montantBudget')?.touched" class="error">
                     Dépenses autorisées sont requises.
                 </div>
             </div>
 
-            <!-- choix couleur -->
+            <!-- Choix couleur -->
             <div class="form-group">
                 <label for="style1">
-                    <div>
-                        Choisir une couleur:
-                    </div>
+                    <div>Choisir une couleur:</div>
                     <input
                         type="color"
                         (change)="onColorChange($event)"
                         formControlName="color"
                         id="style1"
-                        [value]="projectForm.get('color')?.value || '#ffffff'">
+                        [value]="projectForm.get('color')?.value || '#ffffff'"
+                    />
                 </label>
                 <div *ngIf="projectForm.get('color')?.invalid && projectForm.get('color')?.touched" class="error">
                     La couleur est requise.
                 </div>
             </div>
-            <!-- pour finaliser le formulaire -->
+            <!-- Submit Button -->
             <button type="submit" [disabled]="projectForm.invalid" class="submit-button">
                 Enregistrer
             </button>
+        </div>
+
+        <!-- Logo Container -->
+        <div class="logo-container">
+            <img src="/assets/logo.svg" class="logo" alt="Logo" />
         </div>
     </div>
 </form>

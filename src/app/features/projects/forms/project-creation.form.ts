@@ -10,13 +10,13 @@ export class ProjectCreationForm {
     createForm(): FormGroup {
         return this.fb.group({
             name: ['', [Validators.required]],
-            organismeId: [[Validators.required]],
-            chargerDeProjetId: [[Validators.required]],
-            montantBudget: [0,[Validators.required, Validators.min(0)]],
-            dateDebutProjet: [[Validators.required]],
-            dateFinProjet: [[Validators.required]],
+            organismeId: ['',[Validators.required]],
+            chargerDeProjetId: ["",[Validators.required]],
+            montantBudget: [0,[Validators.required, Validators.min(0.1)]],
+            dateDebutProjet: [null,[Validators.required]],
+            dateFinProjet: [null,[Validators.required]],
             isActive: [true, [Validators.required]],
-            color: [[Validators.required]],
+            color: ["#45def1", [Validators.required]],
         });
     }
 }

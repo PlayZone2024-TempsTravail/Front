@@ -3,6 +3,9 @@ import {ShortProject , RapportToDb , LebeleTree} from '../../models/projectRappo
 import {ProjectRapportService} from '../../services/project-rapport.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Project} from '../../models/project.model';
+import { ButtonModule } from 'primeng/button';
+import { ProjectService } from '../../services/project.service';
+import {log} from '@angular-devkit/build-angular/src/builders/ssr-dev-server';
 
 @Component({
   selector: 'app-project-rapport',
@@ -17,15 +20,16 @@ export class ProjectrapportComponent implements OnInit {
     date_end!: Date;
     listLibeles: LebeleTree[] = [];
     selectedListLibeles: LebeleTree[] = [];
+    loading: boolean = false;
 
 // creation du rapport  et du formulaire
     extractedNumbers :number[] = [];
     rapport!: FormGroup;
     rapportToDb: RapportToDb = {
-        date_start: new Date(),
-        date_end: new Date(),
+        dateStart: new Date(),
+        dateEnd: new Date(),
         projects: [],
-        libeles: []
+        libelles: []
     };
 
     shortProjects: ShortProject[] = [];
@@ -66,14 +70,33 @@ export class ProjectrapportComponent implements OnInit {
 
     send() {
         //converstion des dated
+        this.loading = true; // Start the loading spinner
 
-        this.rapportToDb.date_start = this.date_start
-        this.rapportToDb.date_end = this.date_end
+        this.rapportToDb.dateStart = this.date_start
+        this.rapportToDb.dateEnd = this.date_end
         this.rapportToDb.projects = this.selectedProject
         this.extractedNumbers = this.convertLibelleTonumber(this.selectedListLibeles)
-        this.rapportToDb.libeles = this.extractedNumbers
+        this.rapportToDb.libelles = this.extractedNumbers
         console.log(this.rapportToDb)
 
+        // Call the service to generate the report and download the file
+        this.projectRapportService.createProjetRapport(this.rapportToDb).subscribe(
+            (response) => {
+                const url = window.URL.createObjectURL(response);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'ProjectRapport.pdf';
+                a.click();
+                window.URL.revokeObjectURL(url);
+
+                // Stop the loading spinner
+                this.loading = false;
+            },
+            (error) => {
+                console.error('Error generating report:', error);
+                this.loading = false; // Stop the loading spinner even if there's an error
+            }
+        );
     }
 
     convertLibelleTonumber(selectedListLibelles: LebeleTree[]):number[] {

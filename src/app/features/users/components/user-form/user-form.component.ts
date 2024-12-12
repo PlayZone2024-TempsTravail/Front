@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 import { UserDTO, UserForm, Role, UserRole, UserSalaire } from '../../models/user.dto.model';
 import { UserService } from '../../services/user.service';
 import { UserCreateUpdateForm } from '../../forms/user.form';
@@ -22,7 +23,7 @@ export class UserFormComponent implements OnInit, OnChanges {
     displayHistoryDialog: boolean = false;
     historique: UserSalaire[] = [];
 
-    constructor(private _fb: FormBuilder, private userService: UserService) {
+    constructor(private _fb: FormBuilder, private userService: UserService, private _http: HttpClient) {
         this.userForm = this._fb.group({...UserCreateUpdateForm});
     }
 
@@ -35,9 +36,8 @@ export class UserFormComponent implements OnInit, OnChanges {
     */
 
     ngOnInit(): void {
-        this.userService.getRoles().subscribe({
-            next: (roles) => { this.roles = roles; },
-            error: (err) => { console.error("Erreur getRoles:", err); }
+        this.userService.getVisibleRoles().subscribe((roles) => {
+            this.roles = roles;
         });
     }
 
@@ -92,6 +92,18 @@ export class UserFormComponent implements OnInit, OnChanges {
     openHistory() {
         this.historique.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()); // trier l'historique sur la date (décroissant)
         this.displayHistoryDialog = true;
+    }
+
+
+    resetPassword(userId: number) {
+        this._http.put(`/api/User/resetpassword/${userId}`, {}).subscribe({
+            next: (response) => {
+                console.log('Le mail de réinitialisation a bien été envoyé', response);
+            },
+            error: (error) => {
+                console.error('Erreur d\'envoi du mail de réinitialisation', error.error.errors);
+            }
+        });
     }
 
     // Métjhode pour fermer la fenêtre d'historique des salaires

@@ -14,6 +14,8 @@ export class UserListComponent implements OnInit {
     selectedUser: UserDTO | null = null; // Utilisateur sélectionné pour l'édition. Null signifie qu'aucun utilisateur n'est actuellement sélectionné.
     displayForm: boolean = false; // Indique si le formulaire d'ajout/édition est affiché.
     searchQuery: string = ''; // Chaîne de recherche utilisée pour filtrer les utilisateurs par nom, prénom ou email.
+    selectedUserForCompteurs: UserDTO | null = null; // Utilisateur sélectionné pour éditer les compteurs
+    displayCompteursDialog: boolean = false; // Affiche la popup d'édition de compteurs
 
     constructor(private userService: UserService) {}
 
@@ -76,6 +78,18 @@ export class UserListComponent implements OnInit {
     openEditUserForm(user: UserDTO) : void {
         this.selectedUser = user;
         this.displayForm = true;
+    }
+
+    // MODIFICATION ICI (nouvelle méthode)
+    openCompteursDialog(user: UserDTO): void {
+        this.selectedUserForCompteurs = user;
+        this.displayCompteursDialog = true;
+    }
+
+    // MODIFICATION ICI (méthode pour fermer la popup des compteurs)
+    closeCompteursDialog(): void {
+        this.displayCompteursDialog = false;
+        this.selectedUserForCompteurs = null;
     }
 
 
@@ -186,7 +200,7 @@ export class UserListComponent implements OnInit {
                 error: (err) => {
                     console.error('Erreur lors de l\'ajout de l\'utilisateur :', err); // Gère les erreurs lors de l'ajout
                     if (err.error) {
-                        console.error('Détails de l\'erreur :', err.error); // Affiche des détails supplémentaires sur l'erreur si disponibles
+                        console.error('Détails de l\'erreur :', err.error.errors); // Affiche des détails supplémentaires sur l'erreur si disponibles
                     }
                 },
             });

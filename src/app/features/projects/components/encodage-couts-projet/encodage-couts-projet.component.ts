@@ -9,77 +9,145 @@ import {ActivatedRoute} from '@angular/router';
 import {DepenseCreateForm} from '../../forms/depense.form';
 
 @Component({
-  selector: 'app-encodage-couts-projet',
-  templateUrl: './encodage-couts-projet.component.html',
-  styleUrl: './encodage-couts-projet.component.scss'
+    selector: 'app-encodage-couts-projet',
+    templateUrl: './encodage-couts-projet.component.html',
+    styleUrl: './encodage-couts-projet.component.scss'
 })
+
+/**
+ * Composant gérant l'encodage des coûts d'un projet (dépenses).
+ * Permet d'ajouter et de modifier des dépenses liées à un projet.
+ */
 export class EncodageCoutsProjetComponent implements OnInit {
-
+    selectedDepense: DepenseDTO | null = null; // Dépense sélectionnée pour une éventuelle modification
     depenses: DepenseDTO[] = []; // Liste des dépenses du projet
-    libeles: LibeleDTO[] = []; // Liste des libellés pour le formulaire
-    organismes: OrganismeDTO[] = []; // Liste des organismes pour le formulaire
-    depenseForm: FormGroup; // Formulaire d'ajout de dépense
-    displayForm: boolean = false; // Contrôle de l'affichage du formulaire
-    projectId!: number; // ID du projet actif
+    categories: { idCategory: number, categoryName: string }[] = [];
+    libeles: LibeleDTO[] = []; // Liste des libellés disponibles pour sélectionner la "nature" de la dépense
+    filteredLibeles: LibeleDTO[] = [];
+    organismes: OrganismeDTO[] = []; // Liste des organismes disponibles
+    depenseForm: FormGroup; // Formulaire d'ajout ou de modification de dépense
+    displayForm: boolean = false; // Indique si le formulaire (dialog) est affiché
+    projectId!: number; // ID du projet en cours, récupéré depuis les paramètres de la route
 
+    /**
+     * Constructeur du composant EncodageDepenseProjetComponent
+     * @param depenseService Service permettant la gestion des dépenses
+     * @param fb FormBuilder pour construire le FormGroup
+     * @param route ActivatedRoute pour accéder aux paramètres de l'URL
+     */
     constructor(
         private depenseService: DepenseService,
         private fb: FormBuilder,
-        private route: ActivatedRoute // pour récupérer les paramètres de la route
+        private route: ActivatedRoute
     ) {
-            this.depenseForm = this.fb.group({...DepenseCreateForm}); // Initialisation du formulaire
-        }
+        this.depenseForm = this.fb.group({...DepenseCreateForm});
+    }
 
     ngOnInit(): void {
-        // Récupération de l'id du projet dans les paramètres de la route
+        // Abonnement aux changements des paramètres de la route afin d'obtenir l'id du projet
         this.route.paramMap.subscribe(params => {
-            const id = params.get('id'); // récupère l'id du projet depuis la route
+            const id = params.get('id'); // récupère l'id du projet depuis l'URL
             if (id) {
                 this.projectId = +id; // +id pour convertir l'id en nombre
-                this.loadDepenses(); // charge les dépenses du projet
+                this.loadDepenses(); // Charge la liste des dépenses du projet depuis l'API
             } else {
                 console.error('Aucun projectId fourni dans les paramètres de la route.');
             }
         });
-        this.loadLibeles(); // chargement des libellés dans le dropdown
+        this.loadLibeles(); // chargement des libellés (nature) dans le dropdown
         this.loadOrganismes(); // chargement des organismes dans le dropdown
     }
 
     /**
      * Charge les dépenses liées au projet.
+     * @returns void
      */
     loadDepenses(): void {
+        // Appel du service pour récupérer les dépenses du projet
         this.depenseService.getDepensesByProjectId(this.projectId).subscribe((depenses) => {
+            // Trie les dépenses par date de facturation décroissante
             this.depenses = depenses.sort(
-                (a, b) => new Date(b.dateFacturation).getTime() - new Date(a.dateFacturation).getTime() // Tri par date de facturation décroissante
+                (a, b) => new Date(b.dateFacturation).getTime() - new Date(a.dateFacturation).getTime()
             );
         });
     }
 
     /**
      * Charge les libellés pour le formulaire.
+     * @returns void
      */
-    loadLibeles() {
-        this.depenseService.getLibeles().subscribe((libeles) => {
-            this.libeles = libeles;
+    loadLibeles(): void {
+        this.depenseService.getLibeles().subscribe({
+            next: (libeles) => {
+                this.libeles = libeles;
+                this.categories = [...new Map(libeles
+                    .filter(item => !item.isIncome) // Filtrer les catégories de dépenses
+                    .map(item => [item.idCategory, {
+                        idCategory: item.idCategory,
+                        categoryName: item.categoryName || 'catégorie inconnue' // Si pas de nom de catégorie, on met un nom par défaut
+                    }])
+                ).values()];
+            },
+            error: (err) => {
+                console.error("Erreur chargement libellés:", err.error.errors);
+            }
         });
+    }
+
+    /**
+     * Méthode appelée lors du changement de catégorie dans le formulaire afin de filtrer les libelés par rapport à la catégorie sélectionnée.
+     * @returns void
+     */
+    onCategoryChange(): void {
+        const selectedCategoryId = this.depenseForm.get('categoryId')?.value;
+        this.filteredLibeles = this.libeles.filter(libele => libele.idCategory === selectedCategoryId && !libele.isIncome); // Filtrer les libellés par catégorie
+        this.depenseForm.get('libeleId')?.setValue(null); // Reset libeleId when category changes
     }
 
     /**
      * Charge les organismes pour le formulaire.
+     * @returns void
      */
-    loadOrganismes() {
+    loadOrganismes(): void {
+        // Appel du service pour récupérer les organismes
         this.depenseService.getOrganismes().subscribe((organismes) => {
-            this.organismes = organismes;
+            this.organismes = organismes; // Stocke les organismes
         });
     }
 
+
     /**
      * Ouvre le formulaire d'ajout d'une dépense.
+     * @returns void
      */
-    openAddDepenseForm() {
-        this.depenseForm.reset();
-        this.displayForm = true;
+    openAddDepenseForm(): void {
+        this.selectedDepense = null; // Aucune dépense sélectionnée -> mode ajout
+        this.depenseForm.reset(); // Reset du formulaire
+        this.displayForm = true; // Affiche le dialog du formulaire
+    }
+
+    /**
+     * Ouvre le formulaire de modification pour une dépense existante.
+     * Préremplit le formulaire avec les données de la dépense sélectionnée.
+     * @param depense La dépense à modifier
+     * @returns void
+     */
+    openEditDepenseForm(depense: DepenseDTO): void {
+        this.selectedDepense = depense; // Stocke la dépense dans selectedDepense => mode édition
+        // Préremplit le formulaire avec les infos de la dépense
+        const categoryId = this.libeles.find(l => l.idLibele === depense.libeleId)?.idCategory;
+        this.depenseForm.patchValue({
+            categoryId: categoryId,
+            libeleId: depense.libeleId,
+            organismeId: depense.organismeId,
+            motif: depense.motif ?? null,
+            montant: depense.montant,
+            dateIntervention: depense.dateIntervention ? new Date(depense.dateIntervention) : null,
+            dateFacturation: new Date(depense.dateFacturation),
+        });
+        this.onCategoryChange(); // Charger les libellés pour la catégorie sélectionnée
+        this.depenseForm.get('libeleId')?.setValue(depense.libeleId); // Assure que le libellé est bien sélectionné
+        this.displayForm = true; // Affiche le formulaire
     }
 
     /**
@@ -89,7 +157,7 @@ export class EncodageCoutsProjetComponent implements OnInit {
      */
     getLibeleName(idLibele: number): string {
         const libele = this.libeles.find((l) => l.idLibele === idLibele);
-        return libele ? libele.name || '' : '';
+        return libele && libele.libeleName ? libele.libeleName : '';
     }
 
     /**
@@ -99,6 +167,7 @@ export class EncodageCoutsProjetComponent implements OnInit {
      */
     getOrganismeName(idOrganisme: number): string {
         const organisme = this.organismes.find((o) => o.idOrganisme === idOrganisme);
+        console.log('Organisme ID:', idOrganisme);
         return organisme ? organisme.name || '' : '';
     }
 
@@ -106,29 +175,57 @@ export class EncodageCoutsProjetComponent implements OnInit {
      * Soumet le formulaire d'ajout d'une dépense.
      * Crée une dépense à partir des données du formulaire et l'ajoute au projet.
      */
-    submitDepense() {
+    submitDepense(): void {
         if (this.depenseForm.invalid) {
-            this.depenseForm.markAllAsTouched(); // Marque tous les champs comme touchés pour afficher les erreurs
+            this.depenseForm.markAllAsTouched(); // Marque tous les champs comme touchés, affichant les erreurs
             return;
         }
 
         // Récupération des valeurs du formulaire
         const formValue = this.depenseForm.value;
 
-        const newDepense: CreateDepenseDTO = { // Création de l'objet de dépense à envoyer au serveur
+        // Prépare l'objet à envoyer à l'API
+        const newDepense: CreateDepenseDTO = {
             projectId: this.projectId,
+            categoryId: formValue.categoryId,
             libeleId: formValue.libeleId,
             organismeId: formValue.organismeId,
             montant: formValue.montant,
-            dateIntervention: formValue.dateIntervention ? formValue.dateIntervention.toISOString() : null, // conversion de la date en string
-            dateFacturation: formValue.dateFacturation ? formValue.dateFacturation.toISOString() : null, // conversion de la date en string
-            motif: formValue.motif, // motif facultatif
+            dateIntervention: formValue.dateIntervention ? formValue.dateIntervention.toISOString() : null,
+            dateFacturation: formValue.dateFacturation ? formValue.dateFacturation.toISOString() : null,
+            motif: formValue.motif,
         };
 
-        this.depenseService.addDepense(newDepense).subscribe((depense) => { // Appelle le service pour ajouter la dépense
-            this.depenses.push(depense); // Ajoute la dépense dans la liste locale
-            this.displayForm = false;
-            this.depenseForm.reset(); // Réinitialise le formulaire
-        });
+        // Mode Modification
+        if (this.selectedDepense) {
+            const depenseId = this.selectedDepense.idDepense;
+            // Appel du service pour mettre à jour la dépense
+            this.depenseService.updateDepense(depenseId, newDepense).subscribe({
+                next: (updatedDepense) => {
+                    // Met à jour la dépense dans la liste locale si nécessaire (ici on recharge la liste ensuite)
+                    const index = this.depenses.findIndex(d => d.idDepense === depenseId);
+                    if (index !== -1) {
+                        this.depenses[index] = updatedDepense;
+                    }
+                    this.displayForm = false; // Ferme le formulaire
+                    this.depenseForm.reset(); // Reset le formulaire
+                    this.selectedDepense = null; // Plus de dépense sélectionnée
+                    this.loadDepenses(); // Recharge la liste depuis l'API
+                },
+                error: (err) => {
+                    console.log('Données du formulaire soumises :', newDepense);
+                    console.error('Erreur lors de la modification de la dépense:', err.error.errors);
+                }
+            });
+        } else {
+            // Mode Ajout
+            // Appelle le service pour ajouter la dépense
+            this.depenseService.addDepense(newDepense).subscribe((depense) => {
+                this.displayForm = false; // Ferme le formulaire
+                this.selectedDepense = null; // Réinitialise la sélection
+                this.depenseForm.reset(); // Reset le formulaire
+                this.loadDepenses(); // Recharge la liste, la nouvelle dépense doit apparaître
+            });
+        }
     }
 }

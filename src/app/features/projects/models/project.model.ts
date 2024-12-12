@@ -51,15 +51,23 @@ export interface LibelleExpenses {
 }
 
 export interface Category {
+    idCategory: number,
     name: string; // e.g., "Renumeration"
     isIncome: boolean;
     libelles: LibelleExpenses[]; // Updated to reference LibelleExpenses
     totals?: { [month: string]: number }; // Optional for transformed totals
     data?: { libelle: string; data: { [month: string]: number } }[]; // Transformed data
+    estimationParCategorie: boolean,
 }
 
 export interface Organisme {
     idOrganisme: number,
     name: string,
 }
-
+export interface LibeleWithName {
+    isIncome: boolean,
+    idLibele: number,
+    idCategory: number,
+    libeleName: string,
+    categoryName: string,
+}

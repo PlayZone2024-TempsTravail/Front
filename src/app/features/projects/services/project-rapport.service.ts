@@ -19,14 +19,7 @@ export class ProjectRapportService {
         return this._http.get<LebeleTree[]>(`${this.apiUrl}/Libele/tree`);
     }
 
-    // postRapport(projectRapport: ProjectRapport): Observable<ProjectRapport> {
-    //     const RapportToJson ={
-    //         date_start: projectRapport.date_start,
-    //         date_end: projectRapport.date_end,
-    //         projectsRapportId : projectRapport.projectsRapportId,
-    //         categories: projectRapport.categories,
-    //         libelesId: projectRapport.libelesId,
-    //     };
-    //     return this._http.post<projectRapport>
-    // }
+    createProjetRapport(rapport: any): Observable<Blob> {
+        return this._http.post(`${this.apiUrl}/Rapport/project`, rapport, { responseType: 'blob' });
+    }
 }

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { Appointment, WorkTime, CompteurWorktimeCategory, Project, ProjectList } from '../time-tracking/models/appointment.model';
+import { Appointment, WorkTime, CompteurWorktimeCategory, Project, ProjectList, UserList } from '../time-tracking/models/appointment.model';
 import { AuthService  } from '../../features/auth/services/auth.services';
 import { JwtPayload } from 'jwt-decode';
 
@@ -17,6 +17,8 @@ export class AppointmentService {
   private compteurWorktimeCategoryUrl = 'http://api.technobel.pro:444/api/Counter/absence/';
   private compteurProjectUrl = 'http://api.technobel.pro:444/api/Counter/projet/';
   private ListProjectUrl = 'http://api.technobel.pro:444/api/Project/short/';
+  private rapportUrl = 'http://api.technobel.pro:444/api/Rapport/';
+  private ListUserURL = 'http://api.technobel.pro:444/api/User/';
 
   constructor(
     private http: HttpClient,
@@ -31,9 +33,8 @@ export class AppointmentService {
     const startDate = this.mergeDateAndTime(a.date, startTime);
     const endDate = this.mergeDateAndTime(a.date, endTime);
 
-    const userId = this.authService.getUserId();
 
-    if (!userId) {
+    if (!a.userId) {
       console.error('Impossible de récupérer "userId" dans le token JWT.');
       return throwError(() => new Error('Invalid token'));
     }
@@ -46,7 +47,7 @@ export class AppointmentService {
       projectId: a.projectId == 0
         ? null
         : a.projectId,
-      userId: +userId,
+        userId : a.userId
     };
 
     return this.http.post(this.workTimeUrl, body).pipe(
@@ -70,12 +71,16 @@ export class AppointmentService {
     return this.http.get<WorkTime[]>(this.workTimeCategoryUrl);
   }
 
-  getProjet(): Observable<Project[]> {
-    return this.http.get<Project[]>(`${this.compteurProjectUrl}/${this.authService.getUserId()}`);
+  getProjet(userId: string): Observable<Project[]> {
+    return this.http.get<Project[]>(`${this.compteurProjectUrl}/${userId}`);
   }
 
   getProjetList(): Observable<ProjectList[]> {
     return this.http.get<ProjectList[]>(`${this.ListProjectUrl}/${this.authService.getUserId()}`);
+  }
+
+  getUserList(): Observable<UserList[]>{
+    return this.http.get<UserList[]>(`${this.ListUserURL}`);
   }
 
   getAppointments(userId: string, startDate: string, endDate: string): Observable<Appointment[]> {
@@ -125,4 +130,16 @@ export class AppointmentService {
       })
     );
   }
+
+  ServiceUserSelected(userId: number){
+
+  }
+
+    createRapportTimes(data: any): Observable<any> {
+        return this.http.post(`${this.rapportUrl}times`, data ,{ responseType: 'blob'});
+    }
+
+    getRapportCounter(): Observable<any> {
+        return this.http.get(`${this.rapportUrl}counter`, { responseType: 'blob'});
+    }
 }

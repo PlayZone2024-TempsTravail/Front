@@ -3,7 +3,7 @@ export interface DepenseDTO {
     idDepense: number;
     libeleId: number;
     projectId: number;
-    organismeId: number;
+    organismeId?: number;
     montant: number;
     dateIntervention?: Date;
     dateFacturation: Date;
@@ -13,11 +13,23 @@ export interface DepenseDTO {
 // Modèle CreateDepenseDTO pour la création d'une nouvelle dépense
 export interface CreateDepenseDTO {
     libeleId: number;
+    categoryId: number;
     projectId: number;
     organismeId: number;
     montant: number;
     dateIntervention?: Date;
     dateFacturation: Date;
+    motif?: string;
+}
+
+export interface UpdateDepenseDTO {
+    libeleId: number;
+    categoryId: number;
+    projectId: number;
+    organismeId?: number;
+    montant: number;
+    dateIntervention?: Date | null;
+    dateFacturation: Date | null;
     motif?: string;
 }
 
@@ -29,9 +41,11 @@ export interface OrganismeDTO {
 
 // Modèle LibeleDTO
 export interface LibeleDTO {
-    idLibele: number;
+    isIncome: boolean;
     idCategory: number;
-    name?: string;
+    categoryName?: string;
+    idLibele: number;
+    libeleName?: string;
 }
 
 // Modèle ProjectDTO
