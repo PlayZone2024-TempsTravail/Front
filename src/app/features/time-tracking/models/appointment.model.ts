@@ -40,4 +40,16 @@ export interface Appointment {
     isActive: boolean;
     name: string;
   }
+
+  export interface UserList{
+    idUser: number;
+    nom: string;
+    prenom: string;
+    userRoles: UserRole[]; 
+  }
   
+  export interface UserRole {
+    roleId: number;
+    userId: number;
+    roleName: string;
+  }

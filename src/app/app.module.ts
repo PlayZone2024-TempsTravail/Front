@@ -32,6 +32,7 @@ import { jwtInterceptor } from './core/interceptor/jwt.interceptor';
 // DATE 
 import { registerLocaleData } from '@angular/common';
 import localeFrBe from '@angular/common/locales/fr-BE';
+import { CalendarComponent } from './features/time-tracking/components/calendar/calendar.component';
 
 registerLocaleData(localeFrBe);
 

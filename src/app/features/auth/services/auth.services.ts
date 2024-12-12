@@ -56,6 +56,11 @@ export class AuthService {
     return decoded ? decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"] : null;
   }
 
+  public getRoleUser(): string[] | null {
+    const decoded = this.decodeToken();
+    return decoded ? decoded["Permissions"] : null;
+  }
+
   login(form: LoginFormModel): Observable<UserTokenDtoModel> {
     return this._http.post<UserTokenDtoModel>(`${this.authURL}`, form).pipe(
       tap(userToken => {
