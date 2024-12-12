@@ -140,13 +140,17 @@ export class EncodageRentreeProjetComponent implements OnInit {
     openEditRentreeForm(rentree: RentreeDTO): void {
         this.selectedRentree = rentree; // Mode édition
         // Préremplit le formulaire
+        const categoryId = this.libeles.find(l => l.idLibele === rentree.idLibele)?.idCategory;
         this.rentreeForm.patchValue({
             idLibele: rentree.idLibele,
+            categoryId: categoryId,
             idOrganisme: rentree.idOrganisme,
             montant: rentree.montant,
             dateFacturation: rentree.dateFacturation ? new Date(rentree.dateFacturation) : null,
             motif: rentree.motif ?? null
         });
+        this.onCategoryChange(); // Charger les libellés pour la catégorie sélectionnée
+        this.rentreeForm.get('idLibele')?.setValue(rentree.idLibele); // Assure que le libellé est bien sélectionné
         this.displayForm = true; // Affiche le dialog
     }
 
@@ -196,6 +200,7 @@ export class EncodageRentreeProjetComponent implements OnInit {
         // Prépare l'objet à envoyer à l'API
         const newRentree: RentreeCreateFormDTO = {
             idLibele: formValue.idLibele,
+            categoryId: formValue.categoryId,
             idProject: this.projectId,
             idOrganisme: formValue.idOrganisme,
             montant: formValue.montant,

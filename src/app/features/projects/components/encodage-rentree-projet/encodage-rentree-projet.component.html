@@ -7,9 +7,9 @@
 <div class="rentree-list-container">
     <div class="header">
         @if (rentrees.length > 0) {
-            <h2>Rentrées du projet {{ projectId }}</h2>
+            <h2>Encodage des rentrées du projet {{ projectId }}</h2>
         } @else {
-            <p>Aucune rentrée trouvée pour le projet {{ projectId }}.</p>
+            <h2>Aucune rentrée n'est encodée pour le projet {{ projectId }}.</h2>
         }
 
         <button pButton label="Ajouter une rentrée" icon="pi pi-plus" (click)="openAddRentreeForm()"></button>

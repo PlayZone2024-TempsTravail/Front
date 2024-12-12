@@ -153,6 +153,7 @@ export class UserService {
         );
     }
 
+
     /**
      * Met à jour un utilisateur existant avec toutes ses données.
      * Cela inclut les champs de base (nom, email, etc.), ainsi que les rôles et salaires associés.
