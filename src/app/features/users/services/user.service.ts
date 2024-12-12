@@ -1,196 +1,191 @@
 ﻿import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {forkJoin, map, Observable, switchMap} from 'rxjs';
-import {UserSalaire, UserRole, UserDTO, UserForm, Role} from '../models/user.dto.model';
+import { forkJoin, map, Observable, switchMap, of } from 'rxjs';
+import { UserSalaire, UserRole, UserDTO, UserForm, Role } from '../models/user.dto.model';
 
 @Injectable({
     providedIn: 'root',
 })
-
 export class UserService {
-    // url de notre ficheir JSON (future API)
     private apiUrl = 'http://api.technobel.pro:444/api';
 
-    // HttpClient pour effectuer les requêtes HTTP vers l'API (ici, le fichier JSON)
     constructor(private _http: HttpClient) {}
 
-    // Méthode pour récupérer la liste des utilisateurs
+    /**
+     * Récupère la liste de tous les utilisateurs.
+     * @returns Observable<UserDTO[]> - Un observable contenant la liste des utilisateurs.
+     */
     getUsers(): Observable<UserDTO[]> {
-        // Requête HTTP GET pour obtenir tous les utilisateurs
         return this._http.get<UserDTO[]>(`${this.apiUrl}/User`);
     }
 
-    // Méthode pour récupérer un utilisateur par son ID
+    /**
+     * Récupère les informations d'un utilisateur spécifique par son ID.
+     * @param id - ID de l'utilisateur à récupérer.
+     * @returns Observable<UserDTO> - Un observable contenant les données de l'utilisateur.
+     */
     getUserById(id: number): Observable<UserDTO> {
-        // Requête HTTP GET pour obtenir l'utilisateur avec l'ID donné
         return this._http.get<UserDTO>(`${this.apiUrl}/User/id/${id}`);
     }
 
-    // // Méthode pour ajouter un nouvel utilisateur
-    // addUser(userForm: UserForm): Observable<UserDTO> {
-    //     const newUserDTO: Omit<UserDTO, 'idUser'> = {
-    //         nom: userForm.nom,
-    //         prenom: userForm.prenom,
-    //         email: userForm.email,
-    //         isActive: userForm.isActive !== undefined ? userForm.isActive : true,
-    //         userRoles: userForm.userRoles.map((roleId) => ({
-    //             idRole: roleId,
-    //             name: this.getRoleNameById(roleId),
-    //         })),
-    //         historique: [
-    //             {
-    //                 date: userForm.date,
-    //                 montant: userForm.montant,
-    //                 regime: userForm.regime,
-    //             },
-    //         ],
-    //     };
-    //     return this._http.post<UserDTO>(`${this.apiUrl}/users`, newUserDTO);
-    // }
-
+    /**
+     * Ajoute un nouvel utilisateur à la base de données.
+     * @param userForm - Les données du formulaire utilisateur.
+     * @returns Observable<UserDTO> - Un observable avec les informations de l'utilisateur créé.
+     * Le processus inclut la création de l'utilisateur, l'ajout de ses rôles et de son salaire.
+     */
     addUser(userForm: UserForm): Observable<UserDTO> {
         const newUser = {
             nom: userForm.nom,
             prenom: userForm.prenom,
             email: userForm.email,
-            password: userForm.password,
-            isActive: userForm.isActive !== undefined ? userForm.isActive : true,
+            password: userForm.password || 'password', // Mot de passe par défaut si non fourni (pour les tests)
+            isActive: userForm.isActive !== null ? userForm.isActive : true,  // Actif par défaut
         };
 
+        console.log(newUser)
         return this._http.post<UserDTO>(`${this.apiUrl}/User`, newUser).pipe(
-            switchMap((createdUser) => {
-                // Ajouter les rôles
-                const roleObservables = userForm.roles.map((roleId) => {
-                    const userRole = {
-                        userId: createdUser.idUser,
-                        roleId: roleId,
-                    };
-                    return this._http.post(`${this.apiUrl}/UserRole`, userRole);
-                });
+            switchMap((createdUser) => {  // Une fois l'utilisateur créé, on ajoute ses rôles et salaire
+                const rolesReq = userForm.roles.map((roleId) =>
+                    this._http.post(`${this.apiUrl}/UserRole`, { userId: createdUser.idUser, roleId }) // Ajout des rôles
+                );
 
-                // Ajouter le salaire
-                const userSalaire = {
+                const userSalaire = {  // Création de l'objet salaire
                     userId: createdUser.idUser,
-                    date: userForm.date,
+                    date: new Date(userForm.date),
                     regime: userForm.regime,
                     montant: userForm.montant,
                 };
-                const salaireObservable = this._http.post(`${this.apiUrl}/UserSalaire`, userSalaire);
+                const salaireReq = this._http.post(`${this.apiUrl}/UserSalaire`, userSalaire); // Requête pour le salaire
 
-                // Exécuter toutes les requêtes en parallèle
-                return forkJoin([...roleObservables, salaireObservable]).pipe(
-                    map(() => createdUser)
+                return forkJoin([...rolesReq, salaireReq]).pipe( // Exécute les requêtes en parallèle
+                    map(() => createdUser) // Retourne l'utilisateur créé une fois les opérations terminées
                 );
             })
         );
     }
 
+    /**
+     * Ajoute un rôle à un utilisateur existant.
+     * @param userId - ID de l'utilisateur.
+     * @param roleId - ID du rôle à ajouter.
+     * @returns Observable<any> - Un observable de la requête HTTP.
+     */
+    addUserRole(userId: number, roleId: number): Observable<any> {
+        return this._http.post(`${this.apiUrl}/UserRole`, { userId, roleId });
+    }
 
-    // // Méthode pour mettre à jour un utilisateur existant
-    // updateUser(id: number, userForm: UserForm): Observable<UserDTO> {
-    //         return this.getUserById(id).pipe(
-    //             switchMap((existingUser: UserDTO) => {
-    //                 const newHistoriqueEntry: UserSalaires = {
-    //                     date: userForm.date,
-    //                     montant: userForm.montant,
-    //                     regime: userForm.regime,
-    //                 };
-    //
-    //                 const updatedHistorique = [
-    //                     ...existingUser.historique,
-    //                     newHistoriqueEntry,
-    //                 ];
-    //
-    //                 const updatedUser: UserDTO = {
-    //                     id: existingUser.id,
-    //                     nom: userForm.nom,
-    //                     prenom: userForm.prenom,
-    //                     email: userForm.email,
-    //                     isActive: userForm.isActive !== undefined ? userForm.isActive : existingUser.isActive,
-    //                     roles: userForm.roles.map((roleId) => ({
-    //                         idRole: roleId,
-    //                         name: this.getRoleNameById(roleId),
-    //                     })),
-    //                     historique: updatedHistorique,
-    //                 };
-    //
-    //                 console.log('Mise à jour de l\'utilisateur avec les données :', updatedUser);
-    //
-    //                 return this._http.put<UserDTO>(`${this.apiUrl}/users/${id}`, updatedUser);
-    //             })
-    //         );
+    /**
+     * Supprime un rôle d'un utilisateur existant.
+     * @param userId - ID de l'utilisateur.
+     * @param roleId - ID du rôle à supprimer.
+     * @returns Observable<any> - Un observable de la requête HTTP.
+     */
+    removeUserRole(userId: number, roleId: number): Observable<any> {
+        const body = { userId, roleId };
+        return this._http.request('delete', `${this.apiUrl}/UserRole`, { body });
+    }
 
-    updateUser(id: number, userForm: UserForm): Observable<UserDTO> {
-        // Mise à jour des informations de base de l'utilisateur
-        const updatedUser = {
-            nom: userForm.nom,
-            prenom: userForm.prenom,
-            email: userForm.email,
-            isActive: userForm.isActive !== undefined ? userForm.isActive : true,
-        };
-
-        return this._http.put<UserDTO>(`${this.apiUrl}/User/${id}`, updatedUser).pipe(
+    /**
+     * Met à jour les rôles d'un utilisateur en comparant les rôles existants avec les nouveaux.
+     * Ajoute les nouveaux rôles et supprime les anciens rôles qui ne sont plus valides.
+     * @param userId - ID de l'utilisateur.
+     * @param newRoles - Liste des ID de rôles à attribuer.
+     * @returns Observable<any> - Un observable de la requête HTTP.
+     */
+    updateUserRoles(userId: number, newRoles: number[]): Observable<any> {
+        return this.getUserById(userId).pipe(
             switchMap((user) => {
-                // Mettre à jour les rôles
-                return this.updateUserRoles(user.idUser, userForm.roles).pipe(
+                const existingRoles = user.userRoles.map(r => r.roleId); // Rôles actuels de l'utilisateur
+                const rolesToRemove = existingRoles.filter(r => !newRoles.includes(r)); // Roles à supprimer
+                const rolesToAdd = newRoles.filter(r => !existingRoles.includes(r)); // Nouveaux rôles à ajouter
+
+                const deleteRequests = rolesToRemove.map(roleId => this.removeUserRole(userId, roleId));
+                const addRequests = rolesToAdd.map(roleId => this.addUserRole(userId, roleId));
+
+                return forkJoin(deleteRequests.length > 0 ? deleteRequests : of(null)).pipe( // Supprime les anciens rôles de l'user
                     switchMap(() => {
-                        // Ajouter un nouvel historique de salaire
-                        const userSalaire = {
-                            userId: user.idUser,
-                            date: userForm.date,
-                            regime: userForm.regime,
-                            montant: userForm.montant,
-                        };
-                        return this._http.post(`${this.apiUrl}/UserSalaire`, userSalaire).pipe(
-                            map(() => user)
-                        );
+                        return addRequests.length > 0 ? forkJoin(addRequests) : of(null); // Ajoute les nouveaux rôles de l'user
                     })
                 );
             })
         );
     }
 
-
-
-    private updateUserRoles(userId: number, roles: number[]): Observable<any> {
-        // Suppression des rôles existants
-        return this._http.delete(`${this.apiUrl}/UserRole/${userId}`).pipe(
-            switchMap(() => {
-                // Ajout des nouveaux rôles
-                const roleObservables = roles.map((roleId) => {
-                    const userRole = {
-                        userId: userId,
-                        roleId: roleId,
-                    };
-                    return this._http.post(`${this.apiUrl}/UserRole`, userRole);
-                });
-                return forkJoin(roleObservables);
-            })
-        );
+    /**
+     * Ajoute un salaire à un utilisateur existant.
+     * @param userId - ID de l'utilisateur.
+     * @param date - Date d'attribution du salaire.
+     * @param regime - Régime de l'utilisateur.
+     * @param montant - Montant du salaire.
+     * @returns Observable<any> - Un observable de la requête HTTP.
+     */
+    addUserSalaire(userId: number, date: Date, regime: number, montant: number): Observable<any> {
+        return this._http.post(`${this.apiUrl}/UserSalaire`, { userId, date, regime, montant });
     }
 
-
-    deactivateUser(id: number): Observable<UserDTO> {
-        return this._http.put<UserDTO>(`${this.apiUrl}/User/${id}`, {
-            isActive: false,
-        });
-    }
-
-
-    // Méthode pour récupérer la liste des rôles
+    /**
+     * Récupère la liste de tous les rôles disponibles.
+     * @returns Observable<Role[]> - Un observable contenant la liste des rôles.
+     */
     getRoles(): Observable<Role[]> {
         return this._http.get<Role[]>(`${this.apiUrl}/Role`);
     }
 
-    // Méthode pour obtenir le nom d'un rôle par son ID
-    getRoleNameById(id: number): string {
-        // Cette méthode devrait idéalement être asynchrone, mais pour simplifier,
-        // nous supposons que nous avons les rôles en cache ou que nous utilisons une liste statique.
+    /**
+     * Retourne le nom d'un rôle à partir de son ID.
+     * @param roleId - ID du rôle.
+     * @returns string - Nom du rôle ou une chaîne vide si le rôle n'existe pas.
+     */
+    getRoleNameById(roleId: number): string {
         const roles = [
-            { idRole: 1, name: 'Admin' },
-            { idRole: 2, name: 'Employé' },
+            { idRole: 1, name: 'Employe', isRemovable: true, isVisible: true },
+            { idRole: 2, name: 'Chargés de projet', isRemovable: true, isVisible: false },
+            { idRole: 3, name: 'Admin', isRemovable: false, isVisible: true },
         ];
-        const role = roles.find((r) => r.idRole === id);
+        const role = roles.find(r => r.idRole === roleId);
         return role ? role.name : '';
+    }
+
+    getVisibleRoles(): Observable<Role[]> {
+        return this.getRoles().pipe(
+            map(roles => roles.filter(role => role.isVisible))
+        );
+    }
+
+
+    /**
+     * Met à jour un utilisateur existant avec toutes ses données.
+     * Cela inclut les champs de base (nom, email, etc.), ainsi que les rôles et salaires associés.
+     * @param userId - ID de l'utilisateur à mettre à jour.
+     * @param userForm - Données du formulaire utilisateur.
+     * @returns Observable<UserDTO> - Un observable avec les données de l'utilisateur mis à jour.
+     */
+    updateUserFull(userId: number, userForm: UserForm): Observable<UserDTO> {
+        return this.getUserById(userId).pipe( // Récupère les données de l'utilisateur existant
+            switchMap(existingUser => {
+                const updatedUser: UserDTO = {
+                    idUser: existingUser.idUser, // conserve les données existantes pour les champs non modifiés
+                    nom: userForm.nom ?? existingUser.nom,
+                    prenom: userForm.prenom ?? existingUser.prenom,
+                    email: userForm.email ?? existingUser.email,
+                    isActive: userForm.isActive ?? existingUser.isActive,
+                    userRoles: existingUser.userRoles.map(r => ({ // idem pur les infos des rôles
+                        roleId: r.roleId,
+                        userId: r.userId,
+                        roleName: r.roleName || this.getRoleNameById(r.roleId)
+                    })),
+                    userSalaires: existingUser.userSalaires.map(s => ({ // idem pour les infos des salaires
+                        idUserSalaire: s.userId,
+                        userId: s.userId,
+                        date: s.date,
+                        regime: s.regime,
+                        montant: s.montant
+                    }))
+                };
+
+                return this._http.put<UserDTO>(`${this.apiUrl}/User/${userId}`, updatedUser);
+            })
+        );
     }
 }

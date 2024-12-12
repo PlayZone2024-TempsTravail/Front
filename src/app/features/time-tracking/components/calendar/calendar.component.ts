@@ -1,22 +1,22 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AppointmentDialogComponent } from '../appointment-dialog/appointment-dialog.component';
 import { AppointmentService } from '../../../services/services-calendar.service';
-import { Appointment, WorkTime, CompteurWorktimeCategory, Project } from '../../models/appointment.model';
+import { Appointment, WorkTime, CompteurWorktimeCategory, Project, UserList } from '../../models/appointment.model';
 import { AuthService } from '../../../auth/services/auth.services';
 
 export enum CalendarView {
   Month = 'month',
   Week = 'week',
   Day = 'day',
-} 
+}
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
   encapsulation: ViewEncapsulation.None,
-}) 
+})
 
 export class CalendarComponent {
   viewDate: Date = new Date();
@@ -31,18 +31,21 @@ export class CalendarComponent {
   currentDate: number = new Date().getFullYear();
   CounterVA: any[] = [];
   ProjectList: any[] = [];
+  UserList: any[] = [];
+  selectedUser?: UserList;
   public CalendarView = CalendarView;
 
   constructor(
     public dialog: MatDialog,
     public appointmentService: AppointmentService,
-    private authService: AuthService
+    public authService: AuthService
   ) {
     this.loadWorkTimeList();
     this.loadProjetList();
     this.generateView(this.currentView, this.viewDate);
     this.generateTimeSlots();
     this.loadCompteurWorktimeCategory();
+    this.loadUserList();
   }
 
   getHourFromSlot(slot: string): number {
@@ -52,8 +55,9 @@ export class CalendarComponent {
   private loadWorkTimeList(): void {
     this.appointmentService.getWorkTimeList().subscribe(
       (data: WorkTime[]) => {
-        this.workTime = data; 
+        this.workTime = data;
         this.loadAppointments();
+
       },
       (error) => {
         console.error('Erreur lors de la récupération des catégories de WorkTime:', error);
@@ -62,7 +66,7 @@ export class CalendarComponent {
   }
 
   public loadCompteurWorktimeCategory(): void {
-    const userId = this.authService.getUserId();
+    const userId = this.selectedUser?.idUser ?? this.authService.getUserId();
     if (userId) {
       this.appointmentService.getCompteurWorktimeCategory(userId.toString()).subscribe(
         (data: CompteurWorktimeCategory[]) => {
@@ -76,24 +80,53 @@ export class CalendarComponent {
   }
 
   private loadProjetList(): void {
-    this.appointmentService.getProjet().subscribe(
-      (data: Project[]) => {
-        this.ProjectList = data;
-      },
-      (error) => {
-        console.error('Erreur lors de la récupération des données Project:', error);
-      }
-    );
+    const userId = this.selectedUser?.idUser ?? this.authService.getUserId();
+
+    if (userId !== null) {
+      this.appointmentService.getProjet(userId.toString()).subscribe(
+        (data: Project[]) => {
+          this.ProjectList = data;
+        },
+        (error) => {
+          console.error('Erreur lors de la récupération des données Project:', error);
+        }
+      );
+    } else {
+      console.error('User ID is null. Cannot load Project list.');
+    }
+  }
+  
+  public loadUserList(): void {
+    const userRoles = this.authService.getRoleUser();
+  
+    if (userRoles && Array.isArray(userRoles) && userRoles.includes("ALL_CONSULTER_POINTAGES")) {
+      this.appointmentService.getUserList().subscribe(
+        (data: UserList[]) => {
+          this.UserList = data.map(user => ({
+            ...user,
+            nom: `[${user.idUser}] ${user.nom} ${user.prenom}`, // TODO : Retirer l'user
+          }));
+                    
+          this.selectedUser = this.UserList.find(user => user.idUser == this.authService.getUserId());
+          
+        },
+        (error) => {
+          console.error('Erreur lors de la récupération des utilisateurs:', error);
+        }
+      );
+    } else {
+      console.log("Accès refusé : l'utilisateur n'a pas le rôle requis pour voir la liste.");
+    }
   }  
 
   loadAppointments(): void {
-    const userId = this.authService.getUserId();
+    const userId =  this.selectedUser?.idUser ?? this.authService.getUserId();
     const { startDate, endDate } = this.getDateRange(this.currentView, this.viewDate);
     this.loadProjetList();
 
     this.appointmentService.getAppointments(userId!.toString(), startDate.toISOString(), endDate.toISOString()).subscribe({
       next: (appointments) => {
-        if (appointments && appointments.length > 0) {
+        if (appointments) {
           this.appointments = appointments.map(appointment => {
             const endDate = new Date(appointment.end);
             endDate.setSeconds(endDate.getMinutes() + 1);
@@ -114,7 +147,7 @@ export class CalendarComponent {
         console.error('Erreur lors de la récupération des rendez-vous :', error);
       }
     });
-  }  
+  }
 
   private getDateRange(view: CalendarView, date: Date): { startDate: Date, endDate: Date } {
     switch (view) {
@@ -128,7 +161,7 @@ export class CalendarComponent {
         return this.getMonthRange(date);
     }
   }
-  
+
   private getMonthRange(date: Date): { startDate: Date, endDate: Date } {
     const startDate = new Date(date.getFullYear(), date.getMonth(), 1);
     startDate.setDate(startDate.getDate() - 15);
@@ -136,7 +169,7 @@ export class CalendarComponent {
     endDate.setDate(endDate.getDate() + 15);
     return { startDate, endDate };
   }
-  
+
   private getWeekRange(date: Date): { startDate: Date, endDate: Date } {
     const startDate = new Date(date);
     startDate.setDate(date.getDate() - date.getDay() - 7);
@@ -144,7 +177,7 @@ export class CalendarComponent {
     endDate.setDate(date.getDate() + (6 - date.getDay()) + 7);
     return { startDate, endDate };
   }
-  
+
   private getDayRange(date: Date): { startDate: Date, endDate: Date } {
     const startDate = new Date(date);
     startDate.setDate(date.getDate() - 1);
@@ -152,7 +185,6 @@ export class CalendarComponent {
     endDate.setDate(date.getDate() + 1);
     return { startDate, endDate };
   }
-  
 
   generateView(view: CalendarView, date: Date) {
     switch (view) {
@@ -169,7 +201,7 @@ export class CalendarComponent {
         this.generateMonthView(date);
     }
     this.loadAppointments();
-  }  
+  }
 
   generateMonthView(date: Date) {
     const start = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -293,7 +325,6 @@ export class CalendarComponent {
       date.getMonth() === today.getMonth() &&
       date.getFullYear() === today.getFullYear()
     );
-    
   }
 
   isSameDate(date1: Date, date2: Date): boolean {
@@ -316,15 +347,15 @@ export class CalendarComponent {
   }
 
   openDialog(appointment: any): void {
-
     const dialogRef = this.dialog.open(AppointmentDialogComponent, {
       width: '500px',
       panelClass: 'dialog-container',
       data: {
         appointment,
-        appointments: this.appointments
+        appointments: this.appointments,
+        selectedUserId : this.selectedUser?.idUser
       },
-    }); 
+    });
 
     dialogRef.afterClosed().subscribe(() => {
       this.loadCompteurWorktimeCategory()
@@ -346,7 +377,7 @@ export class CalendarComponent {
 
   viewToday(): void {
     this.viewDate = new Date();
-    
+
     if (this.currentView === CalendarView.Month) {
       this.generateMonthView(this.viewDate);
       this.loadAppointments();
@@ -385,7 +416,6 @@ export class CalendarComponent {
   }
 
   calculateDuration(start: string, end: string): number {
-    
     const [startHours, startMinutes] = start.split(':').map(Number);
     const [endHours, endMinutes] = end.split(':').map(Number);
 
@@ -420,4 +450,13 @@ export class CalendarComponent {
   todate(date: string) {
     return new Date(date)
   }
+
+  onUserSelected(event: any) {
+    this.selectedUser = event.value;    
+    this.loadAppointments();
+    this.loadCompteurWorktimeCategory();
+    this.loadProjetList();
+  }
+
+  
 }

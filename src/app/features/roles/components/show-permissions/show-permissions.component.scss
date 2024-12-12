@@ -1,0 +1,50 @@
+:root {
+    --primary-color: #84c101
+}
+
+th:not(:first-child), td:not(:first-child) {
+    text-align: center;
+}
+
+.rolepermission-list-container {
+    margin: 1rem auto;
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+
+        .search-btn {
+            height: 3.1rem;
+            margin-right: 1rem;
+        }
+    }
+
+    .actions-header {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .search-filter-container {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+
+        .p-input-icon-left {
+            width: 50%;
+        }
+    }
+}
+
+button {
+    background-color: var(--primary-color);
+    border: none;
+    padding: 10px 20px;
+}
+
+.add-btn {
+    margin-right: 1rem;
+    padding: 16px 32px;
+}

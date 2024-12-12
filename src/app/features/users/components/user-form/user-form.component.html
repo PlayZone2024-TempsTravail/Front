@@ -1,28 +1,39 @@
-<!-- users/components/user-form/user-form.component.html -->
-
 <form [formGroup]="userForm" (ngSubmit)="submit()">
     <div class="form-grid">
-        <!-- Colonne de gauche -->
         <div class="column">
-            <!-- Champ Prénom -->
             <div class="form-group">
                 <label for="prenom">Prénom</label>
                 <input id="prenom" type="text" pInputText formControlName="prenom" />
+                @if(userForm.get('prenom')?.invalid && userForm.get('prenom')?.touched) {
+                    <small class="p-error">Le prénom est requis.</small>
+                }
             </div>
 
-            <!-- Champ Nom -->
             <div class="form-group">
                 <label for="nom">Nom</label>
                 <input id="nom" type="text" pInputText formControlName="nom" />
+                @if(userForm.get('nom')?.invalid && userForm.get('nom')?.touched) {
+                    <small class="p-error">Le nom est requis.</small>
+                }
             </div>
 
-            <!-- Champ Email -->
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input id="email" type="email" pInputText formControlName="email" />
+            @if(!userData) {
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input id="email" type="email" pInputText formControlName="email" />
+                    @if(userForm.get('email')?.invalid && userForm.get('email')?.touched) {
+                        <small class="p-error">Un email valide est requis.</small>
+                    }
+                </div>
+                <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input id="password" type="password" pInputText formControlName="password" />
+                @if(userForm.get('password')?.invalid && userForm.get('password')?.touched) {
+                    <small class="p-error">Le mot de passe est requis.</small>
+                }
             </div>
+            }
 
-            <!-- Champ Rôles -->
             <div class="form-group">
                 <label>Rôles</label>
                 <p-multiSelect
@@ -33,35 +44,30 @@
                     [display]="'chip'"
                     placeholder="Sélectionner les rôles"
                 ></p-multiSelect>
+                @if(userForm.get('roles')?.invalid && userForm.get('roles')?.touched) {
+                    <small class="p-error">Au moins un rôle est requis.</small>
+                }
             </div>
         </div>
 
-        <!-- Colonne de droite -->
         <div class="column">
-
-            <!-- Groupe Salaire et Régime -->
             <div class="form-group-inline">
                 <div class="form-group">
-                    <label for="salaire">Salaire</label>
-                    <input
-                        id="salaire"
-                        type="number"
-                        pInputText
-                        formControlName="salaire"
-                    />
-                </div>
+                    <label for="montant">Salaire</label>
+                    <input id="montant" type="number" pInputText formControlName="montant" />
+                    @if(userForm.get('montant')?.invalid && userForm.get('montant')?.touched) {
+                        <small class="p-error">Le salaire est requis.</small>
+                    }
+                 </div>
                 <div class="form-group">
                     <label for="regime">Régime de Travail</label>
-                    <input
-                        id="regime"
-                        type="number"
-                        pInputText
-                        formControlName="regime"
-                    />
+                    <input id="regime" type="number" pInputText formControlName="regime" />
+                    @if(userForm.get('regime')?.invalid && userForm.get('regime')?.touched) {
+                        <small class="p-error">Le régime est requis.</small>
+                    }
                 </div>
             </div>
 
-            <!-- Champ Date -->
             <div class="form-group">
                 <label for="date" class="date-changement">Date du changement</label>
                 <p-calendar id="date" formControlName="date"
@@ -69,41 +75,39 @@
                             [showIcon]="true"
                             inputId="icondisplay">
                 </p-calendar>
+                @if(userForm.get('date')?.invalid && userForm.get('date')?.touched) {
+                    <small class="p-error">La date est requise.</small>
+                }
             </div>
 
-            <div class="form-group" *ngIf="userData">
+            @if(userData) {
+                <div class="form-group">
                 <label>Statut</label>
-                <p-dropdown
-                    [options]="statusOptions"
-                    formControlName="isActive"
-                    placeholder="Sélectionner le statut"
-                ></p-dropdown>
+                <p-dropdown [options]="statusOptions" formControlName="isActive" placeholder="Sélectionner le statut"></p-dropdown>
             </div>
+            }
         </div>
     </div>
 
-    <!-- Boutons d'action -->
     <div class="form-actions">
-        <button pButton type="submit" label="Ajouter" *ngIf="!userData"></button>
-        <button pButton type="submit" label="Modifier" *ngIf="userData"></button>
-        <button
-            pButton
-            type="button"
-            label="Historique"
-            *ngIf="userData"
-            (click)="openHistory()"
-        ></button>
+        @if(!userData) {
+            <button pButton type="submit" label="Ajouter"></button>
+        }
+        @if(userData) {
+            <button pButton type="submit" label="Modifier"></button>
+            <button pButton type="button" label="Historique" (click)="openHistory()"></button>
+            <button pButton type="button" label="Réinitialiser mot de passe" (click)="resetPassword(userData.idUser)"></button>
+        }
     </div>
 </form>
 
-<p-dialog
-    header="Historique"
-    [(visible)]="displayHistoryDialog"
-    [modal]="true"
-    [closable]="true"
-    [resizable]="false"
-    (onHide)="closeHistory()"
->
+<p-dialog header="Historique"
+          [(visible)]="displayHistoryDialog"
+          [modal]="true"
+          [closable]="true"
+          [resizable]="false"
+          (onHide)="closeHistory()">
+
     <p-table [value]="historique">
         <ng-template pTemplate="header">
             <tr>
@@ -115,8 +119,8 @@
         <ng-template pTemplate="body" let-entry>
             <tr>
                 <td>{{ entry.date | date: 'dd/MM/yyyy' }}</td>
-                <td>{{ entry.montant }}</td>
-                <td>{{ entry.regime }}</td>
+                <td>{{ entry.montant }} € </td>
+                <td>{{ entry.regime }} %</td>
             </tr>
         </ng-template>
     </p-table>

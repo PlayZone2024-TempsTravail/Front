@@ -9,6 +9,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {InputTextModule} from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import {JwtPayload} from './models/token.model';
 
 @NgModule({
   declarations: [LoginComponent],
@@ -22,4 +23,4 @@ import { FloatLabelModule } from 'primeng/floatlabel';
     FloatLabelModule
   ]
 })
-export class AuthModule { }
+export class AuthModule {}

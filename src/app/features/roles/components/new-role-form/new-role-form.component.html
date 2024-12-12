@@ -1,0 +1,12 @@
+<form [formGroup]="roleAddForm" (ngSubmit)="submit()">
+    <div class="form-grid">
+        <div class="form-group">
+            <label for="name">Nom du role</label>
+            <input id="name" type="text" pInputText formControlName="name" />
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <button pButton type="submit" label="Créé le role"></button>
+    </div>
+</form>

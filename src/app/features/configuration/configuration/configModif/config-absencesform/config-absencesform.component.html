@@ -1,0 +1,112 @@
+<a
+    type="button"
+    appBack>
+    <img src="/assets/back-button.svg" class="button-back" alt="Retour" width="62px" height="62px">
+</a>
+
+<h3>Nomenclature absences</h3>
+
+<h4>Absences</h4>
+
+
+<div class="tableau">
+    <p-table [value]="configAbsences" [paginator]="true" [rows]="4" [tableStyle]="{'min-width':'50rem'}" #dt>
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Abreviation</th>
+                <th>Nom</th>
+                <th>Statut</th>
+                <th>Couleur</th>
+                <th>Action</th>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-configAbsence>
+            <tr>
+                <td>{{configAbsence.abreviation}}</td>
+                <td>{{configAbsence.name}}</td>
+                <td>
+                    <p-chip
+                        [label]="configAbsence.isActive ? 'Actif': 'Inactif'">
+
+                    </p-chip>
+                </td>
+                    <td>
+                        <div [style.background-color]="seeColor(configAbsence.color)" class="color-modif" >
+                            #{{configAbsence.color.toLowerCase()}}
+                        </div>
+                    </td>
+
+                <td>
+                    <p-button (click)="showDialog(configAbsence.name, configAbsence.abreviation ,configAbsence.color ,configAbsence.idWorktimeCategory ,configAbsence.isActive  )" label="Modifier" icon="pi pi-pencil" />
+                </td>
+            </tr>
+
+        </ng-template>
+
+
+    </p-table>
+
+</div>
+
+<div class="Ajout" >
+
+    <h4>Ajout d'absence</h4>
+<div class="input-ajout" >
+    <p-floatLabel>
+        <input pInputText id="abreviation" [(ngModel)]="Newabreviation" />
+        <label for="abreviation">Abréviation</label>
+    </p-floatLabel>
+    <p-floatLabel>
+        <input pInputText id="name" [(ngModel)]="NewName" />
+        <label for="name">Non du nouveau champ</label>
+    </p-floatLabel>
+
+    <div class="container">
+        <input type="color" id="style1" [(ngModel)]="Newcolor"/>
+        <label for="style1"></label>
+    </div>
+
+</div>
+    <p-button label="Enregistrer" (click)="sendNewAbsences(NewName , Newabreviation ,Newcolor )" class="button-send"/>
+
+</div>
+
+
+<div class="card flex justify-center">
+    <p-dialog header="Modification d'absences" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
+        <span class="p-text-secondary block mb-8">.</span>
+        <div class="Abreviation">
+            <label for="Abreviationpopup" class="font-semibold w-24">Abreviation</label>
+            <input pInputText id="Abreviationpopup" class="flex-auto" [(ngModel)]="abreviationModif"  />
+        </div>
+        <div class="name-modif">
+            <label for="namemodif" class="font-semibold w-24">Nom</label>
+            <input pInputText id="namemodif" class="flex-auto" [(ngModel)]="nameModif"  />
+        </div>
+
+        <div class="color-modif-send">
+            <label for="style2">Couleur</label>
+            <input type="color" id="style2" [(ngModel)]="colorModif" />
+        </div>
+
+        <div>
+            <div class="form-group">
+                <label>Statut</label>
+                <p-dropdown
+                    [options]="[
+                    { label: 'Actifs', value: true },
+                    { label: 'Inactifs', value: false }]"
+                    placeholder=""
+                    (onChange)="isActiveChose"
+                    [(ngModel)]="selectedIsActive"
+                ></p-dropdown>
+            </div>
+        </div>
+
+        <div class="button-modif">
+            <p-button label="Cancel" severity="secondary" (click)="visible = false" />
+            <p-button label="Save" (click)="visible = false" (onClick)="modifAbsence(nameModif,abreviationModif,colorModif,selectedIsActive)"/>
+        </div>
+    </p-dialog>
+</div>

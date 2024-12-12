@@ -3,15 +3,18 @@ import { CommonModule } from '@angular/common';
 
 import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './components/home.component';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
 
 
 @NgModule({
   declarations: [
-    HomeComponent
+      HomeComponent,
+
   ],
   imports: [
     CommonModule,
-    HomeRoutingModule
+    HomeRoutingModule,
+    ScrollPanelModule,
   ]
 })
 export class HomeModule { }

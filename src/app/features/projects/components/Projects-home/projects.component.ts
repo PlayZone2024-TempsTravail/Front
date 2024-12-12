@@ -69,27 +69,20 @@ export class ProjectsComponent implements OnInit  {
 
 
 // calcule pour la variation
-    totalPourcent(depence:number , previson:number){
+    totalPourcent(previson:number , depence:number){
 
-        let total = ((depence / previson) - 1) * 100;
 
-        if (Number.isNaN(total)){
+        if (depence == 0 || previson == 0){
             return 0;
         }
-        else{
+        let total = ((depence - previson)/ previson) * 100;
 
-            return Math.round(total*100)/100;
-        }
+        return Math.round(total*100)/100;
+
 
     }
 
-
-
-
-
-
-
-
-
-
+    roundprevisonDepence(item : number){
+        return Math.round(item*100)/100;
+    }
 }

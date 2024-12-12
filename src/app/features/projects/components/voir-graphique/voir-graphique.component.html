@@ -1,24 +1,28 @@
+<a type="button" appBack>
+    <img src="/assets/back-button.svg" class="button-back" alt="Retour" width="62px" height="62px">
+</a>
 <div class="container">
     <h4 class="title">Suivi à [mois Année]</h4>
     <div class="content-wrapper">
+
         <!-- Entrées Section -->
         <div class="card">
             <h5>Entrées</h5>
             <div class="data-group">
                 <div>
                     <button class="data-button">Prévision entrées</button>
-                    <p>8.652,00 €</p>
+                    <p>{{ lastPrevisionIncome | currency:'EUR':'symbol' }}</p>
                 </div>
                 <div>
                     <button class="data-button">Entrées réelles</button>
-                    <p>9.326,24 €</p>
+                    <p>{{ lastRealIncome | currency:'EUR':'symbol' }}</p>
                 </div>
                 <div>
                     <button class="data-button">Variation</button>
-                    <p>+7.8%</p>
+                    <p>{{ variationIncomes | number:'1.2-2' }}%</p>
                 </div>
             </div>
-            <p-chart type="line" [data]="chartData1" [options]="chartOptions"></p-chart>
+            <p-chart type="line" [data]="chartDataIncomes" [options]="chartOptions"></p-chart>
         </div>
 
         <!-- Dépenses Section -->
@@ -27,18 +31,18 @@
             <div class="data-group">
                 <div>
                     <button class="data-button">Prévision dépense</button>
-                    <p>8.652,00 €</p>
+                    <p>{{ lastPrevisionExpense | currency:'EUR':'symbol' }}</p>
                 </div>
                 <div>
                     <button class="data-button">Coût réel</button>
-                    <p>9.326,24 €</p>
+                    <p>{{ lastRealExpense | currency:'EUR':'symbol' }}</p>
                 </div>
                 <div>
                     <button class="data-button">Variation</button>
-                    <p>+7.8%</p>
+                    <p>{{ variationExpenses | number:'1.2-2' }}%</p>
                 </div>
             </div>
-            <p-chart type="line" [data]="chartData2" [options]="chartOptions"></p-chart>
+            <p-chart type="line" [data]="chartDataExpenses" [options]="chartOptions"></p-chart>
         </div>
     </div>
 </div>

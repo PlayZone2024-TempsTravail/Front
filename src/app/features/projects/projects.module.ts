@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 
 import { ProjectsRoutingModule } from './projects-routing.module';
 import { ProjectsComponent } from './components/Projects-home/projects.component';
@@ -21,6 +21,16 @@ import {SharedModule} from '../../shared/shared.module';
 import { EncodageCoutsProjetComponent } from './components/encodage-couts-projet/encodage-couts-projet.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CalendarModule} from 'primeng/calendar';
+import { ProjectrapportComponent } from './components/project-rapport/projectrapport.component';
+import {CheckboxModule} from 'primeng/checkbox';
+import {TreeModule} from 'primeng/tree';
+import { EncodageRentreeProjetComponent } from './components/encodage-rentree-projet/encodage-rentree-projet.component';
+import { ProjectCreationComponent } from './components/project-creation/project-creation.component';
+import {InputNumberModule} from 'primeng/inputnumber';
+import { ColorPickerModule } from 'primeng/colorpicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { ProjectModificationComponent } from './components/project-modification/project-modification.component';
 
 
 @NgModule({
@@ -28,8 +38,14 @@ import {CalendarModule} from 'primeng/calendar';
       ProjectsComponent,
       ProjectGraphComponent,
       ProjectDetailsComponent,
-    ProjectsComponent,
-    EncodageCoutsProjetComponent
+      ProjectsComponent,
+      EncodageCoutsProjetComponent,
+      ProjectCreationComponent,
+      ProjectModificationComponent,
+      EncodageCoutsProjetComponent,
+      EncodageRentreeProjetComponent,
+      ProjectrapportComponent,
+      ProjectCreationComponent
   ],
     imports: [
         CommonModule,
@@ -51,6 +67,13 @@ import {CalendarModule} from 'primeng/calendar';
         SharedModule,
         ReactiveFormsModule,
         CalendarModule,
+        CheckboxModule,
+        TreeModule,
+        InputNumberModule,
+        ColorPickerModule,
+        MatFormFieldModule,
+        MatInputModule,
+        NgOptimizedImage
     ],
     exports: [
         ProjectsComponent,
