@@ -76,7 +76,9 @@ td{
     background-color: transparent;
     border: none;
     cursor: pointer;
+
 }
+
 #style2::-webkit-color-swatch {
     border-radius: 10px;
     border: none;
@@ -91,4 +93,90 @@ td{
 .color-modif{
     border-radius: 3px;
     color : #000000;
+}
+
+.Abreviation{
+    margin:10px!important;
+    display : flex;
+
+}
+
+.Abreviation label{
+    margin:10px!important;
+
+}
+
+.Abreviation input{
+
+    border-radius: 3px;
+    border-style:  solid;
+    border-color: #D1D5DB;
+    text-align: center;
+    color:#4B5563;
+
+}
+
+.name-modif{
+    display : flex;
+    margin:10px;
+
+}
+
+.name-modif label{
+    margin:10px!important;
+    border-radius: 1px
+}
+
+.name-modif input{
+
+    border-radius: 3px;
+    border-style:  solid;
+    border-color: #D1D5DB;
+    text-align: center;
+    color:#4B5563;
+
+}
+.font-semibold w-24{
+    margin:10px!important;
+}
+
+
+.color-modif-send{
+    margin:10px;
+    display : flex;
+    align-items: center;
+    color :#4B5563;
+}
+.color-modif-send label{
+    margin:10px;
+
+}
+
+.card flex justify-center{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+
+.form-group{
+    margin:10px;
+}
+.form-group label {
+    margin:10px;
+}
+
+
+
+
+
+
+.button-modif{
+    display: flex;
+    justify-content: flex-end !important;
+    margin:10px;
+}
+.button-modif p-button{
+
+    margin:10px;
 }

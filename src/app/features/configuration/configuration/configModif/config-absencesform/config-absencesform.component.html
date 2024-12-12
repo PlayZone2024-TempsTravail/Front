@@ -38,7 +38,7 @@
                     </td>
 
                 <td>
-                    <p-button (click)="showDialog(configAbsence.name, configAbsence.abreviation ,configAbsence.color ,configAbsence.idWorktimeCategory )" label="Modifier" icon="pi pi-pencil" />
+                    <p-button (click)="showDialog(configAbsence.name, configAbsence.abreviation ,configAbsence.color ,configAbsence.idWorktimeCategory ,configAbsence.isActive  )" label="Modifier" icon="pi pi-pencil" />
                 </td>
             </tr>
 
@@ -76,23 +76,37 @@
 <div class="card flex justify-center">
     <p-dialog header="Modification d'absences" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
         <span class="p-text-secondary block mb-8">.</span>
-        <div class="flex items-center gap-4 mb-4">
+        <div class="Abreviation">
             <label for="Abreviationpopup" class="font-semibold w-24">Abreviation</label>
             <input pInputText id="Abreviationpopup" class="flex-auto" [(ngModel)]="abreviationModif"  />
         </div>
-        <div class="flex items-center gap-4 mb-8">
+        <div class="name-modif">
             <label for="namemodif" class="font-semibold w-24">Nom</label>
             <input pInputText id="namemodif" class="flex-auto" [(ngModel)]="nameModif"  />
         </div>
 
-        <div class="flex items-center gap-4 mb-8">
+        <div class="color-modif-send">
+            <label for="style2">Couleur</label>
             <input type="color" id="style2" [(ngModel)]="colorModif" />
-            <label for="style2"></label>
         </div>
 
-        <div class="flex justify-end gap-2">
+        <div>
+            <div class="form-group">
+                <label>Statut</label>
+                <p-dropdown
+                    [options]="[
+                    { label: 'Actifs', value: true },
+                    { label: 'Inactifs', value: false }]"
+                    placeholder=""
+                    (onChange)="isActiveChose"
+                    [(ngModel)]="selectedIsActive"
+                ></p-dropdown>
+            </div>
+        </div>
+
+        <div class="button-modif">
             <p-button label="Cancel" severity="secondary" (click)="visible = false" />
-            <p-button label="Save" (click)="visible = false" (onClick)="modifAbsence(nameModif,abreviationModif,colorModif)"/>
+            <p-button label="Save" (click)="visible = false" (onClick)="modifAbsence(nameModif,abreviationModif,colorModif,selectedIsActive)"/>
         </div>
     </p-dialog>
 </div>
