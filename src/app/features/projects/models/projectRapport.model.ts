@@ -23,10 +23,10 @@ export interface children{
 // model pour le post
 
 export interface RapportToDb {
-    date_start: Date,
-    date_end: Date,
+    dateStart: Date,
+    dateEnd: Date,
     projects: number[],
-    libeles: number[],
+    libelles: number[],
 
 }
 
