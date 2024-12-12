@@ -1,131 +1,233 @@
-import {Component, OnInit} from '@angular/core';
-import {UserDTO, UserForm} from '../../models/user.dto.model';
-import {ActivatedRoute} from '@angular/router';
-import {UserService} from '../../services/user.service';
+import { Component, OnInit } from '@angular/core';
+import { UserDTO, UserForm } from '../../models/user.dto.model';
+import { UserService } from '../../services/user.service';
 
 @Component({
     selector: 'app-user-list',
     templateUrl: './user-list.component.html',
-    styleUrl: './user-list.component.scss'
+    styleUrls: ['./user-list.component.scss']
 })
 export class UserListComponent implements OnInit {
 
-    users: UserDTO[] = []; // Liste complète des utilisateurs
-    filteredUsers: UserDTO[] = [];
-    selectedUser: UserDTO | null = null;
-    displayForm: boolean = false;
-    searchQuery: string = '';
+    users: UserDTO[] = []; // Liste complète des utilisateurs.
+    filteredUsers: UserDTO[] = []; // Liste filtrée des utilisateurs, basée sur les critères de recherche ou de filtrage.
+    selectedUser: UserDTO | null = null; // Utilisateur sélectionné pour l'édition. Null signifie qu'aucun utilisateur n'est actuellement sélectionné.
+    displayForm: boolean = false; // Indique si le formulaire d'ajout/édition est affiché.
+    searchQuery: string = ''; // Chaîne de recherche utilisée pour filtrer les utilisateurs par nom, prénom ou email.
+    selectedUserForCompteurs: UserDTO | null = null; // Utilisateur sélectionné pour éditer les compteurs
+    displayCompteursDialog: boolean = false; // Affiche la popup d'édition de compteurs
 
     constructor(private userService: UserService) {}
 
+    // Charge la liste des utilisateurs depuis le service.
     ngOnInit(): void {
         this.loadUsers();
     }
 
-    loadUsers() {
-        // Récupère la liste des utilisateurs depuis le service
-        this.userService.getUsers().subscribe((users) => {
-            this.users = users;
-            this.sortUsers();
-            this.filteredUsers = [...this.users];
+    /**
+     * Charge les utilisateurs depuis le service et met à jour la liste complète `users` ainsi que la liste filtrée `filteredUsers`.
+     * Trie également la liste d'utilisateurs après le chargement.
+     *
+     * @returns void
+     */
+    loadUsers() : void {
+        this.userService.getUsers().subscribe({
+            next: (users) => {
+                this.users = users;
+                this.sortUsers();
+                this.filteredUsers = [...this.users];
+            },
+            error: (err) => {
+                console.error("Erreur chargement utilisateurs:", err);
+            }
         });
     }
 
-    // Filtre les utilisateurs selon le champ de recherche
-    sortUsers() {
-        // Trie les utilisateurs actifs en premier
-        this.users.sort((a, b) => Number(b.isActive) - Number(a.isActive));
+
+    /**
+     * Trie la liste d'utilisateurs en plaçant en premier les utilisateurs actifs PUIS par ordre croissant sur le nom
+     *
+     * @returns void
+     */
+    sortUsers(): void {
+        this.users.sort((a, b) => {
+            if (a.isActive === b.isActive) {
+                return a.nom.localeCompare(b.nom); // Trie alphabétique si le statut est identique
+            }
+            return b.isActive ? 1 : -1; // Actifs en premier
+        });
     }
 
-    // Ouvre la boîte de dialogue pour ajouter un utilisateur
-    openAddUserForm() {
-        // Ouvre le formulaire pour ajouter un utilisateur
+    /**
+     * Ouvre le formulaire pour ajouter un nouvel utilisateur.
+     * Réinitialise l'utilisateur sélectionné.
+     *
+     * @returns void
+     */
+    openAddUserForm() : void {
         this.selectedUser = null;
         this.displayForm = true;
     }
 
-    // Ouvre la boîte de dialogue pour modifier un utilisateur sélectionné
-    openEditUserForm(user: UserDTO) {
-        console.log('Utilisateur sélectionné pour modification :', user);
+    /**
+     * * Ouvre le formulaire pour modifier un utilisateur existant.
+     *
+     * @param user L'utilisateur à modifier.
+     * @returns void
+     */
+    openEditUserForm(user: UserDTO) : void {
         this.selectedUser = user;
         this.displayForm = true;
     }
 
-    // onFormSubmit(userForm: UserForm): void {
-    //     if (this.selectedUser) {
-    //         console.log('Mise à jour de l\'utilisateur avec ID :', this.selectedUser.id);
-    //         console.log('Données du formulaire :', userForm);
-    //
-    //         this.userService.updateUser(this.selectedUser.id, userForm).subscribe({
-    //             next: () => {
-    //                 this.displayForm = false;
-    //                 this.loadUsers();
-    //             },
-    //             error: (err) => {
-    //                 console.error('Erreur lors de la mise à jour de l\'utilisateur :', err);
-    //             }
-    //         });
-    //     } else {
-    //         // Ajout d'un nouvel utilisateur
-    //         this.userService.addUser(userForm).subscribe({
-    //             next: () => {
-    //                 this.displayForm = false;
-    //                 this.loadUsers();
-    //             },
-    //             error: (err) => {
-    //                 console.error('Erreur lors de l\'ajout de l\'utilisateur :', err);
-    //             }
-    //         });
-    //     }
-    // }
+    // MODIFICATION ICI (nouvelle méthode)
+    openCompteursDialog(user: UserDTO): void {
+        this.selectedUserForCompteurs = user;
+        this.displayCompteursDialog = true;
+    }
 
+    // MODIFICATION ICI (méthode pour fermer la popup des compteurs)
+    closeCompteursDialog(): void {
+        this.displayCompteursDialog = false;
+        this.selectedUserForCompteurs = null;
+    }
+
+
+    /**
+     * Soumet les données du formulaire utilisateur.
+     * Si un utilisateur est sélectionné, effectue une mise à jour (rôles, salaire, informations).
+     * Sinon, ajoute un nouvel utilisateur.
+     *
+     * @param userForm Les données du formulaire (`UserForm`).
+     * @returns void
+     */
     onFormSubmit(userForm: UserForm): void {
-        if (this.selectedUser) {
-            console.log('Mise à jour de l\'utilisateur avec ID :', this.selectedUser.idUser);
-            console.log('Données du formulaire :', userForm);
+        if (this.selectedUser) { // Vérifie si un utilisateur est sélectionné pour déterminer si on est en mode modification
 
-            this.userService.updateUser(this.selectedUser.idUser, userForm).subscribe({
-                next: () => {
-                    this.displayForm = false;
-                    this.loadUsers();
+            // Mode modification
+            this.userService.getUserById(this.selectedUser.idUser).subscribe({ // On récupère l'utilisateur existant via son id
+                next: (existingUser) => { // Une fois les informations récupérées, on procède aux mises à jour
+                    // newRoles : S'il y a de nouveaux rôles dans le formulaire, on les utilise
+                    const newRoles = userForm.roles;
+
+                    // newSalaire : Vérifie si toutes les données nécessaires à l'ajout d'un salaire (date, régime, montant) sont présentes
+                    const newSalaire = userForm.date && userForm.montant !== undefined && userForm.regime !== undefined;
+
+                    // Vérifie si les champs utilisateur ont été modifiés par rapport aux données existantes
+                    const userFieldsChanged = (
+                        userForm.nom !== existingUser.nom ||
+                        userForm.prenom !== existingUser.prenom ||
+                        userForm.email !== existingUser.email ||
+                        (userForm.isActive !== undefined && userForm.isActive !== existingUser.isActive)
+                    );
+
+                    // Mettre à jour les rôles de l'utilisateur
+                    this.userService.updateUserRoles(existingUser.idUser, newRoles).subscribe({
+                        next: () => {
+                            // Ajouter salaire si nécessaire
+                            if (newSalaire) {
+                                this.userService.addUserSalaire(existingUser.idUser, userForm.date!, userForm.regime!, userForm.montant!).subscribe({
+                                    next: () => {
+                                        // Re-fetch l'utilisateur après avoir ajouté le salaire pour s'assurer que les données sont à jour
+                                        this.userService.getUserById(existingUser.idUser).subscribe({
+                                            next: (updatedUserAfterSalaire) => {
+                                                if (userFieldsChanged) { // Si d'autres champs utilisateur ont changé
+                                                    this.userService.updateUserFull(updatedUserAfterSalaire.idUser, userForm).subscribe({
+                                                        next: () => {
+                                                            this.displayForm = false;
+                                                            this.loadUsers();
+                                                        },
+                                                        error: (err) => {
+                                                            console.error("Erreur updateUserFull:", err); // Gère les erreurs de mise à jour complète de l'utilisateur
+                                                        }
+                                                    });
+                                                } else {
+                                                    this.displayForm = false; // Si aucun autre champ n'a changé, ferme juste le formulaire
+                                                    this.loadUsers();
+                                                }
+                                            },
+                                            error: (err) => {
+                                                console.error("Erreur getUserById après addSalaire:", err); // Gère les erreurs de récupération après ajout de salaire
+                                            }
+                                        });
+                                    },
+                                    error: (err) => {
+                                        console.error("Erreur lors de l'ajout du salaire :", err); // Gère les erreurs d'ajout de salaire
+                                    }
+                                });
+                            } else {
+                                // Pas de salaire à ajouter, on met à jour les rôles et d'autres champs si nécessaire
+                                this.userService.getUserById(existingUser.idUser).subscribe({
+                                    next: (updatedUserAfterRoles) => {
+                                        if (userFieldsChanged) { // Si d'autres champs utilisateur ont changé
+                                            this.userService.updateUserFull(updatedUserAfterRoles.idUser, userForm).subscribe({
+                                                next: () => {
+                                                    this.displayForm = false;
+                                                    this.loadUsers();
+                                                },
+                                                error: (err) => {
+                                                    console.error("Erreur updateUserFull:", err); // Gère les erreurs de mise à jour complète de l'utilisateur
+                                                }
+                                            });
+                                        } else {
+                                            this.displayForm = false;
+                                            this.loadUsers();
+                                        }
+                                    },
+                                    error: (err) => {
+                                        console.error("Erreur getUserById après updateUserRoles:", err); // Gère les erreurs de récupération après mise à jour des rôles
+                                    }
+                                });
+                            }
+                        },
+                        error: (err) => {
+                            console.error("Erreur lors de la mise à jour des rôles :", err);  // Gère les erreurs de mise à jour des rôles
+                        }
+                    });
                 },
                 error: (err) => {
-                    console.error('Erreur lors de la mise à jour de l\'utilisateur :', err);
-                },
+                    console.error("Erreur getUserById:", err); // Gère les erreurs lors de la récupération initiale de l'utilisateur
+                }
             });
+
         } else {
-            // Ajout d'un nouvel utilisateur
+            // Mode ajout : Si aucun utilisateur n'est sélectionné, on ajoute un nouvel utilisateur
             this.userService.addUser(userForm).subscribe({
                 next: () => {
                     this.displayForm = false;
                     this.loadUsers();
                 },
                 error: (err) => {
-                    console.error('Erreur lors de l\'ajout de l\'utilisateur :', err);
+                    console.error('Erreur lors de l\'ajout de l\'utilisateur :', err); // Gère les erreurs lors de l'ajout
+                    if (err.error) {
+                        console.error('Détails de l\'erreur :', err.error.errors); // Affiche des détails supplémentaires sur l'erreur si disponibles
+                    }
                 },
             });
         }
     }
 
-
-
-
-    // Désactive un utilisateur ( pas de suppression)
-    deactivateUser(user: UserDTO) {
-        // Désactive un utilisateur en mettant 'isActive' à false
-        this.userService.deactivateUser(user.idUser).subscribe(() => {
-            this.loadUsers();
-        });
-    }
-
-    // Filtre les utilisateurs en fonction du filtre sélectionné
-    filterUsers(filter: string) {
-        // Filtre les utilisateurs en fonction du filtre sélectionné
+    /**
+     * Filtre les utilisateurs en fonction du critère spécifié.
+     *
+     * @param filter Le critère de filtrage (par exemple 'Admin', 'Employé', 'Actifs', 'Inactifs').
+     * @returns void
+     */
+    filterUsers(filter: string) : void {
         switch (filter) {
-            case 'Employé':
             case 'Admin':
                 this.filteredUsers = this.users.filter((u) =>
                     u.userRoles.some((role) => role.roleName === filter)
+                );
+                break;
+            case 'Employé':
+                this.filteredUsers = this.users.filter((u) =>
+                    u.userRoles.some((role) => role.roleName === 'Employe')
+                );
+                break;
+            case 'Chargés de projet':
+                this.filteredUsers = this.users.filter((u) =>
+                    u.userRoles.some((role) => role.roleName === 'Chargés de projet')
                 );
                 break;
             case 'Actifs':
@@ -139,18 +241,21 @@ export class UserListComponent implements OnInit {
         }
     }
 
-    // Recherche intelligente parmi les utilisateurs
-    searchUsers() {
-        // Recherche intelligente parmi les utilisateurs
+    /**
+     * Filtre les utilisateurs en fonction de la chaîne de recherche `searchQuery`.
+     * Filtre sur nom, prénom et email en ignorants la casse.
+     */
+    searchUsers(): void {
         this.filteredUsers = this.users.filter((u) =>
             `${u.nom} ${u.prenom} ${u.email}`.toLowerCase().includes(this.searchQuery.toLowerCase())
         );
     }
 
-    // Permet l'ouverture/fermeture de la pop up de formulaire
-    onDialogHide() {
-        // Réinitialiser le formulaire et l'utilisateur sélectionné lorsque le dialogue est fermé
-        this.selectedUser = null;
+    /**
+     * Méthode appelée lorsque la boîte de dialogue du formulaire est fermée.
+     * Masque le formulaire d'ajout/édition.
+     */
+    onDialogHide(): void {
         this.displayForm = false;
     }
 }

@@ -1,0 +1,45 @@
+.depense-list-container {
+    * {
+        margin: 0.7rem auto;
+    }
+
+    .header {
+        h2 {
+            font-size: 25px;
+            margin-bottom: 1rem;
+        }
+    }
+
+    p-table {
+
+        th, td {
+            text-align: center;
+        }
+    }
+
+    .form-container {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        margin-bottom: 1rem;
+        gap: 2rem;
+
+        .p-field {
+            margin: 1rem auto;
+
+            input {
+                margin: 0;
+            }
+        }
+    }
+
+    .ajout {
+        display: flex;
+        justify-content: center;
+
+        button {
+            width: 50%;
+            margin: 0 auto;
+        }
+    }
+}

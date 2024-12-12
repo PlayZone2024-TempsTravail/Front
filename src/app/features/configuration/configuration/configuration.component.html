@@ -1,1 +1,135 @@
-<p>Gestion de la configuration</p>
+<a
+    type="button"
+    appBack>
+    <img src="/assets/back-button.svg" class="button-back" alt="Retour" width="62px" height="62px">
+</a>
+
+<p-toast></p-toast>
+
+
+<div class = "config">
+
+    <div class="config-flex">
+        <h6> Coût horaire moyen employé </h6>
+
+        @for (config of configs; track config.parameterName){
+            @if (config.parameterName == "COUT_HORAIRE_MOYEN_EMPLOYE") {
+
+                <div class="card">
+                    <input type="text" pInputText [(ngModel)]="config.parameterValue" />
+                </div>
+                <p-button label="Enregistrer" (click)="saveData(config.parameterValue , config.parameterName)"  />
+            }
+        }
+
+
+    </div>
+    <p-divider />
+    <div class="config-flex">
+        <h6> Jour de clôture des pointages : </h6>
+        @for (config of configs; track config.parameterName){
+            @if (config.parameterName == "JOUR_CLOTURE_POINTAGES") {
+
+                <div class="card">
+                    <input type="text" pInputText [(ngModel)]="config.parameterValue" />
+                </div>
+                <p-button label="Enregistrer" (click)="saveData(config.parameterValue , config.parameterName)" />
+            }
+        }
+    </div>
+    <p-divider />
+    <div class="config-flex">
+        <h6> Jour d’alerte pointage manquant 1er avertisement (nb jours):  </h6>
+        @for (config of configs; track config.parameterName){
+            @if (config.parameterName == "JOUR_ALERTE_POINTAGE_MANQUANT_PREMIER") {
+
+                <div class="card">
+                    <input type="text" pInputText [(ngModel)]="config.parameterValue" />
+                </div>
+                <p-button label="Enregistrer" (click)="saveData(config.parameterValue , config.parameterName)" />
+            }
+        }
+
+    </div>
+
+    <p-divider />
+    <div class="config-flex">
+        <h6> Jour d’alerte pointage manquant 2er avertisement (nb jours) :  </h6>
+        @for (config of configs; track config.parameterName){
+            @if (config.parameterName == "JOUR_ALERTE_POINTAGE_MANQUANT_DEUXIEME") {
+
+                <div class="card">
+                    <input type="text" pInputText [(ngModel)]="config.parameterValue" />
+                </div>
+                <p-button label="Enregistrer" (click)="saveData(config.parameterValue , config.parameterName)" />
+            }
+        }
+
+    </div>
+
+    <p-divider />
+    <div class="config-flex">
+        <h6> Afficher RC en rouge à partir de (nb jours)   </h6>
+        @for (config of configs; track config.parameterName){
+            @if (config.parameterName == "AFFICHER_RC_ROUGE_APRES_JOURS") {
+
+                <div class="card">
+                    <input type="text" pInputText [(ngModel)]="config.parameterValue" />
+                </div>
+                <p-button label="Enregistrer" (click)="saveData(config.parameterValue , config.parameterName)" />
+            }
+        }
+
+    </div>
+    <p-divider />
+    <div class="config-flex">
+        <h6> Jour d’alerte dépassement projet  </h6>
+        @for (config of configs; track config.parameterName){
+            @if (config.parameterName == "JOUR_ALERTE_DEPASSEMENT_PROJET") {
+
+                <div class="card">
+                    <input type="text" pInputText [(ngModel)]="config.parameterValue" />
+                </div>
+                <p-button label="Enregistrer" (click)="saveData(config.parameterValue , config.parameterName)" />
+            }
+        }
+
+    </div>
+    <p-divider />
+    <div class="config-flex">
+        <h6> Nombre d’heures prestables/an  </h6>
+        @for (config of configs; track config.parameterName){
+            @if (config.parameterName == "NOMBRE_HEURES_PRESTABLES_AN") {
+
+                <div class="card">
+                    <input type="text" pInputText [(ngModel)]="config.parameterValue" />
+                </div>
+                <p-button label="Enregistrer" (click)="saveData(config.parameterValue , config.parameterName)" />
+
+            }
+        }
+
+    </div>
+    <p-divider />
+<div class="button-add-modif">
+    <p-button label="Créer nouveau profil d’utilisateur" [routerLink]="['/roles/showpermission']"/>
+    <p-button label="Modifier nomenclature absences" [routerLink]="['modifabsences']"/>
+</div>
+
+</div>
+<p-divider />
+
+<div>
+    <h5> Ajouter / renommer une catégorie de coûts/entées </h5>
+    <div class="boder-category">
+        @for (category of categories; track category.idCategory){
+            <div >
+                <p>{{category.name}}</p>
+
+            </div>
+        }
+    </div>
+
+
+    <p-button label="Editer" class="p-button-editer"/>
+</div>

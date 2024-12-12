@@ -1,41 +1,51 @@
+<a
+    type="button"
+    appBack>
+    <img src="/assets/back-button.svg" class="button-back" alt="Retour" width="50px" height="50px">
+</a>
+
 <div class="depense-list-container">
-    <div *ngIf="depenses.length > 0">
-        <h2>Dépenses du projet {{ getNameProject(projectId) }}</h2>
-    </div>
-    <div *ngIf="depenses.length === 0">
-        <p>Aucune dépense trouvée pour le projet {{ projectId }}.</p>
-    </div>
+    <div class="header">
+        @if (depenses.length > 0) {
+            <h2>Dépenses du projet {{projectId}}</h2>
+        } @else {
+            <h2>Aucune dépense trouvée pour le projet {{projectId}}.</h2>
+        }
 
-    <!-- Bouton pour ajouter une dépense -->
-    <button pButton label="Ajouter une dépense" icon="pi pi-plus" (click)="openAddDepenseForm()"></button>
-
+        <!-- Bouton pour ajouter une dépense -->
+        <button class="add-btn" pButton label="Ajouter une dépense" icon="pi pi-plus" (click)="openAddDepenseForm()"></button>
+    </div>
     <!-- Tableau des dépenses -->
-    <p-table [value]="depenses" [paginator]="true" [rows]="10">
+    <p-table [value]="depenses" [paginator]="true" [rows]="10" class="depenses">
         <ng-template pTemplate="header">
             <tr>
                 <th>Nature</th>
                 <th>Organisme</th>
                 <th>Motif</th>
                 <th>Montant</th>
-                <th>Date Intervention</th>
                 <th>Date Facturation</th>
+                <th>Date Intervention</th>
+                <th>Action</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-depense>
             <tr>
                 <td>{{ getLibeleName(depense.libeleId) }}</td>
-                <td>{{ depense.organismeId }}</td>
+                <td>{{ getOrganismeName(depense.organismeId) }}</td>
                 <td>{{ depense.motif }}</td>
                 <td>{{ depense.montant | currency:'EUR' }}</td>
-                <td>{{ depense.dateIntervention | date:'dd/MM/yyyy' }}</td>
                 <td>{{ depense.dateFacturation | date:'dd/MM/yyyy' }}</td>
+                <td>{{ depense.dateIntervention | date:'dd/MM/yyyy' }}</td>
+                <td>
+                    <button pButton icon="pi pi-pencil" label="Modifier" class="modify-btn" (click)="openEditDepenseForm(depense)"></button>
+                </td>
             </tr>
         </ng-template>
     </p-table>
 
     <!-- Dialogue pour le formulaire d'ajout de dépense -->
     <p-dialog
-        header="Ajouter une dépense"
+        header="{{ selectedDepense ? 'Modifier une dépense' : 'Ajouter une dépense' }}"
         [(visible)]="displayForm"
         [modal]="true"
         [closable]="true"
@@ -43,56 +53,84 @@
     >
         <form [formGroup]="depenseForm" (ngSubmit)="submitDepense()">
             <div class="p-fluid">
-                <div class="p-field">
-                    <label for="libeleId">Nature</label>
-                    <p-dropdown
-                        id="libeleId"
-                        [options]="libeles"
-                        optionLabel="name"
-                        optionValue="idLibele"
-                        formControlName="libeleId"
-                        placeholder="Sélectionner un libellé"
-                    ></p-dropdown>
+                <div class="form-container">
+                    <div>
+                        <div class="p-field">
+                            <label>Catégorie</label>
+                            <p-dropdown [options]="categories"
+                                        optionLabel="categoryName"
+                                        optionValue="idCategory"
+                                        formControlName="categoryId"
+                                        (onChange)="onCategoryChange()"
+                                        placeholder="Sélectionner une catégorie">
+                            </p-dropdown>
+                            <small *ngIf="depenseForm.get('categoryId')?.invalid && depenseForm.get('categoryId')?.touched" class="p-error">La catégorie est requise.</small>
+                        </div>
+
+                        <div class="p-field">
+                            <label>Libellé</label>
+                            <p-dropdown [options]="filteredLibeles"
+                                        optionLabel="libeleName"
+                                        optionValue="idLibele"
+                                        formControlName="libeleId"
+                                        placeholder="Sélectionner un libellé">
+                            </p-dropdown>
+                            <small *ngIf="depenseForm.get('libeleId')?.invalid && depenseForm.get('libeleId')?.touched" class="p-error">Le libellé est requis.</small>
+                        </div>
+
+                        <div class="p-field">
+                            <label for="organismeId">Organisme</label>
+                            <p-dropdown
+                                id="organismeId"
+                                [options]="organismes"
+                                optionLabel="name"
+                                optionValue="idOrganisme"
+                                formControlName="organismeId"
+                                placeholder="Sélectionner un organisme"
+                            ></p-dropdown>
+                        </div>
+
+                        <div class="p-field">
+                            <label for="motif">Motif</label>
+                            <input id="motif" type="text" pInputText formControlName="motif" />
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="p-field">
+                            <label for="montant">Montant</label>
+                            <input id="montant" type="number" pInputText formControlName="montant" />
+                            @if (depenseForm.get('montant')?.invalid && depenseForm.get('montant')?.touched) {
+                                <small class="p-error">Le montant est recquis.</small>
+                            }
+                        </div>
+
+                        <div class="p-field">
+                            <label for="dateIntervention">Date Intervention</label>
+                            <p-calendar id="dateIntervention" formControlName="dateIntervention"
+                                        [iconDisplay]="'input'"
+                                        [showIcon]="true">
+                            </p-calendar>
+                        </div>
+
+                        <div class="p-field">
+                            <label for="dateFacturation">Date Facturation</label>
+                            <p-calendar id="dateFacturation" formControlName="dateFacturation"
+                                        [iconDisplay]="'input'"
+                                        [showIcon]="true">
+                            </p-calendar>
+                            @if (depenseForm.get('dateFacturation')?.invalid && depenseForm.get('dateFacturation')?.touched) {
+                                <small class="p-error">La date de facturation est requise.</small>
+                            }
+                        </div>
+                    </div>
+
                 </div>
 
-                <div class="p-field">
-                    <label for="organismeId">Organisme</label>
-                    <input id="organismeId" type="number" pInputText formControlName="organismeId" />
-                </div>
-
-                <div class="p-field">
-                    <label for="motif">Motif</label>
-                    <input id="motif" type="text" pInputText formControlName="motif" />
-                </div>
-
-                <div class="p-field">
-                    <label for="montant">Montant</label>
-                    <input id="montant" type="number" pInputText formControlName="montant" />
-                </div>
-
-                <div class="p-field">
-                    <label for="dateIntervention">Date Intervention</label>
-                    <p-calendar id="dateIntervention" formControlName="dateIntervention"
-                                [iconDisplay]="'input'"
-                                [showIcon]="true"
-                                inputId="icondisplay">
-                    </p-calendar>
-                </div>
-
-                <div class="p-field">
-                    <label for="dateFacturation">Date Facturation</label>
-                    <p-calendar id="dateFacturation" formControlName="dateFacturation"
-                                [iconDisplay]="'input'"
-                                [showIcon]="true"
-                                inputId="icondisplay">
-                    </p-calendar>
-                </div>
-
-                <div class="p-field">
-                    <button pButton type="submit" label="Ajouter"></button>
+                <div class="p-field ajout">
+                    <button pButton type="submit" [label]="selectedDepense ? 'Modifier' : 'Ajouter'"></button>
                 </div>
             </div>
         </form>
     </p-dialog>
 </div>
-

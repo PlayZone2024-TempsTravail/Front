@@ -1,0 +1,19 @@
+.form-group {
+    margin-bottom: 1em;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5em;
+}
+
+.form-actions > button {
+    flex: 1;
+}
+
+input, dropdown {
+    width: 300px;
+}

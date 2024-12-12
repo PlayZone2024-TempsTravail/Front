@@ -102,14 +102,14 @@ export class AppointmentService {
     if (typeof date === 'string') {
       date = new Date(date);
     }
-  
+
     // Vérifier si 'date' est un objet Date valide
     if (!(date instanceof Date) || isNaN(date.getTime())) {
       throw new Error("Invalid date object");
     }
-  
-    const [hours, minutes] = time.split(':').map(Number); 
-    
+
+    const [hours, minutes] = time.split(':').map(Number);
+
     // Créer un nouvel objet Date avec l'année, mois, jour et heure/mn de la date passée
     const resultDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hours, minutes, 0, 0);
     return resultDate;
