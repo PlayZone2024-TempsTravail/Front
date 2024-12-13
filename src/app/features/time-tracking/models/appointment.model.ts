@@ -26,7 +26,7 @@ export interface Appointment {
     category: string;
     counter: number;
     max: number;
-    difference: number;
+    solde: number;
   }
 
   export interface Project {
