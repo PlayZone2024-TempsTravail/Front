@@ -4,12 +4,13 @@ import {Observable} from 'rxjs';
 import {Permission} from '../models/permission.model';
 import {Role, RoleAddForm, RoleEditForm} from '../models/role.model';
 import {RolePermission, RolePermissionUpdate} from '../models/rolepermission.model';
+import {environment} from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RolesService {
-    private apiUrl = 'http://api.technobel.pro:444/api';
+    private apiUrl = environment.apiUrl;
 
     constructor(private _http: HttpClient) {}
 

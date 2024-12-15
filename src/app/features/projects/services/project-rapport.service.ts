@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {LebeleTree, ShortProject} from '../models/projectRapport.model';
+import {environment} from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectRapportService {
 
-    private apiUrl = 'http://api.technobel.pro:444/api'  ; //attention changer quand vrai api'http://api.technobel.pro:444/api'
+    private apiUrl = environment.apiUrl  ; //attention changer quand vrai api
     constructor(private _http: HttpClient) { }
 
     getShortProject(): Observable<ShortProject[]> {

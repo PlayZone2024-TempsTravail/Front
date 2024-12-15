@@ -3,13 +3,14 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Project, LibeleWithName} from '../models/project.model';
 import { map } from 'rxjs/operators';
+import {environment} from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectService {
 
-    private apiUrl = 'http://api.technobel.pro:444/api'; //attention changer quand vrai api
+    private apiUrl = environment.apiUrl
     constructor(private http: HttpClient) { }
 
     getAllProjects(): Observable<Project[]> {

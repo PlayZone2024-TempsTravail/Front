@@ -2,12 +2,13 @@
 import { Injectable } from '@angular/core';
 import { forkJoin, map, Observable, switchMap, of } from 'rxjs';
 import { UserSalaire, UserRole, UserDTO, UserForm, Role } from '../models/user.dto.model';
+import {environment} from '../../../../environments/environment';
 
 @Injectable({
     providedIn: 'root',
 })
 export class UserService {
-    public apiUrl = 'http://api.technobel.pro:444/api';
+    public apiUrl = environment.apiUrl;
 
     constructor(private _http: HttpClient) {}
 

@@ -9,12 +9,13 @@ import {
     UpdateDepenseDTO
 } from '../models/depense.model';
 import { Observable } from 'rxjs';
+import {environment} from '../../../../environments/environment';
 
 @Injectable({
     providedIn: 'root',
 })
 export class DepenseService {
-    private apiUrl = 'http://api.technobel.pro:444/api';
+    private apiUrl = environment.apiUrl;
 
     constructor(private _http: HttpClient) {}
 

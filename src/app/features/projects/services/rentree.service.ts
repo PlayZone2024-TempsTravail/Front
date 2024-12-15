@@ -3,13 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { RentreeDTO, RentreeCreateFormDTO } from '../models/rentree.model';
 import {LibeleDTO, OrganismeDTO} from '../models/depense.model';
+import {environment} from '../../../../environments/environment';
 
 
 @Injectable({
     providedIn: 'root',
 })
 export class RentreeService {
-    private apiUrl = 'http://api.technobel.pro:444/api';
+    private apiUrl = environment.apiUrl;
 
     constructor(private _http: HttpClient) {}
 
